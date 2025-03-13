@@ -5,16 +5,16 @@
 
 ![Build Passing](https://img.shields.io/badge/build-passing-success?style=flat-square)
 ![Node.js](https://img.shields.io/badge/Node.js-v16.10.0-green?style=flat-square)
-[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/alienx5499/SortVision/blob/main/CONTRIBUTING.md)
-[![License: MIT](https://custom-icon-badges.herokuapp.com/github/license/alienx5499/SortVision?logo=law&logoColor=white)](https://github.com/alienx5499/SortVision/blob/main/LICENSE)
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/alienx5499/sortvision/blob/main/CONTRIBUTING.md)
+[![License: MIT](https://custom-icon-badges.herokuapp.com/github/license/alienx5499/sortvision?logo=law&logoColor=white)](https://github.com/alienx5499/sortvision/blob/main/LICENSE)
 ![Platform](https://img.shields.io/badge/platform-Web-brightgreen?style=flat-square)
-![Views](https://hits.dwyl.com/alienx5499/SortVision.svg)
-![⭐ GitHub stars](https://img.shields.io/github/stars/alienx5499/SortVision?style=social)
-![🍴 GitHub forks](https://img.shields.io/github/forks/alienx5499/SortVision?style=social)
-![Commits](https://badgen.net/github/commits/alienx5499/SortVision)
-![🐛 GitHub issues](https://img.shields.io/github/issues/alienx5499/SortVision)
-![📂 GitHub pull requests](https://img.shields.io/github/issues-pr/alienx5499/SortVision)
-![💾 GitHub code size](https://img.shields.io/github/languages/code-size/alienx5499/SortVision)
+![Views](https://hits.dwyl.com/alienx5499/sortvision.svg)
+![⭐ GitHub stars](https://img.shields.io/github/stars/alienx5499/sortvision?style=social)
+![🍴 GitHub forks](https://img.shields.io/github/forks/alienx5499/sortvision?style=social)
+![Commits](https://badgen.net/github/commits/alienx5499/sortvision)
+![🐛 GitHub issues](https://img.shields.io/github/issues/alienx5499/sortvision)
+![📂 GitHub pull requests](https://img.shields.io/github/issues-pr/alienx5499/sortvision)
+![💾 GitHub code size](https://img.shields.io/github/languages/code-size/alienx5499/sortvision)
 
 </div>
 
@@ -80,6 +80,43 @@ The **SortVision** is a web-based sorting visualizer built using **React** and *
 
 ---
 
+## **📂 Project Structure**
+
+Here’s the folder structure of **SortVision** to give you an overview of how the project is organized:
+```
+SortVision
+├─ .gitignore           # Specifies files and directories that should be ignored by git
+├─ components.json      # Configuration file for project components (if used in a component library)
+├─ eslint.config.js     # ESLint configuration file for code linting and style enforcement
+├─ index.html           # The main HTML file that serves as the entry point for the application
+├─ jsconfig.json        # JavaScript configuration file for setting up paths and project settings
+├─ package.json         # Contains metadata for the project, including dependencies and scripts
+├─ pnpm-lock.yaml       # Lock file for pnpm package manager that ensures consistent dependency versions
+├─ public
+│  └─ vite.svg
+├─ src
+│  ├─ App.css           # Global styles for the application
+│  ├─ App.jsx           # Main React component that renders the app
+│  ├─ assets
+│  │  └─ react.svg
+│  ├─ components
+│  │  └─ ui             # Reusable UI components like buttons, inputs, etc.
+│  │     ├─ badge.jsx
+│  │     ├─ button.jsx
+│  │     ├─ card.jsx
+│  │     ├─ input.jsx
+│  │     ├─ select.jsx
+│  │     ├─ slider.jsx
+│  │     └─ tabs.jsx
+│  ├─ index.css         # Styles for the index page and global 
+│  ├─ lib
+│  │  └─ utils.js
+│  └─ main.jsx           # The main JavaScript file that initializes the React app and renders it
+└─ vite.config.js        # Configuration file for Vite build tool
+```
+
+---
+
 ## **📸 Screenshots**
 <div align="center">
 <table>
@@ -105,10 +142,10 @@ The **SortVision** is a web-based sorting visualizer built using **React** and *
 
 ### **Want to Try the App?**
 
-Head over to the [**Releases**](https://github.com/alienx5499/SortVision/releases) tab on our GitHub repository to try the app. Experience firsthand how the **SortVision** helps you visualize sorting algorithms efficiently!  
+Head over to the [**Releases**](https://github.com/alienx5499/sortvision/releases) tab on our GitHub repository to try the app. Experience firsthand how the **SortVision** helps you visualize sorting algorithms efficiently!  
 **Or click the link below to try the app:**
 
-[![Try the App](https://img.shields.io/badge/Try%20the%20App-blue?style=flat-square&logo=react)](https://github.com/alienx5499/SortVision/releases)
+[![Try the App](https://img.shields.io/badge/Try%20the%20App-blue?style=flat-square&logo=react)](https://github.com/alienx5499/sortvision/releases)
 
 </div>
 
@@ -189,7 +226,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 <div align="center">
 
 ### 📬 **Feedback & Suggestions**
-*We value your input! Share your thoughts through [GitHub Issues](https://github.com/alienx5499/SortVision/issues).*
+*We value your input! Share your thoughts through [GitHub Issues](https://github.com/alienx5499/sortvision/issues).*
 
 💡 *Let’s work together to enhance the understanding of sorting algorithms!*
 
