@@ -5,16 +5,16 @@
 
 ![Build Passing](https://img.shields.io/badge/build-passing-success?style=flat-square)
 ![Node.js](https://img.shields.io/badge/Node.js-v16.10.0-green?style=flat-square)
-[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/alienx5499/sortvision/blob/main/CONTRIBUTING.md)
-[![License: MIT](https://custom-icon-badges.herokuapp.com/github/license/alienx5499/sortvision?logo=law&logoColor=white)](https://github.com/alienx5499/sortvision/blob/main/LICENSE)
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/alienx5499/sortvisioN/blob/main/CONTRIBUTING.md)
+[![License: MIT](https://custom-icon-badges.herokuapp.com/github/license/alienx5499/sortvisioN?logo=law&logoColor=white)](https://github.com/alienx5499/sortvisioN/blob/main/LICENSE)
 ![Platform](https://img.shields.io/badge/platform-Web-brightgreen?style=flat-square)
-![Views](https://hits.dwyl.com/alienx5499/sortvision.svg)
-![⭐ GitHub stars](https://img.shields.io/github/stars/alienx5499/sortvision?style=social)
-![🍴 GitHub forks](https://img.shields.io/github/forks/alienx5499/sortvision?style=social)
-![Commits](https://badgen.net/github/commits/alienx5499/sortvision)
-![🐛 GitHub issues](https://img.shields.io/github/issues/alienx5499/sortvision)
-![📂 GitHub pull requests](https://img.shields.io/github/issues-pr/alienx5499/sortvision)
-![💾 GitHub code size](https://img.shields.io/github/languages/code-size/alienx5499/sortvision)
+![Views](https://hits.dwyl.com/alienx5499/sortvisioN.svg)
+![⭐ GitHub stars](https://img.shields.io/github/stars/alienx5499/sortvisioN?style=social)
+![🍴 GitHub forks](https://img.shields.io/github/forks/alienx5499/sortvisioN?style=social)
+![Commits](https://badgen.net/github/commits/alienx5499/sortvisioN)
+![🐛 GitHub issues](https://img.shields.io/github/issues/alienx5499/sortvisioN)
+![📂 GitHub pull requests](https://img.shields.io/github/issues-pr/alienx5499/sortvisioN)
+![💾 GitHub code size](https://img.shields.io/github/languages/code-size/alienx5499/sortvisioN)
 
 </div>
 
@@ -209,8 +209,8 @@ We ❤️ open source! Contributions are welcome to make this project even bette
 <div align="center">
 	<h3>Thank you for contributing to our repository</h3><br>
 	<p align="center">
-		<a href="https://github.com/alienx5499/SortVision/contributors">
-			<img src="https://contrib.rocks/image?repo=alienx5499/SortVision" width="180" height="95" />
+		<a href="https://github.com/alienx5499/SortVisioN/contributors">
+			<img src="https://contrib.rocks/image?repo=alienx5499/SortVisioN" width="180" height="95" />
 		</a>
 	</p>
 </div>
@@ -226,7 +226,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 <div align="center">
 
 ### 📬 **Feedback & Suggestions**
-*We value your input! Share your thoughts through [GitHub Issues](https://github.com/alienx5499/sortvision/issues).*
+*We value your input! Share your thoughts through [GitHub Issues](https://github.com/alienx5499/sortvisioN/issues).*
 
 💡 *Let’s work together to enhance the understanding of sorting algorithms!*
 
