@@ -145,7 +145,7 @@ SortVision
 Head over to the [**Releases**](https://github.com/alienx5499/sortvision/releases) tab on our GitHub repository to try the app. Experience firsthand how the **SortVision** helps you visualize sorting algorithms efficiently!  
 **Or click the link below to try the app:**
 
-[![Try the WebSite](https://img.shields.io/badge/Try%20the%20App-blue?style=flat-square&logo=react)](https://sortvisionx.vercel.app/)
+[![Try the WebSite](https://img.shields.io/badge/Try%20the%20WebSite-blue?style=flat-square&logo=react)](https://sortvisionx.vercel.app/)
 
 </div>
 
