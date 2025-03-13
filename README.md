@@ -86,35 +86,47 @@ The **SortVision** is a web-based sorting visualizer built using **React** and *
 
 Here’s the folder structure of **SortVision** to give you an overview of how the project is organized:
 ```
-SortVision
-├─ .gitignore           # Specifies files and directories that should be ignored by git
-├─ components.json      # Configuration file for project components (if used in a component library)
-├─ eslint.config.js     # ESLint configuration file for code linting and style enforcement
-├─ index.html           # The main HTML file that serves as the entry point for the application
-├─ jsconfig.json        # JavaScript configuration file for setting up paths and project settings
-├─ package.json         # Contains metadata for the project, including dependencies and scripts
-├─ pnpm-lock.yaml       # Lock file for pnpm package manager that ensures consistent dependency versions
-├─ public
-│  └─ vite.svg
-├─ src
-│  ├─ App.css           # Global styles for the application
-│  ├─ App.jsx           # Main React component that renders the app
-│  ├─ assets
-│  │  └─ react.svg
-│  ├─ components
-│  │  └─ ui             # Reusable UI components like buttons, inputs, etc.
-│  │     ├─ badge.jsx
-│  │     ├─ button.jsx
-│  │     ├─ card.jsx
-│  │     ├─ input.jsx
-│  │     ├─ select.jsx
-│  │     ├─ slider.jsx
-│  │     └─ tabs.jsx
-│  ├─ index.css         # Styles for the index page and global 
-│  ├─ lib
-│  │  └─ utils.js
-│  └─ main.jsx           # The main JavaScript file that initializes the React app and renders it
-└─ vite.config.js        # Configuration file for Vite build tool
+SortVision                # Root directory of the sorting visualization project
+├─ .gitignore               # Specifies which files Git should ignore (node_modules, build files, etc.)
+├─ components.json          # Configuration for shadcn/ui components and their styling
+├─ eslint.config.js         # ESLint configuration for code style and quality rules
+├─ index.html              # Entry HTML file that loads the React application
+├─ jsconfig.json           # JavaScript configuration for path aliases and compiler options
+├─ package.json            # Project metadata and dependencies management
+├─ pnpm-lock.yaml         # Lock file for pnpm ensuring consistent dependency versions
+├─ public/                # Static assets served directly to clients
+│  ├─ favicon.svg        # Website favicon icon
+│  ├─ manifest.json      # PWA manifest for app installation settings
+│  ├─ mobile-fix.js      # JavaScript fixes for mobile-specific issues
+│  ├─ mobile.css        # Mobile-specific CSS styles
+│  ├─ splash.svg        # Splash screen image for PWA
+│  └─ sw.js             # Service Worker for PWA offline functionality
+├─ src/                  # Source code directory
+│  ├─ App.css           # Global styles for the main App component
+│  ├─ App.jsx           # Root React component with routing and layout
+│  ├─ algorithms/       # Directory containing sorting algorithm implementations
+│  │  ├─ bubbleSort.jsx    # Bubble Sort algorithm implementation
+│  │  ├─ index.js          # Exports all sorting algorithms
+│  │  ├─ insertionSort.jsx # Insertion Sort algorithm implementation
+│  │  ├─ mergeSort.jsx     # Merge Sort algorithm implementation
+│  │  ├─ quickSort.jsx     # Quick Sort algorithm implementation
+│  │  ├─ radixSort.jsx     # Radix Sort algorithm implementation
+│  │  └─ selectionSort.jsx # Selection Sort algorithm implementation
+│  ├─ components/       # React components directory
+│  │  ├─ SortingVisualizer.jsx  # Main component for visualizing sorts
+│  │  └─ ui/           # Reusable UI components directory
+│  │     ├─ badge.jsx      # Badge component for labels/tags
+│  │     ├─ button.jsx     # Button component
+│  │     ├─ card.jsx       # Card component for contained content
+│  │     ├─ input.jsx      # Input field component
+│  │     ├─ select.jsx     # Dropdown select component
+│  │     ├─ slider.jsx     # Slider component for number inputs
+│  │     └─ tabs.jsx       # Tabs component for switching views
+│  ├─ index.css        # Global styles and Tailwind CSS imports
+│  ├─ lib/            # Utility functions and helpers
+│  │  └─ utils.js     # Common utility functions used across the app
+│  └─ main.jsx        # Application entry point that renders the App component
+└─ vite.config.js     # Vite bundler configuration for build settings
 ```
 
 ---
