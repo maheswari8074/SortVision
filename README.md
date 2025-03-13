@@ -137,7 +137,7 @@ Head over to the [**Releases**](https://github.com/alienx5499/SortVision/release
    ```
 4. **Run the Application**
    ```bash
-   npm dev run
+   npm run dev
    ```
    - Visit http://localhost:3000 in your browser to see the app in action.
 ---
@@ -192,7 +192,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ### 📬 **Feedback & Suggestions**
 *We value your input! Share your thoughts through [GitHub Issues](https://github.com/alienx5499/SortVision/issues).*
 
-💡 *Let's work together to improve road safety and awareness!*
+💡 *Let’s work together to enhance the understanding of sorting algorithms!*
 
 </div>
 
