@@ -4,8 +4,10 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/favicon.svg',
+  '/splash.svg',
   '/manifest.json',
   '/mobile.css',
+  '/mobile-fix.js',
   '/src/main.jsx',
   'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap'
 ];

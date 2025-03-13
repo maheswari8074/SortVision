@@ -60,6 +60,36 @@
     
     <!-- Mobile App Install Prompt -->
     <meta name="apple-touch-startup-image" content="/splash.svg">
+    
+    <!-- Mobile scrolling fix -->
+    <script src="/mobile-fix.js" defer></script>
+    
+    <style>
+      /* CSS Variables for iOS height fix */
+      :root {
+        --app-height: 100vh;
+      }
+      
+      /* Fix for iOS scrolling */
+      html, body {
+        position: relative;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      /* Use the dynamic height variable */
+      .min-h-screen {
+        min-height: var(--app-height);
+      }
+      
+      /* Ensure content is scrollable */
+      #root {
+        height: auto;
+        min-height: var(--app-height);
+        overflow-y: auto;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
@@ -70,13 +100,6 @@
       // Apply dark mode immediately to prevent flash
       document.documentElement.classList.add('dark');
       document.body.style.backgroundColor = '#0F172A';
-      
-      // Disable pinch zoom on mobile for better UX with the visualization
-      document.addEventListener('touchmove', function(event) {
-        if (event.scale !== 1) {
-          event.preventDefault();
-        }
-      }, { passive: false });
       
       // Add touch class to body for mobile-specific styling
       if ('ontouchstart' in document.documentElement) {
@@ -115,6 +138,19 @@
         const isPortrait = window.matchMedia("(orientation: portrait)").matches;
         document.body.classList.toggle('portrait', isPortrait);
         document.body.classList.toggle('landscape', !isPortrait);
+        
+        // Add a more targeted approach to handle pinch zoom only in the visualization area
+        window.addEventListener('load', () => {
+          // Find the visualization container
+          const visualizationContainer = document.querySelector('.visualization-container');
+          if (visualizationContainer) {
+            visualizationContainer.addEventListener('touchmove', function(event) {
+              if (event.scale !== 1) {
+                event.preventDefault();
+              }
+            }, { passive: false });
+          }
+        });
       }
     </script>
   </body>

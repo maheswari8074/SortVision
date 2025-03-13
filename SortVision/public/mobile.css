@@ -6,6 +6,9 @@
     overflow-x: hidden;
     position: relative;
     -webkit-overflow-scrolling: touch;
+    /* Ensure scrolling works properly */
+    height: auto;
+    overscroll-behavior-y: none;
   }
   
   /* Prevent text size adjustment on orientation change */
@@ -32,6 +35,21 @@
     width: 100% !important;
     padding-left: 1rem !important;
     padding-right: 1rem !important;
+  }
+  
+  /* Ensure scrolling works properly */
+  #root {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Fix for visualization container */
+  .visualization-container {
+    touch-action: pan-y;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -61,6 +79,12 @@
 @supports (-webkit-touch-callout: none) {
   .min-h-screen {
     min-height: -webkit-fill-available;
+    height: auto;
+  }
+  
+  body, #root {
+    min-height: -webkit-fill-available;
+    height: auto;
   }
 }
 
@@ -79,6 +103,16 @@
   /* Add active state for touch feedback */
   .touch-feedback:active {
     opacity: 0.7;
+  }
+  
+  /* Ensure proper scrolling */
+  body {
+    touch-action: pan-x pan-y;
+  }
+  
+  /* Only prevent pinch zoom on visualization area */
+  .visualization-container {
+    touch-action: pan-x pan-y;
   }
 }
 
@@ -102,4 +136,20 @@
   .bg-slate-950 {
     background-color: #000 !important;
   }
+}
+
+/* Fix for mobile scrolling */
+.touch-device {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  height: auto !important;
+}
+
+/* Ensure the body can scroll */
+body.mobile-device {
+  position: relative;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  height: auto !important;
+  touch-action: pan-y !important;
 } 
