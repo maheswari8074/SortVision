@@ -8,7 +8,6 @@
 [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/alienx5499/SortVision/blob/main/CONTRIBUTING.md)
 [![License: MIT](https://custom-icon-badges.herokuapp.com/github/license/alienx5499/SortVision?logo=law&logoColor=white)](https://github.com/alienx5499/SortVision/blob/main/LICENSE)
 ![Platform](https://img.shields.io/badge/platform-Web-brightgreen?style=flat-square)
-![Twitter Integration](https://img.shields.io/badge/social%20media-Twitter-blue?style=flat-square)
 ![Views](https://hits.dwyl.com/alienx5499/SortVision.svg)
 ![⭐ GitHub stars](https://img.shields.io/github/stars/alienx5499/SortVision?style=social)
 ![🍴 GitHub forks](https://img.shields.io/github/forks/alienx5499/SortVision?style=social)
