@@ -2,12 +2,50 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Primary Meta Tags -->
     <title>SortVision | Algorithm Visualizer</title>
+    <meta name="title" content="SortVision | Algorithm Visualizer">
+    <meta name="description" content="Interactive visualization of popular sorting algorithms. Learn how different sorting algorithms work through visual representation.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Viewport and Theme Color -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0F172A">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sortvision.vercel.app/">
+    <meta property="og:title" content="SortVision | Algorithm Visualizer">
+    <meta property="og:description" content="Interactive visualization of popular sorting algorithms. Learn how different sorting algorithms work through visual representation.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://sortvision.vercel.app/">
+    <meta property="twitter:title" content="SortVision | Algorithm Visualizer">
+    <meta property="twitter:description" content="Interactive visualization of popular sorting algorithms. Learn how different sorting algorithms work through visual representation.">
+    
+    <!-- Preload Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Preload Main Script -->
+    <link rel="modulepreload" href="/src/main.jsx">
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Prevent Flash of Unstyled Content -->
+    <script>
+      // Apply dark mode immediately to prevent flash
+      document.documentElement.classList.add('dark');
+      document.body.style.backgroundColor = '#0F172A';
+    </script>
   </body>
 </html>
