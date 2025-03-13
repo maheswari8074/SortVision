@@ -80,6 +80,26 @@ const App = () => {
           </a>
           
           <a 
+            href="https://github.com/sponsors/alienx5499" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-slate-400 hover:text-pink-400 hover:scale-110 transition-all duration-300"
+          >
+            <span className="text-lg">♥</span>
+            <span>Sponsor</span>
+          </a>
+          
+          <a 
+            href="https://buymeacoffee.com/alienx5499" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-slate-400 hover:text-yellow-400 hover:scale-110 transition-all duration-300"
+          >
+            <span className="text-lg">☕</span>
+            <span>Buy me a coffee</span>
+          </a>
+          
+          <a 
             href="https://x.com/alienx5499" 
             target="_blank" 
             rel="noopener noreferrer"
