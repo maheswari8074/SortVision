@@ -1,13 +1,14 @@
 import React from 'react';
 import SortingVisualizer from './components/SortingVisualizer';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Terminal, Code } from 'lucide-react';
 
 /**
  * Main Application Component
  * 
  * Renders the sorting visualizer application with header and footer
- * Includes Vercel Analytics for tracking usage and performance
+ * Includes Vercel Analytics for tracking usage and Speed Insights for performance monitoring
  */
 const App = () => {
   return (
@@ -38,6 +39,9 @@ const App = () => {
       
       {/* Vercel Analytics - Tracks usage without affecting privacy */}
       <Analytics />
+      
+      {/* Vercel Speed Insights - Monitors performance metrics */}
+      <SpeedInsights />
     </div>
   );
 };
