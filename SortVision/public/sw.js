@@ -25,37 +25,64 @@ self.addEventListener('install', event => {
 
 // Fetch event - serve from cache if available
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        
-        // Clone the request
-        const fetchRequest = event.request.clone();
-        
-        return fetch(fetchRequest).then(
-          response => {
-            // Check if valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            
-            // Clone the response
-            const responseToCache = response.clone();
-            
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
-              
+  try {
+    // Skip non-HTTP(S) requests and unsupported URL schemes
+    const requestURL = new URL(event.request.url);
+    if (!['http:', 'https:'].includes(requestURL.protocol)) {
+      return;
+    }
+
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => {
+          // Cache hit - return response
+          if (response) {
             return response;
           }
-        );
-      })
-  );
+          
+          // Clone the request
+          const fetchRequest = event.request.clone();
+          
+          return fetch(fetchRequest)
+            .then(response => {
+              // Check if valid response
+              if (!response || response.status !== 200 || response.type !== 'basic') {
+                return response;
+              }
+              
+              // Clone the response
+              const responseToCache = response.clone();
+              
+              // Wrap cache operations in try-catch
+              try {
+                caches.open(CACHE_NAME)
+                  .then(cache => {
+                    if (cache && responseToCache) {
+                      return cache.put(event.request, responseToCache)
+                        .catch(err => console.warn('Cache put error:', err));
+                    }
+                  })
+                  .catch(err => console.warn('Cache open error:', err));
+              } catch (error) {
+                console.warn('Cache operation error:', error);
+              }
+              
+              return response;
+            })
+            .catch(error => {
+              console.warn('Fetch error:', error);
+              throw error;
+            });
+        })
+        .catch(error => {
+          console.warn('Cache match error:', error);
+          throw error;
+        })
+    );
+  } catch (error) {
+    console.warn('Service worker general error:', error);
+    return;
+  }
 });
 
 // Activate event - clean up old caches

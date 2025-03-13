@@ -58,7 +58,9 @@ const App = () => {
         <span className="text-slate-600">/**</span> Built with 
         <span className="inline-block animate-bounce animate-infinite animate-duration-[2000ms] mx-1">❤️</span> 
         by alienX <span className="text-slate-600">*/</span>
-        <div className="mt-2 flex items-center justify-center gap-4">
+        
+        {/* Social links - Now wraps on mobile */}
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-4 px-4">
           <a 
             href="https://github.com/alienx5499/SortVision" 
             target="_blank" 
