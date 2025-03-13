@@ -4,14 +4,47 @@
   "description": "Interactive visualization of popular sorting algorithms",
   "start_url": "/",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#0F172A",
   "theme_color": "#0F172A",
+  "categories": ["education", "development", "utilities"],
   "icons": [
     {
       "src": "/favicon.svg",
-      "sizes": "64x64 128x128 256x256 512x512",
+      "sizes": "64x64 128x128 256x256",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/splash.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "/splash.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "SortVision Algorithm Visualizer"
+    },
+    {
+      "src": "/splash.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "SortVision on mobile"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Start Visualization",
+      "url": "/?quickstart=true",
+      "description": "Start visualizing sorting algorithms"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
 } 

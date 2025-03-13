@@ -1,0 +1,105 @@
+/* Mobile-specific styles for SortVision */
+
+/* Base responsive adjustments */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent text size adjustment on orientation change */
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
+  /* Improve tap target sizes for mobile */
+  button, 
+  select, 
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Adjust font sizes for mobile */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  /* Ensure content fits on small screens */
+  .container {
+    width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Stack elements vertically on very small screens */
+  .flex-row {
+    flex-direction: column !important;
+  }
+  
+  /* Reduce padding */
+  .p-5 {
+    padding: 0.75rem !important;
+  }
+  
+  /* Adjust visualization size */
+  .visualization-container {
+    height: 50vh !important;
+  }
+}
+
+/* Fix for iOS Safari 100vh issue */
+@supports (-webkit-touch-callout: none) {
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Improve touch interactions */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .touch-target {
+    padding: 0.75rem !important;
+  }
+  
+  /* Remove hover effects that don't work well on touch */
+  .hover\:scale-110:hover {
+    transform: none !important;
+  }
+  
+  /* Add active state for touch feedback */
+  .touch-feedback:active {
+    opacity: 0.7;
+  }
+}
+
+/* Orientation specific adjustments */
+@media screen and (orientation: portrait) {
+  /* Optimize for portrait mode */
+  .visualization-container {
+    height: 40vh !important;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  /* Optimize for landscape mode */
+  .visualization-container {
+    height: 60vh !important;
+  }
+}
+
+/* Dark mode for OLED screens to save battery */
+@media (prefers-color-scheme: dark) {
+  .bg-slate-950 {
+    background-color: #000 !important;
+  }
+} 
