@@ -50,9 +50,11 @@ The **SortVision** is a web-based sorting visualizer built using **React** and *
 ### **Sorting Algorithms**
 - Visualize multiple sorting algorithms, such as:
   - Bubble Sort
-  - Quick Sort
-  - Merge Sort
   - Selection Sort
+  - Insertion Sort
+  - Merge Sort
+  - Quick Sort
+  - Radix Sort
 - Real-time visual representation of sorting steps.
 - Adjustable speed controls for better understanding of algorithm performance.
 
@@ -118,17 +120,19 @@ SortVision
 ---
 
 ## **📸 Screenshots**
+
 <div align="center">
+
+### **Visualizer & Metric Selection Screens**
+
 <table>
 <tr>
-  <td><img src="https://github.com/user-attachments/assets/screenshot1.png" alt="Visualizer Screen" width="250px"></td>
-  <td><img src="https://github.com/user-attachments/assets/screenshot2.png" alt="Array Control Screen" width="250px"></td>
-  <td><img src="https://github.com/user-attachments/assets/screenshot3.png" alt="Algorithm Selection Screen" width="250px"></td>
+  <td><img src="https://github.com/user-attachments/assets/db111d86-b4ad-4c69-9f46-b34368c39861" alt="Visualizer Screen" width="1600px"></td>
+  <td><img src="https://github.com/user-attachments/assets/f2aec481-9cbc-43e6-8464-57aab9500215" alt="Metric Screen" width="1600px"></td>
 </tr>
 <tr>
   <td><b>Visualizer Screen</b></td>
-  <td><b>Array Control Screen</b></td>
-  <td><b>Algorithm Selection Screen</b></td>
+  <td><b>Metric Screen</b></td>
 </tr>
 </table>
 
