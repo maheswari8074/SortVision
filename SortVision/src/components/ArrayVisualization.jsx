@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 /**
  * ArrayVisualization Component
@@ -15,6 +15,9 @@ const ArrayVisualization = ({
   isStopped,
   height = "h-96" // Increased default height to match the images
 }) => {
+  // State to track which bar is being hovered
+  const [hoveredBarIndex, setHoveredBarIndex] = useState(null);
+  
   return (
     <div className={`w-full rounded-lg border border-slate-800 bg-slate-900 p-4 ${height} relative overflow-hidden group`}>
       {/* Background grid effect */}
@@ -36,7 +39,7 @@ const ArrayVisualization = ({
       </div>
       
       {/* Array bars - with bottom padding to avoid overlap with status footer */}
-      <div className="flex justify-evenly items-end h-[calc(100%-28px)] relative z-10 pb-8">
+      <div className="flex justify-evenly items-end h-[calc(100%-24px)] relative z-10 pb-2">
         {array.map((value, index) => {
           // Determine bar color based on current operation and algorithm
           let barColor = "bg-gradient-to-t from-blue-600 via-cyan-500 to-indigo-400";
@@ -61,23 +64,35 @@ const ArrayVisualization = ({
             if (algorithm === 'radix') barColor = "bg-gradient-to-t from-cyan-600 via-blue-500 to-teal-400";
           }
           
+          // Add extra glow for hovered bar
+          if (hoveredBarIndex === index) {
+            barGlow = "shadow-[0_0_15px_rgba(255,255,255,0.7)]";
+          }
+          
           return (
             <div
               key={index}
-              className={`rounded-t ${barColor} ${barGlow} transition-all duration-200 relative group`}
+              className={`rounded-t ${barColor} ${barGlow} transition-all duration-200 relative hover:z-20`}
               style={{
                 width: `${Math.max(100 / array.length - 1, 2)}%`,
                 height: `${Math.max(value * 2.5, 5)}px`,
                 transition: "height 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
               }}
+              onMouseEnter={() => setHoveredBarIndex(index)}
+              onMouseLeave={() => setHoveredBarIndex(null)}
             >
-              {/* Value tooltip on hover */}
-              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-slate-800 px-1.5 py-0.5 rounded text-[10px] text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                {value}
-              </div>
+              {/* Value tooltip - only visible when hovering this specific bar */}
+              {hoveredBarIndex === index && (
+                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-slate-800 px-1.5 py-0.5 rounded text-[10px] text-slate-300 shadow-md z-30 whitespace-nowrap pointer-events-none border border-slate-700">
+                  {value}
+                </div>
+              )}
               
               {/* Bar highlight effect */}
               <div className="absolute inset-x-0 top-0 h-1 bg-white/30 rounded-t"></div>
+              
+              {/* Hover highlight effect */}
+              <div className={`absolute inset-0 bg-white/10 ${hoveredBarIndex === index ? 'opacity-100' : 'opacity-0'} transition-opacity duration-200 rounded-t`}></div>
             </div>
           );
         })}

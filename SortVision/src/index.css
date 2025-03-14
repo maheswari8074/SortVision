@@ -122,3 +122,178 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom animations for SortVision */
+@keyframes moveRight {
+  0% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  50.1% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Bubble sort comparison animation */
+@keyframes bubbleCompare {
+  0% {
+    left: 0%;
+    opacity: 0.7;
+  }
+  15% {
+    left: 0%;
+    opacity: 1;
+  }
+  20% {
+    left: 16%;
+    opacity: 1;
+  }
+  35% {
+    left: 16%;
+    opacity: 0.7;
+  }
+  40% {
+    left: 32%;
+    opacity: 1;
+  }
+  55% {
+    left: 32%;
+    opacity: 0.7;
+  }
+  60% {
+    left: 48%;
+    opacity: 1;
+  }
+  75% {
+    left: 48%;
+    opacity: 0.7;
+  }
+  80% {
+    left: 64%;
+    opacity: 1;
+  }
+  95% {
+    left: 64%;
+    opacity: 0.7;
+  }
+  100% {
+    left: 0%;
+    opacity: 0;
+  }
+}
+
+/* Selection sort search animation */
+@keyframes selectionSearch {
+  0% {
+    left: 0%;
+    transform: scale(1);
+  }
+  10% {
+    left: 0%;
+    transform: scale(1.2);
+  }
+  20% {
+    left: 16.6%;
+    transform: scale(1);
+  }
+  30% {
+    left: 16.6%;
+    transform: scale(1.2);
+  }
+  40% {
+    left: 33.2%;
+    transform: scale(1);
+  }
+  50% {
+    left: 33.2%;
+    transform: scale(1.2);
+  }
+  60% {
+    left: 49.8%;
+    transform: scale(1);
+  }
+  70% {
+    left: 49.8%;
+    transform: scale(1.2);
+  }
+  80% {
+    left: 66.4%;
+    transform: scale(1);
+  }
+  90% {
+    left: 66.4%;
+    transform: scale(1.2);
+  }
+  100% {
+    left: 83%;
+    transform: scale(1);
+  }
+}
+
+/* Selection sort scanning animation for the icon */
+@keyframes selectionScan {
+  0% {
+    left: -10%;
+    opacity: 0.7;
+  }
+  50% {
+    left: 100%;
+    opacity: 1;
+  }
+  50.1% {
+    left: -10%;
+    opacity: 0;
+  }
+  100% {
+    left: -10%;
+    opacity: 0.7;
+  }
+}
+
+/* Blinking cursor animation for code editor */
+@keyframes blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
