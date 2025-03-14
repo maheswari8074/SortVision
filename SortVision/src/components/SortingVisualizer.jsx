@@ -6,7 +6,7 @@ import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Terminal, Crown } from 'lucide-react';
+import { Terminal, Crown, RefreshCw, Play, Square, BarChart2, Zap, StopCircle, Beaker, Clock, Hourglass, Database, Info, AlertTriangle, CheckCircle2, Timer, Rocket } from 'lucide-react';
 
 /**
  * SortingVisualizer Component
@@ -231,12 +231,60 @@ const SortingVisualizer = () => {
    */
   const getAlgorithmTimeComplexity = () => {
     const complexities = {
-      bubble: { best: "O(n)", average: "O(n²)", worst: "O(n²)", space: "O(1)" },
-      insertion: { best: "O(n)", average: "O(n²)", worst: "O(n²)", space: "O(1)" },
-      selection: { best: "O(n²)", average: "O(n²)", worst: "O(n²)", space: "O(1)" },
-      quick: { best: "O(n log n)", average: "O(n log n)", worst: "O(n²)", space: "O(log n)" },
-      merge: { best: "O(n log n)", average: "O(n log n)", worst: "O(n log n)", space: "O(n)" },
-      radix: { best: "O(nk)", average: "O(nk)", worst: "O(nk)", space: "O(n+k)" }
+      bubble: { 
+        best: "O(n)", 
+        average: "O(n²)", 
+        worst: "O(n²)", 
+        space: "O(1)",
+        description: "Simple comparison-based algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.",
+        efficiency: "low",
+        color: "red"
+      },
+      insertion: { 
+        best: "O(n)", 
+        average: "O(n²)", 
+        worst: "O(n²)", 
+        space: "O(1)",
+        description: "Builds the sorted array one item at a time by comparing each new element with the already sorted elements and inserting it into the correct position.",
+        efficiency: "medium-low",
+        color: "orange"
+      },
+      selection: { 
+        best: "O(n²)", 
+        average: "O(n²)", 
+        worst: "O(n²)", 
+        space: "O(1)",
+        description: "Repeatedly finds the minimum element from the unsorted part and puts it at the beginning of the unsorted part.",
+        efficiency: "low",
+        color: "red"
+      },
+      quick: { 
+        best: "O(n log n)", 
+        average: "O(n log n)", 
+        worst: "O(n²)", 
+        space: "O(log n)",
+        description: "Divide-and-conquer algorithm that picks a 'pivot' element and partitions the array around the pivot, recursively sorting the sub-arrays.",
+        efficiency: "high",
+        color: "green"
+      },
+      merge: { 
+        best: "O(n log n)", 
+        average: "O(n log n)", 
+        worst: "O(n log n)", 
+        space: "O(n)",
+        description: "Divide-and-conquer algorithm that divides the array into two halves, sorts them separately, and then merges the sorted halves.",
+        efficiency: "high",
+        color: "green"
+      },
+      radix: { 
+        best: "O(nk)", 
+        average: "O(nk)", 
+        worst: "O(nk)", 
+        space: "O(n+k)",
+        description: "Non-comparative sorting algorithm that sorts data with integer keys by grouping keys by individual digits which share the same position and value.",
+        efficiency: "high",
+        color: "green"
+      }
     };
     return complexities[algorithm];
   };
@@ -267,13 +315,17 @@ const SortingVisualizer = () => {
       <CardContent className="p-6 space-y-6">
         {/* Tabbed interface for controls and metrics */}
         <Tabs defaultValue="controls" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-slate-900">
+          <TabsList className="grid w-full grid-cols-3 bg-slate-900">
             <TabsTrigger value="controls" className="font-mono">
               <span className="text-emerald-400">config</span>
               <span className="text-slate-400">.js</span>
             </TabsTrigger>
             <TabsTrigger value="metrics" className="font-mono">
               <span className="text-emerald-400">metrics</span>
+              <span className="text-slate-400">.js</span>
+            </TabsTrigger>
+            <TabsTrigger value="details" className="font-mono">
+              <span className="text-emerald-400">details</span>
               <span className="text-slate-400">.js</span>
             </TabsTrigger>
           </TabsList>
@@ -301,20 +353,84 @@ const SortingVisualizer = () => {
               
               {/* Algorithm Complexity Information */}
               <div className="bg-slate-900 p-4 rounded border border-slate-800">
-                <label className="font-mono text-sm text-slate-400 mb-2 block">// complexity</label>
-                <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                  <div>
-                    <Badge variant="outline" className="bg-slate-800 text-amber-400">Best: {getAlgorithmTimeComplexity().best}</Badge>
+                <label className="font-mono text-sm text-slate-400 mb-2 flex items-center">
+                  <Info className="mr-2 h-4 w-4" />
+                  // algorithm complexity
+                </label>
+                
+                {/* Efficiency indicator */}
+                <div className="mb-3 bg-slate-800 p-2 rounded border border-slate-700">
+                  <div className="text-xs text-slate-400 mb-1">EFFICIENCY RATING</div>
+                  <div className="flex items-center">
+                    <div className={`font-bold text-sm flex items-center ${
+                      getAlgorithmTimeComplexity().color === "red" ? "text-red-500" : 
+                      getAlgorithmTimeComplexity().color === "orange" ? "text-orange-500" : 
+                      getAlgorithmTimeComplexity().color === "yellow" ? "text-yellow-500" : 
+                      getAlgorithmTimeComplexity().color === "blue" ? "text-blue-500" : 
+                      "text-green-500"
+                    }`}>
+                      {getAlgorithmTimeComplexity().efficiency === "high" && <Rocket className="mr-1 h-4 w-4" />}
+                      {getAlgorithmTimeComplexity().efficiency === "medium-high" && <CheckCircle2 className="mr-1 h-4 w-4" />}
+                      {getAlgorithmTimeComplexity().efficiency === "medium" && <Clock className="mr-1 h-4 w-4" />}
+                      {getAlgorithmTimeComplexity().efficiency === "medium-low" && <Hourglass className="mr-1 h-4 w-4" />}
+                      {getAlgorithmTimeComplexity().efficiency === "low" && <AlertTriangle className="mr-1 h-4 w-4" />}
+                      {getAlgorithmTimeComplexity().efficiency.charAt(0).toUpperCase() + getAlgorithmTimeComplexity().efficiency.slice(1)}
+                    </div>
+                    <div className="ml-auto">
+                      <div className="flex space-x-1">
+                        <div className={`h-2 w-2 rounded-full ${getAlgorithmTimeComplexity().efficiency === "low" || getAlgorithmTimeComplexity().efficiency === "medium-low" || getAlgorithmTimeComplexity().efficiency === "medium" || getAlgorithmTimeComplexity().efficiency === "medium-high" || getAlgorithmTimeComplexity().efficiency === "high" ? 'bg-red-500' : 'bg-slate-700'}`}></div>
+                        <div className={`h-2 w-2 rounded-full ${getAlgorithmTimeComplexity().efficiency === "medium-low" || getAlgorithmTimeComplexity().efficiency === "medium" || getAlgorithmTimeComplexity().efficiency === "medium-high" || getAlgorithmTimeComplexity().efficiency === "high" ? 'bg-orange-500' : 'bg-slate-700'}`}></div>
+                        <div className={`h-2 w-2 rounded-full ${getAlgorithmTimeComplexity().efficiency === "medium" || getAlgorithmTimeComplexity().efficiency === "medium-high" || getAlgorithmTimeComplexity().efficiency === "high" ? 'bg-yellow-500' : 'bg-slate-700'}`}></div>
+                        <div className={`h-2 w-2 rounded-full ${getAlgorithmTimeComplexity().efficiency === "medium-high" || getAlgorithmTimeComplexity().efficiency === "high" ? 'bg-blue-500' : 'bg-slate-700'}`}></div>
+                        <div className={`h-2 w-2 rounded-full ${getAlgorithmTimeComplexity().efficiency === "high" ? 'bg-green-500' : 'bg-slate-700'}`}></div>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <Badge variant="outline" className="bg-slate-800 text-amber-400">Avg: {getAlgorithmTimeComplexity().average}</Badge>
+                </div>
+                
+                {/* Time complexity */}
+                <div className="mb-3">
+                  <div className="text-xs text-slate-400 mb-1 flex items-center">
+                    <Timer className="mr-1 h-3 w-3" /> TIME COMPLEXITY
                   </div>
-                  <div>
-                    <Badge variant="outline" className="bg-slate-800 text-amber-400">Worst: {getAlgorithmTimeComplexity().worst}</Badge>
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="bg-slate-800 p-2 rounded border border-slate-700">
+                      <div className="text-[10px] text-slate-500 mb-1">BEST CASE</div>
+                      <div className="flex items-center">
+                        <Clock className="h-3 w-3 text-green-500 mr-1" />
+                        <span className="text-green-500 font-mono text-xs">{getAlgorithmTimeComplexity().best}</span>
+                      </div>
+                    </div>
+                    <div className="bg-slate-800 p-2 rounded border border-slate-700">
+                      <div className="text-[10px] text-slate-500 mb-1">AVERAGE</div>
+                      <div className="flex items-center">
+                        <Clock className="h-3 w-3 text-yellow-500 mr-1" />
+                        <span className="text-yellow-500 font-mono text-xs">{getAlgorithmTimeComplexity().average}</span>
+                      </div>
+                    </div>
+                    <div className="bg-slate-800 p-2 rounded border border-slate-700">
+                      <div className="text-[10px] text-slate-500 mb-1">WORST CASE</div>
+                      <div className="flex items-center">
+                        <Hourglass className="h-3 w-3 text-red-500 mr-1" />
+                        <span className="text-red-500 font-mono text-xs">{getAlgorithmTimeComplexity().worst}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <Badge variant="outline" className="bg-slate-800 text-amber-400">Space: {getAlgorithmTimeComplexity().space}</Badge>
+                </div>
+                
+                {/* Space complexity */}
+                <div className="mb-3">
+                  <div className="text-xs text-slate-400 mb-1 flex items-center">
+                    <Database className="mr-1 h-3 w-3" /> SPACE COMPLEXITY
                   </div>
+                  <div className="bg-slate-800 p-2 rounded border border-slate-700 flex items-center">
+                    <span className="text-blue-400 font-mono text-xs">{getAlgorithmTimeComplexity().space}</span>
+                  </div>
+                </div>
+                
+                {/* Description */}
+                <div className="text-[10px] text-slate-400 italic border-t border-slate-800 pt-2 mt-2">
+                  {getAlgorithmTimeComplexity().description}
                 </div>
               </div>
               
@@ -324,7 +440,7 @@ const SortingVisualizer = () => {
                 <Slider
                   value={[arraySize]}
                   min={10}
-                  max={100}
+                  max={200}
                   step={1}
                   onValueChange={(value) => setArraySize(value[0])}
                   disabled={isSorting}
@@ -338,7 +454,7 @@ const SortingVisualizer = () => {
                 <Slider
                   value={[speed]}
                   min={1}
-                  max={100}
+                  max={1000}
                   step={1}
                   onValueChange={(value) => setSpeed(value[0])}
                   disabled={isSorting}
@@ -353,16 +469,18 @@ const SortingVisualizer = () => {
                 variant="outline" 
                 onClick={generateNewArray} 
                 disabled={isSorting}
-                className="bg-slate-800 border-slate-700 text-emerald-400 hover:bg-slate-700 hover:text-emerald-300 font-mono"
+                className="bg-slate-800 border-slate-700 text-emerald-400 hover:bg-slate-700 hover:text-emerald-300 font-mono flex items-center justify-center"
               >
+                <RefreshCw className="mr-2 h-4 w-4" />
                 new_array()
               </Button>
               
               <Button 
                 onClick={startSorting} 
                 disabled={isSorting}
-                className="bg-emerald-600 hover:bg-emerald-500 text-white font-mono"
+                className="bg-emerald-600 hover:bg-emerald-500 text-white font-mono flex items-center justify-center"
               >
+                <Play className="mr-2 h-4 w-4" />
                 {isSorting ? "sorting..." : "start()"}
               </Button>
               
@@ -370,8 +488,9 @@ const SortingVisualizer = () => {
                 variant="destructive" 
                 onClick={stopSorting} 
                 disabled={!isSorting}
-                className="font-mono"
+                className="font-mono flex items-center justify-center"
               >
+                <Square className="mr-2 h-4 w-4" />
                 stop()
               </Button>
             </div>
@@ -384,15 +503,21 @@ const SortingVisualizer = () => {
               <div className="font-mono text-sm text-slate-400 mb-4">// current run metrics</div>
               <div className="grid grid-cols-3 gap-4">
                 <div className="bg-slate-800 p-3 rounded border border-slate-700">
-                  <div className="text-xs text-slate-400 mb-1">SWAPS</div>
+                  <div className="text-xs text-slate-400 mb-1 flex items-center">
+                    <RefreshCw className="mr-1 h-3 w-3" /> SWAPS
+                  </div>
                   <div className="text-xl text-emerald-400 font-mono">{metrics.swaps}</div>
                 </div>
                 <div className="bg-slate-800 p-3 rounded border border-slate-700">
-                  <div className="text-xs text-slate-400 mb-1">COMPARISONS</div>
+                  <div className="text-xs text-slate-400 mb-1 flex items-center">
+                    <BarChart2 className="mr-1 h-3 w-3" /> COMPARISONS
+                  </div>
                   <div className="text-xl text-emerald-400 font-mono">{metrics.comparisons}</div>
                 </div>
                 <div className="bg-slate-800 p-3 rounded border border-slate-700">
-                  <div className="text-xs text-slate-400 mb-1">TIME (MS)</div>
+                  <div className="text-xs text-slate-400 mb-1 flex items-center">
+                    <Zap className="mr-1 h-3 w-3" /> TIME (MS)
+                  </div>
                   <div className="text-xl text-emerald-400 font-mono">{metrics.time}</div>
                 </div>
               </div>
@@ -402,13 +527,26 @@ const SortingVisualizer = () => {
             <div className="bg-slate-900 p-4 rounded border border-slate-800">
               <div className="flex justify-between items-center mb-4">
                 <div className="font-mono text-sm text-slate-400">// algorithm comparison</div>
-                <Button 
-                  onClick={testAllAlgorithms} 
-                  disabled={isSorting}
-                  className="bg-purple-600 hover:bg-purple-500 text-white font-mono text-sm"
-                >
-                  test_all()
-                </Button>
+                <div className="flex space-x-2">
+                  <Button 
+                    onClick={testAllAlgorithms} 
+                    disabled={isSorting && !currentTestingAlgo}
+                    className="bg-purple-600 hover:bg-purple-500 text-white font-mono text-sm flex items-center"
+                  >
+                    <Beaker className="mr-2 h-4 w-4" />
+                    test_all()
+                  </Button>
+                  
+                  <Button 
+                    variant="destructive" 
+                    onClick={stopSorting} 
+                    disabled={!currentTestingAlgo}
+                    className="font-mono text-sm flex items-center"
+                  >
+                    <StopCircle className="mr-2 h-4 w-4" />
+                    stop_test()
+                  </Button>
+                </div>
               </div>
               
               {/* Algorithm Ranking Cards */}
@@ -450,14 +588,17 @@ const SortingVisualizer = () => {
                     </div>
                     {/* Algorithm metrics */}
                     <div className="grid grid-cols-3 gap-2 text-xs">
-                      <div className="text-slate-400">
-                        Swaps: <span className="text-amber-400">{metrics.swaps}</span>
+                      <div className="text-slate-400 flex items-center">
+                        <RefreshCw className="mr-1 h-3 w-3 text-amber-400" />
+                        Swaps: <span className="text-amber-400 ml-1">{metrics.swaps}</span>
                       </div>
-                      <div className="text-slate-400">
-                        Comparisons: <span className="text-amber-400">{metrics.comparisons}</span>
+                      <div className="text-slate-400 flex items-center">
+                        <BarChart2 className="mr-1 h-3 w-3 text-amber-400" />
+                        Comparisons: <span className="text-amber-400 ml-1">{metrics.comparisons}</span>
                       </div>
-                      <div className="text-slate-400">
-                        Time: <span className="text-amber-400">{metrics.time}ms</span>
+                      <div className="text-slate-400 flex items-center">
+                        <Zap className="mr-1 h-3 w-3 text-amber-400" />
+                        Time: <span className="text-amber-400 ml-1">{metrics.time}ms</span>
                       </div>
                     </div>
                   </div>
@@ -467,7 +608,8 @@ const SortingVisualizer = () => {
               {/* Winner summary */}
               {sortedMetrics.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-slate-700">
-                  <div className="text-xs text-slate-400 font-mono">
+                  <div className="text-xs text-slate-400 font-mono flex items-center">
+                    <Crown className="mr-1 h-4 w-4 text-yellow-500" />
                     // Winner: <span className="text-yellow-500">{sortedMetrics[0]?.algo}_sort()</span> 
                     <span className="text-slate-500">
                       ({sortedMetrics[0]?.metrics.time}ms)
@@ -475,6 +617,220 @@ const SortingVisualizer = () => {
                   </div>
                 </div>
               )}
+            </div>
+          </TabsContent>
+          
+          {/* Details Tab - In-depth algorithm information */}
+          <TabsContent value="details" className="space-y-4 mt-4">
+            <div className="bg-slate-900 p-4 rounded border border-slate-800">
+              <div className="font-mono text-sm text-slate-400 mb-4 flex items-center">
+                <Info className="mr-2 h-4 w-4" />
+                // {algorithm}_sort() details
+              </div>
+              
+              {/* Algorithm visualization */}
+              <div className="bg-slate-800 p-3 rounded border border-slate-700 mb-4">
+                <div className="text-xs text-slate-400 mb-2">VISUALIZATION</div>
+                <div className="flex justify-center p-2 bg-slate-900 rounded">
+                  {algorithm === "bubble" && (
+                    <pre className="text-xs text-emerald-400 font-mono">
+                      <code>{`for i = 0 to n-1
+  for j = 0 to n-i-1
+    if arr[j] > arr[j+1]
+      swap(arr[j], arr[j+1])`}</code>
+                    </pre>
+                  )}
+                  {algorithm === "insertion" && (
+                    <pre className="text-xs text-emerald-400 font-mono">
+                      <code>{`for i = 1 to n-1
+  key = arr[i]
+  j = i-1
+  while j >= 0 and arr[j] > key
+    arr[j+1] = arr[j]
+    j = j-1
+  arr[j+1] = key`}</code>
+                    </pre>
+                  )}
+                  {algorithm === "selection" && (
+                    <pre className="text-xs text-emerald-400 font-mono">
+                      <code>{`for i = 0 to n-1
+  min_idx = i
+  for j = i+1 to n
+    if arr[j] < arr[min_idx]
+      min_idx = j
+  swap(arr[i], arr[min_idx])`}</code>
+                    </pre>
+                  )}
+                  {algorithm === "quick" && (
+                    <pre className="text-xs text-emerald-400 font-mono">
+                      <code>{`function quickSort(arr, low, high)
+  if low < high
+    pi = partition(arr, low, high)
+    quickSort(arr, low, pi-1)
+    quickSort(arr, pi+1, high)
+
+function partition(arr, low, high)
+  pivot = arr[high]
+  i = low - 1
+  for j = low to high-1
+    if arr[j] <= pivot
+      i++
+      swap(arr[i], arr[j])
+  swap(arr[i+1], arr[high])
+  return i+1`}</code>
+                    </pre>
+                  )}
+                  {algorithm === "merge" && (
+                    <pre className="text-xs text-emerald-400 font-mono">
+                      <code>{`function mergeSort(arr, l, r)
+  if l < r
+    m = l + (r - l) / 2
+    mergeSort(arr, l, m)
+    mergeSort(arr, m+1, r)
+    merge(arr, l, m, r)
+
+function merge(arr, l, m, r)`}</code>
+                    </pre>
+                  )}
+                  {algorithm === "radix" && (
+                    <pre className="text-xs text-emerald-400 font-mono">
+                      <code>{`function radixSort(arr)
+  max = getMax(arr)
+  for exp = 1 while max/exp > 0
+    countSort(arr, exp)
+    exp *= 10
+
+function countSort(arr, exp)`}</code>
+                    </pre>
+                  )}
+                </div>
+              </div>
+              
+              {/* Characteristics */}
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="bg-slate-800 p-3 rounded border border-slate-700">
+                  <div className="text-xs text-slate-400 mb-2">CHARACTERISTICS</div>
+                  <ul className="text-xs space-y-1">
+                    {algorithm === "bubble" && (
+                      <>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Simple implementation</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> In-place sorting</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Stable sort</li>
+                        <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Poor performance on large datasets</li>
+                      </>
+                    )}
+                    {algorithm === "insertion" && (
+                      <>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Simple implementation</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> In-place sorting</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Stable sort</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Efficient for small datasets</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Adaptive (efficient for nearly sorted data)</li>
+                      </>
+                    )}
+                    {algorithm === "selection" && (
+                      <>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Simple implementation</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> In-place sorting</li>
+                        <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Not stable</li>
+                        <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Poor performance regardless of input</li>
+                      </>
+                    )}
+                    {algorithm === "quick" && (
+                      <>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Efficient for large datasets</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> In-place sorting</li>
+                        <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Not stable</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Good cache locality</li>
+                        <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Worst case on already sorted data</li>
+                      </>
+                    )}
+                    {algorithm === "merge" && (
+                      <>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Consistent performance</li>
+                        <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Not in-place (requires extra space)</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Stable sort</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Parallelizable</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Good for linked lists</li>
+                      </>
+                    )}
+                    {algorithm === "radix" && (
+                      <>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Linear time complexity</li>
+                        <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Not in-place (requires extra space)</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Stable sort</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Works well with fixed-length integers</li>
+                        <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Limited to specific data types</li>
+                      </>
+                    )}
+                  </ul>
+                </div>
+                
+                <div className="bg-slate-800 p-3 rounded border border-slate-700">
+                  <div className="text-xs text-slate-400 mb-2">IDEAL USE CASES</div>
+                  <ul className="text-xs space-y-1">
+                    {algorithm === "bubble" && (
+                      <>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Educational purposes</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Very small datasets</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When simplicity is more important than efficiency</li>
+                      </>
+                    )}
+                    {algorithm === "insertion" && (
+                      <>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Small datasets</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Nearly sorted data</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Online sorting (sorting as data arrives)</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When stability is required</li>
+                      </>
+                    )}
+                    {algorithm === "selection" && (
+                      <>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Educational purposes</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When memory writes are expensive</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Small datasets where simplicity matters</li>
+                      </>
+                    )}
+                    {algorithm === "quick" && (
+                      <>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> General-purpose sorting</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Large datasets</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Systems with good cache locality</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When average case performance matters more than worst case</li>
+                      </>
+                    )}
+                    {algorithm === "merge" && (
+                      <>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When stable sorting is needed</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> External sorting (when data doesn't fit in memory)</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Linked list sorting</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When worst-case performance is important</li>
+                      </>
+                    )}
+                    {algorithm === "radix" && (
+                      <>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Sorting integers or strings of fixed length</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When elements have a bounded range</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Large datasets of fixed-length keys</li>
+                        <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When linear time sorting is needed</li>
+                      </>
+                    )}
+                  </ul>
+                </div>
+              </div>
+              
+              {/* Fun fact */}
+              <div className="bg-slate-800 p-3 rounded border border-slate-700">
+                <div className="text-xs text-slate-400 mb-2">FUN FACT</div>
+                <div className="text-xs text-amber-400 italic">
+                  {algorithm === "bubble" && "Bubble Sort is named for the way smaller elements 'bubble' to the top of the list through exchanges."}
+                  {algorithm === "insertion" && "Insertion Sort is similar to how many people sort playing cards in their hands."}
+                  {algorithm === "selection" && "Selection Sort makes the minimum number of swaps possible (n-1 in the worst case)."}
+                  {algorithm === "quick" && "Quick Sort was developed by Tony Hoare in 1959 while he was an exchange student at Moscow State University."}
+                  {algorithm === "merge" && "Merge Sort was invented by John von Neumann in 1945, one of the earliest divide-and-conquer algorithms described."}
+                  {algorithm === "radix" && "Radix Sort predates modern computers and was used with punch card sorting machines in the early 20th century."}
+                </div>
+              </div>
             </div>
           </TabsContent>
         </Tabs>
