@@ -29,6 +29,7 @@ const VisualizationPanel = ({
                 {/* Algorithm visualization */}
                 <div className="bg-slate-800 p-3 rounded border border-slate-700 mb-4 relative overflow-hidden group">
                     <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent,rgba(59,130,246,0.05),transparent)] animate-[gradient_8s_ease_infinite] bg-[length:200%_100%]"></div>
+
                     <div className="text-xs text-slate-400 mb-2 flex items-center">
                         <Terminal className="mr-1 h-3 w-3 text-emerald-400" />
                         VISUALIZATION
@@ -276,7 +277,7 @@ function countSort(arr, exp)
                 </div>
             </div>
 
-            {/* Use the reusable ArrayVisualization component */}
+            {/* Remove the grid with array size and speed controls */}
             <ArrayVisualization
                 algorithm={algorithm}
                 array={array}

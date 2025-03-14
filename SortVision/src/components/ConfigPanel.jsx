@@ -449,34 +449,90 @@ const ConfigPanel = ({
         <div className="bg-slate-900 p-4 rounded border border-slate-800 relative overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <label className="font-mono text-sm text-slate-400 mb-2 block flex items-center">
-            <Database className="mr-2 h-4 w-4 text-blue-400" />
-            // array size: <span className="text-blue-400">{arraySize}</span>
+            <Database className="mr-2 h-4 w-4 text-blue-400 animate-pulse" />
+            // array size: <span className="text-blue-400 ml-1">{arraySize}</span>
           </label>
           <div className="relative mt-6 mb-8">
             <div className="absolute -top-4 left-0 right-0 flex justify-between text-[10px] text-slate-500">
-              <span>Small</span>
-              <span>Medium</span>
-              <span>Large</span>
+              <span className="text-blue-400/70">Small</span>
+              <span className="text-blue-400/70">Medium</span>
+              <span className="text-blue-400/70">Large</span>
             </div>
-            <Slider
-              value={[arraySize]}
-              min={10}
-              max={200}
-              step={1}
-              onValueChange={(value) => setArraySize(value[0])}
-              disabled={isSorting}
-              className="mt-1"
-            />
+            <div className="relative">
+              {/* Track background with glow */}
+              <div className="absolute inset-0 bg-blue-400/5 rounded-full"></div>
+              {/* Active track */}
+              <div 
+                className="absolute h-full bg-blue-400/20 rounded-full transition-all duration-300"
+                style={{ width: `${((arraySize - 10) / (200 - 10)) * 100}%` }}
+              ></div>
+              <Slider
+                value={[arraySize]}
+                min={10}
+                max={200}
+                step={1}
+                onValueChange={(value) => setArraySize(value[0])}
+                disabled={isSorting}
+                className="relative z-10"
+              />
+              {/* Animated glow effect */}
+              <div className="absolute inset-0 bg-blue-400/10 rounded-full animate-pulse"></div>
+            </div>
             <div className="absolute -bottom-6 left-0 right-0 flex justify-between text-[10px] text-slate-500">
               <span>10</span>
               <span>100</span>
               <span>200</span>
             </div>
           </div>
+          {/* Array Size Control Status Bar */}
           <div className="flex justify-between items-center mt-2 text-xs text-slate-400">
             <div className="flex items-center">
-              <div className="w-3 h-3 bg-blue-500 rounded-sm mr-1"></div>
-              <span>Elements: {arraySize}</span>
+              <div className="w-3 h-3 bg-blue-400/30 rounded-sm mr-1 animate-pulse"></div>
+              <span className="text-blue-400">Elements: {arraySize}</span>
+            </div>
+            
+            {/* Size adjustment buttons */}
+            <div className="flex space-x-1">
+              <button
+                onClick={() => !isSorting && arraySize > 10 && setArraySize(arraySize - 10)}
+                disabled={isSorting || arraySize <= 10}
+                className="group relative w-6 h-6 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-all duration-300 overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-blue-400/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute inset-0 flex items-center justify-center text-blue-400 font-mono text-[10px]">-10</div>
+                <div className="absolute bottom-0 left-0 h-0.5 bg-blue-400/50 w-0 group-hover:w-full transition-all duration-300"></div>
+              </button>
+              <button
+                onClick={() => {
+                  if (!isSorting && arraySize < 200) {
+                    const newSize = Math.min(200, arraySize + 10);
+                    setArraySize(newSize);
+                  }
+                }}
+                disabled={isSorting || arraySize >= 200}
+                className="group relative w-6 h-6 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-all duration-300 overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-blue-400/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute inset-0 flex items-center justify-center text-blue-400 font-mono text-[10px]">+10</div>
+                <div className="absolute bottom-0 left-0 h-0.5 bg-blue-400/50 w-0 group-hover:w-full transition-all duration-300"></div>
+              </button>
+            </div>
+
+            <div className="text-[10px] text-blue-400/50">
+              {arraySize < 50 ? "Good for learning" : arraySize < 100 ? "Balanced" : "Performance test"}
+            </div>
+          </div>
+          
+          {/* Visual bar representation */}
+          <div className="mt-4 h-8 bg-slate-800 rounded-lg border border-slate-700 overflow-hidden relative">
+            <div 
+              className="h-full bg-gradient-to-r from-blue-500/20 to-blue-400/20 transition-all duration-300"
+              style={{ width: `${((arraySize - 10) / (200 - 10)) * 100}%` }}
+            >
+              <div className="absolute inset-y-0 right-0 w-1 bg-blue-400/30 animate-pulse"></div>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center text-[10px] text-blue-400/70 font-mono">
+              {arraySize} elements
             </div>
           </div>
         </div>
@@ -485,38 +541,103 @@ const ConfigPanel = ({
         <div className="bg-slate-900 p-4 rounded border border-slate-800 relative overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-yellow-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <label className="font-mono text-sm text-slate-400 mb-2 block flex items-center">
-            <Timer className="mr-2 h-4 w-4 text-green-400" />
-            // animation speed: <span className="text-green-400">{speed}ms</span>
+            <Timer className="mr-2 h-4 w-4 text-emerald-400 animate-pulse" />
+            // animation speed: <span className="text-emerald-400 ml-1">{speed}ms</span>
           </label>
           <div className="relative mt-6 mb-8">
             <div className="absolute -top-4 left-0 right-0 flex justify-between text-[10px] text-slate-500">
-              <span>Fast</span>
-              <span>Medium</span>
-              <span>Slow</span>
+              <span className="text-emerald-400/70">Fast</span>
+              <span className="text-emerald-400/70">Medium</span>
+              <span className="text-emerald-400/70">Slow</span>
             </div>
-            <Slider
-              value={[speed]}
-              min={1}
-              max={1000}
-              step={1}
-              onValueChange={(value) => setSpeed(value[0])}
-              disabled={isSorting}
-              className="mt-1"
-            />
+            <div className="relative">
+              {/* Track background with glow */}
+              <div className="absolute inset-0 bg-emerald-400/5 rounded-full"></div>
+              {/* Active track */}
+              <div 
+                className="absolute h-full bg-emerald-400/20 rounded-full transition-all duration-300"
+                style={{ width: `${((speed - 1) / (1000 - 1)) * 100}%` }}
+              ></div>
+              <Slider
+                value={[speed]}
+                min={1}
+                max={1000}
+                step={1}
+                onValueChange={(value) => setSpeed(value[0])}
+                disabled={isSorting}
+                className="relative z-10"
+              />
+              {/* Animated glow effect */}
+              <div className="absolute inset-0 bg-emerald-400/10 rounded-full animate-pulse"></div>
+            </div>
             <div className="absolute -bottom-6 left-0 right-0 flex justify-between text-[10px] text-slate-500">
               <span>1ms</span>
               <span>500ms</span>
               <span>1000ms</span>
             </div>
           </div>
+          {/* Speed Control Status Bar */}
           <div className="flex justify-between items-center mt-2 text-xs text-slate-400">
             <div className="flex items-center">
-              <div className={`w-3 h-3 rounded-sm mr-1 ${
-                speed < 100 ? "bg-green-500" : 
-                speed < 500 ? "bg-yellow-500" : 
-                "bg-red-500"
+              <div className={`w-3 h-3 rounded-sm mr-1 animate-pulse ${
+                speed < 100 ? "bg-emerald-400/30" : 
+                speed < 500 ? "bg-yellow-400/30" : 
+                "bg-red-400/30"
               }`}></div>
-              <span>Delay: {speed}ms</span>
+              <span className={
+                speed < 100 ? "text-emerald-400" : 
+                speed < 500 ? "text-yellow-400" : 
+                "text-red-400"
+              }>Delay: {speed}ms</span>
+            </div>
+
+            {/* Speed adjustment buttons - moved to status bar */}
+            <div className="flex space-x-1">
+              <button
+                onClick={() => {
+                  if (!isSorting && speed < 1000) {
+                    const newSpeed = Math.min(1000, speed * 2);
+                    setSpeed(newSpeed);
+                  }
+                }}
+                disabled={isSorting || speed >= 1000}
+                className="group relative w-6 h-6 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-all duration-300 overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-emerald-400/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute inset-0 flex items-center justify-center text-emerald-400 font-mono text-[10px]">2x</div>
+                <div className="absolute bottom-0 left-0 h-0.5 bg-emerald-400/50 w-0 group-hover:w-full transition-all duration-300"></div>
+              </button>
+              <button
+                onClick={() => {
+                  if (!isSorting && speed > 1) {
+                    const newSpeed = Math.max(1, speed / 2);
+                    setSpeed(newSpeed);
+                  }
+                }}
+                disabled={isSorting || speed <= 1}
+                className="group relative w-6 h-6 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-all duration-300 overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-emerald-400/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute inset-0 flex items-center justify-center text-emerald-400 font-mono text-[10px]">½x</div>
+                <div className="absolute bottom-0 left-0 h-0.5 bg-emerald-400/50 w-0 group-hover:w-full transition-all duration-300"></div>
+              </button>
+            </div>
+
+            <div className="text-[10px] text-emerald-400/50">
+              {speed < 100 ? "Visualize patterns" : speed < 500 ? "Follow the steps" : "Detailed analysis"}
+            </div>
+          </div>
+          
+          {/* Visual speed representation */}
+          <div className="mt-4 h-8 bg-slate-800 rounded-lg border border-slate-700 overflow-hidden relative">
+            <div 
+              className="h-full bg-gradient-to-r from-emerald-500/20 to-emerald-400/20 transition-all duration-300"
+              style={{ width: `${((speed - 1) / (1000 - 1)) * 100}%` }}
+            >
+              <div className="absolute inset-y-0 right-0 w-1 bg-emerald-400/30 animate-pulse"></div>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center text-[10px] text-emerald-400/70 font-mono">
+              {speed}ms delay
             </div>
           </div>
         </div>
