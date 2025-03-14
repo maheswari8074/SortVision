@@ -35,7 +35,7 @@ The **SortVision** is a web-based sorting visualizer built using **React** and *
 1. [✨ Features](#-features)
 2. [🦾 Tech Stack](#-tech-stack)
 3. [📸 Screenshots](#-screenshots)
-4. [🧩 Try the App](#-try-the-app)
+4. [🧩 Try the WebSite](#-try-the-website)
 5. [👨‍🔧 Setup Instructions](#-setup-instructions)
 6. [🎯 Target Audience](#-target-audience)
 7. [🤝 Contributing](#-contributing)
@@ -85,48 +85,54 @@ The **SortVision** is a web-based sorting visualizer built using **React** and *
 ## **📂 Project Structure**
 
 Here’s the folder structure of **SortVision** to give you an overview of how the project is organized:
+
 ```
-SortVision                # Root directory of the sorting visualization project
-├─ .gitignore               # Specifies which files Git should ignore (node_modules, build files, etc.)
-├─ components.json          # Configuration for shadcn/ui components and their styling
-├─ eslint.config.js         # ESLint configuration for code style and quality rules
+SortVision
+├─ .gitignore               # Specifies files Git should ignore (node_modules, build files, etc.)
+├─ components.json          # Configuration for UI components (ShadCN UI setup)
+├─ eslint.config.js         # ESLint configuration for enforcing coding standards
 ├─ index.html              # Entry HTML file that loads the React application
 ├─ jsconfig.json           # JavaScript configuration for path aliases and compiler options
-├─ package.json            # Project metadata and dependencies management
-├─ pnpm-lock.yaml         # Lock file for pnpm ensuring consistent dependency versions
-├─ public/                # Static assets served directly to clients
+├─ package-lock.json       # Lock file for ensuring consistent dependency versions
+├─ package.json            # Contains project metadata, dependencies, and scripts
+├─ pnpm-lock.yaml         # Lock file for pnpm package manager
+├─ public/                # Static assets
 │  ├─ favicon.svg        # Website favicon icon
 │  ├─ manifest.json      # PWA manifest for app installation settings
 │  ├─ mobile-fix.js      # JavaScript fixes for mobile-specific issues
 │  ├─ mobile.css        # Mobile-specific CSS styles
-│  ├─ splash.svg        # Splash screen image for PWA
+│  ├─ splash.svg        # Splash screen image for branding
 │  └─ sw.js             # Service Worker for PWA offline functionality
 ├─ src/                  # Source code directory
 │  ├─ App.css           # Global styles for the main App component
 │  ├─ App.jsx           # Root React component with routing and layout
-│  ├─ algorithms/       # Directory containing sorting algorithm implementations
-│  │  ├─ bubbleSort.jsx    # Bubble Sort algorithm implementation
+│  ├─ algorithms/       # Sorting algorithm implementations
+│  │  ├─ bubbleSort.jsx    # Bubble Sort algorithm
 │  │  ├─ index.js          # Exports all sorting algorithms
-│  │  ├─ insertionSort.jsx # Insertion Sort algorithm implementation
-│  │  ├─ mergeSort.jsx     # Merge Sort algorithm implementation
-│  │  ├─ quickSort.jsx     # Quick Sort algorithm implementation
-│  │  ├─ radixSort.jsx     # Radix Sort algorithm implementation
-│  │  └─ selectionSort.jsx # Selection Sort algorithm implementation
-│  ├─ components/       # React components directory
-│  │  ├─ SortingVisualizer.jsx  # Main component for visualizing sorts
-│  │  └─ ui/           # Reusable UI components directory
-│  │     ├─ badge.jsx      # Badge component for labels/tags
-│  │     ├─ button.jsx     # Button component
-│  │     ├─ card.jsx       # Card component for contained content
-│  │     ├─ input.jsx      # Input field component
-│  │     ├─ select.jsx     # Dropdown select component
-│  │     ├─ slider.jsx     # Slider component for number inputs
-│  │     └─ tabs.jsx       # Tabs component for switching views
-│  ├─ index.css        # Global styles and Tailwind CSS imports
-│  ├─ lib/            # Utility functions and helpers
-│  │  └─ utils.js     # Common utility functions used across the app
-│  └─ main.jsx        # Application entry point that renders the App component
-└─ vite.config.js     # Vite bundler configuration for build settings
+│  │  ├─ insertionSort.jsx # Insertion Sort algorithm
+│  │  ├─ mergeSort.jsx     # Merge Sort algorithm
+│  │  ├─ quickSort.jsx     # Quick Sort algorithm
+│  │  ├─ radixSort.jsx     # Radix Sort algorithm
+│  │  └─ selectionSort.jsx # Selection Sort algorithm
+│  ├─ components/       # UI components directory
+│  │  ├─ ArrayVisualization.jsx  # Handles sorting bar visualization
+│  │  ├─ ConfigPanel.jsx         # User interface for selecting sorting parameters
+│  │  ├─ MetricsPanel.jsx        # Displays performance metrics like swaps and comparisons
+│  │  ├─ SortingVisualizer.jsx   # Main component for sorting execution
+│  │  ├─ VisualizationPanel.jsx  # Panel for displaying facts and details
+│  │  └─ ui/                     # Reusable UI components (buttons, cards, sliders, etc.)
+│  │     ├─ badge.jsx      # Badge component for labels
+│  │     ├─ button.jsx     # Styled button component
+│  │     ├─ card.jsx       # Card component for UI grouping
+│  │     ├─ input.jsx      # Custom input field component
+│  │     ├─ select.jsx     # Dropdown selection component
+│  │     ├─ slider.jsx     # Slider for adjusting speed and array size
+│  │     └─ tabs.jsx       # Tab component for navigation
+│  ├─ index.css        # Global styles for the app
+│  ├─ lib/            # Utility functions
+│  │  └─ utils.js     # Common helper functions
+│  └─ main.jsx        # Application entry point
+└─ vite.config.js     # Vite bundler configuration
 ```
 
 ---
@@ -139,12 +145,14 @@ SortVision                # Root directory of the sorting visualization project
 
 <table>
 <tr>
-  <td><img src="https://github.com/user-attachments/assets/db111d86-b4ad-4c69-9f46-b34368c39861" alt="Visualizer Screen" width="1600px"></td>
-  <td><img src="https://github.com/user-attachments/assets/f2aec481-9cbc-43e6-8464-57aab9500215" alt="Metric Screen" width="1600px"></td>
+  <td><img src="https://github.com/user-attachments/assets/ad19ce9d-8296-4191-a622-c1aa4b779c81" alt="Visualizer Screen" width="1600px"></td>
+  <td><img src="https://github.com/user-attachments/assets/02c5eeb7-f4d6-4dcc-9d76-0c2e15891014" alt="Metric Screen" width="1600px"></td>
+  <td><img src="https://github.com/user-attachments/assets/e9e486a4-8b53-429a-8d0d-1722262ec60a" alt="Metric Screen" width="1600px"></td>
 </tr>
 <tr>
   <td><b>Visualizer Screen</b></td>
   <td><b>Metric Screen</b></td>
+  <td><b>Details Screen</b></td>
 </tr>
 </table>
 
