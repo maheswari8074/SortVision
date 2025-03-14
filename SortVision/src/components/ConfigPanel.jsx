@@ -684,7 +684,7 @@ const ConfigPanel = ({
           isSorting={isSorting}
           currentTestingAlgo={currentTestingAlgo}
           isStopped={isStopped}
-          height="h-100" // Corrected height value
+          height="h-100"
         />
       )}
     </div>
