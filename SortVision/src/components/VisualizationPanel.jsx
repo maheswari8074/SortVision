@@ -1,5 +1,5 @@
 import React from 'react';
-import { Terminal, Info, CheckCircle2, AlertTriangle, Code, Lightbulb, Zap, Brain, Cpu, GitBranch } from 'lucide-react';
+import { Terminal, Info, CheckCircle2, AlertTriangle, Code, Lightbulb, Zap, Brain, Cpu, GitBranch, History } from 'lucide-react';
 import ArrayVisualization from './ArrayVisualization';
 
 /**
@@ -334,293 +334,176 @@ const VisualizationPanel = ({
                     <div className="flex justify-center p-3 bg-slate-900 rounded relative group">
                         {/* Enhanced line numbers */}
                         <div className="absolute left-2 top-3 bottom-3 text-right pr-2 border-r border-slate-700/50 text-[10px] text-slate-500 font-mono">
-                            {algorithm === "bubble" && Array.from({ length: 4 }).map((_, i) => (
+                            {Array.from({ length: algorithm === "quick" ? 12 : algorithm === "merge" ? 8 : algorithm === "insertion" ? 7 : algorithm === "radix" ? 5 : algorithm === "selection" ? 6 : 4 }).map((_, i) => (
                                 <div key={i} className="group-hover:text-emerald-400 transition-colors">{i + 1}</div>
                             ))}
-                            {algorithm === "insertion" && Array.from({ length: 7 }).map((_, i) => <div key={i}>{i + 1}</div>)}
-                            {algorithm === "selection" && Array.from({ length: 5 }).map((_, i) => <div key={i}>{i + 1}</div>)}
-                            {algorithm === "quick" && Array.from({ length: 12 }).map((_, i) => <div key={i}>{i + 1}</div>)}
-                            {algorithm === "merge" && Array.from({ length: 8 }).map((_, i) => <div key={i}>{i + 1}</div>)}
-                            {algorithm === "radix" && Array.from({ length: 7 }).map((_, i) => <div key={i}>{i + 1}</div>)}
                         </div>
 
                         {/* Code with enhanced animations */}
                         <div className="pl-8 w-full relative">
-                            {algorithm === "bubble" && (
-                                <pre className="text-xs font-mono text-emerald-400 relative group">
-                                    <div className="absolute -left-2 top-0 bottom-0 w-0.5 bg-emerald-400/20 group-hover:bg-emerald-400/40 transition-colors"></div>
-                                    <code className="block group-hover:translate-x-1 transition-transform">
-                                        {`for i = 0 to n-1
-  for j = 0 to n-i-1
-    if arr[j] > arr[j+1]
-      swap(arr[j], arr[j+1])`}
-                                    </code>
-                                    <div className="absolute bottom-0 left-[12.5rem] h-3.5 w-1.5 bg-emerald-400 animate-[blink_1s_ease-in-out_infinite]"></div>
-                                </pre>
-                            )}
-                            {algorithm === "insertion" && (
-                                <pre className="text-xs font-mono text-emerald-400 relative">
-                                    <code>
-                                        {`for i = 1 to n-1
-  key = arr[i]
-  j = i-1
-  while j >= 0 and arr[j] > key
-    arr[j+1] = arr[j]
-    j = j-1
-  arr[j+1] = key`}
-                                    </code>
-                                    {/* Blinking cursor after the last line */}
-                                    <div className="absolute bottom-0 left-[7.3rem] h-3.5 w-1.5 bg-emerald-400 animate-[blink_1s_ease-in-out_infinite]"></div>
-                                </pre>
-                            )}
-                            {algorithm === "selection" && (
-                                <pre className="text-xs font-mono text-emerald-400 relative">
-                                    <code>
-                                        {`for i = 0 to n-1
-  min_idx = i
-  for j = i+1 to n
-    if arr[j] < arr[min_idx]
-      min_idx = j
-  swap(arr[i], arr[min_idx])`}
-                                    </code>
-                                    {/* Blinking cursor after the last line */}
-                                    <div className="absolute bottom-0 left-[12.5rem] h-3.5 w-1.5 bg-emerald-400 animate-[blink_1s_ease-in-out_infinite]"></div>
-                                </pre>
-                            )}
-                            {algorithm === "quick" && (
-                                <pre className="text-xs font-mono text-emerald-400 relative">
-                                    <code>
-                                        {`function quickSort(arr, low, high)
-  if low < high
-    pi = partition(arr, low, high)
-    quickSort(arr, low, pi-1)
-    quickSort(arr, pi+1, high)
+                            <pre className="text-xs font-mono text-emerald-400 relative group">
+                                {/* Left border accent */}
+                                <div className="absolute -left-2 top-0 bottom-0 w-0.5 bg-emerald-400/20 group-hover:bg-emerald-400/40 transition-colors"></div>
+                                
+                                {/* Code content with hover effect */}
+                                <code className="block group-hover:translate-x-1 transition-transform">
+                                    {algorithm === "bubble" && `function bubbleSort(arr) {
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr.length - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) swap(arr, j, j + 1);
+        }
+    }
+}`}
+                                    {algorithm === "insertion" && `function insertionSort(arr) {
+    for (let i = 1; i < arr.length; i++) {
+        let key = arr[i], j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}`}
+                                    {algorithm === "selection" && `function selectionSort(arr) {
+    for (let i = 0; i < arr.length - 1; i++) {
+        let minIdx = i;
+        for (let j = i + 1; j < arr.length; j++) {
+            if (arr[j] < arr[minIdx]) minIdx = j;
+        }
+        if (minIdx !== i) swap(arr, i, minIdx);
+    }
+}`}
+                                    {algorithm === "quick" && `function quickSort(arr, low, high) {
+    if (low < high) {
+        let pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
 
-function partition(arr, low, high)
-  pivot = arr[high]
-  i = low - 1
-  for j = low to high-1
-    if arr[j] <= pivot
-      i++
-      swap(arr[i], arr[j])
-  swap(arr[i+1], arr[high])
-  return i+1`}
-                                    </code>
-                                    {/* Blinking cursor after the last line */}
-                                    <div className="absolute bottom-0 left-[5.5rem] h-3.5 w-1.5 bg-emerald-400 animate-[blink_1s_ease-in-out_infinite]"></div>
-                                </pre>
-                            )}
-                            {algorithm === "merge" && (
-                                <pre className="text-xs font-mono text-emerald-400 relative">
-                                    <code>
-                                        {`function mergeSort(arr, l, r)
-  if l < r
-    m = l + (r - l) / 2
-    mergeSort(arr, l, m)
-    mergeSort(arr, m+1, r)
-    merge(arr, l, m, r)
+function partition(arr, low, high) {
+    let pivot = arr[high];
+    let i = low - 1;
+    for (let j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            swap(arr, i, j);
+        }
+    }
+    swap(arr, i + 1, high);
+    return i + 1;
+}`}
+                                    {algorithm === "merge" && `function mergeSort(arr, l, r) {
+    if (l < r) {
+        let m = Math.floor(l + (r - l) / 2);
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+        merge(arr, l, m, r);
+    }
+}
 
-function merge(arr, l, m, r)
-  // Merge two subarrays`}
-                                    </code>
-                                    {/* Blinking cursor after the last line */}
-                                    <div className="absolute bottom-0 left-[11rem] h-3.5 w-1.5 bg-emerald-400 animate-[blink_1s_ease-in-out_infinite]"></div>
-                                </pre>
-                            )}
-                            {algorithm === "radix" && (
-                                <pre className="text-xs font-mono text-emerald-400 relative">
-                                    <code>
-                                        {`function radixSort(arr)
-  max = getMax(arr)
-  for exp = 1 while max/exp > 0
-    countSort(arr, exp)
-    exp *= 10
-
-function countSort(arr, exp)
-  // Sort by digit at exp position`}
-                                    </code>
-                                    {/* Blinking cursor after the last line */}
-                                    <div className="absolute bottom-0 left-[15.5rem] h-3.5 w-1.5 bg-emerald-400 animate-[blink_1s_ease-in-out_infinite]"></div>
-                                </pre>
-                            )}
+function merge(arr, l, m, r) {
+    // Merge two sorted subarrays
+}`}
+                                    {algorithm === "radix" && `function radixSort(arr) {
+    let max = getMax(arr);
+    for (let exp = 1; max/exp > 0; exp *= 10) {
+        countSort(arr, exp);
+    }
+}`}
+                                </code>
+                                
+                                {/* Blinking cursor */}
+                                <div className="absolute bottom-0 left-[.7rem] h-3.5 w-1.5 bg-emerald-400 animate-[blink_1s_ease-in-out_infinite]"></div>
+                                
+                                {/* Hover highlight effect */}
+                                <div className="absolute inset-0 bg-emerald-400/0 group-hover:bg-emerald-400/5 transition-colors rounded"></div>
+                            </pre>
                         </div>
-                    </div>
-                </div>
-
-                {/* Enhanced characteristics grid */}
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                    {/* Characteristics with animations */}
-                    <div className="bg-slate-800 p-3 rounded border border-slate-700 transform hover:scale-[1.02] transition-transform">
-                        <div className="text-xs text-slate-400 mb-2 flex items-center">
-                            <Code className="mr-1 h-3 w-3 text-emerald-400" />
-                            CHARACTERISTICS
-                        </div>
-                        <ul className="text-xs space-y-1">
-                            {algorithm === "bubble" && (
-                                <>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Simple implementation</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> In-place sorting</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Stable sort</li>
-                                    <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Poor performance on large datasets</li>
-                                </>
-                            )}
-                            {algorithm === "insertion" && (
-                                <>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Simple implementation</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> In-place sorting</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Stable sort</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Efficient for small datasets</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Adaptive (efficient for nearly sorted data)</li>
-                                </>
-                            )}
-                            {algorithm === "selection" && (
-                                <>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Simple implementation</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> In-place sorting</li>
-                                    <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Not stable</li>
-                                    <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Poor performance regardless of input</li>
-                                </>
-                            )}
-                            {algorithm === "quick" && (
-                                <>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Efficient for large datasets</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> In-place sorting</li>
-                                    <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Not stable</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Good cache locality</li>
-                                    <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Worst case on already sorted data</li>
-                                </>
-                            )}
-                            {algorithm === "merge" && (
-                                <>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Consistent performance</li>
-                                    <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Not in-place (requires extra space)</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Stable sort</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Parallelizable</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Good for linked lists</li>
-                                </>
-                            )}
-                            {algorithm === "radix" && (
-                                <>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Linear time complexity</li>
-                                    <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Not in-place (requires extra space)</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Stable sort</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Works well with fixed-length integers</li>
-                                    <li className="flex items-center"><AlertTriangle className="h-3 w-3 text-red-400 mr-1" /> Limited to specific data types</li>
-                                </>
-                            )}
-                        </ul>
-                    </div>
-
-                    {/* Use cases with animations */}
-                    <div className="bg-slate-800 p-3 rounded border border-slate-700 transform hover:scale-[1.02] transition-transform">
-                        <div className="text-xs text-slate-400 mb-2 flex items-center">
-                            <Cpu className="mr-1 h-3 w-3 text-emerald-400" />
-                            IDEAL USE CASES
-                        </div>
-                        <ul className="text-xs space-y-1">
-                            {algorithm === "bubble" && (
-                                <>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Educational purposes</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Very small datasets</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When simplicity is more important than efficiency</li>
-                                </>
-                            )}
-                            {algorithm === "insertion" && (
-                                <>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Small datasets</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Nearly sorted data</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Online sorting (sorting as data arrives)</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When stability is required</li>
-                                </>
-                            )}
-                            {algorithm === "selection" && (
-                                <>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Educational purposes</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When memory writes are expensive</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Small datasets where simplicity matters</li>
-                                </>
-                            )}
-                            {algorithm === "quick" && (
-                                <>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> General-purpose sorting</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Large datasets</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Systems with good cache locality</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When average case performance matters more than worst case</li>
-                                </>
-                            )}
-                            {algorithm === "merge" && (
-                                <>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When stable sorting is needed</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> External sorting (when data doesn't fit in memory)</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Linked list sorting</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When worst-case performance is important</li>
-                                </>
-                            )}
-                            {algorithm === "radix" && (
-                                <>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Sorting integers or strings of fixed length</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When elements have a bounded range</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> Large datasets of fixed-length keys</li>
-                                    <li className="flex items-center"><CheckCircle2 className="h-3 w-3 text-emerald-400 mr-1" /> When linear time sorting is needed</li>
-                                </>
-                            )}
-                        </ul>
                     </div>
                 </div>
 
                 {/* New sections for enhanced interactivity */}
                 <div className="grid grid-cols-2 gap-4 mb-4">
                     {/* Algorithm Category Info */}
-                    <div className="bg-slate-800 p-3 rounded border border-slate-700 group hover:bg-slate-800/80 transition-colors">
-                        <div className="text-xs text-slate-400 mb-2 flex items-center">
+                    <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-4 rounded-lg border border-slate-700/50 group hover:bg-slate-800/80 transition-colors relative overflow-hidden">
+                        {/* Animated corner accent */}
+                        <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-emerald-500/10 to-blue-500/10 rounded-full blur-md group-hover:scale-150 transition-transform duration-700"></div>
+                        
+                        {/* Animated bottom line */}
+                        <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full bg-gradient-to-r from-emerald-500/50 via-teal-500/50 to-blue-500/50 rounded transition-all duration-700"></div>
+                        
+                        <div className="text-xs font-bold text-slate-300 mb-3 flex items-center relative">
                             {getAlgorithmInfo().category_icon}
-                            <span className="ml-1">{getAlgorithmInfo().category.toUpperCase()}</span>
+                            <span className="ml-2">{getAlgorithmInfo().category}</span>
                         </div>
-                        <div className="text-xs">
-                            <div className="text-emerald-400 mb-1">Related Algorithms:</div>
-                            <ul className="list-disc list-inside text-slate-300">
+                        
+                        <div className="text-sm text-slate-400">
+                            <p className="mb-2">Related Algorithms:</p>
+                            <ul className="list-disc list-inside space-y-1">
                                 {getAlgorithmInfo().related.map((algo, index) => (
-                                    <li key={index} className="group-hover:text-emerald-400 transition-colors">{algo}</li>
+                                    <li key={index} className="text-slate-500">{algo}</li>
                                 ))}
                             </ul>
                         </div>
                     </div>
 
                     {/* Historical Context */}
-                    <div className="bg-slate-800 p-3 rounded border border-slate-700 group hover:bg-slate-800/80 transition-colors">
-                        <div className="text-xs text-slate-400 mb-2 flex items-center">
-                            <Brain className="mr-1 h-3 w-3 text-purple-400" />
-                            HISTORICAL CONTEXT
+                    <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-4 rounded-lg border border-slate-700/50 group hover:bg-slate-800/80 transition-colors relative overflow-hidden">
+                        {/* Animated corner accent */}
+                        <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-full blur-md group-hover:scale-150 transition-transform duration-700"></div>
+                        
+                        {/* Animated bottom line */}
+                        <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full bg-gradient-to-r from-purple-500/50 via-pink-500/50 to-rose-500/50 rounded transition-all duration-700"></div>
+                        
+                        <div className="text-xs font-bold text-slate-300 mb-3 flex items-center relative">
+                            <History className="h-4 w-4 text-purple-400" />
+                            <span className="ml-2">Historical Context</span>
                         </div>
-                        <div className="text-xs text-slate-300">
-                            <div className="mb-1">
-                                <span className="text-purple-400">Inventor:</span> {getAlgorithmInfo().inventor}
-                            </div>
-                            <div>
-                                <span className="text-purple-400">Year:</span> {getAlgorithmInfo().year}
-                            </div>
+                        
+                        <div className="text-sm text-slate-400">
+                            <p className="mb-2">Invented by: <span className="text-purple-400">{getAlgorithmInfo().inventor}</span></p>
+                            <p>Year: <span className="text-purple-400">{getAlgorithmInfo().year}</span></p>
                         </div>
                     </div>
                 </div>
 
                 {/* Interactive Tip Section */}
-                <div className="bg-slate-800 p-3 rounded border border-slate-700 group hover:bg-slate-800/80 transition-colors">
-                    <div className="text-xs text-slate-400 mb-2 flex items-center">
-                        <Lightbulb className="mr-1 h-3 w-3 text-amber-400 animate-pulse" />
-                        PRO TIP
+                <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-4 rounded-lg border border-slate-700/50 group hover:bg-slate-800/80 transition-colors relative overflow-hidden">
+                    {/* Animated corner accent */}
+                    <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-amber-500/10 to-yellow-500/10 rounded-full blur-md group-hover:scale-150 transition-transform duration-700"></div>
+                    
+                    {/* Animated bottom line */}
+                    <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full bg-gradient-to-r from-amber-500/50 via-yellow-500/50 to-orange-500/50 rounded transition-all duration-700"></div>
+                    
+                    <div className="text-xs font-bold text-slate-300 mb-3 flex items-center relative">
+                        <Lightbulb className="mr-2 h-4 w-4 text-amber-400 animate-pulse" />
+                        <span className="tracking-widest relative">
+                            PRO TIP
+                            <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-amber-400/0 via-amber-400/70 to-amber-400/0"></span>
+                        </span>
                     </div>
-                    <div className="text-xs text-amber-400 italic group-hover:text-amber-300 transition-colors">
+                    <div className="text-xs text-amber-400 italic group-hover:text-amber-300 transition-colors relative">
                         {getTip()}
                     </div>
                 </div>
 
                 {/* Fun fact with enhanced styling */}
-                <div className="mt-4 bg-slate-800 p-3 rounded border border-slate-700 group hover:bg-slate-800/80 transition-colors">
-                    <div className="text-xs text-slate-400 mb-2 flex items-center">
-                        <Zap className="mr-1 h-3 w-3 text-yellow-400 group-hover:animate-bounce" />
-                        FUN FACT
+                <div className="mt-4 bg-gradient-to-br from-slate-800 to-slate-900 p-4 rounded-lg border border-slate-700/50 group hover:bg-slate-800/80 transition-colors relative overflow-hidden">
+                    {/* Animated corner accent */}
+                    <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-full blur-md group-hover:scale-150 transition-transform duration-700"></div>
+                    
+                    {/* Animated bottom line */}
+                    <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full bg-gradient-to-r from-yellow-500/50 via-orange-500/50 to-red-500/50 rounded transition-all duration-700"></div>
+                    
+                    <div className="text-xs font-bold text-slate-300 mb-3 flex items-center relative">
+                        <Zap className="mr-2 h-4 w-4 text-yellow-400 group-hover:animate-bounce" />
+                        <span className="tracking-widest relative">
+                            FUN FACT
+                            <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-yellow-400/0 via-yellow-400/70 to-yellow-400/0"></span>
+                        </span>
                     </div>
-                    <div className="text-xs text-yellow-400 italic group-hover:text-yellow-300 transition-colors">
+                    <div className="text-xs text-yellow-400 italic group-hover:text-yellow-300 transition-colors relative">
                         {algorithm === "bubble" && "Bubble Sort is named for the way smaller elements 'bubble' to the top of the list through exchanges."}
                         {algorithm === "insertion" && "Insertion Sort is similar to how many people sort playing cards in their hands."}
                         {algorithm === "selection" && "Selection Sort makes the minimum number of swaps possible (n-1 in the worst case)."}
@@ -632,19 +515,27 @@ function countSort(arr, exp)
             </div>
 
             {/* Array visualization with enhanced container */}
-            <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 rounded-lg blur opacity-20 group-hover:opacity-30 transition-opacity"></div>
-                <ArrayVisualization
-                    algorithm={algorithm}
-                    array={array}
-                    currentBar={currentBar}
-                    isSorting={isSorting}
-                    currentTestingAlgo={currentTestingAlgo}
-                    isStopped={isStopped}
-                />
+            <div className="relative group mt-6">
+                <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/30 via-blue-500/30 to-purple-500/30 rounded-xl blur-md opacity-70 animate-pulse-slow"></div>
+                <div className="relative p-1 bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg border border-slate-700/50 overflow-hidden">
+                    {/* Animated corner accent */}
+                    <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full blur-md group-hover:scale-150 transition-transform duration-700"></div>
+                    
+                    {/* Animated bottom line */}
+                    <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full bg-gradient-to-r from-blue-500/50 via-purple-500/50 to-emerald-500/50 rounded transition-all duration-700"></div>
+                    
+                    <ArrayVisualization
+                        algorithm={algorithm}
+                        array={array}
+                        currentBar={currentBar}
+                        isSorting={isSorting}
+                        currentTestingAlgo={currentTestingAlgo}
+                        isStopped={isStopped}
+                    />
+                </div>
             </div>
         </div>
     );
 };
 
-export default VisualizationPanel; 
+export default VisualizationPanel;
