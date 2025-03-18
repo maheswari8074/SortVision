@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Terminal, RefreshCw, Play, Square } from 'lucide-react';
 
 // Import panel components using the index file
-import { ConfigPanel, MetricsPanel, VisualizationPanel } from './panels';
+import { ConfigPanel, MetricsPanel, DetailsPanel } from './panels';
 
 /**
  * SortingVisualizer Component
@@ -416,7 +416,7 @@ const SortingVisualizer = () => {
           
           {/* Algorithm visualization panel */}
           <TabsContent value="details" className="space-y-4 mt-4">
-            <VisualizationPanel 
+            <DetailsPanel 
               algorithm={algorithm}
               array={array}
               currentBar={currentBar}
