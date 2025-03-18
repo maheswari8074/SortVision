@@ -2,7 +2,7 @@ import React from 'react';
 import { DataPanel as DataPanelComponent } from './details';
 
 /**
- * DataPanel Component
+ * DetailsPanel Component
  * 
  * Wrapper for the DataPanel component that displays:
  * - Algorithm details and information
