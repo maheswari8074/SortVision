@@ -20,7 +20,7 @@ import {
   Minimize2,
   Terminal
 } from 'lucide-react';
-import ArrayVisualization from './ArrayVisualization';
+import { ArrayVisualization } from '../visualizations';
 
 /**
  * MetricsPanel Component

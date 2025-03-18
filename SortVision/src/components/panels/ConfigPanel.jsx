@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { Terminal, Info, Database, Timer, Rocket, Clock, Hourglass, AlertTriangle, CheckCircle2, RefreshCw, Play, Square } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import ArrayVisualization from './ArrayVisualization';
+import { ArrayVisualization } from '../visualizations';
 
 /**
  * ConfigPanel Component

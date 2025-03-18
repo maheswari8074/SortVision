@@ -5,54 +5,61 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Terminal, RefreshCw, Play, Square } from 'lucide-react';
 
-// Import the new modular components
-import ConfigPanel from './ConfigPanel';
-import MetricsPanel from './MetricsPanel';
-import VisualizationPanel from './VisualizationPanel';
+// Import panel components using the index file
+import { ConfigPanel, MetricsPanel, VisualizationPanel } from './panels';
 
 /**
  * SortingVisualizer Component
  * 
- * A comprehensive visualization tool for various sorting algorithms.
- * Allows users to:
- * - Select different sorting algorithms
- * - Adjust array size and animation speed
- * - Compare performance metrics between algorithms
- * - Visualize the sorting process in real-time
+ * Interactive visualization tool for various sorting algorithms with real-time
+ * animation and performance metrics analysis.
+ * 
+ * Features:
+ * - Interactive visualization of sorting algorithms (bubble, insertion, selection, etc.)
+ * - Performance metrics tracking (time, comparisons, swaps)
+ * - Algorithm comparison and benchmarking
+ * - Configurable array size and animation speed
+ * - Detailed algorithm information and complexity analysis
+ * 
+ * The application is structured with three main panels:
+ * 1. Config Panel - Algorithm selection and configuration controls
+ * 2. Metrics Panel - Performance data visualization and comparison
+ * 3. Visualization Panel - Algorithm details and visual representation
  */
 const SortingVisualizer = () => {
   //=============================================================================
   // STATE MANAGEMENT
   //=============================================================================
   
-  // Core state for array and algorithm selection
-  const [array, setArray] = useState([]); // The array to be sorted
-  const [algorithm, setAlgorithm] = useState('bubble'); // Currently selected algorithm
-  const [arraySize, setArraySize] = useState(30); // Size of the array to sort
+  // Core state variables for array data and algorithm selection
+  const [array, setArray] = useState([]);
+  const [algorithm, setAlgorithm] = useState('bubble');
+  const [arraySize, setArraySize] = useState(30);
   
-  // Sorting process state
-  const [isSorting, setIsSorting] = useState(false); // Whether sorting is in progress
-  const [isStopped, setIsStopped] = useState(false); // Whether sorting was manually stopped
-  const [speed, setSpeed] = useState(50); // Animation delay in milliseconds
-  const [currentBar, setCurrentBar] = useState({ compare: null, swap: null }); // Tracks bars being compared/swapped
+  // Sorting process control state
+  const [isSorting, setIsSorting] = useState(false);
+  const [isStopped, setIsStopped] = useState(false);
+  const [speed, setSpeed] = useState(50);
+  const [currentBar, setCurrentBar] = useState({ compare: null, swap: null });
   
-  // Performance metrics state
-  const [metrics, setMetrics] = useState({ swaps: 0, comparisons: 0, time: 0 }); // Metrics for current run
-  const [sortedMetrics, setSortedMetrics] = useState([]); // Sorted list of algorithm metrics for comparison
-  const [currentTestingAlgo, setCurrentTestingAlgo] = useState(null); // Currently testing algorithm in test_all mode
+  // Performance metrics tracking state
+  const [metrics, setMetrics] = useState({ swaps: 0, comparisons: 0, time: 0 });
+  const [sortedMetrics, setSortedMetrics] = useState([]);
+  const [currentTestingAlgo, setCurrentTestingAlgo] = useState(null);
   // eslint-disable-next-line no-unused-vars
-  const [compareMetrics, setCompareMetrics] = useState({}); // Raw metrics data from all algorithms
+  const [compareMetrics, setCompareMetrics] = useState({});
   
-  // Reference to track if sorting should be cancelled
+  // Reference for handling abort signals
   const shouldStopRef = useRef(false);
 
   //=============================================================================
-  // ARRAY GENERATION AND MANAGEMENT
+  // ARRAY GENERATION
   //=============================================================================
   
   /**
-   * Generates a new random array of the specified size
-   * and resets the visualization state
+   * Generates a new random array for visualization and resets current comparisons
+   * 
+   * @returns {void}
    */
   const generateNewArray = () => {
     const newArray = Array.from(
@@ -64,23 +71,32 @@ const SortingVisualizer = () => {
   };
 
   //=============================================================================
-  // SORTING CONTROL FUNCTIONS
+  // SORTING OPERATIONS
   //=============================================================================
   
   /**
    * Stops the current sorting process
+   * 
+   * Sets the stop flag to true and updates UI state to reflect the stopped status
+   * 
+   * @returns {void}
    */
   const stopSorting = () => {
-    shouldStopRef.current = true; // Signal algorithms to stop
+    shouldStopRef.current = true;
     setIsStopped(true);
     setIsSorting(false);
   };
 
   /**
-   * Starts the sorting process with the selected algorithm
+   * Initiates the sorting process with the selected algorithm
+   * 
+   * Executes the chosen sorting algorithm on the current array and
+   * measures performance metrics (time, swaps, comparisons)
+   * 
+   * @returns {Promise<void>}
    */
   const startSorting = async () => {
-    // Reset state for new sorting run
+    // Reset sorting state
     shouldStopRef.current = false;
     setIsStopped(false);
     setIsSorting(true);
@@ -118,7 +134,7 @@ const SortingVisualizer = () => {
       return;
     }
 
-    // Calculate and update performance metrics
+    // Calculate and record performance metrics
     const endTime = performance.now();
     setMetrics({
       swaps: metrics.swaps || 0,
@@ -130,7 +146,12 @@ const SortingVisualizer = () => {
   };
 
   /**
-   * Tests all sorting algorithms on the same array and compares their performance
+   * Benchmarks all sorting algorithms on the same array for comparison
+   * 
+   * Runs each algorithm sequentially on the same input data, collects
+   * performance metrics, and ranks them by execution time
+   * 
+   * @returns {Promise<void>}
    */
   const testAllAlgorithms = async () => {
     setIsSorting(true);
@@ -140,10 +161,10 @@ const SortingVisualizer = () => {
     const algorithms = ['bubble', 'insertion', 'selection', 'quick', 'merge', 'radix'];
     const results = {};
     
-    // Save original array to use for all algorithms
+    // Clone the original array for consistent testing
     const originalArray = [...array];
     
-    // Test each algorithm
+    // Test each algorithm sequentially
     for (const algo of algorithms) {
       if (shouldStopRef.current) break; // Stop if user cancelled
       
@@ -154,7 +175,7 @@ const SortingVisualizer = () => {
       
       let metrics = { swaps: 0, comparisons: 0 };
       try {
-        // Run the current algorithm
+        // Execute the current algorithm
         switch (algo) {
           case 'bubble':
             metrics = await bubbleSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef);
@@ -190,11 +211,11 @@ const SortingVisualizer = () => {
       }
     }
     
-    // Reset and update UI with results
+    // Reset testing state and update results
     setCurrentTestingAlgo(null);
     setCompareMetrics(results);
     
-    // Sort algorithms by time (fastest first)
+    // Sort algorithms by execution time (fastest first)
     const sortedResults = Object.entries(results)
       .sort(([, a], [, b]) => parseFloat(a.time) - parseFloat(b.time))
       .map(([algo, metrics], index) => ({
@@ -208,12 +229,14 @@ const SortingVisualizer = () => {
   };
 
   //=============================================================================
-  // LIFECYCLE HOOKS
+  // LIFECYCLE MANAGEMENT
   //=============================================================================
   
   /**
-   * Generate a new array when component mounts or array size changes
-   * Clean up by stopping any ongoing sorting when component unmounts
+   * Handles component initialization, updates, and cleanup
+   * 
+   * Generates initial array on mount and when array size changes
+   * Ensures sorting operations are properly terminated on unmount
    */
   useEffect(() => {
     generateNewArray();
@@ -229,7 +252,12 @@ const SortingVisualizer = () => {
   //=============================================================================
   
   /**
-   * Returns the time and space complexity information for the selected algorithm
+   * Provides algorithm complexity and performance characteristics
+   * 
+   * Returns time/space complexity and descriptive information for
+   * the currently selected sorting algorithm
+   * 
+   * @returns {Object} Complexity data for the current algorithm
    */
   const getAlgorithmTimeComplexity = () => {
     const complexities = {
@@ -292,12 +320,12 @@ const SortingVisualizer = () => {
   };
 
   //=============================================================================
-  // RENDER UI
+  // COMPONENT RENDERING
   //=============================================================================
   
   return (
     <Card className="w-full max-w-5xl mx-auto border-slate-800 bg-slate-950 text-slate-200 shadow-lg">
-      {/* Add keyframes for animations */}
+      {/* Animation keyframes */}
       <style jsx>{`
         @keyframes blink {
           0%, 100% { opacity: 1; }
@@ -313,7 +341,7 @@ const SortingVisualizer = () => {
         }
       `}</style>
       
-      {/* Header with terminal-like styling */}
+      {/* Application header */}
       <CardHeader className="border-b border-slate-800 bg-slate-900">
         <div className="flex items-center">
           <div className="flex space-x-2 mr-4">
@@ -330,9 +358,10 @@ const SortingVisualizer = () => {
         </div>
       </CardHeader>
       
+      {/* Main content area */}
       <CardContent className="p-6 space-y-6">
-        {/* Tabbed interface for controls and metrics */}
         <Tabs defaultValue="controls" className="w-full">
+          {/* Tab navigation */}
           <TabsList className="grid w-full grid-cols-3 bg-slate-900">
             <TabsTrigger value="controls" className="font-mono">
               <span className="text-emerald-400">config</span>
@@ -348,7 +377,7 @@ const SortingVisualizer = () => {
             </TabsTrigger>
           </TabsList>
           
-          {/* Controls Tab - Algorithm selection, array size, speed */}
+          {/* Configuration panel */}
           <TabsContent value="controls" className="space-y-4 mt-4">
             <ConfigPanel 
               algorithm={algorithm}
@@ -369,7 +398,7 @@ const SortingVisualizer = () => {
             />
           </TabsContent>
           
-          {/* Metrics Tab - Performance data and algorithm comparison */}
+          {/* Performance metrics panel */}
           <TabsContent value="metrics" className="space-y-4 mt-4">
             <MetricsPanel 
               metrics={metrics}
@@ -385,7 +414,7 @@ const SortingVisualizer = () => {
             />
           </TabsContent>
           
-          {/* Details Tab - In-depth algorithm information */}
+          {/* Algorithm visualization panel */}
           <TabsContent value="details" className="space-y-4 mt-4">
             <VisualizationPanel 
               algorithm={algorithm}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Terminal, Info, CheckCircle2, AlertTriangle, Code, Lightbulb, Zap, Brain, Cpu, GitBranch, History } from 'lucide-react';
-import ArrayVisualization from './ArrayVisualization';
+import { ArrayVisualization } from '../visualizations';
 
 /**
  * VisualizationPanel Component
