@@ -8,25 +8,93 @@ import { Info, Terminal } from 'lucide-react';
  * code-editor-like interface.
  */
 const AlgorithmDetails = ({ algorithm }) => {
-    // Color scheme based on algorithm
-    const getColorScheme = () => {
+    // Get explicit color classes based on algorithm
+    const getCornerAccentClass = () => {
         switch(algorithm) {
-            case 'bubble': return { base: 'red', accent: 'orange' };
-            case 'insertion': return { base: 'orange', accent: 'amber' };
-            case 'selection': return { base: 'yellow', accent: 'yellow' };
-            case 'quick': return { base: 'green', accent: 'emerald' };
-            case 'merge': return { base: 'blue', accent: 'cyan' };
-            case 'radix': return { base: 'purple', accent: 'indigo' };
-            default: return { base: 'emerald', accent: 'teal' };
+            case 'bubble': return "bg-gradient-to-br from-red-500/20 to-orange-500/20";
+            case 'insertion': return "bg-gradient-to-br from-orange-500/20 to-amber-500/20";
+            case 'selection': return "bg-gradient-to-br from-yellow-500/20 to-yellow-500/20";
+            case 'quick': return "bg-gradient-to-br from-green-500/20 to-emerald-500/20";
+            case 'merge': return "bg-gradient-to-br from-blue-500/20 to-cyan-500/20";
+            case 'radix': return "bg-gradient-to-br from-purple-500/20 to-indigo-500/20";
+            default: return "bg-gradient-to-br from-emerald-500/20 to-teal-500/20";
         }
     };
 
-    const { base, accent } = getColorScheme();
+    const getBackgroundGlowClass = () => {
+        switch(algorithm) {
+            case 'bubble': return "bg-gradient-to-r from-red-500/30 via-orange-500/30 to-purple-500/30";
+            case 'insertion': return "bg-gradient-to-r from-orange-500/30 via-amber-500/30 to-purple-500/30";
+            case 'selection': return "bg-gradient-to-r from-yellow-500/30 via-yellow-500/30 to-purple-500/30";
+            case 'quick': return "bg-gradient-to-r from-green-500/30 via-emerald-500/30 to-purple-500/30";
+            case 'merge': return "bg-gradient-to-r from-blue-500/30 via-cyan-500/30 to-purple-500/30";
+            case 'radix': return "bg-gradient-to-r from-purple-500/30 via-indigo-500/30 to-purple-500/30";
+            default: return "bg-gradient-to-r from-emerald-500/30 via-teal-500/30 to-purple-500/30";
+        }
+    };
+
+    const getParticlesAndLinesClasses = () => {
+        switch(algorithm) {
+            case 'bubble': 
+                return {
+                    particle1: "bg-red-500/50",
+                    particle2: "bg-orange-500/50",
+                    line1: "bg-gradient-to-r from-transparent via-red-500/30 to-transparent",
+                    line2: "bg-gradient-to-r from-transparent via-orange-500/30 to-transparent"
+                };
+            case 'insertion': 
+                return {
+                    particle1: "bg-orange-500/50",
+                    particle2: "bg-amber-500/50",
+                    line1: "bg-gradient-to-r from-transparent via-orange-500/30 to-transparent",
+                    line2: "bg-gradient-to-r from-transparent via-amber-500/30 to-transparent"
+                };
+            case 'selection': 
+                return {
+                    particle1: "bg-yellow-500/50",
+                    particle2: "bg-yellow-500/50",
+                    line1: "bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent",
+                    line2: "bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent"
+                };
+            case 'quick': 
+                return {
+                    particle1: "bg-green-500/50",
+                    particle2: "bg-emerald-500/50",
+                    line1: "bg-gradient-to-r from-transparent via-green-500/30 to-transparent",
+                    line2: "bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent"
+                };
+            case 'merge': 
+                return {
+                    particle1: "bg-blue-500/50",
+                    particle2: "bg-cyan-500/50",
+                    line1: "bg-gradient-to-r from-transparent via-blue-500/30 to-transparent",
+                    line2: "bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent"
+                };
+            case 'radix': 
+                return {
+                    particle1: "bg-purple-500/50",
+                    particle2: "bg-indigo-500/50",
+                    line1: "bg-gradient-to-r from-transparent via-purple-500/30 to-transparent",
+                    line2: "bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent"
+                };
+            default: 
+                return {
+                    particle1: "bg-emerald-500/50",
+                    particle2: "bg-teal-500/50",
+                    line1: "bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent",
+                    line2: "bg-gradient-to-r from-transparent via-teal-500/30 to-transparent"
+                };
+        }
+    };
+
+    const cornerAccentClass = getCornerAccentClass();
+    const backgroundGlowClass = getBackgroundGlowClass();
+    const { particle1, particle2, line1, line2 } = getParticlesAndLinesClasses();
 
     return (
         <div className="relative group mb-8">
             {/* Animated background glow effect */}
-            <div className={`absolute -inset-2 bg-gradient-to-r from-${base}-500/30 via-${accent}-500/30 to-purple-500/30 rounded-xl blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-500`}></div>
+            <div className={`absolute -inset-2 ${backgroundGlowClass} rounded-xl blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-500`}></div>
             
             <div className="relative bg-slate-900 p-4 rounded border border-slate-800 transition-all duration-500 hover:border-slate-700 hover:shadow-lg hover:shadow-slate-900/50 group/algo overflow-hidden">
                 {/* Animated background elements */}
@@ -36,20 +104,20 @@ const AlgorithmDetails = ({ algorithm }) => {
                         <div className="absolute inset-0 bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:8px_8px] opacity-30"></div>
                         
                         {/* Floating particles */}
-                        <div className={`absolute h-2 w-2 rounded-full bg-${base}-500/50 top-[10%] left-[20%] animate-pulse`} style={{ animationDuration: '3s' }}></div>
-                        <div className={`absolute h-1 w-1 rounded-full bg-${accent}-500/50 top-[30%] left-[70%] animate-pulse`} style={{ animationDuration: '2.3s' }}></div>
+                        <div className={`absolute h-2 w-2 rounded-full ${particle1} top-[10%] left-[20%] animate-pulse`} style={{ animationDuration: '3s' }}></div>
+                        <div className={`absolute h-1 w-1 rounded-full ${particle2} top-[30%] left-[70%] animate-pulse`} style={{ animationDuration: '2.3s' }}></div>
                         <div className="absolute h-1.5 w-1.5 rounded-full bg-purple-500/50 top-[70%] left-[30%] animate-pulse" style={{ animationDuration: '4s' }}></div>
                         <div className="absolute h-1 w-1 rounded-full bg-cyan-500/50 top-[60%] left-[80%] animate-pulse" style={{ animationDuration: '3.5s' }}></div>
                         
                         {/* Animated code lines */}
-                        <div className={`absolute top-[15%] left-0 h-px w-[30%] bg-gradient-to-r from-transparent via-${base}-500/30 to-transparent animate-[moveRight_15s_linear_infinite]`}></div>
-                        <div className={`absolute top-[45%] left-0 h-px w-[20%] bg-gradient-to-r from-transparent via-${accent}-500/30 to-transparent animate-[moveRight_12s_linear_infinite]`}></div>
+                        <div className={`absolute top-[15%] left-0 h-px w-[30%] ${line1} animate-[moveRight_15s_linear_infinite]`}></div>
+                        <div className={`absolute top-[45%] left-0 h-px w-[20%] ${line2} animate-[moveRight_12s_linear_infinite]`}></div>
                         <div className="absolute top-[75%] left-0 h-px w-[40%] bg-gradient-to-r from-transparent via-purple-500/30 to-transparent animate-[moveRight_18s_linear_infinite]"></div>
                     </div>
                 </div>
                 
                 {/* Animated corner accent */}
-                <div className={`absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-${base}-500/20 to-${accent}-500/20 rounded-full blur-md group-hover/algo:scale-150 transition-transform duration-700`}></div>
+                <div className={`absolute -top-10 -right-10 w-20 h-20 ${cornerAccentClass} rounded-full blur-md group-hover/algo:scale-150 transition-transform duration-700`}></div>
                 
                 {/* Animated bottom line */}
                 <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover/algo:w-full bg-gradient-to-r from-emerald-500/50 via-blue-500/50 to-purple-500/50 rounded transition-all duration-700"></div>
