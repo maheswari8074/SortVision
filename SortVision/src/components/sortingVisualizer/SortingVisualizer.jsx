@@ -161,7 +161,7 @@ const SortingVisualizer = () => {
       <SortingHeader />
       
       {/* Main content area */}
-      <CardContent className="p-6 space-y-6">
+      <CardContent className="p-4 space-y-4">
         <Tabs defaultValue="controls" className="w-full">
           {/* Tab navigation */}
           <TabsList className="grid w-full grid-cols-3 bg-slate-900">

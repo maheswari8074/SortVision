@@ -8,30 +8,45 @@ import React from 'react';
  */
 const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
     return (
-        <div className="mb-8 relative">
+        <div className="mb-8 relative group">
             {/* Animated background glow effect */}
-            <div className="absolute -inset-2 bg-gradient-to-r from-emerald-500/30 via-blue-500/30 to-purple-500/30 rounded-xl blur-md opacity-70 animate-pulse-slow"></div>
+            <div className="absolute -inset-2 bg-gradient-to-r from-emerald-500/30 via-blue-500/30 to-purple-500/30 rounded-xl blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
             
             <div className="relative grid grid-cols-3 gap-4">
                 {/* BASIC SORTS BOX */}
                 <div 
-                    className={`p-4 rounded-lg cursor-pointer transition-all duration-500 overflow-hidden relative group
+                    className={`p-5 rounded-lg cursor-pointer transition-all duration-500 overflow-hidden relative group/basic
                         ${algorithm === "bubble" || algorithm === "insertion" || algorithm === "selection" 
                         ? "bg-gradient-to-br from-slate-800 to-slate-900 border border-red-500/30 shadow-lg shadow-red-500/10" 
                         : "bg-gradient-to-br from-slate-800/70 to-slate-900/70 border border-slate-700/50 hover:border-red-500/30 hover:shadow-lg hover:shadow-red-500/10"
                     }`}
                 >
+                    {/* Animated background elements */}
+                    <div className="absolute inset-0 overflow-hidden opacity-10">
+                        <div className="absolute top-0 left-0 w-full h-full">
+                            {/* Animated grid pattern */}
+                            <div className="absolute inset-0 bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:8px_8px] opacity-30"></div>
+                            
+                            {/* Floating particles */}
+                            <div className="absolute h-1.5 w-1.5 rounded-full bg-red-500/50 top-[10%] left-[20%] animate-pulse" style={{ animationDuration: '3s' }}></div>
+                            <div className="absolute h-1 w-1 rounded-full bg-orange-500/50 top-[30%] left-[70%] animate-pulse" style={{ animationDuration: '2.3s' }}></div>
+                            <div className="absolute h-1 w-1 rounded-full bg-yellow-500/50 top-[70%] left-[30%] animate-pulse" style={{ animationDuration: '4s' }}></div>
+                            
+                            {/* Animated code lines */}
+                            <div className="absolute top-[15%] left-0 h-px w-[30%] bg-gradient-to-r from-transparent via-red-500/30 to-transparent animate-[moveRight_15s_linear_infinite]"></div>
+                            <div className="absolute top-[45%] left-0 h-px w-[20%] bg-gradient-to-r from-transparent via-orange-500/30 to-transparent animate-[moveRight_12s_linear_infinite]"></div>
+                        </div>
+                    </div>
+
                     {/* Animated corner accent */}
-                    <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-full blur-md group-hover:scale-150 transition-transform duration-700"></div>
+                    <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-full blur-md group-hover/basic:scale-150 transition-transform duration-700"></div>
                     
                     {/* Animated bottom line */}
-                    <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-red-500/50 via-orange-500/50 to-yellow-500/50 rounded transition-all duration-700 ${
-                        algorithm === "bubble" || algorithm === "insertion" || algorithm === "selection" 
-                        ? "w-full" : "w-0 group-hover:w-full"
-                    }`}></div>
+                    <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover/basic:w-full bg-gradient-to-r from-emerald-500/50 via-blue-500/50 to-purple-500/50 rounded transition-all duration-700"></div>
                     
                     <div className="text-xs font-bold text-slate-300 mb-3 flex items-center justify-between">
-                        <span className="tracking-widest relative">
+                        <span className="tracking-widest relative group-hover/basic:text-red-300 transition-colors duration-300 flex items-center">
+                            <span className="text-red-400 mr-1 opacity-80 group-hover/basic:opacity-100 transition-opacity duration-300">// </span>
                             BASIC SORTS
                             <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-red-400/0 via-red-400/70 to-red-400/0"></span>
                         </span>
@@ -64,44 +79,41 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
                     </div>
                     
                     <div className="flex justify-between items-center mt-2">
-                        <div className="flex space-x-3">
+                        <div className="flex space-x-2 w-full justify-between">
                             <button 
                                 onClick={() => setAlgorithm("bubble")}
-                                className={`relative text-xs px-3 py-1.5 rounded-md transition-all duration-500 overflow-hidden ${
+                                className={`relative text-xs px-2 py-1.5 rounded-md transition-all duration-500 overflow-hidden ${
                                     algorithm === "bubble" 
                                     ? "bg-red-500/20 text-red-300 border border-red-500/30 shadow-lg shadow-red-500/10" 
                                     : "text-slate-400 hover:text-red-300 hover:-translate-y-1 hover:shadow-md"
                                 }`}
                             >
-                                {algorithm === "bubble" && (
-                                    <span className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/10 to-red-500/0 animate-shimmer"></span>
-                                )}
+                                {/* Shimmer effect on hover */}
+                                <div className="absolute inset-0 w-0 group-hover/basic:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-red-400/5 to-transparent"></div>
                                 <span className="relative">Bubble</span>
                             </button>
                             <button 
                                 onClick={() => setAlgorithm("insertion")}
-                                className={`relative text-xs px-3 py-1.5 rounded-md transition-all duration-500 overflow-hidden ${
+                                className={`relative text-xs px-2 py-1.5 rounded-md transition-all duration-500 overflow-hidden ${
                                     algorithm === "insertion" 
                                     ? "bg-orange-500/20 text-orange-300 border border-orange-500/30 shadow-lg shadow-orange-500/10" 
                                     : "text-slate-400 hover:text-orange-300 hover:-translate-y-1 hover:shadow-md"
                                 }`}
                             >
-                                {algorithm === "insertion" && (
-                                    <span className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/10 to-orange-500/0 animate-shimmer"></span>
-                                )}
+                                {/* Shimmer effect on hover */}
+                                <div className="absolute inset-0 w-0 group-hover/basic:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-orange-400/5 to-transparent"></div>
                                 <span className="relative">Insertion</span>
                             </button>
                             <button 
                                 onClick={() => setAlgorithm("selection")}
-                                className={`relative text-xs px-3 py-1.5 rounded-md transition-all duration-500 overflow-hidden ${
+                                className={`relative text-xs px-2 py-1.5 rounded-md transition-all duration-500 overflow-hidden ${
                                     algorithm === "selection" 
                                     ? "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 shadow-lg shadow-yellow-500/10" 
                                     : "text-slate-400 hover:text-yellow-300 hover:-translate-y-1 hover:shadow-md"
                                 }`}
                             >
-                                {algorithm === "selection" && (
-                                    <span className="absolute inset-0 bg-gradient-to-r from-yellow-500/0 via-yellow-500/10 to-yellow-500/0 animate-shimmer"></span>
-                                )}
+                                {/* Shimmer effect on hover */}
+                                <div className="absolute inset-0 w-0 group-hover/basic:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-yellow-400/5 to-transparent"></div>
                                 <span className="relative">Selection</span>
                             </button>
                         </div>
@@ -110,23 +122,38 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
 
                 {/* EFFICIENT SORTS BOX */}
                 <div 
-                    className={`p-4 rounded-lg cursor-pointer transition-all duration-500 overflow-hidden relative group
+                    className={`p-5 rounded-lg cursor-pointer transition-all duration-500 overflow-hidden relative group/efficient
                         ${algorithm === "quick" || algorithm === "merge"
                         ? "bg-gradient-to-br from-slate-800 to-slate-900 border border-blue-500/30 shadow-lg shadow-blue-500/10" 
                         : "bg-gradient-to-br from-slate-800/70 to-slate-900/70 border border-slate-700/50 hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/10"
                     }`}
                 >
+                    {/* Animated background elements */}
+                    <div className="absolute inset-0 overflow-hidden opacity-10">
+                        <div className="absolute top-0 left-0 w-full h-full">
+                            {/* Animated grid pattern */}
+                            <div className="absolute inset-0 bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:8px_8px] opacity-30"></div>
+                            
+                            {/* Floating particles */}
+                            <div className="absolute h-1.5 w-1.5 rounded-full bg-green-500/50 top-[10%] left-[20%] animate-pulse" style={{ animationDuration: '3s' }}></div>
+                            <div className="absolute h-1 w-1 rounded-full bg-teal-500/50 top-[30%] left-[70%] animate-pulse" style={{ animationDuration: '2.3s' }}></div>
+                            <div className="absolute h-1 w-1 rounded-full bg-blue-500/50 top-[70%] left-[30%] animate-pulse" style={{ animationDuration: '4s' }}></div>
+                            
+                            {/* Animated code lines */}
+                            <div className="absolute top-[15%] left-0 h-px w-[30%] bg-gradient-to-r from-transparent via-green-500/30 to-transparent animate-[moveRight_15s_linear_infinite]"></div>
+                            <div className="absolute top-[45%] left-0 h-px w-[20%] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent animate-[moveRight_12s_linear_infinite]"></div>
+                        </div>
+                    </div>
+
                     {/* Animated corner accent */}
-                    <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-full blur-md group-hover:scale-150 transition-transform duration-700"></div>
+                    <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-full blur-md group-hover/efficient:scale-150 transition-transform duration-700"></div>
                     
                     {/* Animated bottom line */}
-                    <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-green-500/50 via-teal-500/50 to-blue-500/50 rounded transition-all duration-700 ${
-                        algorithm === "quick" || algorithm === "merge" 
-                        ? "w-full" : "w-0 group-hover:w-full"
-                    }`}></div>
+                    <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover/efficient:w-full bg-gradient-to-r from-emerald-500/50 via-blue-500/50 to-purple-500/50 rounded transition-all duration-700"></div>
                     
                     <div className="text-xs font-bold text-slate-300 mb-3 flex items-center justify-between">
-                        <span className="tracking-widest relative">
+                        <span className="tracking-widest relative group-hover/efficient:text-blue-300 transition-colors duration-300 flex items-center">
+                            <span className="text-blue-400 mr-1 opacity-80 group-hover/efficient:opacity-100 transition-opacity duration-300">// </span>
                             EFFICIENT SORTS
                             <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-blue-400/0 via-blue-400/70 to-blue-400/0"></span>
                         </span>
@@ -151,7 +178,7 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
                     </div>
                     
                     <div className="flex justify-between items-center mt-2">
-                        <div className="flex space-x-3">
+                        <div className="flex space-x-2 w-full justify-between">
                             <button 
                                 onClick={() => setAlgorithm("quick")}
                                 className={`relative text-xs px-3 py-1.5 rounded-md transition-all duration-500 overflow-hidden ${
@@ -160,9 +187,8 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
                                     : "text-slate-400 hover:text-green-300 hover:-translate-y-1 hover:shadow-md"
                                 }`}
                             >
-                                {algorithm === "quick" && (
-                                    <span className="absolute inset-0 bg-gradient-to-r from-green-500/0 via-green-500/10 to-green-500/0 animate-shimmer"></span>
-                                )}
+                                {/* Shimmer effect on hover */}
+                                <div className="absolute inset-0 w-0 group-hover/efficient:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-green-400/5 to-transparent"></div>
                                 <span className="relative">Quick</span>
                             </button>
                             <button 
@@ -173,9 +199,8 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
                                     : "text-slate-400 hover:text-blue-300 hover:-translate-y-1 hover:shadow-md"
                                 }`}
                             >
-                                {algorithm === "merge" && (
-                                    <span className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/10 to-blue-500/0 animate-shimmer"></span>
-                                )}
+                                {/* Shimmer effect on hover */}
+                                <div className="absolute inset-0 w-0 group-hover/efficient:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-blue-400/5 to-transparent"></div>
                                 <span className="relative">Merge</span>
                             </button>
                         </div>
@@ -184,23 +209,38 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
 
                 {/* SPECIAL SORTS BOX */}
                 <div 
-                    className={`p-4 rounded-lg cursor-pointer transition-all duration-500 overflow-hidden relative group
+                    className={`p-5 rounded-lg cursor-pointer transition-all duration-500 overflow-hidden relative group/special
                         ${algorithm === "radix"
                         ? "bg-gradient-to-br from-slate-800 to-slate-900 border border-purple-500/30 shadow-lg shadow-purple-500/10" 
                         : "bg-gradient-to-br from-slate-800/70 to-slate-900/70 border border-slate-700/50 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/10"
                     }`}
                 >
+                    {/* Animated background elements */}
+                    <div className="absolute inset-0 overflow-hidden opacity-10">
+                        <div className="absolute top-0 left-0 w-full h-full">
+                            {/* Animated grid pattern */}
+                            <div className="absolute inset-0 bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:8px_8px] opacity-30"></div>
+                            
+                            {/* Floating particles */}
+                            <div className="absolute h-1.5 w-1.5 rounded-full bg-indigo-500/50 top-[10%] left-[20%] animate-pulse" style={{ animationDuration: '3s' }}></div>
+                            <div className="absolute h-1 w-1 rounded-full bg-purple-500/50 top-[30%] left-[70%] animate-pulse" style={{ animationDuration: '2.3s' }}></div>
+                            <div className="absolute h-1 w-1 rounded-full bg-pink-500/50 top-[70%] left-[30%] animate-pulse" style={{ animationDuration: '4s' }}></div>
+                            
+                            {/* Animated code lines */}
+                            <div className="absolute top-[15%] left-0 h-px w-[30%] bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent animate-[moveRight_15s_linear_infinite]"></div>
+                            <div className="absolute top-[45%] left-0 h-px w-[20%] bg-gradient-to-r from-transparent via-purple-500/30 to-transparent animate-[moveRight_12s_linear_infinite]"></div>
+                        </div>
+                    </div>
+
                     {/* Animated corner accent */}
-                    <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-full blur-md group-hover:scale-150 transition-transform duration-700"></div>
+                    <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-full blur-md group-hover/special:scale-150 transition-transform duration-700"></div>
                     
                     {/* Animated bottom line */}
-                    <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-indigo-500/50 via-purple-500/50 to-pink-500/50 rounded transition-all duration-700 ${
-                        algorithm === "radix" 
-                        ? "w-full" : "w-0 group-hover:w-full"
-                    }`}></div>
+                    <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover/special:w-full bg-gradient-to-r from-emerald-500/50 via-blue-500/50 to-purple-500/50 rounded transition-all duration-700"></div>
                     
                     <div className="text-xs font-bold text-slate-300 mb-3 flex items-center justify-between">
-                        <span className="tracking-widest relative">
+                        <span className="tracking-widest relative group-hover/special:text-purple-300 transition-colors duration-300 flex items-center">
+                            <span className="text-purple-400 mr-1 opacity-80 group-hover/special:opacity-100 transition-opacity duration-300">// </span>
                             SPECIAL SORTS
                             <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-purple-400/0 via-purple-400/70 to-purple-400/0"></span>
                         </span>
@@ -217,7 +257,7 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
                     </div>
                     
                     <div className="flex justify-between items-center mt-2">
-                        <div className="flex space-x-3">
+                        <div className="flex space-x-2 w-full">
                             <button 
                                 onClick={() => setAlgorithm("radix")}
                                 className={`relative text-xs px-3 py-1.5 rounded-md transition-all duration-500 overflow-hidden ${
@@ -226,9 +266,8 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
                                     : "text-slate-400 hover:text-purple-300 hover:-translate-y-1 hover:shadow-md"
                                 }`}
                             >
-                                {algorithm === "radix" && (
-                                    <span className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/10 to-purple-500/0 animate-shimmer"></span>
-                                )}
+                                {/* Shimmer effect on hover */}
+                                <div className="absolute inset-0 w-0 group-hover/special:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-purple-400/5 to-transparent"></div>
                                 <span className="relative">Radix</span>
                             </button>
                         </div>

@@ -4,118 +4,140 @@ import { Terminal } from 'lucide-react';
 
 const AlgorithmSelector = ({ algorithm, setAlgorithm, isSorting }) => {
   return (
-    <div className="bg-slate-900 p-4 rounded border border-slate-800 relative overflow-hidden group">
-      <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 via-purple-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+    <div className="mb-4 relative group">
+      {/* Animated background glow effect */}
+      <div className="absolute -inset-2 bg-gradient-to-r from-emerald-500/20 via-blue-500/20 to-purple-500/20 rounded-xl blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
       
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden opacity-10">
-        <div className="absolute top-0 left-0 w-full h-full">
-          {/* Animated grid pattern */}
-          <div className="absolute inset-0 bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:8px_8px] opacity-30"></div>
-          
-          {/* Floating particles */}
-          <div className="absolute h-2 w-2 rounded-full bg-emerald-500/50 top-[10%] left-[20%] animate-pulse" style={{ animationDuration: '3s' }}></div>
-          <div className="absolute h-1 w-1 rounded-full bg-blue-500/50 top-[30%] left-[70%] animate-pulse" style={{ animationDuration: '2.3s' }}></div>
-          <div className="absolute h-1.5 w-1.5 rounded-full bg-purple-500/50 top-[70%] left-[30%] animate-pulse" style={{ animationDuration: '4s' }}></div>
-          <div className="absolute h-1 w-1 rounded-full bg-cyan-500/50 top-[60%] left-[80%] animate-pulse" style={{ animationDuration: '3.5s' }}></div>
-          
-          {/* Animated code lines */}
-          <div className="absolute top-[15%] left-0 h-px w-[30%] bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent animate-[moveRight_15s_linear_infinite]"></div>
-          <div className="absolute top-[45%] left-0 h-px w-[20%] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent animate-[moveRight_12s_linear_infinite]"></div>
-          <div className="absolute top-[75%] left-0 h-px w-[40%] bg-gradient-to-r from-transparent via-purple-500/30 to-transparent animate-[moveRight_18s_linear_infinite]"></div>
+      <div className="relative bg-slate-900 p-4 rounded border border-slate-800 transition-all duration-500 hover:border-slate-700 hover:shadow-lg hover:shadow-slate-900/50 group/algo overflow-hidden h-full">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden opacity-10">
+          <div className="absolute top-0 left-0 w-full h-full">
+            {/* Animated grid pattern */}
+            <div className="absolute inset-0 bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:8px_8px] opacity-30"></div>
+            
+            {/* Floating particles */}
+            <div className="absolute h-2 w-2 rounded-full bg-emerald-500/50 top-[10%] left-[20%] animate-pulse" style={{ animationDuration: '3s' }}></div>
+            <div className="absolute h-1 w-1 rounded-full bg-blue-500/50 top-[30%] left-[70%] animate-pulse" style={{ animationDuration: '2.3s' }}></div>
+            <div className="absolute h-1.5 w-1.5 rounded-full bg-purple-500/50 top-[70%] left-[30%] animate-pulse" style={{ animationDuration: '4s' }}></div>
+            <div className="absolute h-1 w-1 rounded-full bg-cyan-500/50 top-[60%] left-[80%] animate-pulse" style={{ animationDuration: '3.5s' }}></div>
+            
+            {/* Animated code lines */}
+            <div className="absolute top-[15%] left-0 h-px w-[30%] bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent animate-[moveRight_15s_linear_infinite]"></div>
+            <div className="absolute top-[45%] left-0 h-px w-[20%] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent animate-[moveRight_12s_linear_infinite]"></div>
+            <div className="absolute top-[75%] left-0 h-px w-[40%] bg-gradient-to-r from-transparent via-purple-500/30 to-transparent animate-[moveRight_18s_linear_infinite]"></div>
+          </div>
         </div>
+        
+        {/* Animated corner accent */}
+        <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-emerald-500/20 to-blue-500/20 rounded-full blur-md group-hover/algo:scale-150 transition-transform duration-700"></div>
+        
+        {/* Animated bottom line */}
+        <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover/algo:w-full bg-gradient-to-r from-emerald-500/50 via-blue-500/50 to-purple-500/50 rounded transition-all duration-700"></div>
+        
+        <label className="font-mono text-sm text-slate-400 mb-3 block flex items-center relative z-10 group-hover/algo:text-emerald-400 transition-colors duration-300">
+          <Terminal className="mr-2 h-4 w-4 text-emerald-400 animate-pulse" style={{ animationDuration: '4s' }} />
+          <span className="transition-colors duration-300">// select algorithm</span>
+        </label>
+        
+        <div className="group/select relative overflow-hidden rounded-md mb-5">
+          <Select value={algorithm} onValueChange={setAlgorithm} disabled={isSorting}>
+            <SelectTrigger className="w-full h-10 bg-slate-800/90 border-slate-700 text-emerald-400 font-mono relative overflow-hidden group/trigger shadow-lg shadow-emerald-500/5 hover:shadow-emerald-500/10 transition-all duration-300">
+              {/* Shimmer effect on hover */}
+              <div className="absolute inset-0 w-0 group-hover/trigger:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-emerald-400/5 to-transparent"></div>
+              <SelectValue placeholder="Algorithm" />
+            </SelectTrigger>
+            
+            <SelectContent className="bg-slate-800/95 border-slate-700 text-emerald-400 font-mono shadow-xl shadow-purple-500/10 backdrop-blur-sm">
+              <SelectItem value="bubble" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
+                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-red-400/5 to-transparent"></div>
+                <div className="flex items-center relative z-10">
+                  <div className="w-4 h-4 mr-2 relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-1 h-1 bg-red-400 rounded-full animate-ping opacity-75"></div>
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                    </div>
+                  </div>
+                  Bubble Sort
+                </div>
+              </SelectItem>
+              
+              <SelectItem value="insertion" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
+                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-orange-400/5 to-transparent"></div>
+                <div className="flex items-center relative z-10">
+                  <div className="w-4 h-4 mr-2 relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-3 h-1 bg-orange-500 rounded-sm"></div>
+                    </div>
+                  </div>
+                  Insertion Sort
+                </div>
+              </SelectItem>
+              
+              <SelectItem value="selection" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
+                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-yellow-400/5 to-transparent"></div>
+                <div className="flex items-center relative z-10">
+                  <div className="w-4 h-4 mr-2 relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-3 h-3 border border-amber-500 rounded-sm"></div>
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 bg-amber-500 rounded-sm"></div>
+                    </div>
+                  </div>
+                  Selection Sort
+                </div>
+              </SelectItem>
+              
+              <SelectItem value="quick" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
+                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-green-400/5 to-transparent"></div>
+                <div className="flex items-center relative z-10">
+                  <div className="w-4 h-4 mr-2 relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-3 h-3 border-r-2 border-t-2 border-green-500 rounded-tr-md animate-spin" style={{ animationDuration: '3s' }}></div>
+                    </div>
+                  </div>
+                  Quick Sort
+                </div>
+              </SelectItem>
+              
+              <SelectItem value="merge" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
+                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-blue-400/5 to-transparent"></div>
+                <div className="flex items-center relative z-10">
+                  <div className="w-4 h-4 mr-2 relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-1.5 h-3 bg-blue-500 rounded-sm"></div>
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center pl-2">
+                      <div className="w-1.5 h-3 bg-purple-500 rounded-sm"></div>
+                    </div>
+                  </div>
+                  Merge Sort
+                </div>
+              </SelectItem>
+              
+              <SelectItem value="radix" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
+                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-cyan-400/5 to-transparent"></div>
+                <div className="flex items-center relative z-10">
+                  <div className="w-4 h-4 mr-2 relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-3 h-3 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-sm animate-pulse"></div>
+                    </div>
+                  </div>
+                  Radix Sort
+                </div>
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        
+        {/* Enhanced Algorithm Badge */}
+        <AlgorithmBadge algorithm={algorithm} />
+        
+        {/* Visual representation of the algorithm */}
+        <AlgorithmVisualization algorithm={algorithm} />
       </div>
-      
-      <label className="font-mono text-sm text-slate-400 mb-2 block flex items-center relative z-10">
-        <Terminal className="mr-2 h-4 w-4 text-emerald-400 animate-pulse" style={{ animationDuration: '4s' }} />
-        // select algorithm
-      </label>
-      <Select value={algorithm} onValueChange={setAlgorithm} disabled={isSorting}>
-        <SelectTrigger className="w-full bg-slate-800 border-slate-700 text-emerald-400 font-mono relative overflow-hidden group shadow-lg shadow-emerald-500/5 hover:shadow-emerald-500/10 transition-all duration-300">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          <SelectValue placeholder="Algorithm" />
-        </SelectTrigger>
-        <SelectContent className="bg-slate-800 border-slate-700 text-emerald-400 font-mono shadow-xl shadow-purple-500/10">
-          <SelectItem value="bubble" className="hover:bg-slate-700 transition-colors duration-200 flex items-center hover:scale-[1.02] transition-transform">
-            <div className="flex items-center">
-              <div className="w-4 h-4 mr-2 relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-1 h-1 bg-red-400 rounded-full animate-ping opacity-75"></div>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                </div>
-              </div>
-              Bubble Sort
-            </div>
-          </SelectItem>
-          {/* Remaining SelectItems */}
-          <SelectItem value="insertion" className="hover:bg-slate-700 transition-colors duration-200 flex items-center">
-            {/* item content */}
-            <div className="flex items-center">
-              <div className="w-4 h-4 mr-2 relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-3 h-1 bg-orange-500 rounded-sm"></div>
-                </div>
-              </div>
-              Insertion Sort
-            </div>
-          </SelectItem>
-          {/* Other select items... */}
-          <SelectItem value="selection" className="hover:bg-slate-700 transition-colors duration-200 flex items-center">
-            <div className="flex items-center">
-              <div className="w-4 h-4 mr-2 relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-3 h-3 border border-amber-500 rounded-sm"></div>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-1.5 h-1.5 bg-amber-500 rounded-sm"></div>
-                </div>
-              </div>
-              Selection Sort
-            </div>
-          </SelectItem>
-          <SelectItem value="quick" className="hover:bg-slate-700 transition-colors duration-200 flex items-center">
-            <div className="flex items-center">
-              <div className="w-4 h-4 mr-2 relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-3 h-3 border-r-2 border-t-2 border-green-500 rounded-tr-md animate-spin" style={{ animationDuration: '3s' }}></div>
-                </div>
-              </div>
-              Quick Sort
-            </div>
-          </SelectItem>
-          <SelectItem value="merge" className="hover:bg-slate-700 transition-colors duration-200 flex items-center">
-            <div className="flex items-center">
-              <div className="w-4 h-4 mr-2 relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-1.5 h-3 bg-blue-500 rounded-sm"></div>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center pl-2">
-                  <div className="w-1.5 h-3 bg-purple-500 rounded-sm"></div>
-                </div>
-              </div>
-              Merge Sort
-            </div>
-          </SelectItem>
-          <SelectItem value="radix" className="hover:bg-slate-700 transition-colors duration-200 flex items-center">
-            <div className="flex items-center">
-              <div className="w-4 h-4 mr-2 relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-3 h-3 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-sm animate-pulse"></div>
-                </div>
-              </div>
-              Radix Sort
-            </div>
-          </SelectItem>
-        </SelectContent>
-      </Select>
-      
-      {/* Enhanced Algorithm Badge */}
-      <AlgorithmBadge algorithm={algorithm} />
-      
-      {/* Visual representation of the algorithm */}
-      <AlgorithmVisualization algorithm={algorithm} />
     </div>
   );
 };
@@ -232,7 +254,7 @@ const AlgorithmIcon = ({ algorithm }) => {
 // Algorithm Visualization Component
 const AlgorithmVisualization = ({ algorithm }) => {
   return (
-    <div className="mt-4 flex justify-center h-12 relative">
+    <div className="mt-4 flex justify-center h-16 relative">
       {algorithm === 'bubble' && (
         <div className="flex items-end space-x-1 relative">
           {/* Background grid effect */}

@@ -124,6 +124,15 @@ const App = () => {
       
       {/* Vercel Speed Insights - Monitors performance metrics */}
       <SpeedInsights />
+      
+      <div className="grid grid-cols-2 gap-4">
+        <div>{/* AlgorithmSelector component */}</div>
+        <div>{/* ComplexityInfo component */}</div>
+      </div>
+      <div className="grid grid-cols-2 gap-4 mt-4">
+        <div>{/* ArraySizeControl component */}</div>
+        <div>{/* SpeedControl component */}</div>
+      </div>
     </div>
   );
 };
