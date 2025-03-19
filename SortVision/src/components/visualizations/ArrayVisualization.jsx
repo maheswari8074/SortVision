@@ -18,6 +18,25 @@ const ArrayVisualization = ({
   // State to track which bar is being hovered
   const [hoveredBarIndex, setHoveredBarIndex] = useState(null);
   
+  // Get color scheme based on algorithm - prioritize currentTestingAlgo when available
+  const getAlgorithmColor = () => {
+    // Use currentTestingAlgo if available, otherwise use the selected algorithm
+    const currentAlgo = currentTestingAlgo || algorithm;
+    
+    switch(currentAlgo) {
+      case 'bubble': return { text: 'text-red-400', glow: 'shadow-red-500/30' };
+      case 'insertion': return { text: 'text-orange-400', glow: 'shadow-orange-500/30' };
+      case 'selection': return { text: 'text-yellow-400', glow: 'shadow-yellow-500/30' };
+      case 'quick': return { text: 'text-green-400', glow: 'shadow-green-500/30' };
+      case 'merge': return { text: 'text-blue-400', glow: 'shadow-blue-500/30' };
+      case 'radix': return { text: 'text-purple-400', glow: 'shadow-purple-500/30' };
+      default: return { text: 'text-emerald-400', glow: 'shadow-emerald-500/30' };
+    }
+  };
+
+  // Get the current algorithm being displayed/tested
+  const displayedAlgorithm = currentTestingAlgo || algorithm;
+
   return (
     <div className="relative group">
       {/* Animated background glow effect */}
@@ -53,17 +72,17 @@ const ArrayVisualization = ({
         <div className={`w-full ${height || 'h-64'} relative z-10`}>
           {/* Algorithm-specific background effect */}
           <div className={`absolute inset-0 opacity-10 transition-opacity duration-500 ${isSorting ? 'opacity-20' : ''}`}>
-            {algorithm === 'bubble' && <div className="absolute inset-0 bg-gradient-to-t from-red-500/10 to-transparent"></div>}
-            {algorithm === 'insertion' && <div className="absolute inset-0 bg-gradient-to-t from-orange-500/10 to-transparent"></div>}
-            {algorithm === 'selection' && <div className="absolute inset-0 bg-gradient-to-t from-amber-500/10 to-transparent"></div>}
-            {algorithm === 'quick' && <div className="absolute inset-0 bg-gradient-to-t from-green-500/10 to-transparent"></div>}
-            {algorithm === 'merge' && <div className="absolute inset-0 bg-gradient-to-t from-blue-500/10 to-transparent"></div>}
-            {algorithm === 'radix' && <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/10 to-transparent"></div>}
+            {displayedAlgorithm === 'bubble' && <div className="absolute inset-0 bg-gradient-to-t from-red-500/10 to-transparent"></div>}
+            {displayedAlgorithm === 'insertion' && <div className="absolute inset-0 bg-gradient-to-t from-orange-500/10 to-transparent"></div>}
+            {displayedAlgorithm === 'selection' && <div className="absolute inset-0 bg-gradient-to-t from-amber-500/10 to-transparent"></div>}
+            {displayedAlgorithm === 'quick' && <div className="absolute inset-0 bg-gradient-to-t from-green-500/10 to-transparent"></div>}
+            {displayedAlgorithm === 'merge' && <div className="absolute inset-0 bg-gradient-to-t from-blue-500/10 to-transparent"></div>}
+            {displayedAlgorithm === 'radix' && <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/10 to-transparent"></div>}
           </div>
           
           {/* Algorithm name watermark - moved up to avoid overlap */}
-          <div className="absolute top-2 right-2 font-mono text-xs opacity-20 text-slate-400 font-bold">
-            {algorithm}_sort()
+          <div className={`absolute top-2 right-2 font-mono text-xs opacity-20 ${getAlgorithmColor().text}`}>
+            {displayedAlgorithm}_sort()
           </div>
           
           {/* Array bars - with bottom padding to avoid overlap with status footer */}
@@ -84,12 +103,12 @@ const ArrayVisualization = ({
               
               // Algorithm-specific default colors - futuristic bluish theme
               if (currentBar.compare !== index && currentBar.swap !== index) {
-                if (algorithm === 'bubble') barColor = "bg-gradient-to-t from-blue-600 via-cyan-500 to-indigo-400";
-                if (algorithm === 'insertion') barColor = "bg-gradient-to-t from-indigo-600 via-blue-500 to-cyan-400";
-                if (algorithm === 'selection') barColor = "bg-gradient-to-t from-cyan-600 via-blue-500 to-indigo-400";
-                if (algorithm === 'quick') barColor = "bg-gradient-to-t from-blue-600 via-indigo-500 to-violet-400";
-                if (algorithm === 'merge') barColor = "bg-gradient-to-t from-violet-600 via-indigo-500 to-blue-400";
-                if (algorithm === 'radix') barColor = "bg-gradient-to-t from-cyan-600 via-blue-500 to-teal-400";
+                if (displayedAlgorithm === 'bubble') barColor = "bg-gradient-to-t from-blue-600 via-cyan-500 to-indigo-400";
+                if (displayedAlgorithm === 'insertion') barColor = "bg-gradient-to-t from-indigo-600 via-blue-500 to-cyan-400";
+                if (displayedAlgorithm === 'selection') barColor = "bg-gradient-to-t from-cyan-600 via-blue-500 to-indigo-400";
+                if (displayedAlgorithm === 'quick') barColor = "bg-gradient-to-t from-blue-600 via-indigo-500 to-violet-400";
+                if (displayedAlgorithm === 'merge') barColor = "bg-gradient-to-t from-violet-600 via-indigo-500 to-blue-400";
+                if (displayedAlgorithm === 'radix') barColor = "bg-gradient-to-t from-cyan-600 via-blue-500 to-teal-400";
               }
               
               // Add extra glow for hovered bar
@@ -144,7 +163,7 @@ const ArrayVisualization = ({
                 // {array.length} elements | {
                   currentTestingAlgo 
                     ? <span className="text-indigo-400">{`${currentTestingAlgo.charAt(0).toUpperCase() + currentTestingAlgo.slice(1)} Sort (Testing)`}</span>
-                    : <span className="text-blue-400">{`${algorithm.charAt(0).toUpperCase() + algorithm.slice(1)} Sort`}</span>
+                    : <span className="text-blue-400">{`${displayedAlgorithm.charAt(0).toUpperCase() + displayedAlgorithm.slice(1)} Sort`}</span>
                 }
                 {isStopped && <span className="text-red-400 ml-2">// terminated</span>}
               </div>
