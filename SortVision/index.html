@@ -2,30 +2,55 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src 'none'; object-src 'none';">
+    
     <!-- Primary Meta Tags -->
     <title>SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool</title>
     <meta name="title" content="SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool">
     <meta name="description" content="Master sorting algorithms with SortVision's interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.">
-    <meta name="keywords" content="sorting visualizer, algorithm visualizer, bubble sort, merge sort, quick sort, insertion sort, selection sort, interactive sorting, learn sorting algorithms, algorithm comparison, sorting algorithm complexity, programming education">
+    <meta name="keywords" content="sorting visualizer, algorithm visualizer, bubble sort, merge sort, quick sort, insertion sort, selection sort, interactive sorting, learn sorting algorithms, algorithm comparison, sorting algorithm complexity, programming education, learn coding, computer science, data structures">
     <meta name="author" content="alienX">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="canonical" content="https://sortvision.vercel.app/">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="rating" content="General">
     
-    <!-- Google Analytics 4 -->
-    <meta name="google" content="notranslate">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZPR3VLNV0"></script>
-    <script>
-      // Check if analytics consent is already denied
-      if (localStorage.getItem('analyticsConsent') === 'denied') {
-        window['ga-disable-G-SZPR3VLNV0'] = true;
+    <!-- Preconnect to needed origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Critical CSS in-lined to avoid render blocking -->
+    <style>
+      /* CSS Variables for iOS height fix */
+      :root {
+        --app-height: 100vh;
       }
       
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-SZPR3VLNV0');
-    </script>
+      /* Fix for iOS scrolling */
+      html, body {
+        position: relative;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        background-color: #0F172A;
+        color: #e2e8f0;
+      }
+      
+      /* Use the dynamic height variable */
+      .min-h-screen {
+        min-height: var(--app-height);
+      }
+      
+      /* Ensure content is scrollable */
+      #root {
+        height: auto;
+        min-height: var(--app-height);
+        overflow-y: auto;
+      }
+    </style>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -63,62 +88,98 @@
     <meta property="og:image" content="https://sortvision.vercel.app/og-image.png">
     <meta property="og:image:alt" content="SortVision - Sorting Algorithm Visualizer">
     <meta property="og:site_name" content="SortVision">
+    <meta property="og:locale" content="en_US">
     
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://sortvision.vercel.app/">
-    <meta property="twitter:title" content="SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool">
-    <meta property="twitter:description" content="Master sorting algorithms with SortVision's interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.">
-    <meta property="twitter:image" content="https://sortvision.vercel.app/og-image.png">
-    <meta property="twitter:creator" content="@alienx5499">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://sortvision.vercel.app/">
+    <meta name="twitter:title" content="SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool">
+    <meta name="twitter:description" content="Master sorting algorithms with SortVision's interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.">
+    <meta name="twitter:image" content="https://sortvision.vercel.app/og-image.png">
+    <meta name="twitter:creator" content="@alienx5499">
+    <meta name="twitter:site" content="@alienx5499">
     
-    <!-- Preload Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Structured Data: Website -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SortVision",
+      "url": "https://sortvision.vercel.app/",
+      "logo": "https://sortvision.vercel.app/favicon.svg",
+      "applicationCategory": "EducationalApplication",
+      "applicationSubCategory": "Algorithm Visualization",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Interactive visualization of popular sorting algorithms including Bubble Sort, Merge Sort, Quick Sort, and more with real-time animations and performance metrics.",
+      "creator": {
+        "@type": "Person",
+        "name": "alienX"
+      },
+      "screenshot": "https://sortvision.vercel.app/og-image.png",
+      "featureList": "Bubble Sort, Insertion Sort, Selection Sort, Merge Sort, Quick Sort, Heap Sort, Radix Sort, Performance Metrics, Algorithm Comparison",
+      "keywords": "sorting algorithms, algorithm visualization, computer science education, programming tools",
+      "sameAs": [
+        "https://github.com/alienx5499/SortVision",
+        "https://x.com/alienx5499"
+      ]
+    }
+    </script>
+    
+    <!-- Structured Data: BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://sortvision.vercel.app/"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/src/main.jsx" as="script" type="module">
+    <link rel="preload" href="/mobile-fix.js" as="script">
+    
+    <!-- Load font stylesheet asynchronously to avoid render blocking -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    </noscript>
     
     <!-- Mobile-specific styles -->
-    <link rel="stylesheet" href="/mobile.css">
-    
-    <!-- Preload Main Script -->
-    <link rel="modulepreload" href="/src/main.jsx">
+    <link rel="stylesheet" href="/mobile.css" media="print" onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="/mobile.css">
+    </noscript>
     
     <!-- Mobile App Install Prompt -->
     <meta name="apple-touch-startup-image" content="/splash.svg">
     
     <!-- Mobile scrolling fix -->
     <script src="/mobile-fix.js" defer></script>
-    
-    <style>
-      /* CSS Variables for iOS height fix */
-      :root {
-        --app-height: 100vh;
-      }
-      
-      /* Fix for iOS scrolling */
-      html, body {
-        position: relative;
-        height: 100%;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-      
-      /* Use the dynamic height variable */
-      .min-h-screen {
-        min-height: var(--app-height);
-      }
-      
-      /* Ensure content is scrollable */
-      #root {
-        height: auto;
-        min-height: var(--app-height);
-        overflow-y: auto;
-      }
-    </style>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Noscript message for users without JavaScript -->
+    <noscript>
+      <div style="text-align: center; padding: 20px; background-color: #0F172A; color: white; font-family: 'JetBrains Mono', monospace;">
+        <h1>SortVision - Interactive Sorting Algorithm Visualizer</h1>
+        <p>JavaScript is required to use this application. Please enable JavaScript to continue.</p>
+        <p>SortVision provides interactive visualizations of popular sorting algorithms including Bubble Sort, Merge Sort, Quick Sort, and more.</p>
+      </div>
+    </noscript>
     
     <!-- Prevent Flash of Unstyled Content -->
     <script>
@@ -143,26 +204,6 @@
             });
         });
       }
-      
-      // Cookie consent for Google Analytics 4
-      function checkAnalyticsConsent() {
-        if (!localStorage.getItem('analyticsConsent')) {
-          setTimeout(() => {
-            const consent = confirm('This site uses Google Analytics to improve user experience. Do you consent to anonymous usage data collection?');
-            localStorage.setItem('analyticsConsent', consent ? 'granted' : 'denied');
-            if (!consent) {
-              // If consent denied, disable GA4 tracking
-              window['ga-disable-G-SZPR3VLNV0'] = true;
-            }
-          }, 2000);
-        } else if (localStorage.getItem('analyticsConsent') === 'denied') {
-          // If previously denied
-          window['ga-disable-G-SZPR3VLNV0'] = true;
-        }
-      }
-      
-      // Check consent after page load
-      window.addEventListener('load', checkAnalyticsConsent);
       
       // Add mobile detection for adaptive features
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import SortingVisualizer from './components/SortingVisualizer';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Terminal, Code, Github, Linkedin, Twitter } from 'lucide-react';
-import { trackPageView, trackEvent } from './utils/analytics';
+import { getAlgorithmMetaTags, getAlgorithmSchema, algorithms } from './utils/seo';
 
 /**
  * Main Application Component
  * 
  * Renders the sorting visualizer application with header and footer
- * Includes Vercel Analytics for tracking usage and Speed Insights for performance monitoring
  */
 const App = () => {
   // Get route parameters and location
@@ -23,51 +20,34 @@ const App = () => {
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const fullText = 'Interactive visualization of popular sorting algorithms';
   
-  // SEO friendly algorithm names map
-  const algorithmDisplayNames = {
-    'bubble': 'Bubble Sort',
-    'insertion': 'Insertion Sort',
-    'selection': 'Selection Sort',
-    'merge': 'Merge Sort',
-    'quick': 'Quick Sort',
-    'radix': 'Radix Sort'
-  };
-  
   // Get the current algorithm name for SEO
   const currentAlgorithm = algorithmName || 'bubble';
-  const algorithmTitle = algorithmDisplayNames[currentAlgorithm] || 'Sorting Algorithms';
+  const algorithmTitle = algorithms[currentAlgorithm]?.name || 'Sorting Algorithms';
   
-  // Track page views
-  useEffect(() => {
-    trackPageView(location.pathname);
-  }, [location.pathname]);
-  
-  // Track social link clicks
-  const trackSocialClick = (platform) => {
-    trackEvent('Social', 'Click', platform);
-  };
-  
-  // Customize page title and description based on current algorithm
-  const getPageTitle = () => {
+  // Get SEO metadata for current page
+  const getMetaTags = () => {
     if (algorithmName) {
-      return `${algorithmTitle} Visualizer | SortVision - Learn How ${algorithmTitle} Works`;
+      return getAlgorithmMetaTags(algorithmName);
     }
-    return 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool';
-  };
-  
-  const getPageDescription = () => {
-    if (algorithmName) {
-      return `Interactive visualization of ${algorithmTitle}. Learn how ${algorithmTitle} works, see its performance metrics, and understand its time complexity through visual animation.`;
-    }
-    return 'Master sorting algorithms with SortVision\'s interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.';
+    
+    return {
+      title: 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool',
+      description: 'Master sorting algorithms with SortVision\'s interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.',
+      keywords: 'sorting visualizer, algorithm visualizer, bubble sort, merge sort, quick sort, insertion sort, selection sort, interactive sorting, learn sorting algorithms, algorithm comparison, sorting algorithm complexity, programming education',
+      ogTitle: 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool',
+      ogDescription: 'Master sorting algorithms with SortVision\'s interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.',
+      twitterTitle: 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool',
+      twitterDescription: 'Master sorting algorithms with SortVision\'s interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.'
+    };
   };
   
   // Generate schema markup
   const getSchemaMarkup = () => {
-    return {
+    // Base schema for all pages
+    const baseSchema = {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "SortVision",
+      "name": algorithmName ? `${algorithmTitle} Visualizer - SortVision` : "SortVision",
       "url": `https://sortvision.vercel.app${location.pathname}`,
       "applicationCategory": "EducationalApplication",
       "applicationSubCategory": "Algorithm Visualization",
@@ -77,12 +57,49 @@ const App = () => {
         "price": "0",
         "priceCurrency": "USD"
       },
-      "description": getPageDescription(),
+      "description": getMetaTags().description,
       "creator": {
         "@type": "Person",
         "name": "alienX"
-      }
+      },
+      "screenshot": "https://sortvision.vercel.app/og-image.png",
+      "featureList": "Bubble Sort, Insertion Sort, Selection Sort, Merge Sort, Quick Sort, Heap Sort, Radix Sort, Performance Metrics, Algorithm Comparison",
+      "keywords": `sorting algorithms, algorithm visualization, ${currentAlgorithm} sort, computer science education, programming tools`,
+      "sameAs": [
+        "https://github.com/alienx5499/SortVision",
+        "https://x.com/alienx5499"
+      ]
     };
+    
+    // Add breadcrumbs for algorithm pages
+    if (algorithmName) {
+      const breadcrumb = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://sortvision.vercel.app/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": `${algorithmTitle}`,
+            "item": `https://sortvision.vercel.app${location.pathname}`
+          }
+        ]
+      };
+      
+      // Get algorithm-specific schema for better SEO relevance
+      const algorithmSchema = getAlgorithmSchema(algorithmName, location.pathname);
+      
+      // Return an array of schema objects for better structured data
+      return [baseSchema, breadcrumb, algorithmSchema];
+    }
+    
+    return baseSchema;
   };
   
   // Typing animation effect
@@ -98,25 +115,28 @@ const App = () => {
     }
   }, [displayText]);
   
+  // Get metadata for the current page
+  const metaTags = getMetaTags();
+  
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-2 sm:p-5 overflow-hidden">
       {/* SEO Helmet */}
       <Helmet>
-        <title>{getPageTitle()}</title>
-        <meta name="description" content={getPageDescription()} />
-        <meta name="keywords" content={`sorting visualizer, algorithm visualizer, ${currentAlgorithm} sort, sorting algorithms, interactive ${currentAlgorithm} sort, learn sorting algorithms, algorithm comparison, sorting algorithm complexity, programming education`} />
+        <title>{metaTags.title}</title>
+        <meta name="description" content={metaTags.description} />
+        <meta name="keywords" content={metaTags.keywords} />
         <link rel="canonical" href={`https://sortvision.vercel.app${location.pathname}`} />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://sortvision.vercel.app${location.pathname}`} />
-        <meta property="og:title" content={getPageTitle()} />
-        <meta property="og:description" content={getPageDescription()} />
+        <meta property="og:title" content={metaTags.ogTitle} />
+        <meta property="og:description" content={metaTags.ogDescription} />
         
         {/* Twitter */}
-        <meta property="twitter:url" content={`https://sortvision.vercel.app${location.pathname}`} />
-        <meta property="twitter:title" content={getPageTitle()} />
-        <meta property="twitter:description" content={getPageDescription()} />
+        <meta name="twitter:url" content={`https://sortvision.vercel.app${location.pathname}`} />
+        <meta name="twitter:title" content={metaTags.twitterTitle} />
+        <meta name="twitter:description" content={metaTags.twitterDescription} />
         
         {/* Schema.org markup for Google */}
         <script type="application/ld+json">
@@ -165,7 +185,6 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-emerald-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
-            onClick={() => trackSocialClick('GitHub')}
           >
             <Github className="h-3 w-3 sm:h-4 sm:w-4" />
             <span>GitHub</span>
@@ -176,7 +195,6 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-blue-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
-            onClick={() => trackSocialClick('LinkedIn')}
           >
             <Linkedin className="h-3 w-3 sm:h-4 sm:w-4" />
             <span>LinkedIn</span>
@@ -187,7 +205,6 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-pink-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
-            onClick={() => trackSocialClick('Sponsor')}
           >
             <span className="text-base sm:text-lg">♥</span>
             <span>Sponsor</span>
@@ -198,7 +215,6 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-yellow-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
-            onClick={() => trackSocialClick('BuyMeACoffee')}
           >
             <span className="text-base sm:text-lg">☕</span>
             <span>Buy me a coffee</span>
@@ -209,19 +225,12 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-sky-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
-            onClick={() => trackSocialClick('Twitter')}
           >
             <Twitter className="h-3 w-3 sm:h-4 sm:w-4" />
             <span>X</span>
           </a>
         </div>
       </div>
-      
-      {/* Vercel Analytics - Tracks usage without affecting privacy */}
-      <Analytics />
-      
-      {/* Vercel Speed Insights - Monitors performance metrics */}
-      <SpeedInsights />
       
       <div className="grid grid-cols-2 gap-4">
         <div>{/* AlgorithmSelector component */}</div>

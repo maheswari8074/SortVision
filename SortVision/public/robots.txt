@@ -1,3 +1,6 @@
+# SortVision - Interactive Sorting Algorithms Visualizer
+# https://sortvision.vercel.app/
+
 # Allow all web crawlers
 User-agent: *
 Allow: /
@@ -5,5 +8,30 @@ Allow: /
 # Specify the sitemap location
 Sitemap: https://sortvision.vercel.app/sitemap.xml
 
-# Crawl delay to avoid overloading the server
-Crawl-delay: 10 
+# Optimize crawler behavior
+Crawl-delay: 1
+
+# Specific instructions for major crawlers
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: facebookexternalhit
+Allow: /
+Crawl-delay: 1
+
+User-agent: Twitterbot
+Allow: /
+Crawl-delay: 1 

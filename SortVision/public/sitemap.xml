@@ -1,54 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <!-- Homepage -->
   <url>
     <loc>https://sortvision.vercel.app/</loc>
-    <lastmod>2023-12-01</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2024-03-26</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>SortVision - Sorting Algorithm Visualizer</image:title>
+      <image:caption>Interactive visualization of sorting algorithms</image:caption>
+    </image:image>
   </url>
   
   <!-- Algorithm Pages -->
   <url>
     <loc>https://sortvision.vercel.app/algorithms/bubble</loc>
-    <lastmod>2023-12-01</lastmod>
+    <lastmod>2024-03-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>Bubble Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Bubble Sort algorithm</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/insertion</loc>
-    <lastmod>2023-12-01</lastmod>
+    <lastmod>2024-03-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>Insertion Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Insertion Sort algorithm</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/selection</loc>
-    <lastmod>2023-12-01</lastmod>
+    <lastmod>2024-03-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>Selection Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Selection Sort algorithm</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/merge</loc>
-    <lastmod>2023-12-01</lastmod>
+    <lastmod>2024-03-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>Merge Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Merge Sort algorithm</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/quick</loc>
-    <lastmod>2023-12-01</lastmod>
+    <lastmod>2024-03-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>Quick Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Quick Sort algorithm</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/heap</loc>
-    <lastmod>2023-12-01</lastmod>
+    <lastmod>2024-03-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>Heap Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Heap Sort algorithm</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/radix</loc>
-    <lastmod>2023-12-01</lastmod>
+    <lastmod>2024-03-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>Radix Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Radix Sort algorithm</image:caption>
+    </image:image>
   </url>
 </urlset> 
