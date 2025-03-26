@@ -29,10 +29,7 @@ const App = () => {
     'selection': 'Selection Sort',
     'merge': 'Merge Sort',
     'quick': 'Quick Sort',
-    'heap': 'Heap Sort',
-    'radix': 'Radix Sort',
-    'shell': 'Shell Sort',
-    'cocktail': 'Cocktail Sort'
+    'radix': 'Radix Sort'
   };
   
   // Get the current algorithm name for SEO
