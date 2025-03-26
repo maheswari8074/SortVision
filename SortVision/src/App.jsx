@@ -234,17 +234,6 @@ const App = () => {
             <span>X</span>
           </a>
         </div>
-        
-        {/* Internal links for SEO */}
-        <nav className="mt-4 pt-2 border-t border-slate-800 text-[10px]">
-          <ul className="flex flex-wrap justify-center gap-x-4 gap-y-1">
-            <li><Link to="/" className="text-slate-500 hover:text-emerald-400 transition-colors">Home</Link></li>
-            <li><Link to="/algorithms/bubble" className="text-slate-500 hover:text-emerald-400 transition-colors">Bubble Sort</Link></li>
-            <li><Link to="/algorithms/merge" className="text-slate-500 hover:text-emerald-400 transition-colors">Merge Sort</Link></li>
-            <li><Link to="/algorithms/quick" className="text-slate-500 hover:text-emerald-400 transition-colors">Quick Sort</Link></li>
-            <li><Link to="/algorithms/heap" className="text-slate-500 hover:text-emerald-400 transition-colors">Heap Sort</Link></li>
-          </ul>
-        </nav>
       </footer>
     </div>
   );
