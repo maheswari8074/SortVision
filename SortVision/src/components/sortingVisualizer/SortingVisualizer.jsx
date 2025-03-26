@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useNavigate } from 'react-router-dom';
 
 // Import subcomponents
 import SortingHeader from './SortingHeader';
@@ -26,14 +27,17 @@ import PerformanceMetrics from './PerformanceMetrics';
  * 2. Metrics Panel - Performance data visualization and comparison
  * 3. Details Panel - Algorithm details and visual representation
  */
-const SortingVisualizer = () => {
+const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
+  // Router navigation
+  const navigate = useNavigate();
+  
   //=============================================================================
   // STATE MANAGEMENT
   //=============================================================================
   
   // Core state variables for array data and algorithm selection
   const [array, setArray] = useState([]);
-  const [algorithm, setAlgorithm] = useState('bubble');
+  const [algorithm, setAlgorithm] = useState(initialAlgorithm);
   const [arraySize, setArraySize] = useState(30);
   
   // Sorting process control state
@@ -115,6 +119,18 @@ const SortingVisualizer = () => {
   const getAlgorithmTimeComplexity = () => {
     return performanceMetrics.getAlgorithmTimeComplexity(algorithm);
   };
+  
+  /**
+   * Handle algorithm change and update URL for SEO
+   */
+  const handleAlgorithmChange = (newAlgorithm) => {
+    setAlgorithm(newAlgorithm);
+    
+    // Update URL for SEO without page reload
+    if (newAlgorithm !== initialAlgorithm) {
+      navigate(`/algorithms/${newAlgorithm}`, { replace: true });
+    }
+  };
 
   //=============================================================================
   // LIFECYCLE MANAGEMENT
@@ -134,6 +150,15 @@ const SortingVisualizer = () => {
       shouldStopRef.current = true;
     };
   }, [arraySize]);
+  
+  /**
+   * Update algorithm when initialAlgorithm changes from route
+   */
+  useEffect(() => {
+    if (initialAlgorithm !== algorithm) {
+      setAlgorithm(initialAlgorithm);
+    }
+  }, [initialAlgorithm]);
 
   //=============================================================================
   // COMPONENT RENDERING
@@ -183,7 +208,7 @@ const SortingVisualizer = () => {
           <TabsContent value="controls" className="space-y-4 mt-4">
             <ConfigPanel 
               algorithm={algorithm}
-              setAlgorithm={setAlgorithm}
+              setAlgorithm={handleAlgorithmChange}
               arraySize={arraySize}
               setArraySize={setArraySize}
               speed={speed}
@@ -225,7 +250,7 @@ const SortingVisualizer = () => {
               isSorting={isSorting}
               currentTestingAlgo={currentTestingAlgo}
               isStopped={isStopped}
-              setAlgorithm={setAlgorithm}
+              setAlgorithm={handleAlgorithmChange}
             />
           </TabsContent>
         </Tabs>

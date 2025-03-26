@@ -1,0 +1,9 @@
+# Allow all web crawlers
+User-agent: *
+Allow: /
+
+# Specify the sitemap location
+Sitemap: https://sortvision.vercel.app/sitemap.xml
+
+# Crawl delay to avoid overloading the server
+Crawl-delay: 10 

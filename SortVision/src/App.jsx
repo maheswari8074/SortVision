@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import SortingVisualizer from './components/SortingVisualizer';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
@@ -11,10 +13,69 @@ import { Terminal, Code, Github, Linkedin, Twitter } from 'lucide-react';
  * Includes Vercel Analytics for tracking usage and Speed Insights for performance monitoring
  */
 const App = () => {
+  // Get route parameters and location
+  const { algorithmName } = useParams();
+  const location = useLocation();
+  
   // State for typing animation
   const [displayText, setDisplayText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const fullText = 'Interactive visualization of popular sorting algorithms';
+  
+  // SEO friendly algorithm names map
+  const algorithmDisplayNames = {
+    'bubble': 'Bubble Sort',
+    'insertion': 'Insertion Sort',
+    'selection': 'Selection Sort',
+    'merge': 'Merge Sort',
+    'quick': 'Quick Sort',
+    'heap': 'Heap Sort',
+    'radix': 'Radix Sort',
+    'shell': 'Shell Sort',
+    'cocktail': 'Cocktail Sort'
+  };
+  
+  // Get the current algorithm name for SEO
+  const currentAlgorithm = algorithmName || 'bubble';
+  const algorithmTitle = algorithmDisplayNames[currentAlgorithm] || 'Sorting Algorithms';
+  
+  // Customize page title and description based on current algorithm
+  const getPageTitle = () => {
+    if (algorithmName) {
+      return `${algorithmTitle} Visualizer | SortVision - Learn How ${algorithmTitle} Works`;
+    }
+    return 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool';
+  };
+  
+  const getPageDescription = () => {
+    if (algorithmName) {
+      return `Interactive visualization of ${algorithmTitle}. Learn how ${algorithmTitle} works, see its performance metrics, and understand its time complexity through visual animation.`;
+    }
+    return 'Master sorting algorithms with SortVision\'s interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.';
+  };
+  
+  // Generate schema markup
+  const getSchemaMarkup = () => {
+    return {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SortVision",
+      "url": `https://sortvision.vercel.app${location.pathname}`,
+      "applicationCategory": "EducationalApplication",
+      "applicationSubCategory": "Algorithm Visualization",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": getPageDescription(),
+      "creator": {
+        "@type": "Person",
+        "name": "alienX"
+      }
+    };
+  };
   
   // Typing animation effect
   useEffect(() => {
@@ -31,6 +92,30 @@ const App = () => {
   
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-2 sm:p-5 overflow-hidden">
+      {/* SEO Helmet */}
+      <Helmet>
+        <title>{getPageTitle()}</title>
+        <meta name="description" content={getPageDescription()} />
+        <meta name="keywords" content={`sorting visualizer, algorithm visualizer, ${currentAlgorithm} sort, sorting algorithms, interactive ${currentAlgorithm} sort, learn sorting algorithms, algorithm comparison, sorting algorithm complexity, programming education`} />
+        <link rel="canonical" href={`https://sortvision.vercel.app${location.pathname}`} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`https://sortvision.vercel.app${location.pathname}`} />
+        <meta property="og:title" content={getPageTitle()} />
+        <meta property="og:description" content={getPageDescription()} />
+        
+        {/* Twitter */}
+        <meta property="twitter:url" content={`https://sortvision.vercel.app${location.pathname}`} />
+        <meta property="twitter:title" content={getPageTitle()} />
+        <meta property="twitter:description" content={getPageDescription()} />
+        
+        {/* Schema.org markup for Google */}
+        <script type="application/ld+json">
+          {JSON.stringify(getSchemaMarkup())}
+        </script>
+      </Helmet>
+      
       {/* Header with logo and title */}
       <div className="flex flex-col items-center mb-4 sm:mb-6 animate-fade-down animate-once animate-duration-[800ms] animate-delay-100">
         <div className="flex items-center gap-2 sm:gap-3">
@@ -56,7 +141,7 @@ const App = () => {
       
       {/* Main Sorting Visualizer Component */}
       <div className="animate-fade-up animate-once animate-duration-[1000ms] animate-delay-500 w-full max-w-4xl px-2 sm:px-4">
-        <SortingVisualizer />
+        <SortingVisualizer initialAlgorithm={currentAlgorithm} />
       </div>
       
       {/* Footer */}
