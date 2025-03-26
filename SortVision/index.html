@@ -166,7 +166,7 @@
     </script>
     
     <!-- Preload critical assets -->
-    <link rel="preload" href="/src/main.jsx" as="script" type="module">
+    <link rel="preload" href="/src/main.jsx" as="script">
     <link rel="preload" href="/mobile-fix.js" as="script">
     
     <!-- Load font stylesheet asynchronously to avoid render blocking -->
@@ -186,6 +186,9 @@
     
     <!-- Mobile scrolling fix -->
     <script src="/mobile-fix.js" defer></script>
+    
+    <!-- Debug script to catch 404 errors -->
+    <script src="/debug.js" defer></script>
   </head>
   <body>
     <div id="root"></div>
