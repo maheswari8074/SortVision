@@ -150,12 +150,14 @@ const App = () => {
       </Helmet>
       
       {/* Header with logo and title */}
-      <div className="flex flex-col items-center mb-4 sm:mb-6 animate-fade-down animate-once animate-duration-[800ms] animate-delay-100">
+      <header className="flex flex-col items-center mb-4 sm:mb-6 animate-fade-down animate-once animate-duration-[800ms] animate-delay-100">
         <div className="flex items-center gap-2 sm:gap-3">
           <Terminal className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-400 animate-pulse animate-infinite animate-duration-[3000ms]" aria-hidden="true" />
           <h1 className="text-2xl sm:text-4xl font-mono font-bold text-white">
-            <span className="text-emerald-400 hover:text-emerald-300 transition-colors duration-300">Sort</span>
-            <span className="text-purple-400 hover:text-purple-300 transition-colors duration-300">Vision</span>
+            <Link to="https://sortvision.vercel.app/" className="hover:opacity-90 transition-opacity">
+              <span className="text-emerald-400 hover:text-emerald-300 transition-colors duration-300">Sort</span>
+              <span className="text-purple-400 hover:text-purple-300 transition-colors duration-300">Vision</span>
+            </Link>
           </h1>
           <Code className="h-4 w-4 sm:h-6 sm:w-6 text-slate-400 animate-spin animate-once animate-duration-[1500ms] animate-delay-300" aria-hidden="true" />
         </div>
@@ -164,7 +166,7 @@ const App = () => {
           <span className="text-purple-400 hover:text-purple-300 transition-colors duration-300">.visualizer</span>
           <span className="text-slate-400 hover:text-white transition-colors duration-300">()</span>
         </div>
-      </div>
+      </header>
       
       {/* Subtitle with typing animation */}
       <div className="text-center text-slate-400 font-mono mb-6 sm:mb-8 max-w-[90%] sm:max-w-md h-6 animate-fade-up animate-once animate-duration-[800ms] animate-delay-300">
@@ -173,15 +175,61 @@ const App = () => {
       </div>
       
       {/* Main Sorting Visualizer Component */}
-      <div className="animate-fade-up animate-once animate-duration-[1000ms] animate-delay-500 w-full max-w-4xl px-2 sm:px-4">
+      <main className="animate-fade-up animate-once animate-duration-[1000ms] animate-delay-500 w-full max-w-4xl px-2 sm:px-4">
         <h2 className="text-xl sm:text-2xl font-mono font-bold text-emerald-400 mb-4 text-center">
           {algorithmName ? `${algorithmTitle} Visualization` : 'Sorting Algorithm Visualizer'}
         </h2>
         <SortingVisualizer initialAlgorithm={currentAlgorithm} />
-      </div>
+        
+        {/* Algorithm Navigation */}
+        {!algorithmName && (
+          <section className="mt-8 bg-slate-900/50 p-4 rounded-md border border-slate-800">
+            <h2 className="text-xl font-mono font-bold text-white mb-4">Available Sorting Algorithms</h2>
+            <p className="text-slate-400 mb-4">Explore different sorting algorithms with our interactive visualizer:</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              <Link to="/algorithms/bubble" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
+                <h3 className="font-mono font-medium">Bubble Sort</h3>
+              </Link>
+              <Link to="/algorithms/insertion" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
+                <h3 className="font-mono font-medium">Insertion Sort</h3>
+              </Link>
+              <Link to="/algorithms/selection" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
+                <h3 className="font-mono font-medium">Selection Sort</h3>
+              </Link>
+              <Link to="/algorithms/merge" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
+                <h3 className="font-mono font-medium">Merge Sort</h3>
+              </Link>
+              <Link to="/algorithms/quick" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
+                <h3 className="font-mono font-medium">Quick Sort</h3>
+              </Link>
+              <Link to="/algorithms/heap" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
+                <h3 className="font-mono font-medium">Heap Sort</h3>
+              </Link>
+              <Link to="/algorithms/radix" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
+                <h3 className="font-mono font-medium">Radix Sort</h3>
+              </Link>
+            </div>
+          </section>
+        )}
+        
+        {/* SEO Content Section */}
+        {!algorithmName && (
+          <section className="mt-8 bg-slate-900/50 p-4 rounded-md border border-slate-800">
+            <h2 className="text-xl font-mono font-bold text-white mb-4">About Sorting Algorithms</h2>
+            <p className="text-slate-400 mb-4">
+              Sorting algorithms are fundamental in computer science, designed to rearrange elements in a specific order.
+              Understanding these algorithms is crucial for effective problem-solving and efficient code implementation.
+            </p>
+            <p className="text-slate-400 mb-2">
+              SortVision helps you visualize and understand various sorting algorithms through interactive animations and real-time metrics.
+              Compare algorithm performance, analyze time complexity, and see the sorting process step by step.
+            </p>
+          </section>
+        )}
+      </main>
       
       {/* Footer */}
-      <div className="mt-8 sm:mt-10 text-slate-500 text-[10px] sm:text-xs font-mono text-center animate-fade-up animate-once animate-duration-[800ms] animate-delay-700">
+      <footer className="mt-8 sm:mt-10 text-slate-500 text-[10px] sm:text-xs font-mono text-center animate-fade-up animate-once animate-duration-[800ms] animate-delay-700">
         <span className="text-slate-600">/**</span> Built with 
         <span className="inline-block animate-bounce animate-infinite animate-duration-[2000ms] mx-1" aria-hidden="true">❤️</span> 
         by alienX <span className="text-slate-600">*/</span>
@@ -232,7 +280,18 @@ const App = () => {
             <span>X</span>
           </a>
         </div>
-      </div>
+        
+        {/* Internal links for SEO */}
+        <nav className="mt-4 pt-2 border-t border-slate-800 text-[10px]">
+          <ul className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+            <li><Link to="/" className="text-slate-500 hover:text-emerald-400 transition-colors">Home</Link></li>
+            <li><Link to="/algorithms/bubble" className="text-slate-500 hover:text-emerald-400 transition-colors">Bubble Sort</Link></li>
+            <li><Link to="/algorithms/merge" className="text-slate-500 hover:text-emerald-400 transition-colors">Merge Sort</Link></li>
+            <li><Link to="/algorithms/quick" className="text-slate-500 hover:text-emerald-400 transition-colors">Quick Sort</Link></li>
+            <li><Link to="/algorithms/heap" className="text-slate-500 hover:text-emerald-400 transition-colors">Heap Sort</Link></li>
+          </ul>
+        </nav>
+      </footer>
     </div>
   );
 };
