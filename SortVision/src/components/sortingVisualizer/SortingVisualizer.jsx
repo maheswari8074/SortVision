@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from 'react-router-dom';
-import { trackAlgorithmSelection, trackArraySizeChange, trackSpeedChange, trackVisualizationStart, trackSortCompletion, trackEvent } from '../../utils/analytics';
 
 // Import subcomponents
 import SortingHeader from './SortingHeader';
@@ -86,8 +85,6 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
    * Initiates the sorting process with the selected algorithm
    */
   const startSorting = async () => {
-    // Track sort start in Google Analytics
-    trackVisualizationStart(algorithm, arraySize);
     sortStartTimeRef.current = Date.now();
     
     await sortingControls.startSorting(
@@ -101,21 +98,12 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
       setIsSorting, 
       setMetrics
     );
-    
-    // Track sort completion in Google Analytics
-    if (!shouldStopRef.current && sortStartTimeRef.current) {
-      const duration = Date.now() - sortStartTimeRef.current;
-      trackSortCompletion(algorithm, arraySize, duration);
-    }
   };
 
   /**
    * Benchmarks all sorting algorithms on the same array for comparison
    */
   const testAllAlgorithms = async () => {
-    // Track benchmark start in Google Analytics
-    trackEvent('Benchmark', 'Start', 'All Algorithms', arraySize);
-    
     await sortingControls.testAllAlgorithms(
       array,
       setArray,
@@ -128,9 +116,6 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
       setCompareMetrics,
       setSortedMetrics
     );
-    
-    // Track benchmark completion
-    trackEvent('Benchmark', 'Complete', 'All Algorithms');
   };
 
   /**
@@ -146,9 +131,6 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
   const handleAlgorithmChange = (newAlgorithm) => {
     setAlgorithm(newAlgorithm);
     
-    // Track algorithm selection in Google Analytics
-    trackAlgorithmSelection(newAlgorithm);
-    
     // Update URL for SEO without page reload
     if (newAlgorithm !== initialAlgorithm) {
       navigate(`/algorithms/${newAlgorithm}`, { replace: true });
@@ -156,19 +138,17 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
   };
   
   /**
-   * Handle array size change with analytics tracking
+   * Handle array size change
    */
   const handleArraySizeChange = (newSize) => {
     setArraySize(newSize);
-    trackArraySizeChange(newSize);
   };
   
   /**
-   * Handle speed change with analytics tracking
+   * Handle speed change
    */
   const handleSpeedChange = (newSpeed) => {
     setSpeed(newSpeed);
-    trackSpeedChange(newSpeed);
   };
 
   //=============================================================================
