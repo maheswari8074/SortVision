@@ -34,14 +34,19 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm, isSorting }) => {
         {/* Animated bottom line */}
         <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover/algo:w-full bg-gradient-to-r from-emerald-500/50 via-blue-500/50 to-purple-500/50 rounded transition-all duration-700"></div>
         
-        <label className="font-mono text-sm text-slate-400 mb-3 block flex items-center relative z-10 group-hover/algo:text-emerald-400 transition-colors duration-300">
+        <label className="font-mono text-sm text-slate-400 mb-3 block flex items-center relative z-10 group-hover/algo:text-emerald-400 transition-colors duration-300" id="algorithm-selector-label">
           <Terminal className="mr-2 h-4 w-4 text-emerald-400 animate-pulse" style={{ animationDuration: '4s' }} />
           <span className="transition-colors duration-300">// select algorithm</span>
         </label>
         
         <div className="group/select relative overflow-hidden rounded-md mb-5">
-          <Select value={algorithm} onValueChange={setAlgorithm} disabled={isSorting}>
-            <SelectTrigger className="w-full h-10 bg-slate-800/90 border-slate-700 text-emerald-400 font-mono relative overflow-hidden group/trigger shadow-lg shadow-emerald-500/5 hover:shadow-emerald-500/10 transition-all duration-300">
+          <Select 
+            value={algorithm} 
+            onValueChange={setAlgorithm} 
+            disabled={isSorting}
+            aria-labelledby="algorithm-selector-label"
+          >
+            <SelectTrigger className="w-full h-10 bg-slate-800/90 border-slate-700 text-emerald-400 font-mono relative overflow-hidden group/trigger shadow-lg shadow-emerald-500/5 hover:shadow-emerald-500/10 transition-all duration-300" aria-label="Select sorting algorithm">
               {/* Shimmer effect on hover */}
               <div className="absolute inset-0 w-0 group-hover/trigger:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-emerald-400/5 to-transparent"></div>
               <SelectValue placeholder="Algorithm" />

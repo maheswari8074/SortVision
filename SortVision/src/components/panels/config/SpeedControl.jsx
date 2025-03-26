@@ -33,16 +33,16 @@ const SpeedControl = ({ speed, setSpeed, isSorting }) => {
         {/* Animated bottom line */}
         <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover/speed:w-full bg-gradient-to-r from-emerald-500/50 via-blue-500/50 to-purple-500/50 rounded transition-all duration-700"></div>
         
-        <label className="font-mono text-sm text-slate-400 mb-2 block flex items-center relative z-10 group-hover/speed:text-emerald-400 transition-colors duration-300">
+        <label className="font-mono text-sm text-slate-400 mb-2 block flex items-center relative z-10 group-hover/speed:text-emerald-400 transition-colors duration-300" id="speed-control-label">
           <Timer className="mr-2 h-4 w-4 text-emerald-400 animate-pulse" style={{ animationDuration: '4s' }} />
-          <span className="transition-colors duration-300">// animation speed: <span className="text-emerald-400 ml-1">{speed}ms</span></span>
+          <span className="transition-colors duration-300">// animation delay: <span className="text-emerald-400 ml-1">{speed}ms</span></span>
         </label>
       
         <div className="relative mt-6 mb-8">
           <div className="absolute -top-4 left-0 right-0 flex justify-between text-[10px] text-slate-500">
-            <span className="text-emerald-400/70 group-hover/speed:text-emerald-400 transition-colors duration-300">Fast</span>
-            <span className="text-emerald-400/70 group-hover/speed:text-emerald-400 transition-colors duration-300">Medium</span>
-            <span className="text-emerald-400/70 group-hover/speed:text-emerald-400 transition-colors duration-300">Slow</span>
+            <span className="text-emerald-300 group-hover/speed:text-emerald-300 transition-colors duration-300">Fast</span>
+            <span className="text-emerald-300 group-hover/speed:text-emerald-300 transition-colors duration-300">Medium</span>
+            <span className="text-emerald-300 group-hover/speed:text-emerald-300 transition-colors duration-300">Slow</span>
           </div>
           <div className="relative">
             {/* Track background with enhanced glow */}
@@ -62,14 +62,17 @@ const SpeedControl = ({ speed, setSpeed, isSorting }) => {
               onValueChange={(value) => setSpeed(value[0])}
               disabled={isSorting}
               className="relative z-10"
+              name="animation speed"
+              aria-label="Animation Speed Slider"
+              aria-labelledby="speed-control-label"
             />
             {/* Animated glow effect */}
             <div className="absolute inset-0 bg-emerald-400/10 rounded-full animate-pulse"></div>
           </div>
           <div className="absolute -bottom-6 left-0 right-0 flex justify-between text-[10px] text-slate-500">
-            <span className="group-hover/speed:text-emerald-400/70 transition-colors duration-300">1ms</span>
-            <span className="group-hover/speed:text-emerald-400/70 transition-colors duration-300">500ms</span>
-            <span className="group-hover/speed:text-emerald-400/70 transition-colors duration-300">1000ms</span>
+            <span className="group-hover/speed:text-emerald-300 text-emerald-300 transition-colors duration-300">1ms</span>
+            <span className="group-hover/speed:text-emerald-300 text-emerald-300 transition-colors duration-300">500ms</span>
+            <span className="group-hover/speed:text-emerald-300 text-emerald-300 transition-colors duration-300">1000ms</span>
           </div>
         </div>
         
@@ -98,7 +101,8 @@ const SpeedControl = ({ speed, setSpeed, isSorting }) => {
                 }
               }}
               disabled={isSorting || speed >= 1000}
-              className="group/btn relative w-6 h-6 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-all duration-300 overflow-hidden"
+              className="group/btn relative w-8 h-8 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-all duration-300 overflow-hidden"
+              aria-label="Double animation delay"
             >
               <div className="absolute inset-0 bg-emerald-400/10 opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>
               <div className="absolute inset-0 flex items-center justify-center text-emerald-400 font-mono text-[10px]">2x</div>
@@ -112,7 +116,8 @@ const SpeedControl = ({ speed, setSpeed, isSorting }) => {
                 }
               }}
               disabled={isSorting || speed <= 1}
-              className="group/btn relative w-6 h-6 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-all duration-300 overflow-hidden"
+              className="group/btn relative w-8 h-8 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-all duration-300 overflow-hidden"
+              aria-label="Halve animation delay"
             >
               <div className="absolute inset-0 bg-emerald-400/10 opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>
               <div className="absolute inset-0 flex items-center justify-center text-emerald-400 font-mono text-[10px]">½x</div>
@@ -120,7 +125,7 @@ const SpeedControl = ({ speed, setSpeed, isSorting }) => {
             </button>
           </div>
 
-          <div className="text-[10px] text-emerald-400/50 group-hover/speed:text-emerald-400/70 transition-colors duration-300">
+          <div className="text-[10px] text-emerald-300 group-hover/speed:text-emerald-300 transition-colors duration-300">
             {speed < 100 ? "Visualize patterns" : speed < 500 ? "Follow the steps" : "Detailed analysis"}
           </div>
         </div>
