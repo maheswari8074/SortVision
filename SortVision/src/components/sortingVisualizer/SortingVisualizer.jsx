@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from 'react-router-dom';
+import { trackAlgorithmSelection, trackArraySizeChange, trackSpeedChange, trackVisualizationStart, trackSortCompletion, trackEvent } from '../../utils/analytics';
 
 // Import subcomponents
 import SortingHeader from './SortingHeader';
@@ -55,6 +56,9 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
   
   // Reference for handling abort signals
   const shouldStopRef = useRef(false);
+  
+  // Reference for tracking sort start time 
+  const sortStartTimeRef = useRef(null);
 
   // Import utility functions from subcomponents
   const sortingControls = SortingControls();
@@ -82,6 +86,10 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
    * Initiates the sorting process with the selected algorithm
    */
   const startSorting = async () => {
+    // Track sort start in Google Analytics
+    trackVisualizationStart(algorithm, arraySize);
+    sortStartTimeRef.current = Date.now();
+    
     await sortingControls.startSorting(
       algorithm, 
       array, 
@@ -93,12 +101,21 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
       setIsSorting, 
       setMetrics
     );
+    
+    // Track sort completion in Google Analytics
+    if (!shouldStopRef.current && sortStartTimeRef.current) {
+      const duration = Date.now() - sortStartTimeRef.current;
+      trackSortCompletion(algorithm, arraySize, duration);
+    }
   };
 
   /**
    * Benchmarks all sorting algorithms on the same array for comparison
    */
   const testAllAlgorithms = async () => {
+    // Track benchmark start in Google Analytics
+    trackEvent('Benchmark', 'Start', 'All Algorithms', arraySize);
+    
     await sortingControls.testAllAlgorithms(
       array,
       setArray,
@@ -111,6 +128,9 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
       setCompareMetrics,
       setSortedMetrics
     );
+    
+    // Track benchmark completion
+    trackEvent('Benchmark', 'Complete', 'All Algorithms');
   };
 
   /**
@@ -126,10 +146,29 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
   const handleAlgorithmChange = (newAlgorithm) => {
     setAlgorithm(newAlgorithm);
     
+    // Track algorithm selection in Google Analytics
+    trackAlgorithmSelection(newAlgorithm);
+    
     // Update URL for SEO without page reload
     if (newAlgorithm !== initialAlgorithm) {
       navigate(`/algorithms/${newAlgorithm}`, { replace: true });
     }
+  };
+  
+  /**
+   * Handle array size change with analytics tracking
+   */
+  const handleArraySizeChange = (newSize) => {
+    setArraySize(newSize);
+    trackArraySizeChange(newSize);
+  };
+  
+  /**
+   * Handle speed change with analytics tracking
+   */
+  const handleSpeedChange = (newSpeed) => {
+    setSpeed(newSpeed);
+    trackSpeedChange(newSpeed);
   };
 
   //=============================================================================
@@ -210,9 +249,9 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
               algorithm={algorithm}
               setAlgorithm={handleAlgorithmChange}
               arraySize={arraySize}
-              setArraySize={setArraySize}
+              setArraySize={handleArraySizeChange}
               speed={speed}
-              setSpeed={setSpeed}
+              setSpeed={handleSpeedChange}
               isSorting={isSorting}
               getAlgorithmTimeComplexity={getAlgorithmTimeComplexity}
               array={array}

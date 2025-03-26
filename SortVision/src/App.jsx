@@ -5,6 +5,7 @@ import SortingVisualizer from './components/SortingVisualizer';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Terminal, Code, Github, Linkedin, Twitter } from 'lucide-react';
+import { trackPageView, trackEvent } from './utils/analytics';
 
 /**
  * Main Application Component
@@ -35,6 +36,16 @@ const App = () => {
   // Get the current algorithm name for SEO
   const currentAlgorithm = algorithmName || 'bubble';
   const algorithmTitle = algorithmDisplayNames[currentAlgorithm] || 'Sorting Algorithms';
+  
+  // Track page views
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location.pathname]);
+  
+  // Track social link clicks
+  const trackSocialClick = (platform) => {
+    trackEvent('Social', 'Click', platform);
+  };
   
   // Customize page title and description based on current algorithm
   const getPageTitle = () => {
@@ -154,6 +165,7 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-emerald-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
+            onClick={() => trackSocialClick('GitHub')}
           >
             <Github className="h-3 w-3 sm:h-4 sm:w-4" />
             <span>GitHub</span>
@@ -164,6 +176,7 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-blue-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
+            onClick={() => trackSocialClick('LinkedIn')}
           >
             <Linkedin className="h-3 w-3 sm:h-4 sm:w-4" />
             <span>LinkedIn</span>
@@ -174,6 +187,7 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-pink-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
+            onClick={() => trackSocialClick('Sponsor')}
           >
             <span className="text-base sm:text-lg">♥</span>
             <span>Sponsor</span>
@@ -184,6 +198,7 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-yellow-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
+            onClick={() => trackSocialClick('BuyMeACoffee')}
           >
             <span className="text-base sm:text-lg">☕</span>
             <span>Buy me a coffee</span>
@@ -194,6 +209,7 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-sky-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
+            onClick={() => trackSocialClick('Twitter')}
           >
             <Twitter className="h-3 w-3 sm:h-4 sm:w-4" />
             <span>X</span>

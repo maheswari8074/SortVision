@@ -4,6 +4,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import App from './App.jsx'
 import './index.css'
+import { initGA } from './utils/analytics'
+
+// Initialize Google Analytics 4
+// Using the Google Analytics 4 Measurement ID
+initGA('G-SZPR3VLNV0')
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

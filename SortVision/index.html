@@ -11,6 +11,22 @@
     <meta name="robots" content="index, follow">
     <meta name="canonical" content="https://sortvision.vercel.app/">
     
+    <!-- Google Analytics 4 -->
+    <meta name="google" content="notranslate">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZPR3VLNV0"></script>
+    <script>
+      // Check if analytics consent is already denied
+      if (localStorage.getItem('analyticsConsent') === 'denied') {
+        window['ga-disable-G-SZPR3VLNV0'] = true;
+      }
+      
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-SZPR3VLNV0');
+    </script>
+    
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/favicon.svg">
@@ -127,6 +143,26 @@
             });
         });
       }
+      
+      // Cookie consent for Google Analytics 4
+      function checkAnalyticsConsent() {
+        if (!localStorage.getItem('analyticsConsent')) {
+          setTimeout(() => {
+            const consent = confirm('This site uses Google Analytics to improve user experience. Do you consent to anonymous usage data collection?');
+            localStorage.setItem('analyticsConsent', consent ? 'granted' : 'denied');
+            if (!consent) {
+              // If consent denied, disable GA4 tracking
+              window['ga-disable-G-SZPR3VLNV0'] = true;
+            }
+          }, 2000);
+        } else if (localStorage.getItem('analyticsConsent') === 'denied') {
+          // If previously denied
+          window['ga-disable-G-SZPR3VLNV0'] = true;
+        }
+      }
+      
+      // Check consent after page load
+      window.addEventListener('load', checkAnalyticsConsent);
       
       // Add mobile detection for adaptive features
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
