@@ -1,12 +1,46 @@
 # SortVision Robots.txt
 # https://sortvision.vercel.app
 
+# Default rule for all bots
 User-agent: *
 Allow: /
 Disallow: /sw.js
 
 # Sitemaps
 Sitemap: https://sortvision.vercel.app/sitemap.xml
+
+# Explicitly allow major search engines
+User-agent: Googlebot
+Allow: /
+Disallow: /sw.js
+
+User-agent: bingbot
+Allow: /
+Disallow: /sw.js
+
+User-agent: Slurp
+Allow: /
+Disallow: /sw.js
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /sw.js
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /sw.js
+
+User-agent: Yandex
+Allow: /
+Disallow: /sw.js
+
+User-agent: Sogou
+Allow: /
+Disallow: /sw.js
+
+User-agent: ia_archiver
+Allow: /
+Disallow: /sw.js
 
 # Crawl delays
 User-agent: Googlebot
