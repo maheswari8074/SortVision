@@ -180,52 +180,6 @@ const App = () => {
           {algorithmName ? `${algorithmTitle} Visualization` : 'Sorting Algorithm Visualizer'}
         </h2>
         <SortingVisualizer initialAlgorithm={currentAlgorithm} />
-        
-        {/* Algorithm Navigation */}
-        {!algorithmName && (
-          <section className="mt-8 bg-slate-900/50 p-4 rounded-md border border-slate-800">
-            <h2 className="text-xl font-mono font-bold text-white mb-4">Available Sorting Algorithms</h2>
-            <p className="text-slate-400 mb-4">Explore different sorting algorithms with our interactive visualizer:</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-              <Link to="/algorithms/bubble" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
-                <h3 className="font-mono font-medium">Bubble Sort</h3>
-              </Link>
-              <Link to="/algorithms/insertion" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
-                <h3 className="font-mono font-medium">Insertion Sort</h3>
-              </Link>
-              <Link to="/algorithms/selection" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
-                <h3 className="font-mono font-medium">Selection Sort</h3>
-              </Link>
-              <Link to="/algorithms/merge" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
-                <h3 className="font-mono font-medium">Merge Sort</h3>
-              </Link>
-              <Link to="/algorithms/quick" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
-                <h3 className="font-mono font-medium">Quick Sort</h3>
-              </Link>
-              <Link to="/algorithms/heap" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
-                <h3 className="font-mono font-medium">Heap Sort</h3>
-              </Link>
-              <Link to="/algorithms/radix" className="p-3 bg-slate-800 hover:bg-slate-700 rounded text-center text-white transition-colors">
-                <h3 className="font-mono font-medium">Radix Sort</h3>
-              </Link>
-            </div>
-          </section>
-        )}
-        
-        {/* SEO Content Section */}
-        {!algorithmName && (
-          <section className="mt-8 bg-slate-900/50 p-4 rounded-md border border-slate-800">
-            <h2 className="text-xl font-mono font-bold text-white mb-4">About Sorting Algorithms</h2>
-            <p className="text-slate-400 mb-4">
-              Sorting algorithms are fundamental in computer science, designed to rearrange elements in a specific order.
-              Understanding these algorithms is crucial for effective problem-solving and efficient code implementation.
-            </p>
-            <p className="text-slate-400 mb-2">
-              SortVision helps you visualize and understand various sorting algorithms through interactive animations and real-time metrics.
-              Compare algorithm performance, analyze time complexity, and see the sorting process step by step.
-            </p>
-          </section>
-        )}
       </main>
       
       {/* Footer */}
