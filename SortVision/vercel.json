@@ -29,6 +29,5 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": false,
-  "compressCommonFiles": true
+  "trailingSlash": false
 } 
