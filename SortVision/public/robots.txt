@@ -84,6 +84,3 @@ Allow: /*.woff2$
 # Disallow archive copies
 User-agent: archive.org_bot
 Disallow: /
-
-# Host
-Host: https://sortvision.vercel.app 
