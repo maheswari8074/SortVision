@@ -8,11 +8,11 @@
     <!-- Primary Meta Tags -->
     <title>SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool</title>
     <meta name="title" content="SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool">
-    <meta name="description" content="Master sorting algorithms with SortVision's interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.">
+    <meta name="description" content="Master sorting algorithms with interactive visualizations. Compare Bubble, Merge, Quick Sort and more with real-time animations and metrics.">
     <meta name="keywords" content="sorting visualizer, algorithm visualizer, bubble sort, merge sort, quick sort, insertion sort, selection sort, interactive sorting, learn sorting algorithms, algorithm comparison, sorting algorithm complexity, programming education, learn coding, computer science, data structures">
     <meta name="author" content="alienX">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="canonical" content="https://sortvision.vercel.app/">
+    <link rel="canonical" href="https://sortvision.vercel.app/">
     <meta name="language" content="English">
     <meta name="revisit-after" content="7 days">
     <meta name="rating" content="General">
@@ -50,6 +50,25 @@
         min-height: var(--app-height);
         overflow-y: auto;
       }
+      
+      /* Basic responsive styles */
+      @media (max-width: 480px) {
+        body {
+          font-size: 14px;
+        }
+      }
+      
+      @media (min-width: 481px) and (max-width: 768px) {
+        body {
+          font-size: 15px;
+        }
+      }
+      
+      @media (min-width: 769px) {
+        body {
+          font-size: 16px;
+        }
+      }
     </style>
     
     <!-- Favicon -->
@@ -84,7 +103,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://sortvision.vercel.app/">
     <meta property="og:title" content="SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool">
-    <meta property="og:description" content="Master sorting algorithms with SortVision's interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.">
+    <meta property="og:description" content="Master sorting algorithms with interactive visualizations. Compare Bubble, Merge, Quick Sort and more with real-time animations and metrics.">
     <meta property="og:image" content="https://sortvision.vercel.app/og-image.png">
     <meta property="og:image:alt" content="SortVision - Sorting Algorithm Visualizer">
     <meta property="og:site_name" content="SortVision">
@@ -94,7 +113,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://sortvision.vercel.app/">
     <meta name="twitter:title" content="SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool">
-    <meta name="twitter:description" content="Master sorting algorithms with SortVision's interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.">
+    <meta name="twitter:description" content="Master sorting algorithms with interactive visualizations. Compare Bubble, Merge, Quick Sort and more with real-time animations and metrics.">
     <meta name="twitter:image" content="https://sortvision.vercel.app/og-image.png">
     <meta name="twitter:creator" content="@alienx5499">
     <meta name="twitter:site" content="@alienx5499">

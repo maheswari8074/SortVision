@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import SortingVisualizer from './components/SortingVisualizer';
+import SortingVisualizer from './components/sortingVisualizer/SortingVisualizer';
 import { Terminal, Code, Github, Linkedin, Twitter } from 'lucide-react';
 import { getAlgorithmMetaTags, getAlgorithmSchema, algorithms } from './utils/seo';
 
@@ -32,12 +32,12 @@ const App = () => {
     
     return {
       title: 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool',
-      description: 'Master sorting algorithms with SortVision\'s interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.',
+      description: 'Master sorting algorithms with interactive visualizations. Compare Bubble, Merge, Quick Sort and more with real-time animations and metrics.',
       keywords: 'sorting visualizer, algorithm visualizer, bubble sort, merge sort, quick sort, insertion sort, selection sort, interactive sorting, learn sorting algorithms, algorithm comparison, sorting algorithm complexity, programming education',
       ogTitle: 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool',
-      ogDescription: 'Master sorting algorithms with SortVision\'s interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.',
+      ogDescription: 'Master sorting algorithms with interactive visualizations. Compare Bubble, Merge, Quick Sort and more with real-time animations and metrics.',
       twitterTitle: 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool',
-      twitterDescription: 'Master sorting algorithms with SortVision\'s interactive visualizer. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations and performance metrics.'
+      twitterDescription: 'Master sorting algorithms with interactive visualizations. Compare Bubble, Merge, Quick Sort and more with real-time animations and metrics.'
     };
   };
   
@@ -118,6 +118,9 @@ const App = () => {
   // Get metadata for the current page
   const metaTags = getMetaTags();
   
+  // Get current date in ISO format for meta tags
+  const currentDate = new Date().toISOString().split('T')[0];
+  
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-2 sm:p-5 overflow-hidden">
       {/* SEO Helmet */}
@@ -126,12 +129,14 @@ const App = () => {
         <meta name="description" content={metaTags.description} />
         <meta name="keywords" content={metaTags.keywords} />
         <link rel="canonical" href={`https://sortvision.vercel.app${location.pathname}`} />
+        <meta property="article:modified_time" content={currentDate} />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://sortvision.vercel.app${location.pathname}`} />
         <meta property="og:title" content={metaTags.ogTitle} />
         <meta property="og:description" content={metaTags.ogDescription} />
+        <meta property="og:updated_time" content={currentDate} />
         
         {/* Twitter */}
         <meta name="twitter:url" content={`https://sortvision.vercel.app${location.pathname}`} />
@@ -147,12 +152,12 @@ const App = () => {
       {/* Header with logo and title */}
       <div className="flex flex-col items-center mb-4 sm:mb-6 animate-fade-down animate-once animate-duration-[800ms] animate-delay-100">
         <div className="flex items-center gap-2 sm:gap-3">
-          <Terminal className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-400 animate-pulse animate-infinite animate-duration-[3000ms]" />
+          <Terminal className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-400 animate-pulse animate-infinite animate-duration-[3000ms]" aria-hidden="true" />
           <h1 className="text-2xl sm:text-4xl font-mono font-bold text-white">
             <span className="text-emerald-400 hover:text-emerald-300 transition-colors duration-300">Sort</span>
             <span className="text-purple-400 hover:text-purple-300 transition-colors duration-300">Vision</span>
           </h1>
-          <Code className="h-4 w-4 sm:h-6 sm:w-6 text-slate-400 animate-spin animate-once animate-duration-[1500ms] animate-delay-300" />
+          <Code className="h-4 w-4 sm:h-6 sm:w-6 text-slate-400 animate-spin animate-once animate-duration-[1500ms] animate-delay-300" aria-hidden="true" />
         </div>
         <div className="text-lg sm:text-xl font-mono text-slate-400 mt-1">
           <span className="text-emerald-400 hover:text-emerald-300 transition-colors duration-300">algorithm</span>
@@ -164,18 +169,21 @@ const App = () => {
       {/* Subtitle with typing animation */}
       <div className="text-center text-slate-400 font-mono mb-6 sm:mb-8 max-w-[90%] sm:max-w-md h-6 animate-fade-up animate-once animate-duration-[800ms] animate-delay-300">
         <span className="text-amber-400">//</span> {displayText}
-        {!isTypingComplete && <span className="inline-block w-2 h-4 bg-amber-400 ml-1 animate-pulse"></span>}
+        {!isTypingComplete && <span className="inline-block w-2 h-4 bg-amber-400 ml-1 animate-pulse" aria-hidden="true"></span>}
       </div>
       
       {/* Main Sorting Visualizer Component */}
       <div className="animate-fade-up animate-once animate-duration-[1000ms] animate-delay-500 w-full max-w-4xl px-2 sm:px-4">
+        <h2 className="text-xl sm:text-2xl font-mono font-bold text-emerald-400 mb-4 text-center">
+          {algorithmName ? `${algorithmTitle} Visualization` : 'Sorting Algorithm Visualizer'}
+        </h2>
         <SortingVisualizer initialAlgorithm={currentAlgorithm} />
       </div>
       
       {/* Footer */}
-      <div className="mt-4 sm:mt-6 text-slate-500 text-[10px] sm:text-xs font-mono text-center animate-fade-up animate-once animate-duration-[800ms] animate-delay-700">
+      <div className="mt-8 sm:mt-10 text-slate-500 text-[10px] sm:text-xs font-mono text-center animate-fade-up animate-once animate-duration-[800ms] animate-delay-700">
         <span className="text-slate-600">/**</span> Built with 
-        <span className="inline-block animate-bounce animate-infinite animate-duration-[2000ms] mx-1">❤️</span> 
+        <span className="inline-block animate-bounce animate-infinite animate-duration-[2000ms] mx-1" aria-hidden="true">❤️</span> 
         by alienX <span className="text-slate-600">*/</span>
         
         {/* Social links - Now wraps on mobile */}
@@ -185,8 +193,9 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-emerald-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
+            aria-label="View SortVision source code on GitHub"
           >
-            <Github className="h-3 w-3 sm:h-4 sm:w-4" />
+            <Github className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
             <span>GitHub</span>
           </a>
           
@@ -195,19 +204,10 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-blue-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
+            aria-label="Connect with the developer on LinkedIn"
           >
-            <Linkedin className="h-3 w-3 sm:h-4 sm:w-4" />
+            <Linkedin className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
             <span>LinkedIn</span>
-          </a>
-          
-          <a 
-            href="https://github.com/sponsors/alienx5499" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-slate-400 hover:text-pink-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
-          >
-            <span className="text-base sm:text-lg">♥</span>
-            <span>Sponsor</span>
           </a>
           
           <a 
@@ -215,8 +215,9 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-yellow-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
+            aria-label="Support the developer with a donation"
           >
-            <span className="text-base sm:text-lg">☕</span>
+            <span className="text-base sm:text-lg" aria-hidden="true">☕</span>
             <span>Buy me a coffee</span>
           </a>
           
@@ -225,20 +226,12 @@ const App = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-sky-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
+            aria-label="Follow the developer on X (Twitter)"
           >
-            <Twitter className="h-3 w-3 sm:h-4 sm:w-4" />
+            <Twitter className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
             <span>X</span>
           </a>
         </div>
-      </div>
-      
-      <div className="grid grid-cols-2 gap-4">
-        <div>{/* AlgorithmSelector component */}</div>
-        <div>{/* ComplexityInfo component */}</div>
-      </div>
-      <div className="grid grid-cols-2 gap-4 mt-4">
-        <div>{/* ArraySizeControl component */}</div>
-        <div>{/* SpeedControl component */}</div>
       </div>
     </div>
   );

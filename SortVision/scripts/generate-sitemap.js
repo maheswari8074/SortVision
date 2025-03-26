@@ -8,21 +8,37 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { algorithms } from '../src/utils/seo.js';
 
-// Get current directory 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Define current date for lastmod
-const currentDate = new Date().toISOString().split('T')[0];
+// Algorithm information
+const algorithms = [
+  'bubble',
+  'insertion',
+  'selection',
+  'merge',
+  'quick',
+  'heap',
+  'radix'
+];
 
-// Base URL
-const BASE_URL = 'https://sortvision.vercel.app';
+// Get current date in YYYY-MM-DD format
+const getCurrentDate = () => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  
+  console.log('Current date components:', { year, month, day });
+  
+  return `${year}-${month}-${day}`;
+};
 
-// Generate sitemap content
-function generateSitemap() {
-  // Start sitemap XML
+// Generate sitemap XML content
+const generateSitemap = () => {
+  const currentDate = getCurrentDate();
+  console.log('Generated date for sitemap:', currentDate);
+  
   let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
@@ -30,12 +46,12 @@ function generateSitemap() {
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <!-- Homepage -->
   <url>
-    <loc>${BASE_URL}/</loc>
+    <loc>https://sortvision.vercel.app/</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>${BASE_URL}/og-image.png</image:loc>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
       <image:title>SortVision - Sorting Algorithm Visualizer</image:title>
       <image:caption>Interactive visualization of sorting algorithms</image:caption>
     </image:image>
@@ -43,37 +59,36 @@ function generateSitemap() {
   
   <!-- Algorithm Pages -->`;
 
-  // Add algorithm pages
-  for (const [key, algorithm] of Object.entries(algorithms)) {
+  // Add entries for each algorithm
+  algorithms.forEach(algorithm => {
+    const capitalizedAlgorithm = algorithm.charAt(0).toUpperCase() + algorithm.slice(1);
     sitemap += `
   <url>
-    <loc>${BASE_URL}/algorithms/${key}</loc>
+    <loc>https://sortvision.vercel.app/algorithms/${algorithm}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>${BASE_URL}/og-image.png</image:loc>
-      <image:title>${algorithm.name} Visualization - SortVision</image:title>
-      <image:caption>Interactive visualization of ${algorithm.name} algorithm</image:caption>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>${capitalizedAlgorithm} Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of ${capitalizedAlgorithm} Sort algorithm</image:caption>
     </image:image>
   </url>`;
-  }
+  });
 
-  // Close sitemap
   sitemap += `
 </urlset>`;
 
   return sitemap;
-}
+};
 
 // Write sitemap to file
-function writeSitemap() {
+const writeSitemap = () => {
   const sitemap = generateSitemap();
   const outputPath = path.resolve(__dirname, '../public/sitemap.xml');
   
   fs.writeFileSync(outputPath, sitemap);
-  console.log(`Sitemap generated at ${outputPath}`);
-}
+  console.log(`Sitemap generated successfully at ${outputPath}`);
+};
 
-// Execute sitemap generation
 writeSitemap(); 

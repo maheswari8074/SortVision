@@ -139,6 +139,114 @@
   }
 }
 
+/* Responsive Media Queries for SortVision */
+/* Mobile devices (portrait) */
+@media only screen and (max-width: 480px) {
+  .min-h-screen {
+    min-height: 100vh;
+  }
+  
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+  
+  .text-xl {
+    font-size: 1.125rem;
+  }
+  
+  .p-2 {
+    padding: 0.5rem;
+  }
+  
+  .gap-2 {
+    gap: 0.5rem;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Tablet devices (portrait) */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  .min-h-screen {
+    min-height: 100vh;
+  }
+  
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+  
+  .sm\:text-4xl {
+    font-size: 2rem;
+  }
+  
+  .p-4 {
+    padding: 1rem;
+  }
+  
+  .gap-3 {
+    gap: 0.75rem;
+  }
+  
+  .sm\:mb-6 {
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Larger screens (laptops and desktops) */
+@media only screen and (min-width: 769px) {
+  .min-h-screen {
+    min-height: 100vh;
+  }
+  
+  .sm\:text-4xl {
+    font-size: 2.25rem;
+  }
+  
+  .p-5 {
+    padding: 1.25rem;
+  }
+  
+  .gap-4 {
+    gap: 1rem;
+  }
+  
+  .sm\:mb-8 {
+    margin-bottom: 2rem;
+  }
+}
+
+/* Dark mode preferences */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion) {
+  .animate-pulse,
+  .animate-spin,
+  .animate-bounce,
+  .animate-ping {
+    animation: none !important;
+  }
+  
+  .transition-all,
+  .transition-colors,
+  .transition-opacity,
+  .transition-transform {
+    transition: none !important;
+  }
+}
+
 @keyframes pulse {
   0%, 100% {
     opacity: 1;

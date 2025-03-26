@@ -35,6 +35,11 @@ async function prerender() {
     fs.mkdirSync(distPath, { recursive: true });
   }
 
+  // Get current date for freshness signals
+  const currentDate = new Date();
+  const isoDate = currentDate.toISOString();
+  const httpDate = currentDate.toUTCString();
+
   // Process each route
   console.log('Starting prerendering...');
   
@@ -81,10 +86,56 @@ async function prerender() {
         );
       }
       
+      // Add Last-Modified meta tag
+      if (!html.includes('<meta http-equiv="Last-Modified"')) {
+        html = html.replace(
+          '</head>',
+          `  <meta http-equiv="Last-Modified" content="${httpDate}" />\n</head>`
+        );
+      }
+      
+      // Add article:modified_time and og:updated_time if not already present
+      if (!html.includes('article:modified_time')) {
+        html = html.replace(
+          '</head>',
+          `  <meta property="article:modified_time" content="${isoDate.split('T')[0]}" />\n</head>`
+        );
+      }
+      
+      if (!html.includes('og:updated_time')) {
+        html = html.replace(
+          '</head>',
+          `  <meta property="og:updated_time" content="${isoDate.split('T')[0]}" />\n</head>`
+        );
+      }
+      
       // Write the rendered HTML to file
       const outputPath = path.join(outputDir, 'index.html');
       fs.writeFileSync(outputPath, html);
       console.log(`Prerendered: ${route} -> ${outputPath}`);
+      
+      // Create .htaccess file for Apache servers
+      const htaccessContent = `
+# Set Cache-Control headers
+<IfModule mod_headers.c>
+  # Set Last-Modified header
+  Header set Last-Modified "${httpDate}"
+  
+  # Set Cache-Control for HTML files
+  <FilesMatch "\\.html$">
+    Header set Cache-Control "max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+`;
+      fs.writeFileSync(path.join(distPath, '.htaccess'), htaccessContent);
+      
+      // Create _headers file for Netlify/Vercel
+      const headersContent = `/*
+  Last-Modified: ${httpDate}
+  Cache-Control: max-age=0, must-revalidate
+`;
+      fs.writeFileSync(path.join(distPath, '_headers'), headersContent);
+      
     } catch (error) {
       console.error(`Error prerendering ${route}:`, error);
     }

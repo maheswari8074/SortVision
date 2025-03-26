@@ -39,6 +39,7 @@ function Button({
   variant,
   size,
   asChild = false,
+  "aria-label": ariaLabel,
   ...props
 }) {
   const Comp = asChild ? Slot : "button"
@@ -47,6 +48,7 @@ function Button({
     <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
+      aria-label={ariaLabel || props.title || undefined}
       {...props} />
   );
 }
