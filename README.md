@@ -1,4 +1,4 @@
-# 🌟 **SortVision** ��  
+# 🌟 **SortVision** 🌟  
 ### *Interactive Sorting Algorithm Visualizer*
 
 <div align="center">
