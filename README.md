@@ -84,56 +84,57 @@ The **SortVision** is a web-based sorting visualizer built using **React** and *
 
 ## **📂 Project Structure**
 
-Here’s the folder structure of **SortVision** to give you an overview of how the project is organized:
+Here's a detailed breakdown of the **SortVision** project structure:
 
 ```
-SortVision
-├─ .gitignore               # Specifies files Git should ignore (node_modules, build files, etc.)
-├─ components.json          # Configuration for UI components (ShadCN UI setup)
-├─ eslint.config.js         # ESLint configuration for enforcing coding standards
-├─ index.html              # Entry HTML file that loads the React application
-├─ jsconfig.json           # JavaScript configuration for path aliases and compiler options
-├─ package-lock.json       # Lock file for ensuring consistent dependency versions
-├─ package.json            # Contains project metadata, dependencies, and scripts
-├─ pnpm-lock.yaml         # Lock file for pnpm package manager
-├─ public/                # Static assets
-│  ├─ favicon.svg        # Website favicon icon
-│  ├─ manifest.json      # PWA manifest for app installation settings
-│  ├─ mobile-fix.js      # JavaScript fixes for mobile-specific issues
-│  ├─ mobile.css        # Mobile-specific CSS styles
-│  ├─ splash.svg        # Splash screen image for branding
-│  └─ sw.js             # Service Worker for PWA offline functionality
-├─ src/                  # Source code directory
-│  ├─ App.css           # Global styles for the main App component
-│  ├─ App.jsx           # Root React component with routing and layout
-│  ├─ algorithms/       # Sorting algorithm implementations
-│  │  ├─ bubbleSort.jsx    # Bubble Sort algorithm
-│  │  ├─ index.js          # Exports all sorting algorithms
-│  │  ├─ insertionSort.jsx # Insertion Sort algorithm
-│  │  ├─ mergeSort.jsx     # Merge Sort algorithm
-│  │  ├─ quickSort.jsx     # Quick Sort algorithm
-│  │  ├─ radixSort.jsx     # Radix Sort algorithm
-│  │  └─ selectionSort.jsx # Selection Sort algorithm
-│  ├─ components/       # UI components directory
-│  │  ├─ ArrayVisualization.jsx  # Handles sorting bar visualization
-│  │  ├─ ConfigPanel.jsx         # User interface for selecting sorting parameters
-│  │  ├─ MetricsPanel.jsx        # Displays performance metrics like swaps and comparisons
-│  │  ├─ SortingVisualizer.jsx   # Main component for sorting execution
-│  │  ├─ VisualizationPanel.jsx  # Panel for displaying facts and details
-│  │  └─ ui/                     # Reusable UI components (buttons, cards, sliders, etc.)
-│  │     ├─ badge.jsx      # Badge component for labels
-│  │     ├─ button.jsx     # Styled button component
-│  │     ├─ card.jsx       # Card component for UI grouping
-│  │     ├─ input.jsx      # Custom input field component
-│  │     ├─ select.jsx     # Dropdown selection component
-│  │     ├─ slider.jsx     # Slider for adjusting speed and array size
-│  │     └─ tabs.jsx       # Tab component for navigation
-│  ├─ index.css        # Global styles for the app
-│  ├─ lib/            # Utility functions
-│  │  └─ utils.js     # Common helper functions
-│  └─ main.jsx        # Application entry point
-└─ vite.config.js     # Vite bundler configuration
+          # Project documentation and overview
+   SortVision
+   ├─ .gitignore         # Git ignore rules
+   ├─ components.json    # ShadCN UI component configuration
+   ├─ eslint.config.js   # ESLint configuration
+   ├─ index.html         # Main HTML entry point
+   ├─ jsconfig.json      # JavaScript configuration
+   ├─ package.json       # Project dependencies and scripts
+   ├─ prerender.js       # Static site generation script
+   ├─ public/            # Static assets
+   │  ├─ favicon.svg     # Website favicon
+   │  ├─ manifest.json   # PWA manifest
+   │  ├─ mobile-fix.js   # Mobile-specific fixes
+   │  ├─ mobile.css      # Mobile-specific styles
+   │  ├─ splash.svg      # PWA splash screen
+   │  └─ sw.js           # Service worker
+   ├─ scripts/           # Build and utility scripts
+   │  ├─ build-with-seo.js      # SEO optimization script
+   │  └─ generate-sitemap.js    # Sitemap generation
+   ├─ src/               # Source code
+   │  ├─ algorithms/     # Sorting algorithm implementations
+   │  │  ├─ bubbleSort.jsx
+   │  │  ├─ insertionSort.jsx
+   │  │  ├─ mergeSort.jsx
+   │  │  ├─ quickSort.jsx
+   │  │  ├─ radixSort.jsx
+   │  │  └─ selectionSort.jsx
+   │  ├─ components/     # React components
+   │  │  ├─ panels/      # UI panels (Config, Details, Metrics)
+   │  │  ├─ sortingVisualizer/  # Core visualization components
+   │  │  ├─ ui/          # Reusable UI components
+   │  │  └─ visualizations/     # Array visualization components
+   │  ├─ lib/           # Utility libraries
+   │  └─ utils/         # Helper functions
+   └─ vite.config.js    # Vite bundler configuration
 ```
+
+### **Key Directories and Files**:
+
+- **`/src/algorithms/`**: Contains implementations of various sorting algorithms
+- **`/src/components/`**: Houses all React components organized by feature
+  - **`panels/`**: UI panels for configuration, details, and metrics
+  - **`sortingVisualizer/`**: Core visualization components
+  - **`ui/`**: Reusable UI components (buttons, cards, etc.)
+  - **`visualizations/`**: Array visualization components
+- **`/public/`**: Static assets and PWA-related files
+- **`/scripts/`**: Build and utility scripts for SEO and sitemap generation
+- **`/src/lib/`** and **`/src/utils/`**: Utility functions and helper libraries
 
 ---
 
@@ -252,7 +253,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ### 📬 **Feedback & Suggestions**
 *We value your input! Share your thoughts through [GitHub Issues](https://github.com/alienx5499/sortvisioN/issues).*
 
-💡 *Let’s work together to enhance the understanding of sorting algorithms!*
+💡 *Let's work together to enhance the understanding of sorting algorithms!*
 
 </div>
 
