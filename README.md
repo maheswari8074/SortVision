@@ -1,7 +1,7 @@
+<div align="center">
+
 # 🌟 **SortVision** 🌟  
 ### *Interactive Sorting Algorithm Visualizer*
-
-<div align="center">
 
 [![Build Passing](https://img.shields.io/badge/build-passing-success?style=flat-square)](https://github.com/alienx5499/sortvisioN/actions)
 [![Node.js](https://img.shields.io/badge/Node.js-v16.10.0-green?style=flat-square)](https://nodejs.org/)
