@@ -1,3 +1,20 @@
+/**
+ * Quick Sort Algorithm
+ * 
+ * Time Complexity:
+ * - Best Case: O(n log n)
+ * - Average Case: O(n log n)
+ * - Worst Case: O(n²) - when array is already sorted or reverse sorted
+ * 
+ * Space Complexity: O(log n) - due to recursion stack
+ * 
+ * Description:
+ * Quick Sort is a divide-and-conquer algorithm that works by selecting a 'pivot'
+ * element from the array and partitioning the other elements into two sub-arrays
+ * according to whether they are less than or greater than the pivot. The sub-arrays
+ * are then sorted recursively. This implementation uses the last element as the pivot.
+ * 
+ */
 export const quickSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef) => {
     const quickSortHelper = async (arr, left, right) => {
       if (left >= right) return;

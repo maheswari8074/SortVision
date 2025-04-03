@@ -1,3 +1,19 @@
+/**
+ * Bubble Sort Algorithm
+ * 
+ * Time Complexity:
+ * - Best Case: O(n) - when array is already sorted
+ * - Average Case: O(n²)
+ * - Worst Case: O(n²)
+ * 
+ * Space Complexity: O(1) - in-place sorting
+ * 
+ * Description:
+ * Bubble Sort is a simple sorting algorithm that repeatedly steps through the list,
+ * compares adjacent elements and swaps them if they are in the wrong order.
+ * The pass through the list is repeated until the list is sorted.
+ * 
+ */
 export const bubbleSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef) => {
     let swaps = 0;
     let comparisons = 0;

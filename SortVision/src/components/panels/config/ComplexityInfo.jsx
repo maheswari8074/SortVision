@@ -1,3 +1,20 @@
+/**
+ * Complexity Info Component
+ * 
+ * A detailed information panel displaying algorithm complexity metrics:
+ * - Time complexity (Best/Average/Worst cases)
+ * - Space complexity
+ * - Efficiency rating
+ * - Algorithm description
+ * 
+ * Features:
+ * - Visual efficiency indicators
+ * - Animated complexity cards
+ * - Interactive hover effects
+ * - Color-coded complexity ratings
+ * - Detailed algorithm descriptions
+ * - Responsive design
+ */
 import React from 'react';
 import { Info, Database, Timer, Rocket, Clock, Hourglass, AlertTriangle, CheckCircle2 } from 'lucide-react';
 

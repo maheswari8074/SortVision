@@ -1,3 +1,20 @@
+/**
+ * Insertion Sort Algorithm
+ * 
+ * Time Complexity:
+ * - Best Case: O(n) - when array is already sorted
+ * - Average Case: O(n²)
+ * - Worst Case: O(n²)
+ * 
+ * Space Complexity: O(1) - in-place sorting
+ * 
+ * Description:
+ * Insertion Sort is a simple sorting algorithm that builds the final sorted array
+ * one item at a time. It is much less efficient on large lists than more advanced
+ * algorithms such as quicksort, heapsort, or merge sort. However, it performs well
+ * for small lists and is often used as part of more sophisticated algorithms.
+ * 
+ */
 export const insertionSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef) => {
     let swaps = 0;
     let comparisons = 0;

@@ -1,3 +1,20 @@
+/**
+ * Merge Sort Algorithm
+ * 
+ * Time Complexity:
+ * - Best Case: O(n log n)
+ * - Average Case: O(n log n)
+ * - Worst Case: O(n log n)
+ * 
+ * Space Complexity: O(n) - requires additional space for merging
+ * 
+ * Description:
+ * Merge Sort is a divide-and-conquer algorithm that divides the input array into
+ * two halves, recursively sorts each half, and then merges the sorted halves.
+ * It is a stable sorting algorithm that performs well on large datasets and
+ * is often used as a standard sorting algorithm in many programming languages.
+ * 
+ */
 export const mergeSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef) => {
   const merge = async (left, right) => {
     let result = [];

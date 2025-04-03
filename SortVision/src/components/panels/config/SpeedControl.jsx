@@ -2,6 +2,24 @@ import React from 'react';
 import { Slider } from "@/components/ui/slider";
 import { Timer } from 'lucide-react';
 
+/**
+ * Speed Control Component
+ * 
+ * A sophisticated slider component for controlling animation speed with:
+ * - Visual feedback and animations
+ * - Precise control over delay timing
+ * - Quick adjustment buttons
+ * - Status indicators
+ * - Accessibility features
+ * 
+ * Features:
+ * - Range: 1ms to 1000ms
+ * - Visual speed representation
+ * - Animated background effects
+ * - Speed presets (Fast/Medium/Slow)
+ * - 2x and ½x quick adjustment buttons
+ */
+
 const SpeedControl = ({ speed, setSpeed, isSorting }) => {
   return (
     <div className="mb-4 relative group">

@@ -2,6 +2,23 @@ import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Terminal } from 'lucide-react';
 
+/**
+ * Algorithm Selector Component
+ * 
+ * A visually rich dropdown component for selecting different sorting algorithms.
+ * Features:
+ * - Animated background effects and transitions
+ * - Visual representations of each algorithm
+ * - Time complexity information
+ * - Interactive hover states
+ * - Accessibility support
+ * 
+ * The component includes:
+ * - Main selector dropdown
+ * - Algorithm badge with complexity info
+ * - Visual icons for each algorithm
+ * - Animated background effects
+ */
 const AlgorithmSelector = ({ algorithm, setAlgorithm, isSorting }) => {
   return (
     <div className="mb-4 relative group">

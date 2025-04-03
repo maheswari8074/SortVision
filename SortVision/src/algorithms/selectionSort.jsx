@@ -1,3 +1,20 @@
+/**
+ * Selection Sort Algorithm
+ * 
+ * Time Complexity:
+ * - Best Case: O(n²)
+ * - Average Case: O(n²)
+ * - Worst Case: O(n²)
+ * 
+ * Space Complexity: O(1) - in-place sorting
+ * 
+ * Description:
+ * Selection Sort is an in-place comparison sorting algorithm that divides the input
+ * list into two parts: a sorted sublist and an unsorted sublist. The algorithm
+ * repeatedly finds the minimum element from the unsorted part and puts it at the
+ * beginning of the sorted part.
+ * 
+ */
 export const selectionSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef) => {
     let swaps = 0;
     let comparisons = 0;

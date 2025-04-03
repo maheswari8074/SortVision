@@ -2,6 +2,25 @@ import React from 'react';
 import { Slider } from "@/components/ui/slider";
 import { Database } from 'lucide-react';
 
+/**
+ * Array Size Control Component
+ * 
+ * A sophisticated slider component for controlling array size with:
+ * - Visual feedback and animations
+ * - Precise control over array length
+ * - Quick adjustment buttons
+ * - Status indicators
+ * - Accessibility features
+ * 
+ * Features:
+ * - Range: 10 to 200 elements
+ * - Visual size representation
+ * - Animated background effects
+ * - Size presets (Small/Medium/Large)
+ * - ±10 quick adjustment buttons
+ * - Usage recommendations based on size
+ */
+
 const ArraySizeControl = ({ arraySize, setArraySize, isSorting }) => {
   return (
     <div className="mb-4 relative group">

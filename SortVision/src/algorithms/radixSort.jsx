@@ -1,3 +1,20 @@
+/**
+ * Radix Sort Algorithm
+ * 
+ * Time Complexity:
+ * - Best Case: O(d * (n + k)) - where d is the number of digits, n is the number of elements, and k is the range of input
+ * - Average Case: O(d * (n + k))
+ * - Worst Case: O(d * (n + k))
+ * 
+ * Space Complexity: O(n + k) - where k is the range of input
+ * 
+ * Description:
+ * Radix Sort is a non-comparative sorting algorithm that sorts numbers by processing
+ * individual digits. It works by sorting the numbers digit by digit, starting from
+ * the least significant digit to the most significant digit. This implementation
+ * uses counting sort as a subroutine to sort the digits.
+ * 
+ */
 // Radix Sort
 export const radixSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef) => {
     let max = Math.max(...array);

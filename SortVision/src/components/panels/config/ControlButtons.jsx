@@ -2,6 +2,23 @@ import React from 'react';
 import { RefreshCw, Play, Square } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
+/**
+ * Control Buttons Component
+ * 
+ * A set of interactive buttons for controlling the sorting visualization:
+ * - Generate new array
+ * - Start sorting
+ * - Stop sorting
+ * 
+ * Features:
+ * - Animated hover effects
+ * - Visual feedback
+ * - Accessibility support
+ * - State-aware button states
+ * - Consistent styling with other controls
+ * - Responsive design
+ */
+
 const ControlButtons = ({ generateNewArray, startSorting, stopSorting, isSorting }) => {
   return (
     <div className="my-4 relative group">
