@@ -11,6 +11,44 @@ import {
 } from 'lucide-react';
 
 const WinnerSummary = ({ sortedMetrics }) => {
+  // Get algorithm category
+  const getAlgorithmCategory = (algo) => {
+    switch(algo) {
+      case 'quick':
+      case 'merge':
+      case 'heap':
+        return {
+          name: 'Efficient Sorts',
+          color: 'text-green-500',
+          hover: 'text-green-400'
+        };
+      case 'radix':
+      case 'bucket':
+        return {
+          name: 'Special Sorts',
+          color: 'text-cyan-500',
+          hover: 'text-cyan-400'
+        };
+      case 'insertion':
+      case 'selection':
+      case 'bubble':
+        return {
+          name: 'Basic Sorts',
+          color: 'text-red-500',
+          hover: 'text-red-400'
+        };
+      default:
+        return {
+          name: 'Other Sorts',
+          color: 'text-slate-500',
+          hover: 'text-slate-400'
+        };
+    }
+  };
+
+  const winnerCategory = getAlgorithmCategory(sortedMetrics[0]?.algo);
+  const slowestCategory = getAlgorithmCategory(sortedMetrics[sortedMetrics.length - 1]?.algo);
+  
   return (
     <div className="mt-4 pt-4 border-t border-slate-700">
       <div className="bg-slate-800 p-3 rounded border border-yellow-500 relative overflow-hidden group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
@@ -30,6 +68,9 @@ const WinnerSummary = ({ sortedMetrics }) => {
             />
             <span className="text-yellow-500 group-hover:text-yellow-400 transition-colors duration-300">
               {sortedMetrics[0]?.algo}_sort()
+            </span>
+            <span className={`ml-2 text-xs ${winnerCategory.color} group-hover:${winnerCategory.hover} transition-colors duration-300`}>
+              ({winnerCategory.name})
             </span>
           </div>
           <Badge className="bg-yellow-500/20 text-yellow-500 border-yellow-500/30 group-hover:bg-yellow-500/30 transition-colors duration-300">WINNER</Badge>
@@ -94,9 +135,14 @@ const WinnerSummary = ({ sortedMetrics }) => {
             <Maximize2 className="h-3 w-3 text-green-500 mr-1 group-hover:text-green-400 transition-colors duration-300" />
             <span className="text-[10px] text-slate-400 group-hover:text-slate-300 transition-colors duration-300">Fastest:</span>
           </div>
-          <span className="text-[10px] text-green-500 font-mono group-hover:text-green-400 transition-colors duration-300">
-            {sortedMetrics[0]?.algo}_sort()
-          </span>
+          <div className="flex items-center">
+            <span className="text-[10px] text-green-500 font-mono group-hover:text-green-400 transition-colors duration-300">
+              {sortedMetrics[0]?.algo}_sort()
+            </span>
+            <span className={`ml-1 text-[8px] ${winnerCategory.color} group-hover:${winnerCategory.hover} transition-colors duration-300`}>
+              ({winnerCategory.name})
+            </span>
+          </div>
         </div>
         
         <div className="bg-slate-800 p-2 rounded border border-slate-700 flex items-center justify-between relative overflow-hidden group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
@@ -113,9 +159,14 @@ const WinnerSummary = ({ sortedMetrics }) => {
             <Minimize2 className="h-3 w-3 text-red-500 mr-1 group-hover:text-red-400 transition-colors duration-300" />
             <span className="text-[10px] text-slate-400 group-hover:text-slate-300 transition-colors duration-300">Slowest:</span>
           </div>
-          <span className="text-[10px] text-red-500 font-mono group-hover:text-red-400 transition-colors duration-300">
-            {sortedMetrics[sortedMetrics.length - 1]?.algo}_sort()
-          </span>
+          <div className="flex items-center">
+            <span className="text-[10px] text-red-500 font-mono group-hover:text-red-400 transition-colors duration-300">
+              {sortedMetrics[sortedMetrics.length - 1]?.algo}_sort()
+            </span>
+            <span className={`ml-1 text-[8px] ${slowestCategory.color} group-hover:${slowestCategory.hover} transition-colors duration-300`}>
+              ({slowestCategory.name})
+            </span>
+          </div>
         </div>
       </div>
       

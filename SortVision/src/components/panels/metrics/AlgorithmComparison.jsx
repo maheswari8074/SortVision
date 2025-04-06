@@ -14,6 +14,13 @@ const AlgorithmComparison = ({
   // Find the current algorithm's metrics in sortedMetrics
   const currentAlgoMetrics = sortedMetrics.find(item => item.algo === algorithm)?.metrics;
   
+  // Sort metrics by efficiency (time)
+  const sortedByEfficiency = [...sortedMetrics].sort((a, b) => {
+    const timeA = parseFloat(a.metrics.time);
+    const timeB = parseFloat(b.metrics.time);
+    return timeA - timeB;
+  });
+  
   return (
     <div className="bg-slate-900 p-4 rounded border border-slate-800 relative overflow-hidden group">
       {/* Animated gradient background */}
@@ -56,12 +63,12 @@ const AlgorithmComparison = ({
       
       {/* Algorithm Ranking Cards */}
       <div className="space-y-2 relative z-10">
-        {sortedMetrics.map(({ algo, metrics: algoMetrics, rank }) => (
+        {sortedByEfficiency.map(({ algo, metrics: algoMetrics }, index) => (
           <RankingCard 
             key={algo} 
             algo={algo} 
             metrics={algoMetrics} 
-            rank={rank} 
+            rank={index + 1} 
             algorithm={algorithm} 
             currentAlgoMetrics={currentAlgoMetrics} 
           />
@@ -85,7 +92,7 @@ const AlgorithmComparison = ({
       )}
       
       {/* Winner summary */}
-      {sortedMetrics.length > 0 && <WinnerSummary sortedMetrics={sortedMetrics} />}
+      {sortedMetrics.length > 0 && <WinnerSummary sortedMetrics={sortedByEfficiency} />}
     </div>
   );
 };
