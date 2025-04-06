@@ -1,5 +1,14 @@
 import React from 'react';
-import { bubbleSort, insertionSort, selectionSort, quickSort, mergeSort, radixSort } from '../../algorithms';
+import { 
+  bubbleSort, 
+  insertionSort, 
+  selectionSort, 
+  quickSort, 
+  mergeSort, 
+  radixSort,
+  heapSort,
+  bucketSort 
+} from '../../algorithms';
 
 /**
  * SortingControls Component
@@ -94,6 +103,12 @@ const SortingControls = () => {
         case 'radix':
           metrics = await radixSort(array, setArray, speed, setCurrentBar, shouldStopRef);
           break;
+        case 'heap':
+          metrics = await heapSort(array, setArray, speed, setCurrentBar, shouldStopRef);
+          break;
+        case 'bucket':
+          metrics = await bucketSort(array, setArray, speed, setCurrentBar, shouldStopRef);
+          break;
         default:
           break;
       }
@@ -146,7 +161,7 @@ const SortingControls = () => {
     shouldStopRef.current = false;
     setIsStopped(false);
     
-    const algorithms = ['bubble', 'insertion', 'selection', 'quick', 'merge', 'radix'];
+    const algorithms = ['bubble', 'insertion', 'selection', 'bucket', 'radix', 'heap', 'merge', 'quick'];
     const results = {};
     
     // Clone the original array for consistent testing
@@ -182,6 +197,12 @@ const SortingControls = () => {
             break;
           case 'radix':
             metrics = await radixSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef);
+            break;
+          case 'heap':
+            metrics = await heapSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef);
+            break;
+          case 'bucket':
+            metrics = await bucketSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef);
             break;
           default:
             break;
