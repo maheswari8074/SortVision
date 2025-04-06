@@ -29,6 +29,8 @@ const FunFact = ({ algorithm }) => {
                 {algorithm === "quick" && "Quick Sort was developed by Tony Hoare in 1959 while he was an exchange student at Moscow State University."}
                 {algorithm === "merge" && "Merge Sort was invented by John von Neumann in 1945, one of the earliest divide-and-conquer algorithms described."}
                 {algorithm === "radix" && "Radix Sort predates modern computers and was used with punch card sorting machines in the early 20th century."}
+                {algorithm === "heap" && "Heap Sort was invented by J. W. J. Williams in 1964 and is the basis for many priority queue implementations."}
+                {algorithm === "bucket" && "Bucket Sort is particularly efficient when the input is uniformly distributed across a range."}
             </div>
         </div>
     );

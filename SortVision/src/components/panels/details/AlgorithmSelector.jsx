@@ -123,7 +123,7 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
                 {/* EFFICIENT SORTS BOX */}
                 <div 
                     className={`p-5 rounded-lg cursor-pointer transition-all duration-500 overflow-hidden relative group/efficient
-                        ${algorithm === "quick" || algorithm === "merge"
+                        ${algorithm === "quick" || algorithm === "merge" || algorithm === "heap"
                         ? "bg-gradient-to-br from-slate-800 to-slate-900 border border-blue-500/30 shadow-lg shadow-blue-500/10" 
                         : "bg-gradient-to-br from-slate-800/70 to-slate-900/70 border border-slate-700/50 hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/10"
                     }`}
@@ -174,6 +174,14 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
                                     : "bg-slate-600 hover:bg-blue-400/70 hover:scale-125 hover:rotate-12"
                                 }`}
                             ></div>
+                            <div 
+                                onClick={() => setAlgorithm("heap")}
+                                className={`w-3 h-3 rounded-full cursor-pointer transition-all duration-500 transform ${
+                                    algorithm === "heap" 
+                                    ? "bg-indigo-400 scale-110 animate-pulse shadow-md shadow-indigo-500/50" 
+                                    : "bg-slate-600 hover:bg-indigo-400/70 hover:scale-125 hover:rotate-12"
+                                }`}
+                            ></div>
                         </div>
                     </div>
                     
@@ -203,6 +211,17 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
                                 <div className="absolute inset-0 w-0 group-hover/efficient:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-blue-400/5 to-transparent"></div>
                                 <span className="relative">Merge</span>
                             </button>
+                            <button 
+                                onClick={() => setAlgorithm("heap")}
+                                className={`relative text-xs px-3 py-1.5 rounded-md transition-all duration-500 overflow-hidden ${
+                                    algorithm === "heap" 
+                                    ? "bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 shadow-lg shadow-indigo-500/10" 
+                                    : "text-slate-400 hover:text-indigo-300 hover:-translate-y-1 hover:shadow-md"
+                                }`}
+                            >
+                                <div className="absolute inset-0 w-0 group-hover/efficient:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-indigo-400/5 to-transparent"></div>
+                                <span className="relative">Heap</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -210,7 +229,7 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
                 {/* SPECIAL SORTS BOX */}
                 <div 
                     className={`p-5 rounded-lg cursor-pointer transition-all duration-500 overflow-hidden relative group/special
-                        ${algorithm === "radix"
+                        ${algorithm === "radix" || algorithm === "bucket"
                         ? "bg-gradient-to-br from-slate-800 to-slate-900 border border-purple-500/30 shadow-lg shadow-purple-500/10" 
                         : "bg-gradient-to-br from-slate-800/70 to-slate-900/70 border border-slate-700/50 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/10"
                     }`}
@@ -249,26 +268,45 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm }) => {
                                 onClick={() => setAlgorithm("radix")}
                                 className={`w-3 h-3 rounded-full cursor-pointer transition-all duration-500 transform ${
                                     algorithm === "radix" 
-                                    ? "bg-purple-400 scale-110 animate-pulse shadow-md shadow-purple-500/50" 
-                                    : "bg-slate-600 hover:bg-purple-400/70 hover:scale-125 hover:rotate-12"
+                                    ? "bg-cyan-400 scale-110 animate-pulse shadow-md shadow-cyan-500/50" 
+                                    : "bg-slate-600 hover:bg-cyan-400/70 hover:scale-125 hover:rotate-12"
+                                }`}
+                            ></div>
+                            <div 
+                                onClick={() => setAlgorithm("bucket")}
+                                className={`w-3 h-3 rounded-full cursor-pointer transition-all duration-500 transform ${
+                                    algorithm === "bucket" 
+                                    ? "bg-pink-400 scale-110 animate-pulse shadow-md shadow-pink-500/50" 
+                                    : "bg-slate-600 hover:bg-pink-400/70 hover:scale-125 hover:rotate-12"
                                 }`}
                             ></div>
                         </div>
                     </div>
                     
                     <div className="flex justify-between items-center mt-2">
-                        <div className="flex space-x-2 w-full">
+                        <div className="flex space-x-2 w-full justify-between">
                             <button 
                                 onClick={() => setAlgorithm("radix")}
                                 className={`relative text-xs px-3 py-1.5 rounded-md transition-all duration-500 overflow-hidden ${
                                     algorithm === "radix" 
-                                    ? "bg-purple-500/20 text-purple-300 border border-purple-500/30 shadow-lg shadow-purple-500/10" 
-                                    : "text-slate-400 hover:text-purple-300 hover:-translate-y-1 hover:shadow-md"
+                                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 shadow-lg shadow-cyan-500/10" 
+                                    : "text-slate-400 hover:text-cyan-300 hover:-translate-y-1 hover:shadow-md"
                                 }`}
                             >
                                 {/* Shimmer effect on hover */}
-                                <div className="absolute inset-0 w-0 group-hover/special:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-purple-400/5 to-transparent"></div>
+                                <div className="absolute inset-0 w-0 group-hover/special:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-cyan-400/5 to-transparent"></div>
                                 <span className="relative">Radix</span>
+                            </button>
+                            <button 
+                                onClick={() => setAlgorithm("bucket")}
+                                className={`relative text-xs px-3 py-1.5 rounded-md transition-all duration-500 overflow-hidden ${
+                                    algorithm === "bucket" 
+                                    ? "bg-pink-500/20 text-pink-300 border border-pink-500/30 shadow-lg shadow-pink-500/10" 
+                                    : "text-slate-400 hover:text-pink-300 hover:-translate-y-1 hover:shadow-md"
+                                }`}
+                            >
+                                <div className="absolute inset-0 w-0 group-hover/special:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-pink-400/5 to-transparent"></div>
+                                <span className="relative">Bucket</span>
                             </button>
                         </div>
                     </div>

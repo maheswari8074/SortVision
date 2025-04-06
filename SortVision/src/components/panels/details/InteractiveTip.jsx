@@ -15,7 +15,9 @@ const InteractiveTip = ({ algorithm }) => {
             selection: "Notice how selection sort always takes the same time regardless of initial order.",
             quick: "Observe how the pivot selection affects the partitioning process.",
             merge: "See how merge sort divides the array into smaller subarrays recursively.",
-            radix: "Watch how radix sort processes each digit position independently!"
+            radix: "Watch how radix sort processes each digit position independently!",
+            heap: "Notice how heap sort builds a binary heap and repeatedly extracts the maximum element!",
+            bucket: "Watch how bucket sort distributes elements into buckets and sorts them individually!"
         };
         return tips[algorithm];
     };

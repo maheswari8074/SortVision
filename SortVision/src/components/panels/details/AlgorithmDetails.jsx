@@ -17,6 +17,8 @@ const AlgorithmDetails = ({ algorithm }) => {
             case 'quick': return "bg-gradient-to-br from-green-500/20 to-emerald-500/20";
             case 'merge': return "bg-gradient-to-br from-blue-500/20 to-cyan-500/20";
             case 'radix': return "bg-gradient-to-br from-purple-500/20 to-indigo-500/20";
+            case 'heap': return "bg-gradient-to-br from-indigo-500/20 to-purple-500/20";
+            case 'bucket': return "bg-gradient-to-br from-pink-500/20 to-rose-500/20";
             default: return "bg-gradient-to-br from-emerald-500/20 to-teal-500/20";
         }
     };
@@ -29,6 +31,8 @@ const AlgorithmDetails = ({ algorithm }) => {
             case 'quick': return "bg-gradient-to-r from-green-500/30 via-emerald-500/30 to-purple-500/30";
             case 'merge': return "bg-gradient-to-r from-blue-500/30 via-cyan-500/30 to-purple-500/30";
             case 'radix': return "bg-gradient-to-r from-purple-500/30 via-indigo-500/30 to-purple-500/30";
+            case 'heap': return "bg-gradient-to-r from-indigo-500/30 via-purple-500/30 to-indigo-500/30";
+            case 'bucket': return "bg-gradient-to-r from-pink-500/30 via-rose-500/30 to-pink-500/30";
             default: return "bg-gradient-to-r from-emerald-500/30 via-teal-500/30 to-purple-500/30";
         }
     };
@@ -76,6 +80,20 @@ const AlgorithmDetails = ({ algorithm }) => {
                     particle2: "bg-indigo-500/50",
                     line1: "bg-gradient-to-r from-transparent via-purple-500/30 to-transparent",
                     line2: "bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent"
+                };
+            case 'heap': 
+                return {
+                    particle1: "bg-indigo-500/50",
+                    particle2: "bg-purple-500/50",
+                    line1: "bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent",
+                    line2: "bg-gradient-to-r from-transparent via-purple-500/30 to-transparent"
+                };
+            case 'bucket': 
+                return {
+                    particle1: "bg-pink-500/50",
+                    particle2: "bg-rose-500/50",
+                    line1: "bg-gradient-to-r from-transparent via-pink-500/30 to-transparent",
+                    line2: "bg-gradient-to-r from-transparent via-rose-500/30 to-transparent"
                 };
             default: 
                 return {
@@ -220,6 +238,62 @@ function merge(arr, l, m, r) {
     let max = getMax(arr);
     for (let exp = 1; max/exp > 0; exp *= 10) {
         countSort(arr, exp);
+    }
+}`}
+                                    {algorithm === "heap" && `function heapSort(arr) {
+    let n = arr.length;
+    
+    // Build max heap
+    for (let i = Math.floor(n/2) - 1; i >= 0; i--) {
+        heapify(arr, n, i);
+    }
+    
+    // Extract elements from heap
+    for (let i = n - 1; i > 0; i--) {
+        swap(arr, 0, i);
+        heapify(arr, i, 0);
+    }
+}
+
+function heapify(arr, n, i) {
+    let largest = i;
+    let left = 2 * i + 1;
+    let right = 2 * i + 2;
+    
+    if (left < n && arr[left] > arr[largest]) {
+        largest = left;
+    }
+    
+    if (right < n && arr[right] > arr[largest]) {
+        largest = right;
+    }
+    
+    if (largest !== i) {
+        swap(arr, i, largest);
+        heapify(arr, n, largest);
+    }
+}`}
+                                    {algorithm === "bucket" && `function bucketSort(arr) {
+    let n = arr.length;
+    let buckets = Array.from({length: n}, () => []);
+    
+    // Put elements in buckets
+    for (let i = 0; i < n; i++) {
+        let bucketIndex = Math.floor(n * arr[i]);
+        buckets[bucketIndex].push(arr[i]);
+    }
+    
+    // Sort individual buckets
+    for (let i = 0; i < n; i++) {
+        buckets[i].sort((a, b) => a - b);
+    }
+    
+    // Concatenate all buckets
+    let index = 0;
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < buckets[i].length; j++) {
+            arr[index++] = buckets[i][j];
+        }
     }
 }`}
                                 </code>

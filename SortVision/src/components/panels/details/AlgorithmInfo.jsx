@@ -54,6 +54,20 @@ const AlgorithmInfo = ({ algorithm }) => {
                 inventor: "Herman Hollerith",
                 year: "1887",
                 category_icon: <Lightbulb className="h-4 w-4 text-amber-400" />
+            },
+            heap: {
+                category: "Selection Sort",
+                related: ["Binary Heap", "Priority Queue"],
+                inventor: "J. W. J. Williams",
+                year: "1964",
+                category_icon: <Brain className="h-4 w-4 text-indigo-400" />
+            },
+            bucket: {
+                category: "Distribution Sort",
+                related: ["Radix Sort", "Counting Sort"],
+                inventor: "Unknown",
+                year: "1956",
+                category_icon: <Lightbulb className="h-4 w-4 text-pink-400" />
             }
         };
         return info[algorithm];
