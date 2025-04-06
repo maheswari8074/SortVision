@@ -488,7 +488,7 @@ const AlgorithmVisualization = ({ algorithm }) => {
               }}
             >
               <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 text-[8px] text-cyan-300 font-mono whitespace-nowrap">
-                sort
+                radix sort
               </div>
             </div>
           </div>
@@ -538,7 +538,7 @@ const AlgorithmVisualization = ({ algorithm }) => {
       )}
 
       {algorithm === 'bucket' && (
-        <div className="flex items-end space-x-1 relative">
+        <div className="flex items-end space-x-1 relative h-24">
           {/* Bucket containers */}
           <div className="absolute top-0 left-0 w-full h-full flex space-x-1">
             {[0, 1, 2].map((bucket, i) => (
@@ -556,21 +556,23 @@ const AlgorithmVisualization = ({ algorithm }) => {
           </div>
           
           {/* Elements being distributed */}
-          {[2, 4, 1, 5, 3, 6].map((height, i) => (
-            <div 
-              key={i} 
-              className="w-3 bg-gradient-to-t from-pink-600 to-pink-400 rounded-t transition-all duration-300"
-              style={{ 
-                height: `${height * 6}px`,
-                animation: `distribute ${2 + i * 0.2}s ease-in-out infinite`
-              }}
-            >
-              {/* Element value */}
-              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-[8px] text-pink-300 font-mono tracking-tight whitespace-nowrap">
-                {height}
+          <div className="relative flex items-end space-x-1 z-10">
+            {[2, 4, 1, 5, 6].map((height, i) => (
+              <div 
+                key={i} 
+                className="w-3 bg-gradient-to-t from-pink-600 to-pink-400 rounded-t transition-all duration-300 relative"
+                style={{ 
+                  height: `${height * 8}px`,
+                  animation: `distribute ${2 + i * 0.2}s ease-in-out infinite`
+                }}
+              >
+                {/* Element value */}
+                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-[8px] text-pink-300 font-mono tracking-tight whitespace-nowrap">
+                  {height}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
           
           {/* Distribution indicator */}
           <div className="absolute top-0 left-0 w-full">
