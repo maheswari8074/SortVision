@@ -5,6 +5,8 @@ import { selectionSort } from './selectionSort';
 import { quickSort } from './quickSort';
 import { mergeSort } from './mergeSort';
 import { radixSort } from './radixSort';
+import { heapSort } from './heapSort';
+import { bucketSort } from './bucketSort';
 
 export {
   bubbleSort,
@@ -12,5 +14,7 @@ export {
   selectionSort,
   quickSort,
   mergeSort,
-  radixSort
+  radixSort,
+  heapSort,
+  bucketSort
 };
