@@ -30,6 +30,8 @@ const ArrayVisualization = ({
       case 'quick': return { text: 'text-green-400', glow: 'shadow-green-500/30' };
       case 'merge': return { text: 'text-blue-400', glow: 'shadow-blue-500/30' };
       case 'radix': return { text: 'text-purple-400', glow: 'shadow-purple-500/30' };
+      case 'heap': return { text: 'text-indigo-400', glow: 'shadow-indigo-500/30' };
+      case 'bucket': return { text: 'text-pink-400', glow: 'shadow-pink-500/30' };
       default: return { text: 'text-emerald-400', glow: 'shadow-emerald-500/30' };
     }
   };
@@ -78,6 +80,8 @@ const ArrayVisualization = ({
             {displayedAlgorithm === 'quick' && <div className="absolute inset-0 bg-gradient-to-t from-green-500/10 to-transparent"></div>}
             {displayedAlgorithm === 'merge' && <div className="absolute inset-0 bg-gradient-to-t from-blue-500/10 to-transparent"></div>}
             {displayedAlgorithm === 'radix' && <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/10 to-transparent"></div>}
+            {displayedAlgorithm === 'heap' && <div className="absolute inset-0 bg-gradient-to-t from-indigo-500/10 to-transparent"></div>}
+            {displayedAlgorithm === 'bucket' && <div className="absolute inset-0 bg-gradient-to-t from-pink-500/10 to-transparent"></div>}
           </div>
           
           {/* Algorithm name watermark - moved up to avoid overlap */}
@@ -109,6 +113,8 @@ const ArrayVisualization = ({
                 if (displayedAlgorithm === 'quick') barColor = "bg-gradient-to-t from-blue-600 via-indigo-500 to-violet-400";
                 if (displayedAlgorithm === 'merge') barColor = "bg-gradient-to-t from-violet-600 via-indigo-500 to-blue-400";
                 if (displayedAlgorithm === 'radix') barColor = "bg-gradient-to-t from-cyan-600 via-blue-500 to-teal-400";
+                if (displayedAlgorithm === 'heap') barColor = "bg-gradient-to-t from-indigo-600 via-purple-500 to-blue-400";
+                if (displayedAlgorithm === 'bucket') barColor = "bg-gradient-to-t from-pink-600 via-rose-500 to-pink-400";
               }
               
               // Add extra glow for hovered bar
