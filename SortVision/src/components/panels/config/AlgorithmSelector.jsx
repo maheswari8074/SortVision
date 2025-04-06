@@ -460,85 +460,85 @@ const AlgorithmVisualization = ({ algorithm }) => {
       )}
       
       {algorithm === 'radix' && (
-        <div className="flex items-end space-x-1">
+        <div className="flex items-end space-x-1 relative">
+          {/* Animated bars */}
           {[12, 24, 35, 41, 53, 60].map((height, i) => (
             <div 
               key={i} 
-              className="w-3 bg-gradient-to-t from-cyan-600 to-cyan-400 rounded-t transition-all duration-300"
+              className="w-3 bg-gradient-to-t from-cyan-600 to-cyan-400 rounded-t transition-all duration-300 relative"
               style={{ 
                 height: `${(height/10) * 6}px`,
                 animationDelay: `${i * 0.2}s`
               }}
             >
-              <div className="text-[6px] text-center text-white font-bold">{Math.floor(height/10)}</div>
+              {/* Digit indicator */}
+              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-[8px] text-cyan-300 font-mono tracking-tight whitespace-nowrap">
+                {Math.floor(height/10)}
+              </div>
             </div>
           ))}
+          
+          {/* Sorting indicator */}
+          <div className="absolute top-0 left-0 w-full">
+            <div 
+              className="absolute h-full border-l border-r border-cyan-400/30 rounded w-8 transition-all duration-300"
+              style={{ 
+                left: '0%',
+                animation: 'radixSort 3s ease-in-out infinite'
+              }}
+            >
+              <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 text-[8px] text-cyan-300 font-mono whitespace-nowrap">
+                sort
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
       {algorithm === 'heap' && (
         <div className="flex items-end space-x-1 relative">
-          {/* Background grid effect */}
-          <div className="absolute inset-0 bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:8px_8px] opacity-20"></div>
-          
           {/* Animated bars */}
           {[4, 2, 6, 1, 5, 3].map((height, i) => (
             <div 
               key={i} 
-              className="w-3 bg-gradient-to-t from-indigo-600 to-indigo-400 rounded-t transition-all duration-300 relative group"
+              className="w-3 bg-gradient-to-t from-indigo-600 to-indigo-400 rounded-t transition-all duration-300 relative"
               style={{ 
                 height: `${height * 6}px`
               }}
             >
-              {/* Bar highlight effect */}
-              <div className="absolute inset-x-0 top-0 h-1 bg-white/30 rounded-t"></div>
-              
-              {/* Bar value */}
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[8px] text-indigo-300 opacity-0 group-hover:opacity-100 transition-opacity">
+              {/* Node value */}
+              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-[8px] text-indigo-300 font-mono tracking-tight whitespace-nowrap">
                 {height}
               </div>
-              
-              {/* Heap node highlight */}
-              <div className="absolute inset-0 bg-indigo-300/20 rounded-t animate-pulse" style={{ animationDuration: '2s' }}></div>
             </div>
           ))}
           
-          {/* Heap tree structure */}
+          {/* Tree connections */}
           <div className="absolute top-0 left-0 w-full h-full">
-            {/* Parent-child connections */}
-            <div className="absolute top-2 left-[25%] w-[50%] h-0.5 bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent animate-pulse" style={{ animationDuration: '2s' }}></div>
-            <div className="absolute top-2 left-[12.5%] w-[25%] h-0.5 bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent animate-pulse" style={{ animationDuration: '2s' }}></div>
-            <div className="absolute top-2 left-[62.5%] w-[25%] h-0.5 bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent animate-pulse" style={{ animationDuration: '2s' }}></div>
-            
-            {/* Animated comparison indicator */}
-            <div className="absolute top-0 left-0 w-full">
-              <div 
-                className="absolute h-full border-l-2 border-r-2 border-indigo-400/50 rounded w-8 transition-all duration-300 bg-indigo-500/5"
-                style={{ 
-                  left: '0%',
-                  animation: 'heapCompare 3s ease-in-out infinite'
-                }}
-              >
-                {/* Comparison text */}
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[8px] text-indigo-300">
-                  heapify
-                </div>
-              </div>
-            </div>
+            <div className="absolute top-2 left-[25%] w-[50%] h-0.5 bg-indigo-400/30"></div>
+            <div className="absolute top-2 left-[12.5%] w-[25%] h-0.5 bg-indigo-400/30"></div>
+            <div className="absolute top-2 left-[62.5%] w-[25%] h-0.5 bg-indigo-400/30"></div>
           </div>
           
-          {/* Algorithm step counter */}
-          <div className="absolute -bottom-4 right-0 text-[8px] text-slate-400 font-mono">
-            step: <span className="text-indigo-400">n log n</span>
+          {/* Heapify indicator */}
+          <div className="absolute top-0 left-0 w-full">
+            <div 
+              className="absolute h-full border-l border-r border-indigo-400/30 rounded w-8 transition-all duration-300"
+              style={{ 
+                left: '0%',
+                animation: 'heapify 3s ease-in-out infinite'
+              }}
+            >
+              <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 text-[8px] text-indigo-300 font-mono whitespace-nowrap">
+                heapify
+              </div>
+            </div>
           </div>
         </div>
       )}
 
       {algorithm === 'bucket' && (
         <div className="flex items-end space-x-1 relative">
-          {/* Background grid effect */}
-          <div className="absolute inset-0 bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:8px_8px] opacity-20"></div>
-          
           {/* Bucket containers */}
           <div className="absolute top-0 left-0 w-full h-full flex space-x-1">
             {[0, 1, 2].map((bucket, i) => (
@@ -546,16 +546,11 @@ const AlgorithmVisualization = ({ algorithm }) => {
                 key={i}
                 className="w-1/3 h-full border border-pink-400/30 rounded-t overflow-hidden relative"
               >
-                {/* Bucket fill animation */}
+                {/* Bucket fill */}
                 <div 
-                  className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-pink-500/30 to-pink-400/20 animate-[bucketFill_3s_ease-in-out_infinite]"
+                  className="absolute bottom-0 left-0 w-full bg-pink-400/20"
                   style={{ height: `${(i + 1) * 30}%` }}
                 ></div>
-                
-                {/* Bucket label */}
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[8px] text-pink-300">
-                  Bucket {i + 1}
-                </div>
               </div>
             ))}
           </div>
@@ -564,44 +559,32 @@ const AlgorithmVisualization = ({ algorithm }) => {
           {[2, 4, 1, 5, 3, 6].map((height, i) => (
             <div 
               key={i} 
-              className="w-3 bg-gradient-to-t from-pink-600 to-pink-400 rounded-t transition-all duration-300 relative group"
+              className="w-3 bg-gradient-to-t from-pink-600 to-pink-400 rounded-t transition-all duration-300"
               style={{ 
                 height: `${height * 6}px`,
                 animation: `distribute ${2 + i * 0.2}s ease-in-out infinite`
               }}
             >
-              {/* Bar highlight effect */}
-              <div className="absolute inset-x-0 top-0 h-1 bg-white/30 rounded-t"></div>
-              
-              {/* Bar value */}
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[8px] text-pink-300 opacity-0 group-hover:opacity-100 transition-opacity">
+              {/* Element value */}
+              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-[8px] text-pink-300 font-mono tracking-tight whitespace-nowrap">
                 {height}
               </div>
-              
-              {/* Element highlight */}
-              <div className="absolute inset-0 bg-pink-300/20 rounded-t animate-pulse" style={{ animationDuration: '2s' }}></div>
             </div>
           ))}
           
           {/* Distribution indicator */}
           <div className="absolute top-0 left-0 w-full">
             <div 
-              className="absolute h-full border-l-2 border-r-2 border-pink-400/50 rounded w-8 transition-all duration-300 bg-pink-500/5"
+              className="absolute h-full border-l border-r border-pink-400/30 rounded w-8 transition-all duration-300"
               style={{ 
                 left: '0%',
                 animation: 'distributeIndicator 3s ease-in-out infinite'
               }}
             >
-              {/* Distribution text */}
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[8px] text-pink-300">
+              <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 text-[8px] text-pink-300 font-mono whitespace-nowrap">
                 distribute
               </div>
             </div>
-          </div>
-          
-          {/* Algorithm step counter */}
-          <div className="absolute -bottom-4 right-0 text-[8px] text-slate-400 font-mono">
-            step: <span className="text-pink-400">n+k</span>
           </div>
         </div>
       )}
