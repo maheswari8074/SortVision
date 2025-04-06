@@ -85,18 +85,6 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm, isSorting }) => {
                 </div>
               </SelectItem>
               
-              <SelectItem value="insertion" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
-                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-orange-400/5 to-transparent"></div>
-                <div className="flex items-center relative z-10">
-                  <div className="w-4 h-4 mr-2 relative">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-3 h-1 bg-orange-500 rounded-sm"></div>
-                    </div>
-                  </div>
-                  Insertion Sort
-                </div>
-              </SelectItem>
-              
               <SelectItem value="selection" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
                 <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-yellow-400/5 to-transparent"></div>
                 <div className="flex items-center relative z-10">
@@ -112,15 +100,57 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm, isSorting }) => {
                 </div>
               </SelectItem>
               
-              <SelectItem value="quick" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
-                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-green-400/5 to-transparent"></div>
+              <SelectItem value="insertion" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
+                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-orange-400/5 to-transparent"></div>
                 <div className="flex items-center relative z-10">
                   <div className="w-4 h-4 mr-2 relative">
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-3 h-3 border-r-2 border-t-2 border-green-500 rounded-tr-md animate-spin" style={{ animationDuration: '3s' }}></div>
+                      <div className="w-3 h-1 bg-orange-500 rounded-sm"></div>
                     </div>
                   </div>
-                  Quick Sort
+                  Insertion Sort
+                </div>
+              </SelectItem>
+              
+              <SelectItem value="bucket" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
+                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-pink-400/5 to-transparent"></div>
+                <div className="flex items-center relative z-10">
+                  <div className="w-4 h-4 mr-2 relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-3 h-3 bg-gradient-to-br from-pink-500 to-rose-500 rounded-sm animate-pulse"></div>
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 bg-pink-400 rounded-full animate-bounce" style={{ animationDuration: '1.5s' }}></div>
+                    </div>
+                  </div>
+                  Bucket Sort
+                </div>
+              </SelectItem>
+              
+              <SelectItem value="radix" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
+                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-cyan-400/5 to-transparent"></div>
+                <div className="flex items-center relative z-10">
+                  <div className="w-4 h-4 mr-2 relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-3 h-3 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-sm animate-pulse"></div>
+                    </div>
+                  </div>
+                  Radix Sort
+                </div>
+              </SelectItem>
+              
+              <SelectItem value="heap" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
+                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-indigo-400/5 to-transparent"></div>
+                <div className="flex items-center relative z-10">
+                  <div className="w-4 h-4 mr-2 relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-3 h-3 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-sm animate-pulse"></div>
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-2 h-2 bg-indigo-400 rounded-sm animate-bounce" style={{ animationDuration: '2s' }}></div>
+                    </div>
+                  </div>
+                  Heap Sort
                 </div>
               </SelectItem>
               
@@ -139,15 +169,15 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm, isSorting }) => {
                 </div>
               </SelectItem>
               
-              <SelectItem value="radix" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
-                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-cyan-400/5 to-transparent"></div>
+              <SelectItem value="quick" className="hover:bg-slate-700/50 transition-all duration-200 flex items-center hover:scale-[1.02] group/item relative overflow-hidden">
+                <div className="absolute inset-0 w-0 group-hover/item:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-green-400/5 to-transparent"></div>
                 <div className="flex items-center relative z-10">
                   <div className="w-4 h-4 mr-2 relative">
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-3 h-3 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-sm animate-pulse"></div>
+                      <div className="w-3 h-3 border-r-2 border-t-2 border-green-500 rounded-tr-md animate-spin" style={{ animationDuration: '3s' }}></div>
                     </div>
                   </div>
-                  Radix Sort
+                  Quick Sort
                 </div>
               </SelectItem>
             </SelectContent>
@@ -175,7 +205,9 @@ const AlgorithmBadge = ({ algorithm }) => {
           algorithm === 'selection' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20 shadow-lg shadow-amber-500/10' : 
           algorithm === 'quick' ? 'bg-green-500/10 text-green-400 border border-green-500/20 shadow-lg shadow-green-500/10' : 
           algorithm === 'merge' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20 shadow-lg shadow-blue-500/10' : 
-          'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-lg shadow-cyan-500/10'}
+          algorithm === 'radix' ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-lg shadow-cyan-500/10' :
+          algorithm === 'heap' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-lg shadow-indigo-500/10' :
+          'bg-pink-500/10 text-pink-400 border border-pink-500/20 shadow-lg shadow-pink-500/10'}
         flex items-center gap-3 transform hover:scale-105 transition-all duration-300 relative overflow-hidden
       `}>
         {/* Animated background effect based on algorithm */}
@@ -185,7 +217,9 @@ const AlgorithmBadge = ({ algorithm }) => {
           algorithm === 'selection' ? 'bg-gradient-to-r from-amber-500/0 via-amber-500/10 to-amber-500/0' : 
           algorithm === 'quick' ? 'bg-gradient-to-r from-green-500/0 via-green-500/10 to-green-500/0' : 
           algorithm === 'merge' ? 'bg-gradient-to-r from-blue-500/0 via-blue-500/10 to-blue-500/0' : 
-          'bg-gradient-to-r from-cyan-500/0 via-cyan-500/10 to-cyan-500/0'
+          algorithm === 'radix' ? 'bg-gradient-to-r from-cyan-500/0 via-cyan-500/10 to-cyan-500/0' :
+          algorithm === 'heap' ? 'bg-gradient-to-r from-indigo-500/0 via-indigo-500/10 to-indigo-500/0' :
+          'bg-gradient-to-r from-pink-500/0 via-pink-500/10 to-pink-500/0'
         } animate-pulse`} style={{ animationDuration: '3s' }}></div>
         
         {/* Algorithm icon */}
@@ -200,6 +234,8 @@ const AlgorithmBadge = ({ algorithm }) => {
             {algorithm === 'quick' && "O(n log n) - Divide & conquer"}
             {algorithm === 'merge' && "O(n log n) - Divide & merge"}
             {algorithm === 'radix' && "O(nk) - Non-comparative sort"}
+            {algorithm === 'heap' && "O(n log n) - Binary heap sort"}
+            {algorithm === 'bucket' && "O(n+k) - Distribution sort"}
           </span>
         </div>
       </div>
@@ -260,6 +296,30 @@ const AlgorithmIcon = ({ algorithm }) => {
           <div className="absolute right-0 w-2 h-4 bg-purple-400 rounded-sm"></div>
           <div className="absolute inset-x-0 bottom-0 h-1.5 bg-indigo-400/50 rounded-sm animate-pulse"></div>
         </div>
+      </div>
+    );
+  }
+  
+  if (algorithm === 'heap') {
+    return (
+      <div className="relative h-6 w-6 flex items-center justify-center">
+        <div className="w-4 h-4 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-sm relative overflow-hidden">
+          <div className="absolute inset-0 bg-indigo-400/10"></div>
+          <div className="absolute h-full w-1 bg-indigo-400/30 animate-[heapify_2s_ease-in-out_infinite]"></div>
+        </div>
+        <div className="absolute inset-0 m-auto w-2 h-2 bg-indigo-400 rounded-sm animate-pulse" style={{ animationDuration: '1.5s' }}></div>
+      </div>
+    );
+  }
+  
+  if (algorithm === 'bucket') {
+    return (
+      <div className="relative h-6 w-6 flex items-center justify-center">
+        <div className="w-4 h-4 bg-gradient-to-br from-pink-500 to-rose-500 rounded-sm relative overflow-hidden">
+          <div className="absolute inset-0 bg-pink-400/10"></div>
+          <div className="absolute h-full w-1 bg-pink-400/30 animate-[distribute_2s_ease-in-out_infinite]"></div>
+        </div>
+        <div className="absolute inset-0 m-auto w-2 h-2 bg-pink-400 rounded-full animate-pulse" style={{ animationDuration: '1.5s' }}></div>
       </div>
     );
   }
@@ -413,6 +473,136 @@ const AlgorithmVisualization = ({ algorithm }) => {
               <div className="text-[6px] text-center text-white font-bold">{Math.floor(height/10)}</div>
             </div>
           ))}
+        </div>
+      )}
+
+      {algorithm === 'heap' && (
+        <div className="flex items-end space-x-1 relative">
+          {/* Background grid effect */}
+          <div className="absolute inset-0 bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:8px_8px] opacity-20"></div>
+          
+          {/* Animated bars */}
+          {[4, 2, 6, 1, 5, 3].map((height, i) => (
+            <div 
+              key={i} 
+              className="w-3 bg-gradient-to-t from-indigo-600 to-indigo-400 rounded-t transition-all duration-300 relative group"
+              style={{ 
+                height: `${height * 6}px`
+              }}
+            >
+              {/* Bar highlight effect */}
+              <div className="absolute inset-x-0 top-0 h-1 bg-white/30 rounded-t"></div>
+              
+              {/* Bar value */}
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[8px] text-indigo-300 opacity-0 group-hover:opacity-100 transition-opacity">
+                {height}
+              </div>
+              
+              {/* Heap node highlight */}
+              <div className="absolute inset-0 bg-indigo-300/20 rounded-t animate-pulse" style={{ animationDuration: '2s' }}></div>
+            </div>
+          ))}
+          
+          {/* Heap tree structure */}
+          <div className="absolute top-0 left-0 w-full h-full">
+            {/* Parent-child connections */}
+            <div className="absolute top-2 left-[25%] w-[50%] h-0.5 bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent animate-pulse" style={{ animationDuration: '2s' }}></div>
+            <div className="absolute top-2 left-[12.5%] w-[25%] h-0.5 bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent animate-pulse" style={{ animationDuration: '2s' }}></div>
+            <div className="absolute top-2 left-[62.5%] w-[25%] h-0.5 bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent animate-pulse" style={{ animationDuration: '2s' }}></div>
+            
+            {/* Animated comparison indicator */}
+            <div className="absolute top-0 left-0 w-full">
+              <div 
+                className="absolute h-full border-l-2 border-r-2 border-indigo-400/50 rounded w-8 transition-all duration-300 bg-indigo-500/5"
+                style={{ 
+                  left: '0%',
+                  animation: 'heapCompare 3s ease-in-out infinite'
+                }}
+              >
+                {/* Comparison text */}
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[8px] text-indigo-300">
+                  heapify
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Algorithm step counter */}
+          <div className="absolute -bottom-4 right-0 text-[8px] text-slate-400 font-mono">
+            step: <span className="text-indigo-400">n log n</span>
+          </div>
+        </div>
+      )}
+
+      {algorithm === 'bucket' && (
+        <div className="flex items-end space-x-1 relative">
+          {/* Background grid effect */}
+          <div className="absolute inset-0 bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:8px_8px] opacity-20"></div>
+          
+          {/* Bucket containers */}
+          <div className="absolute top-0 left-0 w-full h-full flex space-x-1">
+            {[0, 1, 2].map((bucket, i) => (
+              <div 
+                key={i}
+                className="w-1/3 h-full border border-pink-400/30 rounded-t overflow-hidden relative"
+              >
+                {/* Bucket fill animation */}
+                <div 
+                  className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-pink-500/30 to-pink-400/20 animate-[bucketFill_3s_ease-in-out_infinite]"
+                  style={{ height: `${(i + 1) * 30}%` }}
+                ></div>
+                
+                {/* Bucket label */}
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[8px] text-pink-300">
+                  Bucket {i + 1}
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          {/* Elements being distributed */}
+          {[2, 4, 1, 5, 3, 6].map((height, i) => (
+            <div 
+              key={i} 
+              className="w-3 bg-gradient-to-t from-pink-600 to-pink-400 rounded-t transition-all duration-300 relative group"
+              style={{ 
+                height: `${height * 6}px`,
+                animation: `distribute ${2 + i * 0.2}s ease-in-out infinite`
+              }}
+            >
+              {/* Bar highlight effect */}
+              <div className="absolute inset-x-0 top-0 h-1 bg-white/30 rounded-t"></div>
+              
+              {/* Bar value */}
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[8px] text-pink-300 opacity-0 group-hover:opacity-100 transition-opacity">
+                {height}
+              </div>
+              
+              {/* Element highlight */}
+              <div className="absolute inset-0 bg-pink-300/20 rounded-t animate-pulse" style={{ animationDuration: '2s' }}></div>
+            </div>
+          ))}
+          
+          {/* Distribution indicator */}
+          <div className="absolute top-0 left-0 w-full">
+            <div 
+              className="absolute h-full border-l-2 border-r-2 border-pink-400/50 rounded w-8 transition-all duration-300 bg-pink-500/5"
+              style={{ 
+                left: '0%',
+                animation: 'distributeIndicator 3s ease-in-out infinite'
+              }}
+            >
+              {/* Distribution text */}
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[8px] text-pink-300">
+                distribute
+              </div>
+            </div>
+          </div>
+          
+          {/* Algorithm step counter */}
+          <div className="absolute -bottom-4 right-0 text-[8px] text-slate-400 font-mono">
+            step: <span className="text-pink-400">n+k</span>
+          </div>
         </div>
       )}
     </div>

@@ -70,6 +70,24 @@ const PerformanceMetrics = () => {
         description: "Non-comparative sorting algorithm that sorts data with integer keys by grouping keys by individual digits which share the same position and value.",
         efficiency: "high",
         color: "green"
+      },
+      heap: {
+        best: "O(n log n)",
+        average: "O(n log n)",
+        worst: "O(n log n)",
+        space: "O(1)",
+        description: "Comparison-based sorting algorithm that uses a binary heap data structure to sort elements. It builds a max heap and repeatedly extracts the maximum element.",
+        efficiency: "high",
+        color: "indigo"
+      },
+      bucket: {
+        best: "O(n+k)",
+        average: "O(n+k)",
+        worst: "O(n²)",
+        space: "O(n+k)",
+        description: "Distribution sort that works by distributing elements into a number of buckets, sorting each bucket individually, and then concatenating the buckets.",
+        efficiency: "medium-high",
+        color: "pink"
       }
     };
     return complexities[algorithm];

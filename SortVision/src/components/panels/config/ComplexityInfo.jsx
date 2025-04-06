@@ -67,6 +67,8 @@ const ComplexityInfo = ({ getAlgorithmTimeComplexity }) => {
               getAlgorithmTimeComplexity().color === "orange" ? "text-orange-500 hover:text-orange-400" : 
               getAlgorithmTimeComplexity().color === "yellow" ? "text-yellow-500 hover:text-yellow-400" : 
               getAlgorithmTimeComplexity().color === "blue" ? "text-blue-500 hover:text-blue-400" : 
+              getAlgorithmTimeComplexity().color === "indigo" ? "text-green-500 hover:text-green-400" :
+              getAlgorithmTimeComplexity().color === "pink" ? "text-pink-500 hover:text-pink-400" :
               "text-green-500 hover:text-green-400"
             }`}>
               {getAlgorithmTimeComplexity().efficiency === "high" && (
