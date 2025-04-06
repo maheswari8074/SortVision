@@ -41,10 +41,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       </BrowserRouter>
     </HelmetProvider>
     <SpeedInsights />
-    <Analytics 
-      mode="production"
-      debug={isDevelopment}
-      beforeSend={beforeSend}
-    />
+    <Analytics />
   </React.StrictMode>,
 )
