@@ -24,7 +24,7 @@
     "braces": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "esbuild": "^0.25.2",
+    "esbuild": ">=0.25.2",
     "http-proxy-middleware": "^2.0.7",
     "lucide-react": "^0.487.0",
     "micromatch": "^4.0.8",
