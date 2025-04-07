@@ -2,10 +2,11 @@ version: 2
 updates:
   # Enable version updates for npm/pnpm
   - package-ecosystem: "npm"
-    directory: "/"
+    directory: "/SortVision"
     schedule:
-      interval: "daily"
-      time: "06:30"
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
       timezone: "UTC"
     # Allow updates for all dependencies
     open-pull-requests-limit: 10
