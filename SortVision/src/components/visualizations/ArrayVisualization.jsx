@@ -110,11 +110,11 @@ const ArrayVisualization = ({
                 if (displayedAlgorithm === 'bubble') barColor = "bg-gradient-to-t from-blue-600 via-cyan-500 to-indigo-400";
                 if (displayedAlgorithm === 'insertion') barColor = "bg-gradient-to-t from-indigo-600 via-blue-500 to-cyan-400";
                 if (displayedAlgorithm === 'selection') barColor = "bg-gradient-to-t from-cyan-600 via-blue-500 to-indigo-400";
-                if (displayedAlgorithm === 'quick') barColor = "bg-gradient-to-t from-blue-600 via-indigo-500 to-violet-400";
-                if (displayedAlgorithm === 'merge') barColor = "bg-gradient-to-t from-violet-600 via-indigo-500 to-blue-400";
-                if (displayedAlgorithm === 'radix') barColor = "bg-gradient-to-t from-cyan-600 via-blue-500 to-teal-400";
-                if (displayedAlgorithm === 'heap') barColor = "bg-gradient-to-t from-indigo-600 via-purple-500 to-blue-400";
-                if (displayedAlgorithm === 'bucket') barColor = "bg-gradient-to-t from-pink-600 via-rose-500 to-pink-400";
+                if (displayedAlgorithm === 'quick') barColor = "bg-gradient-to-t from-blue-600 via-indigo-500 to-cyan-400";
+                if (displayedAlgorithm === 'merge') barColor = "bg-gradient-to-t from-indigo-600 via-blue-500 to-cyan-400";
+                if (displayedAlgorithm === 'radix') barColor = "bg-gradient-to-t from-blue-600 via-cyan-500 to-indigo-400";
+                if (displayedAlgorithm === 'heap') barColor = "bg-gradient-to-t from-indigo-600 via-blue-500 to-cyan-400";
+                if (displayedAlgorithm === 'bucket') barColor = "bg-gradient-to-t from-blue-600 via-indigo-500 to-cyan-400";
               }
               
               // Add extra glow for hovered bar

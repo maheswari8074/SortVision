@@ -256,7 +256,6 @@ const AlgorithmIcon = ({ algorithm }) => {
     );
   }
   
-  // Other algorithm icons
   if (algorithm === 'insertion') {
     return (
       <div className="relative h-6 w-6 flex items-center justify-center">
@@ -266,7 +265,6 @@ const AlgorithmIcon = ({ algorithm }) => {
     );
   }
   
-  // More algorithm icons...
   if (algorithm === 'selection') {
     return (
       <div className="relative h-6 w-6 flex items-center justify-center">
