@@ -1,21 +1,16 @@
 /**
- * SEO-Enhanced Build Script for SortVision
- * 
- * This script runs before the main build to ensure that all SEO
- * assets are generated correctly, including sitemap and meta tags.
+ * Build script with SEO optimization
+ * Generates sitemap, builds the project, and prerenders pages
  */
-import { exec } from 'child_process';
+
+import { execFile } from 'child_process';
 import { promisify } from 'util';
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import process from 'node:process';
 
-// Convert exec to promise-based
-const execAsync = promisify(exec);
-
-// Get current directory
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const execFileAsync = promisify(execFile);
 
 // Log with timestamp
 const log = (message) => {
@@ -28,7 +23,7 @@ async function generateSitemap() {
   log('Generating sitemap.xml...');
   try {
     const sitemapScript = path.resolve(__dirname, './generate-sitemap.js');
-    await execAsync(`node ${sitemapScript}`);
+    await execFileAsync('node', [sitemapScript]);
     log('Sitemap generated successfully.');
     return true;
   } catch (error) {
@@ -41,7 +36,7 @@ async function generateSitemap() {
 async function runBuild() {
   log('Running main build process...');
   try {
-    await execAsync('vite build');
+    await execFileAsync('vite', ['build']);
     log('Build completed successfully.');
     return true;
   } catch (error) {
@@ -54,7 +49,8 @@ async function runBuild() {
 async function runPrerender() {
   log('Running prerender for SEO...');
   try {
-    await execAsync('node prerender.js');
+    const prerenderScript = path.resolve(__dirname, '../prerender.js');
+    await execFileAsync('node', [prerenderScript]);
     log('Prerender completed successfully.');
     return true;
   } catch (error) {
