@@ -42,7 +42,7 @@ importers:
         specifier: '>=0.25.2'
         version: 0.25.2
       http-proxy-middleware:
-        specifier: ^2.0.7
+        specifier: '>=2.0.7'
         version: 2.0.7
       lucide-react:
         specifier: ^0.487.0
