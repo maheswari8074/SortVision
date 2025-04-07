@@ -1,0 +1,58 @@
+version: 2
+updates:
+  # Enable version updates for npm/pnpm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "06:30"
+      timezone: "UTC"
+    # Allow updates for all dependencies
+    open-pull-requests-limit: 10
+    # Group updates by dependency type
+    groups:
+      production-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
+    # Ignore certain dependencies
+    ignore:
+      - dependency-name: "react"
+        versions: ["18.x"]
+      - dependency-name: "react-dom"
+        versions: ["18.x"]
+      - dependency-name: "vite"
+        versions: ["5.x"]
+      - dependency-name: "@vitejs/plugin-react"
+        versions: ["4.x"]
+      - dependency-name: "tailwindcss"
+        versions: ["3.x"]
+      - dependency-name: "postcss"
+        versions: ["8.x"]
+      - dependency-name: "autoprefixer"
+        versions: ["10.x"]
+      - dependency-name: "eslint"
+        versions: ["8.x"]
+      - dependency-name: "eslint-plugin-react"
+        versions: ["7.x"]
+      - dependency-name: "eslint-plugin-react-hooks"
+        versions: ["4.x"]
+      - dependency-name: "eslint-plugin-react-refresh"
+        versions: ["0.x"]
+      - dependency-name: "prettier"
+        versions: ["3.x"]
+      - dependency-name: "@types/react"
+        versions: ["18.x"]
+      - dependency-name: "@types/react-dom"
+        versions: ["18.x"]
+      - dependency-name: "typescript"
+        versions: ["5.x"]
+      - dependency-name: "@types/node"
+        versions: ["20.x"]
+      - dependency-name: "@vercel/analytics"
+        versions: ["1.x"]
+      - dependency-name: "@vercel/speed-insights"
+        versions: ["1.x"]
