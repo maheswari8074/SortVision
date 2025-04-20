@@ -27,7 +27,7 @@ SortVision is an interactive web application that brings sorting algorithms to l
 ### 🌟 **Key Features**
 
 - **Interactive Visualizations**: Watch sorting algorithms in action with real-time animations
-- **Multiple Algorithms**: Explore 6 different sorting algorithms
+- **Multiple Algorithms**: Explore 8 different sorting algorithms
 - **Customizable Parameters**: Adjust speed, array size, and more
 - **Performance Metrics**: Track comparisons, swaps, and time complexity
 - **Educational Insights**: Learn about algorithm behavior and efficiency
@@ -67,7 +67,9 @@ SortVision is an interactive web application that brings sorting algorithms to l
 - **Insertion Sort**: Adaptive sorting algorithm
 - **Merge Sort**: Divide-and-conquer algorithm
 - **Quick Sort**: Efficient, in-place sorting
+- **Heap Sort**: Comparison-based sorting using binary heap data structure
 - **Radix Sort**: Non-comparative integer sorting
+- **Bucket Sort**: Distribution sort that groups elements into buckets
 
 ### 📈 **Performance Tracking**
 - Real-time comparison count
@@ -134,6 +136,8 @@ Here's a detailed breakdown of the **SortVision** project structure:
 ├─ src/               # Source code
 │  ├─ algorithms/     # Sorting algorithm implementations
 │  │  ├─ bubbleSort.jsx
+│  │  ├─ bucketSort.jsx
+│  │  ├─ heapSort.jsx
 │  │  ├─ insertionSort.jsx
 │  │  ├─ mergeSort.jsx
 │  │  ├─ quickSort.jsx
