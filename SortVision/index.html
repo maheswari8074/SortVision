@@ -137,6 +137,10 @@
             console.error('Failed to load debug tools:', error);
           };
           document.head.appendChild(script);
+        } else if (isProductionDomain) {
+          console.log('%c✨ Thanks for visiting SortVision! ✨\n🎯 Explore the power of sorting algorithms visualized', 
+            'background: #4F46E5; color: #FFFFFF; padding: 14px 24px; border-radius: 12px; font-weight: bold; font-size: 18px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); border-left: 6px solid #818CF8; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;');
+          return;
         } else if (!isProductionDomain){
           console.log('%c🔒 SortVision DevTools disabled 🔒\n✨ Access requires debug parameter ✨', 
                      'background: #FB923C; color: #7C2D12; font-size: 14px; padding: 8px 12px; border-radius: 4px; font-weight: bold; border-left: 4px solid #EA580C;');
