@@ -17,9 +17,25 @@
     <meta name="revisit-after" content="7 days">
     <meta name="rating" content="General">
     
-    <!-- Preconnect to needed origins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Viewport and Theme Color -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0F172A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SortVision">
+    <meta name="application-name" content="SortVision">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- Preconnect to critical domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="/manifest.json">
     
     <!-- Critical CSS in-lined to avoid render blocking -->
     <style>
@@ -71,35 +87,42 @@
       }
     </style>
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="apple-touch-icon" href="/favicon.svg">
-    <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="manifest" href="/manifest.json">
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/src/main.jsx" as="script">
+    <link rel="preload" href="/mobile-fix.js" as="script">
     
-    <!-- Viewport and Theme Color -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0F172A">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SortVision">
-    <meta name="application-name" content="SortVision">
-    <meta name="format-detection" content="telephone=no">
+    <!-- Load font stylesheet asynchronously with display=swap to avoid render blocking -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" fetchpriority="low">
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    </noscript>
     
-    <!-- iOS Splash Screens -->
-    <link rel="apple-touch-startup-image" href="/splash.svg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
-    <link rel="apple-touch-startup-image" href="/splash.svg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
-    <link rel="apple-touch-startup-image" href="/splash.svg" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)">
-    <link rel="apple-touch-startup-image" href="/splash.svg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
-    <link rel="apple-touch-startup-image" href="/splash.svg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)">
-    <link rel="apple-touch-startup-image" href="/splash.svg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)">
-    <link rel="apple-touch-startup-image" href="/splash.svg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)">
-    <link rel="apple-touch-startup-image" href="/splash.svg" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)">
-    <link rel="apple-touch-startup-image" href="/splash.svg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)">
-    <link rel="apple-touch-startup-image" href="/splash.svg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)">
+    <!-- Mobile-specific styles (loaded asynchronously) -->
+    <link rel="stylesheet" href="/mobile.css" media="print" onload="this.media='all'" fetchpriority="low">
+    <noscript>
+      <link rel="stylesheet" href="/mobile.css">
+    </noscript>
     
-    <!-- Open Graph / Facebook -->
+    <!-- Mobile scrolling fix -->
+    <script src="/mobile-fix.js" defer></script>
+    
+    <!-- Debug script (loaded conditionally) -->
+    <script src="/debug.js" defer fetchpriority="low"></script>
+    
+    <!-- Mobile debug script (development only) -->
+    <script>
+      // Only include the debug script in development environments
+      if (window.location.hostname === 'localhost' || 
+          window.location.hostname === '127.0.0.1' ||
+          window.location.search.includes('debug=mobile')) {
+        const debugScript = document.createElement('script');
+        debugScript.src = '/mobile-debug.js';
+        debugScript.defer = true;
+        document.head.appendChild(debugScript);
+      }
+    </script>
+    
+    <!-- Open Graph / Facebook (deferred) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://sortvision.vercel.app/">
     <meta property="og:title" content="SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool">
@@ -109,7 +132,7 @@
     <meta property="og:site_name" content="SortVision">
     <meta property="og:locale" content="en_US">
     
-    <!-- Twitter -->
+    <!-- Twitter (deferred) -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://sortvision.vercel.app/">
     <meta name="twitter:title" content="SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool">
@@ -118,7 +141,33 @@
     <meta name="twitter:creator" content="@alienx5499">
     <meta name="twitter:site" content="@alienx5499">
     
-    <!-- Structured Data: Website -->
+    <!-- Lazy-load Google Analytics -->
+    <script>
+      // Defer loading of GA
+      window.addEventListener('load', function() {
+        // GA initialization
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-SZPR3VLNV0', {
+          'send_page_view': false, // Manually send page view later
+          'anonymize_ip': true
+        });
+        
+        // Load GA script
+        const gaScript = document.createElement('script');
+        gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-SZPR3VLNV0';
+        gaScript.async = true;
+        document.head.appendChild(gaScript);
+        
+        // Send pageview after delay
+        setTimeout(function() {
+          gtag('event', 'page_view');
+        }, 2000);
+      });
+    </script>
+    
+    <!-- Structured Data in JSON-LD format (loaded after critical content) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -149,7 +198,7 @@
     }
     </script>
     
-    <!-- Structured Data: BreadcrumbList -->
+    <!-- Structured Data: BreadcrumbList (loaded after critical content) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -163,54 +212,6 @@
         }
       ]
     }
-    </script>
-    
-    <!-- Preload critical assets -->
-    <link rel="preload" href="/src/main.jsx" as="script">
-    <link rel="preload" href="/mobile-fix.js" as="script">
-    
-    <!-- Load font stylesheet asynchronously to avoid render blocking -->
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    </noscript>
-    
-    <!-- Mobile-specific styles -->
-    <link rel="stylesheet" href="/mobile.css" media="print" onload="this.media='all'">
-    <noscript>
-      <link rel="stylesheet" href="/mobile.css">
-    </noscript>
-    
-    <!-- Mobile App Install Prompt -->
-    <meta name="apple-touch-startup-image" content="/splash.svg">
-    
-    <!-- Mobile scrolling fix -->
-    <script src="/mobile-fix.js" defer></script>
-    
-    <!-- Debug script to catch 404 errors -->
-    <script src="/debug.js" defer></script>
-    
-    <!-- Mobile debug script (development only) -->
-    <script>
-      // Only include the debug script in development environments
-      if (window.location.hostname === 'localhost' || 
-          window.location.hostname === '127.0.0.1' ||
-          window.location.search.includes('debug=mobile')) {
-        const debugScript = document.createElement('script');
-        debugScript.src = '/mobile-debug.js';
-        debugScript.defer = true;
-        document.head.appendChild(debugScript);
-        console.log('Mobile debug script loaded - add ?debug=mobile to URL to see controls');
-      }
-    </script>
-    
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZPR3VLNV0"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-SZPR3VLNV0');
     </script>
   </head>
   <body>
@@ -240,15 +241,23 @@
       // Register Service Worker for offline support
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-              console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            })
-            .catch(error => {
-              console.log('ServiceWorker registration failed: ', error);
-            });
+          // Delay registration to ensure main content loads first
+          setTimeout(() => {
+            navigator.serviceWorker.register('/sw.js')
+              .catch(error => {
+                console.log('ServiceWorker registration failed: ', error);
+              });
+          }, 3000);
         });
       }
+      
+      // Fix for iOS viewport height issues
+      function setAppHeight() {
+        document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+      }
+      window.addEventListener('resize', setAppHeight);
+      window.addEventListener('orientationchange', setAppHeight);
+      setAppHeight();
       
       // Add mobile detection for adaptive features
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -257,31 +266,19 @@
         
         // Handle orientation changes
         window.addEventListener('orientationchange', function() {
-          // Delay to ensure DOM updates after orientation change
-          setTimeout(() => {
-            const isPortrait = window.matchMedia("(orientation: portrait)").matches;
-            document.body.classList.toggle('portrait', isPortrait);
-            document.body.classList.toggle('landscape', !isPortrait);
-          }, 100);
+          // Update height variable
+          setAppHeight();
+          
+          // Set orientation classes
+          const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+          document.body.classList.toggle('portrait', isPortrait);
+          document.body.classList.toggle('landscape', !isPortrait);
         });
         
         // Set initial orientation class
         const isPortrait = window.matchMedia("(orientation: portrait)").matches;
         document.body.classList.toggle('portrait', isPortrait);
         document.body.classList.toggle('landscape', !isPortrait);
-        
-        // Add a more targeted approach to handle pinch zoom only in the visualization area
-        window.addEventListener('load', () => {
-          // Find the visualization container
-          const visualizationContainer = document.querySelector('.visualization-container');
-          if (visualizationContainer) {
-            visualizationContainer.addEventListener('touchmove', function(event) {
-              if (event.scale !== 1) {
-                event.preventDefault();
-              }
-            }, { passive: false });
-          }
-        });
       }
     </script>
   </body>

@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
-import { SpeedInsights } from '@vercel/speed-insights/react'
-import { Analytics } from '@vercel/analytics/react'
 import App from './App.jsx'
 import './index.css'
+
+// Lazy load analytics components
+const SpeedInsights = lazy(() => import('@vercel/speed-insights/react').then(module => ({ default: module.SpeedInsights })))
+const Analytics = lazy(() => import('@vercel/analytics/react').then(module => ({ default: module.Analytics })))
 
 // Custom event handler for analytics
 const beforeSend = (event) => {
@@ -28,19 +30,25 @@ const beforeSend = (event) => {
 
 // Check if we're in development mode
 const isDevelopment = window.location.hostname === 'localhost' || 
-                     window.location.hostname === '127.0.0.1';
+                      window.location.hostname === '127.0.0.1';
+
+// Render only in production and if not a prerender
+const shouldRenderAnalytics = !isDevelopment && !document.documentElement.hasAttribute('data-prerender');
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/algorithms/:algorithmName" element={<App />} />
+          <Route path="*" element={<App />} />
         </Routes>
       </BrowserRouter>
+      {shouldRenderAnalytics && (
+        <Suspense fallback={null}>
+          <SpeedInsights />
+          <Analytics beforeSend={beforeSend} />
+        </Suspense>
+      )}
     </HelmetProvider>
-    <SpeedInsights />
-    <Analytics />
-  </React.StrictMode>,
+  </React.StrictMode>
 )
