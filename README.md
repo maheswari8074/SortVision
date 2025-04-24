@@ -112,149 +112,158 @@ SortVision is an interactive web application that brings sorting algorithms to l
 
 ## 📂 **Project Structure**
 
-Here's a detailed breakdown of the **SortVision** project structure:
-
 ```
-📦 SortVision
-├─ .github
-│  ├─ ISSUE_TEMPLATE
-│  │  ├─ bug_report.md
-│  │  └─ feature_request.md
-│  └─ dependabot.yml
-├─ CODE_OF_CONDUCT.md
-├─ CONTRIBUTING.md
-├─ LICENSE
-├─ README.md
-└─ SortVision
-   ├─ .gitignore
-   ├─ components.json
-   ├─ eslint.config.js
-   ├─ index.html
-   ├─ jsconfig.json
-   ├─ package-lock.json
-   ├─ package.json
-   ├─ pnpm-lock.yaml
-   ├─ prerender.js
-   ├─ public
-   │  ├─ debug.js
-   │  ├─ favicon.svg
-   │  ├─ google12e2679e2ea95334.html
-   │  ├─ manifest.json
-   │  ├─ mobile-debug.js
-   │  ├─ mobile-fix.js
-   │  ├─ mobile.css
-   │  ├─ og-image.png
-   │  ├─ robots.txt
-   │  ├─ sitemap.xml
-   │  ├─ splash.svg
-   │  └─ sw.js
-   ├─ scripts
-   │  ├─ build-with-seo.js
-   │  └─ generate-sitemap.js
-   ├─ src
-   │  ├─ App.css
-   │  ├─ App.jsx
-   │  ├─ algorithms
-   │  │  ├─ bubbleSort.jsx
-   │  │  ├─ bucketSort.jsx
-   │  │  ├─ heapSort.jsx
-   │  │  ├─ index.js
-   │  │  ├─ insertionSort.jsx
-   │  │  ├─ mergeSort.jsx
-   │  │  ├─ quickSort.jsx
-   │  │  ├─ radixSort.jsx
-   │  │  └─ selectionSort.jsx
-   │  ├─ components
-   │  │  ├─ MobileOverlay.jsx
-   │  │  ├─ SortingVisualizer.jsx
-   │  │  ├─ panels
-   │  │  │  ├─ ConfigPanel.jsx
-   │  │  │  ├─ DetailsPanel.jsx
-   │  │  │  ├─ MetricsPanel.jsx
-   │  │  │  ├─ config
-   │  │  │  │  ├─ AlgorithmSelector.jsx
-   │  │  │  │  ├─ ArraySizeControl.jsx
-   │  │  │  │  ├─ ComplexityInfo.jsx
-   │  │  │  │  ├─ ControlButtons.jsx
-   │  │  │  │  ├─ SpeedControl.jsx
-   │  │  │  │  └─ index.js
-   │  │  │  ├─ details
-   │  │  │  │  ├─ AlgorithmDetails.jsx
-   │  │  │  │  ├─ AlgorithmInfo.jsx
-   │  │  │  │  ├─ AlgorithmSelector.jsx
-   │  │  │  │  ├─ DataPanel.jsx
-   │  │  │  │  ├─ FunFact.jsx
-   │  │  │  │  ├─ InteractiveTip.jsx
-   │  │  │  │  └─ index.js
-   │  │  │  ├─ index.js
-   │  │  │  └─ metrics
-   │  │  │     ├─ AlgorithmComparison.jsx
-   │  │  │     ├─ CurrentRunMetrics.jsx
-   │  │  │     ├─ RankingCard.jsx
-   │  │  │     ├─ TestControls.jsx
-   │  │  │     ├─ WinnerSummary.jsx
-   │  │  │     └─ index.js
-   │  │  ├─ sortingVisualizer
-   │  │  │  ├─ PerformanceMetrics.jsx
-   │  │  │  ├─ SortingControls.jsx
-   │  │  │  ├─ SortingHeader.jsx
-   │  │  │  ├─ SortingVisualizer.jsx
-   │  │  │  └─ index.js
-   │  │  ├─ ui
-   │  │  │  ├─ badge.jsx
-   │  │  │  ├─ button.jsx
-   │  │  │  ├─ card.jsx
-   │  │  │  ├─ input.jsx
-   │  │  │  ├─ select.jsx
-   │  │  │  ├─ slider.jsx
-   │  │  │  └─ tabs.jsx
-   │  │  └─ visualizations
-   │  │     ├─ ArrayVisualization.jsx
-   │  │     └─ index.js
-   │  ├─ index.css
-   │  ├─ lib
-   │  │  └─ utils.js
-   │  ├─ main.jsx
-   │  └─ utils
-   │     └─ seo.js
-   └─ vite.config.js
+SortVision/                  # Main project repository
+├── src/                     # Source code directory
+│   ├── algorithms/          # Sorting algorithm implementations
+│   ├── components/          # React components
+│   ├── styles/              # CSS styles
+│   ├── utils/               # Utility functions
+│   └── App.js               # Main application component
+├── public/                  # Public assets and static files
+│   ├── devTools/            # Development & debugging tools
+│   │   ├── core.js          # Core utilities & initialization
+│   │   ├── device-info.js   # Device information display
+│   │   ├── index.js         # Entry point for debug tools
+│   │   ├── monitoring.js    # Performance monitoring
+│   │   ├── performance.js   # Performance metrics tracking
+│   │   └── ui.js            # Debug UI components
+│   ├── assets/              # Static assets (images, fonts)
+│   └── index.html           # HTML entry point
+└── docs/                    # Documentation files
 ```
 
 ### 📁 **Key Directories and Files**:
 
-- **`.github/`**: Contains GitHub-specific configuration files for issues, PRs, and automated workflows
-- **`CODE_OF_CONDUCT.md`** & **`CONTRIBUTING.md`**: Guidelines for community participation
-- **`LICENSE`**: MIT License file defining terms of use
-- **`SortVision/`**: Main project directory containing the application code
-  - **`public/`**: Static assets, SEO files, and PWA configuration
-    - **`mobile-debug.js`**: Mobile debugging utilities
-    - **`mobile-fix.js`**: Mobile-specific fixes
-    - **`mobile.css`**: Mobile-specific styles
-    - **`manifest.json`**: PWA manifest file
-    - **`sw.js`**: Service worker for offline functionality
-  - **`scripts/`**: Build automation and utility scripts
-    - **`build-with-seo.js`**: SEO optimization script
-    - **`generate-sitemap.js`**: Sitemap generation
-  - **`src/`**: Source code for the application
-    - **`algorithms/`**: Implementation of each sorting algorithm with visualization steps
-    - **`components/`**: React components organized by feature and function
-      - **`MobileOverlay.jsx`**: Overlay for mobile devices
-      - **`panels/`**: Different UI panels (Configuration, Details, Metrics)
-      - **`sortingVisualizer/`**: Core visualization components
-      - **`ui/`**: Reusable UI components following design system
-      - **`visualizations/`**: Visual representation components for arrays
-    - **`lib/`** & **`utils/`**: Utility functions, helpers, and shared code
+- **src/algorithms/**: Contains implementations of various sorting algorithms, including merge sort, quick sort, bubble sort, etc.
+- **src/components/**: React components that make up the user interface.
+- **src/styles/**: CSS files for styling components.
+- **src/utils/**: Utility functions used across the application.
+- **public/devTools/**: Development and debugging tools for monitoring performance and device information.
+  - **core.js**: Core utilities and initialization logic for debug tools.
+  - **device-info.js**: Detects and displays device-specific information.
+  - **index.js**: Main entry point that loads and initializes the debug tools.
+  - **monitoring.js**: Monitors application performance and logs issues.
+  - **performance.js**: Tracks and displays performance metrics.
+  - **ui.js**: Provides the UI components for the debug panel.
+- **public/assets/**: Static assets like images and fonts.
+- **docs/**: Documentation files, including algorithm explanations.
 
-### 📊 **Component Organization**:
+### 📁 **Detailed Project Structure**:
 
-1. **Algorithm Implementation**: Each sorting algorithm is implemented in its own file in the `algorithms/` directory
-2. **UI Components**: Organized into logical groups based on functionality
-3. **Panels**: Three main panels provide different views of the sorting process:
-   - **Config Panel**: Controls for algorithm selection and visualization settings
-   - **Details Panel**: Educational information about algorithms
-   - **Metrics Panel**: Performance data and algorithm comparisons
-4. **Core Visualization**: Components that handle the array visualization and animation
-5. **Mobile Support**: Special components and utilities for mobile devices
+```
+📦 SortVision                # Root project directory
+├─ .github                   # GitHub specific configurations
+│  ├─ ISSUE_TEMPLATE         # Templates for GitHub issues
+│  │  ├─ bug_report.md       # Bug report template
+│  │  └─ feature_request.md  # Feature request template
+│  └─ dependabot.yml         # Dependabot configuration
+├─ .vite                     # Vite build tool cache
+│  └─ deps                   # Dependency optimization cache
+│     ├─ _metadata.json      # Dependency metadata
+│     └─ package.json        # Dependency package information
+├─ CODE_OF_CONDUCT.md        # Community code of conduct
+├─ CONTRIBUTING.md           # Contribution guidelines
+├─ LICENSE                   # MIT license file
+├─ README.md                 # Project documentation (this file)
+└─ SortVision                # Main application directory
+   ├─ .gitignore             # Git ignore configuration
+   ├─ components.json        # Component configuration
+   ├─ eslint.config.js       # ESLint configuration
+   ├─ index.html             # Main HTML entry point
+   ├─ jsconfig.json          # JavaScript configuration
+   ├─ package-lock.json      # NPM package lock
+   ├─ package.json           # NPM package definition
+   ├─ pnpm-lock.yaml         # PNPM package lock
+   ├─ prerender.js           # Prerendering logic for SEO
+   ├─ public                 # Public static assets
+   │  ├─ devTools            # Developer tools directory
+   │  │  ├─ core.js          # Core utilities and initialization
+   │  │  ├─ device-info.js   # Device detection and information
+   │  │  ├─ index.js         # Main entry point for debug tools
+   │  │  ├─ monitoring.js    # Performance monitoring utilities
+   │  │  ├─ performance.js   # Performance metrics tracking
+   │  │  └─ ui.js            # Debug UI components and panel
+   │  ├─ favicon.svg         # Site favicon
+   │  ├─ google12e2679e2ea95334.html # Google site verification
+   │  ├─ manifest.json       # PWA manifest
+   │  ├─ mobile.css          # Mobile-specific styles
+   │  ├─ og-image.png        # Open Graph image for sharing
+   │  ├─ robots.txt          # Search engine crawling instructions
+   │  ├─ sitemap.xml         # Site map for search engines
+   │  ├─ splash.svg          # App splash screen
+   │  └─ sw.js               # Service worker for offline support
+   ├─ scripts                # Build and utility scripts
+   │  ├─ build-with-seo.js   # Build script with SEO optimization
+   │  └─ generate-sitemap.js # Sitemap generator
+   ├─ src                    # Source code
+   │  ├─ App.css             # App-level styles
+   │  ├─ App.jsx             # Main App component
+   │  ├─ algorithms          # Sorting algorithm implementations
+   │  │  ├─ bubbleSort.jsx   # Bubble sort implementation
+   │  │  ├─ bucketSort.jsx   # Bucket sort implementation
+   │  │  ├─ heapSort.jsx     # Heap sort implementation
+   │  │  ├─ index.js         # Algorithm exports
+   │  │  ├─ insertionSort.jsx # Insertion sort implementation
+   │  │  ├─ mergeSort.jsx    # Merge sort implementation
+   │  │  ├─ quickSort.jsx    # Quick sort implementation
+   │  │  ├─ radixSort.jsx    # Radix sort implementation
+   │  │  └─ selectionSort.jsx # Selection sort implementation
+   │  ├─ components          # UI components
+   │  │  ├─ MobileOverlay.jsx # Mobile device support
+   │  │  ├─ SortingVisualizer.jsx # Main visualization component
+   │  │  ├─ panels           # UI panels
+   │  │  │  ├─ ConfigPanel.jsx # Configuration panel
+   │  │  │  ├─ DetailsPanel.jsx # Algorithm details panel
+   │  │  │  ├─ MetricsPanel.jsx # Performance metrics panel
+   │  │  │  ├─ config        # Configuration components
+   │  │  │  │  ├─ AlgorithmSelector.jsx # Algorithm selection
+   │  │  │  │  ├─ ArraySizeControl.jsx # Array size controls
+   │  │  │  │  ├─ ComplexityInfo.jsx # Complexity information
+   │  │  │  │  ├─ ControlButtons.jsx # Control buttons
+   │  │  │  │  ├─ SpeedControl.jsx # Animation speed control
+   │  │  │  │  └─ index.js   # Config component exports
+   │  │  │  ├─ details       # Detail components
+   │  │  │  │  ├─ AlgorithmDetails.jsx # Algorithm detail display
+   │  │  │  │  ├─ AlgorithmInfo.jsx # Algorithm information
+   │  │  │  │  ├─ AlgorithmSelector.jsx # Algorithm selection
+   │  │  │  │  ├─ DataPanel.jsx # Data display panel
+   │  │  │  │  ├─ FunFact.jsx # Fun facts about algorithms
+   │  │  │  │  ├─ InteractiveTip.jsx # Interactive tips
+   │  │  │  │  └─ index.js   # Detail component exports
+   │  │  │  ├─ index.js      # Panel component exports
+   │  │  │  └─ metrics       # Metric components
+   │  │  │     ├─ AlgorithmComparison.jsx # Algorithm comparisons
+   │  │  │     ├─ CurrentRunMetrics.jsx # Current run metrics
+   │  │  │     ├─ RankingCard.jsx # Algorithm ranking display
+   │  │  │     ├─ TestControls.jsx # Testing controls
+   │  │  │     ├─ WinnerSummary.jsx # Algorithm comparison results
+   │  │  │     └─ index.js   # Metric component exports
+   │  │  ├─ sortingVisualizer # Visualization components
+   │  │  │  ├─ PerformanceMetrics.jsx # Performance display
+   │  │  │  ├─ SortingControls.jsx # Sorting control buttons
+   │  │  │  ├─ SortingHeader.jsx # Visualization header
+   │  │  │  ├─ SortingVisualizer.jsx # Main visualizer
+   │  │  │  └─ index.js      # Visualizer component exports
+   │  │  ├─ ui               # UI component library
+   │  │  │  ├─ badge.jsx     # Badge component
+   │  │  │  ├─ button.jsx    # Button component
+   │  │  │  ├─ card.jsx      # Card component
+   │  │  │  ├─ input.jsx     # Input component
+   │  │  │  ├─ select.jsx    # Select dropdown component
+   │  │  │  ├─ slider.jsx    # Slider component
+   │  │  │  └─ tabs.jsx      # Tabs component
+   │  │  └─ visualizations   # Visualization components
+   │  │     ├─ ArrayVisualization.jsx # Array visual representation
+   │  │     └─ index.js      # Visualization component exports
+   │  ├─ index.css           # Global styles
+   │  ├─ lib                 # Library utilities
+   │  │  └─ utils.js         # Shared utility functions
+   │  ├─ main.jsx            # Application entry point
+   │  └─ utils               # Utility modules
+   │     └─ seo.js           # SEO optimization utilities
+   └─ vite.config.js         # Vite configuration
+```
 
 ---
 
@@ -422,4 +431,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 💡 *Let's work together to enhance the understanding of sorting algorithms!*
 
 </div>
-
