@@ -190,6 +190,20 @@
     <!-- Debug script to catch 404 errors -->
     <script src="/debug.js" defer></script>
     
+    <!-- Mobile debug script (development only) -->
+    <script>
+      // Only include the debug script in development environments
+      if (window.location.hostname === 'localhost' || 
+          window.location.hostname === '127.0.0.1' ||
+          window.location.search.includes('debug=mobile')) {
+        const debugScript = document.createElement('script');
+        debugScript.src = '/mobile-debug.js';
+        debugScript.defer = true;
+        document.head.appendChild(debugScript);
+        console.log('Mobile debug script loaded - add ?debug=mobile to URL to see controls');
+      }
+    </script>
+    
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZPR3VLNV0"></script>
     <script>

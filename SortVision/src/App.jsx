@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import SortingVisualizer from './components/sortingVisualizer/SortingVisualizer';
 import { Terminal, Code, Github, Linkedin, Twitter } from 'lucide-react';
 import { getAlgorithmMetaTags, getAlgorithmSchema, algorithms } from './utils/seo';
+import MobileOverlay from './components/MobileOverlay';
 
 /**
  * Main Application Component
@@ -123,6 +124,9 @@ const App = () => {
   
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-2 sm:p-5 overflow-hidden">
+      {/* Mobile Detection Overlay */}
+      <MobileOverlay />
+      
       {/* SEO Helmet */}
       <Helmet>
         <title>{metaTags.title}</title>
