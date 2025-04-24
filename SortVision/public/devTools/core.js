@@ -229,7 +229,7 @@ const initDevTools = () => {
   const debugRequested = window.location.search.toLowerCase().includes('cr7=goat');
   
   // Always check for production domains first and disable all debugging
-  if (window.location.hostname.includes('vercel.app') || 
+  if (window.location.hostname.includes('localhost') || 
       window.location.hostname.includes('netlify.app') ||
       window.location.hostname.includes('github.io') ||
       window.location.hostname.includes('sortvision.com')) {
