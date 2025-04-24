@@ -23,7 +23,8 @@ import monitoring, { initPerformanceMonitoring } from './monitoring.js';
  * Initialize all debug tools
  */
 function initializeDevTools() {
-  // Check if we should initialize
+  // Check if we should initialize - core.js will handle the validation
+  // and show access denied message if needed
   if (!initDevTools()) {
     return;
   }

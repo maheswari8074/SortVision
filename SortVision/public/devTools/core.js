@@ -225,7 +225,10 @@ const _DEBUG_LOG = function(message, style = null) {
 
 // Main initialization function
 const initDevTools = () => {
-  // Always check for Vercel.app domains first and disable all debugging
+  // Check if we have the debug parameter first
+  const debugRequested = window.location.search.toLowerCase().includes('cr7=goat');
+  
+  // Always check for production domains first and disable all debugging
   if (window.location.hostname.includes('vercel.app') || 
       window.location.hostname.includes('netlify.app') ||
       window.location.hostname.includes('github.io') ||
@@ -241,17 +244,8 @@ const initDevTools = () => {
     return false; // Indicate not to proceed with initialization
   }
   
-  // Check if we should initialize
-  const isDev = window.location.hostname === 'localhost' || 
-                window.location.hostname === '127.0.0.1' ||
-                window.location.hostname.startsWith('192.168.') ||
-                window.location.hostname.startsWith('10.') ||
-                window.location.hostname.startsWith('172.') ||
-                window.location.hostname.includes('.local');
-  const debugRequested = window.location.search.toLowerCase().includes('cr7=goat');
-  
-  // Skip initialization in production without debug flag
-  if (!isDev && !debugRequested) {
+  // Skip initialization without debug flag regardless of environment
+  if (!debugRequested) {
     // Show access denied message for missing debug param
     console.log('%c SortVision Debug: Access Denied 🔒', 'background: #dc2626; color: #ffffff; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); box-shadow: inset 0 0 6px rgba(0,0,0,0.2); border-left: 4px solid #7f1d1d;');
     return false;
