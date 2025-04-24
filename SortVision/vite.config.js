@@ -61,6 +61,20 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
+  },
+  server: {
+    fs: {
+      allow: ['..']
+    },
+    middlewares: [
+      (req, res, next) => {
+        if (req.url && req.url.endsWith('.jsx')) {
+          res.setHeader('Content-Type', 'application/javascript');
+        }
+        next();
+      }
+    ]
   },
   build: {
     minify: 'terser',
@@ -83,9 +97,21 @@ export default defineConfig({
           lucide: ['lucide-react'],
           tailwind: ['tailwindcss', 'tailwind-merge', 'tailwindcss-animate'],
         },
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       },
     },
     chunkSizeWarningLimit: 1000,
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
+    esbuildOptions: {
+      loader: {
+        '.js': 'jsx',
+        '.jsx': 'jsx'
+      }
+    }
   },
   ssgOptions: {
     script: 'async',
