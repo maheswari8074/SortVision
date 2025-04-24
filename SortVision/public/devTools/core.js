@@ -235,10 +235,6 @@ const initDevTools = () => {
   const debugParam = getQueryParam('cr7');
   const debugRequested = debugParam === 'goat';
   
-  // Log detected parameter for troubleshooting
-  console.log('%c SortVision Debug: Checking parameters... URL contains cr7=' + debugParam, 
-              'background: #0F172A; color: #64ffda; padding: 4px; border-radius: 4px;');
-  
   // Check if we're in a production environment
   const isProductionDomain = 
     window.location.hostname.includes('vercel.app') || 

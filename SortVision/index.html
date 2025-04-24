@@ -124,7 +124,7 @@
         // Always block access on production domains
         if (isProductionDomain) {
           console.log('%c🔒 SortVision DevTools Access Denied on Production 🔒\n✨ Debug tools are disabled on production deployments ✨', 
-                      'background: #dc2626; color: #ffffff; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); box-shadow: inset 0 0 6px rgba(0,0,0,0.2); border-left: 4px solid #7f1d1d;');
+            'background: #FF4B2B; color: #F0F0F0; padding: 14px 24px; border-radius: 12px; font-weight: bold; font-size: 18px; text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); border-left: 6px solid #FF8D00; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;');
           return;
         }
         
@@ -139,7 +139,7 @@
           document.head.appendChild(script);
         } else {
           console.log('%c🔒 SortVision DevTools disabled 🔒\n✨ Access requires debug parameter ✨', 
-                      'background: #1a1a2e; color: #ff6b6b; font-size: 14px; padding: 5px 10px; border-radius: 4px;');
+                     'background: #FB923C; color: #7C2D12; font-size: 14px; padding: 8px 12px; border-radius: 4px; font-weight: bold; border-left: 4px solid #EA580C;');
         }
       })();
     </script>
