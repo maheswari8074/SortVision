@@ -123,8 +123,7 @@
         
         // Always block access on production domains
         if (isProductionDomain && hasDebugParam) {
-          console.log('%c🔒 SortVision DevTools Access Denied on Production 🔒\n✨ Debug tools are disabled on production deployments ✨', 
-            'background: #FF4B2B; color: #F0F0F0; padding: 14px 24px; border-radius: 12px; font-weight: bold; font-size: 18px; text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); border-left: 6px solid #FF8D00; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;');
+          console.log('%c SortVision DevTools Access Denied', 'background: #991b1b; color: #ffffff; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; border-left: 3px solid #f87171;');
           return;
         }
         
@@ -138,12 +137,10 @@
           };
           document.head.appendChild(script);
         } else if (isProductionDomain) {
-          console.log('%c✨ Thanks for visiting SortVision! ✨\n🎯 Explore the power of sorting algorithms visualized', 
-            'background: #4F46E5; color: #FFFFFF; padding: 14px 24px; border-radius: 12px; font-weight: bold; font-size: 18px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); border-left: 6px solid #818CF8; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;');
+          console.log('%c Thanks for visiting SortVision!', 'background: #4F46E5; color: #ffffff; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; border-left: 3px solid #818CF8;');
           return;
         } else if (!isProductionDomain){
-          console.log('%c🔒 SortVision DevTools disabled 🔒\n✨ Access requires debug parameter ✨', 
-                     'background: #FB923C; color: #7C2D12; font-size: 14px; padding: 8px 12px; border-radius: 4px; font-weight: bold; border-left: 4px solid #EA580C;');
+          console.log('%c SortVision DevTools disabled', 'background: #FB923C; color: #7C2D12; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; border-left: 3px solid #EA580C;');
         }
       })();
     </script>
