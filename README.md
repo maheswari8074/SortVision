@@ -1,4 +1,6 @@
+<img width="1512" alt="Screenshot 2025-04-25 at 1 22 48 AM" src="https://github.com/user-attachments/assets/ece9d813-a3ff-4212-8496-226d221a3d03" loading="lazy" />
 <div align="center">
+
 # 🌟 **SortVision** 🌟  
 ### *Interactive Sorting Algorithm Visualizer*
 
@@ -313,10 +315,6 @@ SortVision/                  # Main project repository
    - Click "Start" to begin the visualization
    - Use controls to adjust speed and pause/resume
 
-4. **Open in Browser**
-   - Visit `http://localhost:3000`
-   - Start exploring sorting algorithms!
-
 ---
 
 ## 🛠️ **Developer Tools**
@@ -478,6 +476,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
+<div align="center">
 
 ### 📬 **Feedback & Suggestions**
 *We value your input! Share your thoughts through [GitHub Issues](https://github.com/alienx5499/sortvisioN/issues).*
