@@ -228,27 +228,22 @@ const initDevTools = () => {
   // Check if we have the debug parameter first
   const debugRequested = window.location.search.toLowerCase().includes('cr7=goat');
   
-  // Always check for production domains first and disable all debugging
-  if (window.location.hostname.includes('localhost') || 
-      window.location.hostname.includes('netlify.app') ||
-      window.location.hostname.includes('github.io') ||
-      window.location.hostname.includes('sortvision.com')) {
-    // Show access denied message for production
-    console.log('%c SortVision Debug: Access Denied 🔒', 'background: #dc2626; color: #ffffff; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); box-shadow: inset 0 0 6px rgba(0,0,0,0.2); border-left: 4px solid #7f1d1d;');
+  // Check if we're in a production environment
+  const isProductionDomain = 
+    window.location.hostname.includes('vercel.app') || 
+    window.location.hostname.includes('netlify.app') ||
+    window.location.hostname.includes('github.io') ||
+    window.location.hostname.includes('sortvision.com');
     
-    // Silent mode in production
-    window.mobileDebug = {
-      toggle: function() { /* No-op */ },
-      log: function() { /* No-op */ }
-    };
-    return false; // Indicate not to proceed with initialization
-  }
-  
-  // Skip initialization without debug flag regardless of environment
+  // If no debug parameter, show access denied message
   if (!debugRequested) {
-    // Show access denied message for missing debug param
     console.log('%c SortVision Debug: Access Denied 🔒', 'background: #dc2626; color: #ffffff; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); box-shadow: inset 0 0 6px rgba(0,0,0,0.2); border-left: 4px solid #7f1d1d;');
     return false;
+  }
+  
+  // Special message for production domains with debug parameter
+  if (isProductionDomain) {
+    console.log('%c SortVision DevTools on Production 🚀', 'background: #0F172A; color: #64ffda; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); box-shadow: inset 0 0 6px rgba(0,0,0,0.2); border-left: 4px solid #2563eb;');
   }
   
   // Return true to indicate we should proceed with initialization
