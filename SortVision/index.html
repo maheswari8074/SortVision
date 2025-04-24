@@ -123,7 +123,7 @@
         
         // Always block access on production domains
         if (isProductionDomain && hasDebugParam) {
-          console.log('%c SortVision DevTools Access Denied', 'background: #991b1b; color: #ffffff; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; border-left: 3px solid #f87171;');
+          console.log('%c SortVision DevTools Access Denied\n DevTools not available in production', 'background: #991b1b; color: #ffffff; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; border-left: 3px solid #f87171;');
           return;
         }
         
@@ -137,10 +137,10 @@
           };
           document.head.appendChild(script);
         } else if (isProductionDomain) {
-          console.log('%c Thanks for visiting SortVision!', 'background: #4F46E5; color: #ffffff; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; border-left: 3px solid #818CF8;');
+          console.log('%c Thanks for visiting SortVision!\n Explore sorting algorithms visualized', 'background: #4F46E5; color: #ffffff; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; border-left: 3px solid #818CF8;');
           return;
         } else if (!isProductionDomain){
-          console.log('%c SortVision DevTools disabled', 'background: #FB923C; color: #7C2D12; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; border-left: 3px solid #EA580C;');
+          console.log('%c SortVision DevTools disabled\n Add the debug parameter to enable', 'background: #FB923C; color: #7C2D12; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px; border-left: 3px solid #EA580C;');
         }
       })();
     </script>
