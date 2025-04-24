@@ -35,6 +35,34 @@ const isDevelopment = window.location.hostname === 'localhost' ||
 // Render only in production and if not a prerender
 const shouldRenderAnalytics = !isDevelopment && !document.documentElement.hasAttribute('data-prerender');
 
+// Silent mode for development
+if (isDevelopment) {
+  // Override console methods to reduce noise in development
+  const originalConsoleError = console.error;
+  const originalConsoleLog = console.log;
+  
+  // Only show errors related to React/Application issues, not debugging statements
+  console.error = function(...args) {
+    if (args[0] && typeof args[0] === 'string' && 
+        (args[0].includes('[SORTVISION') || 
+         args[0].includes('DebugLogger'))) {
+      // Silent mode for debug messages
+      return;
+    }
+    originalConsoleError.apply(console, args);
+  };
+  
+  console.log = function(...args) {
+    if (args[0] && typeof args[0] === 'string' && 
+        (args[0].includes('[SORTVISION') || 
+         args[0].includes('DebugLogger'))) {
+      // Silent mode for debug messages
+      return;
+    }
+    originalConsoleLog.apply(console, args);
+  };
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HelmetProvider>

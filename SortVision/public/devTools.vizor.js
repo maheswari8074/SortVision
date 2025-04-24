@@ -9,11 +9,8 @@
  * It only runs in development or when ?CR7=GOAT is in URL
  */
 
-// Testing console error visibility in production environments
-console.error("[SORTVISION-TEST] Debug message test at " + new Date().toISOString());
-
 // Create a debugLog function that survives minification and works in production
-function debugLog(message, style = null) {
+const _DEBUG_LOG = function(message, style = null) {
   // Use bracket notation for console methods to prevent removal during minification
   if (typeof window !== 'undefined' && window['console']) {
     // Default style for debug messages
@@ -30,78 +27,47 @@ function debugLog(message, style = null) {
       window['console']['log']('%c [SORTVISION-DEBUG] ', finalStyle);
       window['console']['log'](message);
     }
-    
-    // Also send to error console for better visibility in production logs
-    if (window.location.hostname.includes('vercel.app') || 
-        !window.location.hostname.includes('localhost')) {
-      window['console']['error']('[SORTVISION-DEBUG] ' + (typeof message === 'string' ? message : JSON.stringify(message)));
-    }
   }
-}
+};
 
-// Always log something on load, regardless of other conditions
+// Minimal initialization
 (function logSiteLoad() {
-  const loadMessage = "[SORTVISION] Site loaded at " + new Date().toISOString();
-  
-  // Try multiple logging methods to ensure visibility
-  console.error(loadMessage); // Most likely to appear in Vercel logs
-  console.log(loadMessage);   // Standard log
-  
-  // Create a logging function that runs after a delay
-  const delayedLog = (msg) => setTimeout(() => console.error(msg), 1000);
-  
-  // Log after a delay to avoid potential race conditions
-  delayedLog("[SORTVISION] Delayed load confirmation");
-  
-  // Also log when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      console.error("[SORTVISION] DOM loaded at " + new Date().toISOString());
-    });
-  } else {
-    console.error("[SORTVISION] DOM already loaded at " + new Date().toISOString());
-  }
-  
-  // Log after window load as well
-  window.addEventListener('load', () => {
-    console.error("[SORTVISION] Window loaded at " + new Date().toISOString());
-  });
-  
-  // Try to ping a nonexistent endpoint to generate a visible 404 in Vercel logs
-  try {
-    const diagnosticURL = '/api/diagnostic-log?time=' + Date.now() + 
-                          '&host=' + encodeURIComponent(window.location.hostname) + 
-                          '&search=' + encodeURIComponent(window.location.search) + 
-                          '&message=' + encodeURIComponent('Script loaded');
-                          
-    fetch(diagnosticURL, { method: 'GET', cache: 'no-store' })
-      .catch(() => {
-        // This error is expected and can be ignored
-        console.error("[SORTVISION] Diagnostic request completed");
-      });
-  } catch {
-    // Ignore errors
-  }
+  // Simple initialization - no logging needed
 })();
 
-// Self-executing function to initialize debugger when conditions are met
+// Main initialization function
 (function initDevTools() {
+  // Always check for Vercel.app domains first and disable all debugging
+  if (window.location.hostname.includes('vercel.app')) {
+    // Silent mode in production
+    window.mobileDebug = {
+      toggle: function() { /* No-op */ },
+      log: function() { /* No-op */ }
+    };
+    return; // Exit immediately on Vercel domains
+  }
+  
   // Only initialize in development or when debug param is present
   if (
     window.location.hostname === 'localhost' ||
     window.location.hostname === '127.0.0.1' ||
-    window.location.search.includes('CR7=GOAT')
+    window.location.search.toLowerCase().includes('cr7=goat')
   ) {
-    // Clear and display activation message
-    debugLog('🔍 SortVision DevTools Activated', 'background: #0F172A; color: #64ffda; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px;');
-    
-    // These functions are already covered in the self-executing function below
-    // so we don't need to call separate functions
-    debugLog('SortVision DevTools initializing...');
+    // The functionality will be provided by the self-executing function below
   }
 })();
 
 (function() {
+  // Always check for Vercel.app domains first and disable all debugging
+  if (window.location.hostname.includes('vercel.app')) {
+    // Silent mode in production
+    window.mobileDebug = {
+      toggle: function() { /* No-op */ },
+      log: function() { /* No-op */ }
+    };
+    return; // Exit immediately on Vercel domains
+  }
+  
   // Only run in development or when debug param is set
   const isDev = window.location.hostname === 'localhost' || 
                 window.location.hostname === '127.0.0.1' ||
@@ -112,37 +78,13 @@ function debugLog(message, style = null) {
   const debugRequested = window.location.search.toLowerCase().includes('cr7=goat');
   
   // Vercel-specific debug - add a DOM element to show debug status even if console doesn't work
-  function addVercelDebugElement() {
-    // Only run this on Vercel domains
-    if (!window.location.hostname.includes('vercel.app')) return;
-    
-    setTimeout(() => {
-      const debugElement = document.createElement('div');
-      debugElement.style.position = 'fixed';
-      debugElement.style.bottom = '10px';
-      debugElement.style.right = '10px';
-      debugElement.style.backgroundColor = 'rgba(0,0,0,0.8)';
-      debugElement.style.color = '#64ffda';
-      debugElement.style.padding = '10px';
-      debugElement.style.borderRadius = '5px';
-      debugElement.style.zIndex = '9999';
-      debugElement.style.fontSize = '12px';
-      debugElement.style.fontFamily = 'monospace';
-      
-      debugElement.innerHTML = `
-        <div>SortVision Debug Status:</div>
-        <div>isDev: ${isDev}</div>
-        <div>debugRequested: ${debugRequested}</div>
-        <div>hostname: ${window.location.hostname}</div>
-        <div>search: ${window.location.search}</div>
-      `;
-      
-      document.body.appendChild(debugElement);
-    }, 2000); // Delay to ensure body is ready
-  }
+  const _UNUSED_DEBUG_ELEMENT = function() {
+    // Skip adding debug element - completely disabled
+    return;
+  };
   
-  // Add debug element in case console logs aren't working
-  addVercelDebugElement();
+  // No longer add any debug element to the page
+  // addVercelDebugElement();   // <-- This call has been removed
   
   // Check if we should block based on production domains
   console.error("[DEBUG] Checking domain: " + window.location.hostname); // This will show in Vercel logs
@@ -189,6 +131,14 @@ function debugLog(message, style = null) {
   let FRAME_COUNT = 0;
   
   function createDebugPanel() {
+    // Safety check - don't create the debug panel on production sites
+    if (window.location.hostname.includes('vercel.app') || 
+        window.location.hostname.includes('netlify.app') ||
+        window.location.hostname.includes('github.io') ||
+        window.location.hostname.includes('sortvision.com')) {
+      return;
+    }
+    
     panel = document.createElement('div');
     panel.id = 'mobile-debug-panel';
     
@@ -1801,4 +1751,4 @@ function debugLog(message, style = null) {
       console.log('%c 🛠️ DevTools: ' + message, 'color: #64ffda; background: #1e293b; padding: 3px 6px; border-radius: 3px;');
     }
   };
-})(); 
+})();

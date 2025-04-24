@@ -108,7 +108,7 @@
       (function() {
         var isDevEnvironment = window.location.hostname === 'localhost' || 
                               window.location.hostname === '127.0.0.1';
-        var hasDebugParam = window.location.search.includes('cr7=goat');
+        var hasDebugParam = window.location.search.toLowerCase().includes('cr7=goat');
         
         if (isDevEnvironment || hasDebugParam) {
           var script = document.createElement('script');
