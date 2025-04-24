@@ -1,4 +1,3 @@
-<img width="1512" alt="Screenshot 2025-04-25 at 1 22 48 AM" src="https://github.com/user-attachments/assets/ece9d813-a3ff-4212-8496-226d221a3d03" loading="lazy" />
 <div align="center">
 
 # 🌟 **SortVision** 🌟  
