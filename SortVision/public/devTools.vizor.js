@@ -19,6 +19,39 @@
                 window.location.hostname.includes('.local');
   const debugRequested = window.location.search.toLowerCase().includes('cr7=goat');
   
+  // Vercel-specific debug - add a DOM element to show debug status even if console doesn't work
+  function addVercelDebugElement() {
+    // Only run this on Vercel domains
+    if (!window.location.hostname.includes('vercel.app')) return;
+    
+    setTimeout(() => {
+      const debugElement = document.createElement('div');
+      debugElement.style.position = 'fixed';
+      debugElement.style.bottom = '10px';
+      debugElement.style.right = '10px';
+      debugElement.style.backgroundColor = 'rgba(0,0,0,0.8)';
+      debugElement.style.color = '#64ffda';
+      debugElement.style.padding = '10px';
+      debugElement.style.borderRadius = '5px';
+      debugElement.style.zIndex = '9999';
+      debugElement.style.fontSize = '12px';
+      debugElement.style.fontFamily = 'monospace';
+      
+      debugElement.innerHTML = `
+        <div>SortVision Debug Status:</div>
+        <div>isDev: ${isDev}</div>
+        <div>debugRequested: ${debugRequested}</div>
+        <div>hostname: ${window.location.hostname}</div>
+        <div>search: ${window.location.search}</div>
+      `;
+      
+      document.body.appendChild(debugElement);
+    }, 2000); // Delay to ensure body is ready
+  }
+  
+  // Add debug element in case console logs aren't working
+  addVercelDebugElement();
+  
   // Check if we should block based on production domains
   console.error("[DEBUG] Checking domain: " + window.location.hostname); // This will show in Vercel logs
   
