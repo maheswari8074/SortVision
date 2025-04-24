@@ -20,16 +20,20 @@
   const debugRequested = window.location.search.toLowerCase().includes('cr7=goat');
   
   // Check if we should block based on production domains
+  console.error("[DEBUG] Checking domain: " + window.location.hostname); // This will show in Vercel logs
+  
   if (!isDev && !debugRequested && 
       (window.location.hostname.includes('vercel.app') || 
       window.location.hostname.includes('netlify.app') ||
       window.location.hostname.includes('github.io') ||
       window.location.hostname.includes('sortvision.com'))) {
-    console.log('Hello World');
+    console.error("[DEBUG] DevTools disabled on production site: " + window.location.hostname);
+    console.log('%c 🚫 DevTools disabled on production sites', 'color: #ff5f56; font-weight: bold;');
     return; // Exit immediately on production domains without debug param
   }
   
   if (!isDev && !debugRequested) {
+    console.error("[DEBUG] Exiting early: not dev and no debug param");
     return; // Exit early in non-dev without debug flag
   }
   
