@@ -28,7 +28,7 @@
                 window.location.hostname.startsWith('10.') ||
                 window.location.hostname.startsWith('172.') ||
                 window.location.hostname.includes('.local');
-  const debugRequested = window.location.search.includes('CR7=GOAT');
+  const debugRequested = window.location.search.toLowerCase().includes('cr7=goat');
   
   if (!isDev && !debugRequested) {
     return; // Exit early in non-dev without debug flag
