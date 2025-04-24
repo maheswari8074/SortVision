@@ -114,9 +114,9 @@
       // Only include the debug script in development environments
       if (window.location.hostname === 'localhost' || 
           window.location.hostname === '127.0.0.1' ||
-          window.location.search.includes('debug=mobile')) {
+          window.location.search.includes('CR7=GOAT')) {
         const debugScript = document.createElement('script');
-        debugScript.src = '/mobile-debug.js';
+        debugScript.src = '/devTools.vizor.js';
         debugScript.defer = true;
         document.head.appendChild(debugScript);
       }

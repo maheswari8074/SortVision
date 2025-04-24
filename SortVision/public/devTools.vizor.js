@@ -1,13 +1,12 @@
 /**
- * SortVision Mobile Debug Utilities
+ * SortVision Debug Utilities - Combined Mobile & Performance Monitoring
  * 
- * This script helps debug mobile-specific issues:
- * - Detects touch events
- * - Monitors viewport sizes
- * - Displays device orientation
- * - Tracks interaction issues
+ * This script provides comprehensive debugging tools:
+ * - Mobile-specific debugging (touch events, viewport, orientation)
+ * - Performance monitoring (FPS, memory usage, resource timing)
+ * - Device information display
  * 
- * It only runs in development or when ?debug=mobile is in URL
+ * It only runs in development or when ?CR7=GOAT is in URL
  */
 
 (function() {
@@ -16,7 +15,7 @@
       window.location.hostname.includes('netlify.app') ||
       window.location.hostname.includes('github.io') ||
       window.location.hostname.includes('sortvision.com')) {
-    console.log('📱 Mobile Debug Panel disabled on production sites');
+    console.log('🐞📱 Debug Panel disabled on production sites');
     return; // Exit immediately on production domains
   }
   
@@ -27,13 +26,13 @@
                 window.location.hostname.startsWith('10.') ||
                 window.location.hostname.startsWith('172.') ||
                 window.location.hostname.includes('.local');
-  const debugRequested = window.location.search.includes('debug=mobile');
+  const debugRequested = window.location.search.includes('CR7=GOAT');
   
   if (!isDev && !debugRequested) {
     return; // Exit early in non-dev without debug flag
   }
   
-  console.log('📱 Mobile Debug Utilities Loaded');
+  console.log('🔧 DevTools Activated');
   
   // Create debug panel
   let panel;
@@ -42,6 +41,20 @@
   const IS_MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const IS_IOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
   const IS_ANDROID = /Android/i.test(navigator.userAgent);
+  
+  // Performance data container (from debug.js)
+  const PERF_DATA = {
+    fps: [],
+    memory: [],
+    resources: {},
+    webVitals: {},
+    events: []
+  };
+  
+  // FPS measurement variables (from debug.js)
+  let MEASURING = false;
+  let LAST_FRAME_TIME = 0;
+  let FRAME_COUNT = 0;
   
   function createDebugPanel() {
     panel = document.createElement('div');
@@ -382,7 +395,7 @@
     // Create the HTML structure
     panel.innerHTML = `
       <div id="mobile-debug-header">
-        <div id="mobile-debug-title">SortVision Debug</div>
+        <div id="mobile-debug-title">SortVision Dev Tools</div>
         <div id="mobile-debug-controls">
           <div class="terminal-control minimize"></div>
           <div class="terminal-control maximize"></div>
@@ -710,8 +723,8 @@
             gpuInfo += `<span class="faded"> | WebGL ${glVersionShort}</span>`;
           }
         }
-      } catch (e) {
-        void e; // Using void to suppress unused variable warning
+      } catch (/* eslint-disable-line no-unused-vars */ error) {
+        void error; // Using void to suppress unused variable warning
         gpuInfo = 'GPU: Info restricted';
       }
       
@@ -1139,8 +1152,8 @@
               }
             }
           }
-        } catch (e) {
-          void e; // Using void to suppress unused variable warning
+        } catch (/* eslint-disable-line no-unused-vars */ error) {
+          void error; // Using void to suppress unused variable warning
           console.log('Battery API error');
         }
         
@@ -1163,8 +1176,8 @@
                 const canvas = document.createElement('canvas');
                 return !!(window.WebGLRenderingContext && 
                   (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
-              } catch (e) {
-                void e; // Suppress unused variable warning
+              } catch (/* eslint-disable-line no-unused-vars */ error) {
+                void error; // Suppress unused variable warning
                 return false;
               }
             })(),
@@ -1176,8 +1189,8 @@
               try {
                 const canvas = document.createElement('canvas');
                 return !!(window.WebGL2RenderingContext && canvas.getContext('webgl2'));
-              } catch (e) {
-                void e; // Suppress unused variable warning
+              } catch (/* eslint-disable-line no-unused-vars */ error) {
+                void error; // Suppress unused variable warning
                 return false;
               }
             })(),
@@ -1231,8 +1244,8 @@
                 // Check for basic ES6 features
                 eval('() => {}; const a = [1, 2, 3].find(x => x > 1);');
                 return true;
-              } catch (e) {
-                void e; // Suppress unused variable warning
+              } catch (/* eslint-disable-line no-unused-vars */ error) {
+                void error; // Suppress unused variable warning
                 return false;
               }
             })(),
@@ -1468,8 +1481,8 @@
             localStorage.setItem('test', 'test');
             localStorage.removeItem('test');
             types.push('localStorage');
-          } catch (e) {
-            void e; // Using void to suppress unused variable warning
+          } catch (/* eslint-disable-line no-unused-vars */ error) {
+            void error; // Using void to suppress unused variable warning
             types.push('localStorage (blocked)');
           }
         }
@@ -1480,8 +1493,8 @@
             sessionStorage.setItem('test', 'test');
             sessionStorage.removeItem('test');
             types.push('sessionStorage');
-          } catch (e) {
-            void e; // Using void to suppress unused variable warning
+          } catch (/* eslint-disable-line no-unused-vars */ error) {
+            void error; // Using void to suppress unused variable warning
             types.push('sessionStorage (blocked)');
           }
         }
@@ -1592,33 +1605,32 @@
   
   // Monitor scroll events
   function monitorScrollEvents() {
+    if (!panel) return;
+    
+    const scrollEl = document.getElementById('md-scroll');
+    if (!scrollEl) return;
+    
     let lastScrollY = window.scrollY;
-    let scrollTimer;
+    let lastScrollX = window.scrollX;
+    // Use uppercase since it's a constant that doesn't change
+    const MAX_SCROLL_X = Math.max(0, document.documentElement.scrollWidth - window.innerWidth);
+    const MAX_SCROLL_Y = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
     
     window.addEventListener('scroll', () => {
-      clearTimeout(scrollTimer);
+      const scrollX = window.scrollX;
+      const scrollY = window.scrollY;
       
-      // Check for scroll inconsistencies
-      const currentScrollY = window.scrollY;
-      const delta = currentScrollY - lastScrollY;
-      
-      // iOS Safari often reports incorrect scroll position during momentum scroll
-      if (Math.abs(delta) > 50) {
-        console.info('📜 Large scroll delta detected:', delta);
+      if (scrollX !== lastScrollX || scrollY !== lastScrollY) {
+        lastScrollX = scrollX;
+        lastScrollY = scrollY;
+        
+        // Calculate scroll percentages
+        const xPercent = MAX_SCROLL_X > 0 ? Math.round((scrollX / MAX_SCROLL_X) * 100) : 0;
+        const yPercent = MAX_SCROLL_Y > 0 ? Math.round((scrollY / MAX_SCROLL_Y) * 100) : 0;
+        
+        scrollEl.innerHTML = `Scroll: x:${scrollX}px (${xPercent}%), y:${scrollY}px (${yPercent}%)`;
       }
-      
-      lastScrollY = currentScrollY;
-      
-      // Update app height on scroll stop
-      scrollTimer = setTimeout(() => {
-        const computedStyle = getComputedStyle(document.documentElement);
-        const appHeight = computedStyle.getPropertyValue('--app-height');
-        const heightEl = document.getElementById('md-height');
-        if (heightEl) {
-          heightEl.textContent = `--app-height: ${appHeight} (after scroll)`;
-        }
-      }, 200);
-    }, { passive: true });
+    });
   }
   
   // Monitor resize and orientation changes
