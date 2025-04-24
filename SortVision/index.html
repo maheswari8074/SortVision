@@ -121,21 +121,15 @@
           window.location.hostname.includes('github.io') ||
           window.location.hostname.includes('sortvision.com');
         
-        // Allow debug tools on production domains only with the debug parameter
-        if (isProductionDomain && !hasDebugParam) {
+        // Always block access on production domains
+        if (isProductionDomain && hasDebugParam) {
           console.log('%c🔒 SortVision DevTools Access Denied on Production 🔒\n✨ Debug tools are disabled on production deployments ✨', 
-             'background: #FF4B2B; color: #F0F0F0; padding: 14px 24px; border-radius: 12px; font-weight: bold; font-size: 18px; text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); border-left: 6px solid #FF8D00; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;');
+            'background: #FF4B2B; color: #F0F0F0; padding: 14px 24px; border-radius: 12px; font-weight: bold; font-size: 18px; text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); border-left: 6px solid #FF8D00; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;');
           return;
         }
-
+        
         if (hasDebugParam) {
-          // If on production with debug parameter, show success message
-          if (isProductionDomain) {
-            console.log('%c🔓 SortVision DevTools Activated on Production 🔓\n✨ Debug mode enabled via special parameter ✨', 
-              'background: #0070F3; color: #FFFFFF; padding: 14px 24px; border-radius: 12px; font-weight: bold; font-size: 18px; text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); border-left: 6px solid #00C7FF; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;');
-          }
-
-          // Load debug tools with a script tag
+          // Load debug tools with a script tag instead of import
           var script = document.createElement('script');
           script.type = 'module';
           script.src = '/devTools/index.js';
@@ -145,7 +139,7 @@
           document.head.appendChild(script);
         } else {
           console.log('%c🔒 SortVision DevTools disabled 🔒\n✨ Access requires debug parameter ✨', 
-                      'background: #FB923C; color: #7C2D12; font-size: 14px; padding: 8px 12px; border-radius: 4px; font-weight: bold; border-left: 4px solid #EA580C;');
+                     'background: #FB923C; color: #7C2D12; font-size: 14px; padding: 8px 12px; border-radius: 4px; font-weight: bold; border-left: 4px solid #EA580C;');
         }
       })();
     </script>
