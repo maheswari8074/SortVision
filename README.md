@@ -116,106 +116,108 @@ Here's a detailed breakdown of the **SortVision** project structure:
 
 ```
 📦 SortVision
-├─ .github                     # GitHub configuration files
-│  ├─ ISSUE_TEMPLATE           # Templates for GitHub issues
-│  │  ├─ bug_report.md         # Template for bug reports
-│  │  └─ feature_request.md    # Template for feature requests
-│  └─ dependabot.yml           # Dependabot configuration for automated dependency updates
-├─ CODE_OF_CONDUCT.md          # Code of conduct for contributors
-├─ CONTRIBUTING.md             # Guidelines for contributing to the project
-├─ LICENSE                     # MIT License file
-├─ README.md                   # Project documentation (this file)
-└─ SortVision                  # Main project directory
-   ├─ .gitignore               # Git ignore rules
-   ├─ components.json          # ShadCN UI component configuration
-   ├─ eslint.config.js         # ESLint configuration
-   ├─ index.html               # Main HTML entry point
-   ├─ jsconfig.json            # JavaScript configuration
-   ├─ package-lock.json        # npm dependency lock file
-   ├─ package.json             # Project dependencies and scripts
-   ├─ pnpm-lock.yaml           # pnpm dependency lock file
-   ├─ prerender.js             # Static site generation script
-   ├─ public                   # Static assets
-   │  ├─ debug.js              # Debugging utilities
-   │  ├─ favicon.svg           # Website favicon
-   │  ├─ google12e2679e2ea95334.html  # Google site verification
-   │  ├─ manifest.json         # PWA manifest
-   │  ├─ mobile-fix.js         # Mobile-specific fixes
-   │  ├─ mobile.css            # Mobile-specific styles
-   │  ├─ og-image.png          # OpenGraph image for social sharing
-   │  ├─ robots.txt            # Search engine crawling instructions
-   │  ├─ sitemap.xml           # Site structure for search engines
-   │  ├─ splash.svg            # PWA splash screen
-   │  └─ sw.js                 # Service worker for offline functionality
-   ├─ scripts                  # Build and utility scripts
-   │  ├─ build-with-seo.js     # SEO optimization script
-   │  └─ generate-sitemap.js   # Sitemap generation
-   ├─ src                      # Source code
-   │  ├─ App.css               # Main application styles
-   │  ├─ App.jsx               # Main application component
-   │  ├─ algorithms            # Sorting algorithm implementations
-   │  │  ├─ bubbleSort.jsx     # Bubble Sort implementation
-   │  │  ├─ bucketSort.jsx     # Bucket Sort implementation
-   │  │  ├─ heapSort.jsx       # Heap Sort implementation
-   │  │  ├─ index.js           # Algorithm export file
-   │  │  ├─ insertionSort.jsx  # Insertion Sort implementation
-   │  │  ├─ mergeSort.jsx      # Merge Sort implementation
-   │  │  ├─ quickSort.jsx      # Quick Sort implementation
-   │  │  ├─ radixSort.jsx      # Radix Sort implementation
-   │  │  └─ selectionSort.jsx  # Selection Sort implementation
-   │  ├─ components            # React components
-   │  │  ├─ SortingVisualizer.jsx  # Main visualization component
-   │  │  ├─ panels             # UI panels
-   │  │  │  ├─ ConfigPanel.jsx       # Configuration panel
-   │  │  │  ├─ DetailsPanel.jsx      # Algorithm details panel
-   │  │  │  ├─ MetricsPanel.jsx      # Performance metrics panel
-   │  │  │  ├─ config               # Configuration components
-   │  │  │  │  ├─ AlgorithmSelector.jsx  # Algorithm selection component
-   │  │  │  │  ├─ ArraySizeControl.jsx   # Array size control
-   │  │  │  │  ├─ ComplexityInfo.jsx     # Algorithm complexity info
-   │  │  │  │  ├─ ControlButtons.jsx     # Control buttons (start, pause, etc.)
-   │  │  │  │  ├─ SpeedControl.jsx       # Animation speed control
-   │  │  │  │  └─ index.js               # Config components export
-   │  │  │  ├─ details                # Details panel components
-   │  │  │  │  ├─ AlgorithmDetails.jsx   # Detailed algorithm description
-   │  │  │  │  ├─ AlgorithmInfo.jsx      # Algorithm information
-   │  │  │  │  ├─ AlgorithmSelector.jsx  # Algorithm selection for details
-   │  │  │  │  ├─ DataPanel.jsx          # Data visualization panel
-   │  │  │  │  ├─ FunFact.jsx            # Fun facts about algorithms
-   │  │  │  │  ├─ InteractiveTip.jsx     # Interactive usage tips
-   │  │  │  │  └─ index.js               # Details components export
-   │  │  │  ├─ index.js              # Panels export
-   │  │  │  └─ metrics               # Metrics panel components
-   │  │  │     ├─ AlgorithmComparison.jsx # Algorithm comparison
-   │  │  │     ├─ CurrentRunMetrics.jsx   # Current run performance
-   │  │  │     ├─ RankingCard.jsx         # Algorithm ranking card
-   │  │  │     ├─ TestControls.jsx        # Performance test controls
-   │  │  │     ├─ WinnerSummary.jsx       # Best algorithm summary
-   │  │  │     └─ index.js                # Metrics components export
-   │  │  ├─ sortingVisualizer      # Core visualization components
-   │  │  │  ├─ PerformanceMetrics.jsx  # Performance metrics display
-   │  │  │  ├─ SortingControls.jsx     # Sorting controls
-   │  │  │  ├─ SortingHeader.jsx       # Header for visualization
-   │  │  │  ├─ SortingVisualizer.jsx   # Main visualizer component
-   │  │  │  └─ index.js                # Visualizer components export
-   │  │  ├─ ui                    # Reusable UI components
-   │  │  │  ├─ badge.jsx              # Badge component
-   │  │  │  ├─ button.jsx             # Button component
-   │  │  │  ├─ card.jsx               # Card component
-   │  │  │  ├─ input.jsx              # Input component
-   │  │  │  ├─ select.jsx             # Select dropdown component
-   │  │  │  ├─ slider.jsx             # Slider component
-   │  │  │  └─ tabs.jsx               # Tabs component
-   │  │  └─ visualizations        # Array visualization components
-   │  │     ├─ ArrayVisualization.jsx  # Array visualization
-   │  │     └─ index.js                # Visualization components export
-   │  ├─ index.css               # Global CSS styles
-   │  ├─ lib                     # Utility libraries
-   │  │  └─ utils.js             # Common utility functions
-   │  ├─ main.jsx                # Application entry point
-   │  └─ utils                   # Helper functions
-   │     └─ seo.js               # SEO optimization utilities
-   └─ vite.config.js            # Vite bundler configuration
+├─ .github
+│  ├─ ISSUE_TEMPLATE
+│  │  ├─ bug_report.md
+│  │  └─ feature_request.md
+│  └─ dependabot.yml
+├─ CODE_OF_CONDUCT.md
+├─ CONTRIBUTING.md
+├─ LICENSE
+├─ README.md
+└─ SortVision
+   ├─ .gitignore
+   ├─ components.json
+   ├─ eslint.config.js
+   ├─ index.html
+   ├─ jsconfig.json
+   ├─ package-lock.json
+   ├─ package.json
+   ├─ pnpm-lock.yaml
+   ├─ prerender.js
+   ├─ public
+   │  ├─ debug.js
+   │  ├─ favicon.svg
+   │  ├─ google12e2679e2ea95334.html
+   │  ├─ manifest.json
+   │  ├─ mobile-debug.js
+   │  ├─ mobile-fix.js
+   │  ├─ mobile.css
+   │  ├─ og-image.png
+   │  ├─ robots.txt
+   │  ├─ sitemap.xml
+   │  ├─ splash.svg
+   │  └─ sw.js
+   ├─ scripts
+   │  ├─ build-with-seo.js
+   │  └─ generate-sitemap.js
+   ├─ src
+   │  ├─ App.css
+   │  ├─ App.jsx
+   │  ├─ algorithms
+   │  │  ├─ bubbleSort.jsx
+   │  │  ├─ bucketSort.jsx
+   │  │  ├─ heapSort.jsx
+   │  │  ├─ index.js
+   │  │  ├─ insertionSort.jsx
+   │  │  ├─ mergeSort.jsx
+   │  │  ├─ quickSort.jsx
+   │  │  ├─ radixSort.jsx
+   │  │  └─ selectionSort.jsx
+   │  ├─ components
+   │  │  ├─ MobileOverlay.jsx
+   │  │  ├─ SortingVisualizer.jsx
+   │  │  ├─ panels
+   │  │  │  ├─ ConfigPanel.jsx
+   │  │  │  ├─ DetailsPanel.jsx
+   │  │  │  ├─ MetricsPanel.jsx
+   │  │  │  ├─ config
+   │  │  │  │  ├─ AlgorithmSelector.jsx
+   │  │  │  │  ├─ ArraySizeControl.jsx
+   │  │  │  │  ├─ ComplexityInfo.jsx
+   │  │  │  │  ├─ ControlButtons.jsx
+   │  │  │  │  ├─ SpeedControl.jsx
+   │  │  │  │  └─ index.js
+   │  │  │  ├─ details
+   │  │  │  │  ├─ AlgorithmDetails.jsx
+   │  │  │  │  ├─ AlgorithmInfo.jsx
+   │  │  │  │  ├─ AlgorithmSelector.jsx
+   │  │  │  │  ├─ DataPanel.jsx
+   │  │  │  │  ├─ FunFact.jsx
+   │  │  │  │  ├─ InteractiveTip.jsx
+   │  │  │  │  └─ index.js
+   │  │  │  ├─ index.js
+   │  │  │  └─ metrics
+   │  │  │     ├─ AlgorithmComparison.jsx
+   │  │  │     ├─ CurrentRunMetrics.jsx
+   │  │  │     ├─ RankingCard.jsx
+   │  │  │     ├─ TestControls.jsx
+   │  │  │     ├─ WinnerSummary.jsx
+   │  │  │     └─ index.js
+   │  │  ├─ sortingVisualizer
+   │  │  │  ├─ PerformanceMetrics.jsx
+   │  │  │  ├─ SortingControls.jsx
+   │  │  │  ├─ SortingHeader.jsx
+   │  │  │  ├─ SortingVisualizer.jsx
+   │  │  │  └─ index.js
+   │  │  ├─ ui
+   │  │  │  ├─ badge.jsx
+   │  │  │  ├─ button.jsx
+   │  │  │  ├─ card.jsx
+   │  │  │  ├─ input.jsx
+   │  │  │  ├─ select.jsx
+   │  │  │  ├─ slider.jsx
+   │  │  │  └─ tabs.jsx
+   │  │  └─ visualizations
+   │  │     ├─ ArrayVisualization.jsx
+   │  │     └─ index.js
+   │  ├─ index.css
+   │  ├─ lib
+   │  │  └─ utils.js
+   │  ├─ main.jsx
+   │  └─ utils
+   │     └─ seo.js
+   └─ vite.config.js
 ```
 
 ### 📁 **Key Directories and Files**:
@@ -225,10 +227,18 @@ Here's a detailed breakdown of the **SortVision** project structure:
 - **`LICENSE`**: MIT License file defining terms of use
 - **`SortVision/`**: Main project directory containing the application code
   - **`public/`**: Static assets, SEO files, and PWA configuration
+    - **`mobile-debug.js`**: Mobile debugging utilities
+    - **`mobile-fix.js`**: Mobile-specific fixes
+    - **`mobile.css`**: Mobile-specific styles
+    - **`manifest.json`**: PWA manifest file
+    - **`sw.js`**: Service worker for offline functionality
   - **`scripts/`**: Build automation and utility scripts
+    - **`build-with-seo.js`**: SEO optimization script
+    - **`generate-sitemap.js`**: Sitemap generation
   - **`src/`**: Source code for the application
     - **`algorithms/`**: Implementation of each sorting algorithm with visualization steps
     - **`components/`**: React components organized by feature and function
+      - **`MobileOverlay.jsx`**: Overlay for mobile devices
       - **`panels/`**: Different UI panels (Configuration, Details, Metrics)
       - **`sortingVisualizer/`**: Core visualization components
       - **`ui/`**: Reusable UI components following design system
@@ -244,6 +254,7 @@ Here's a detailed breakdown of the **SortVision** project structure:
    - **Details Panel**: Educational information about algorithms
    - **Metrics Panel**: Performance data and algorithm comparisons
 4. **Core Visualization**: Components that handle the array visualization and animation
+5. **Mobile Support**: Special components and utilities for mobile devices
 
 ---
 
