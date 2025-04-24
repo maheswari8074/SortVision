@@ -166,27 +166,31 @@
     
     <!-- Lazy-load Google Analytics -->
     <script>
-      // Defer loading of GA
+      // Defer loading of GA more aggressively with a timeout
       window.addEventListener('load', function() {
-        // GA initialization
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-SZPR3VLNV0', {
-          'send_page_view': false, // Manually send page view later
-          'anonymize_ip': true
-        });
-        
-        // Load GA script
-        const gaScript = document.createElement('script');
-        gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-SZPR3VLNV0';
-        gaScript.async = true;
-        document.head.appendChild(gaScript);
-        
-        // Send pageview after delay
+        // Don't load GA immediately, wait until after initial render
         setTimeout(function() {
-          gtag('event', 'page_view');
-        }, 2000);
+          // GA initialization
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-SZPR3VLNV0', {
+            'send_page_view': false, // Manually send page view later
+            'anonymize_ip': true,
+            'transport_type': 'beacon'  // Use navigator.sendBeacon for better performance
+          });
+          
+          // Load GA script
+          const gaScript = document.createElement('script');
+          gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-SZPR3VLNV0';
+          gaScript.async = true;
+          document.head.appendChild(gaScript);
+          
+          // Send pageview after all critical content has loaded
+          setTimeout(function() {
+            gtag('event', 'page_view');
+          }, 3000);
+        }, 2000); // Wait 2 seconds after load event before initializing GA
       });
     </script>
     
@@ -240,6 +244,35 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Preload critical modules -->
+    <link rel="modulepreload" href="/src/App.jsx">
+    <link rel="modulepreload" href="/src/components/sortingVisualizer/SortingVisualizer.jsx">
+    
+    <!-- Defer non-critical scripts to after page load -->
+    <script>
+      // Set iOS height variable for better mobile experience
+      function setAppHeight() {
+        document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+      }
+      
+      // Initial call
+      setAppHeight();
+      
+      // Update on resize
+      window.addEventListener('resize', setAppHeight);
+      
+      // Implement idle callback for non-critical tasks
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(function() {
+          // Lazy load non-critical resources
+          const lazyResources = document.querySelectorAll('[fetchpriority="low"]');
+          lazyResources.forEach(resource => {
+            resource.setAttribute('fetchpriority', 'auto');
+          });
+        }, { timeout: 2000 });
+      }
+    </script>
     
     <!-- Noscript message for users without JavaScript -->
     <noscript>
@@ -295,14 +328,6 @@
         document.body.classList.toggle('portrait', isPortrait);
         document.body.classList.toggle('landscape', !isPortrait);
       }
-      
-      // Basic iOS height fix (necessary even with the overlay)
-      function setAppHeight() {
-        document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
-      }
-      window.addEventListener('resize', setAppHeight);
-      window.addEventListener('orientationchange', setAppHeight);
-      setAppHeight();
     </script>
   </body>
 </html>

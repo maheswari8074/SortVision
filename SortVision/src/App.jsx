@@ -1,10 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense, useMemo, useCallback, memo } from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import SortingVisualizer from './components/sortingVisualizer/SortingVisualizer';
 import { Terminal, Code, Github, Linkedin, Twitter } from 'lucide-react';
 import { getAlgorithmMetaTags, getAlgorithmSchema, algorithms } from './utils/seo';
-import MobileOverlay from './components/MobileOverlay';
+
+// Lazy load components that aren't needed immediately
+const SortingVisualizer = lazy(() => import('./components/sortingVisualizer/SortingVisualizer'));
+const MobileOverlay = lazy(() => import('./components/MobileOverlay'));
+
+// Memoized header component to prevent unnecessary re-renders
+const Header = memo(({ children }) => (
+  <header className="flex flex-col items-center mb-4 sm:mb-6 animate-fade-down animate-once animate-duration-[800ms] animate-delay-100">
+    {children}
+  </header>
+));
+
+// Memoized footer component
+const Footer = memo(({ children }) => (
+  <footer className="mt-8 sm:mt-10 text-slate-500 text-[10px] sm:text-xs font-mono text-center animate-fade-up animate-once animate-duration-[800ms] animate-delay-700">
+    {children}
+  </footer>
+));
 
 /**
  * Main Application Component
@@ -21,12 +37,15 @@ const App = () => {
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const fullText = 'Interactive visualization of popular sorting algorithms';
   
-  // Get the current algorithm name for SEO
-  const currentAlgorithm = algorithmName || 'bubble';
-  const algorithmTitle = algorithms[currentAlgorithm]?.name || 'Sorting Algorithms';
+  // Get the current algorithm name for SEO - memoized to prevent recalculation
+  const currentAlgorithm = useMemo(() => algorithmName || 'bubble', [algorithmName]);
+  const algorithmTitle = useMemo(() => 
+    algorithms[currentAlgorithm]?.name || 'Sorting Algorithms', 
+    [currentAlgorithm]
+  );
   
-  // Get SEO metadata for current page
-  const getMetaTags = () => {
+  // Memoize SEO metadata to prevent recalculation on each render
+  const metaTags = useMemo(() => {
     if (algorithmName) {
       return getAlgorithmMetaTags(algorithmName);
     }
@@ -40,10 +59,10 @@ const App = () => {
       twitterTitle: 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool',
       twitterDescription: 'Master sorting algorithms with interactive visualizations. Compare Bubble, Merge, Quick Sort and more with real-time animations and metrics.'
     };
-  };
+  }, [algorithmName]);
   
-  // Generate schema markup
-  const getSchemaMarkup = () => {
+  // Generate schema markup - memoized to prevent recalculation
+  const schemaMarkup = useMemo(() => {
     // Base schema for all pages
     const baseSchema = {
       "@context": "https://schema.org",
@@ -58,7 +77,7 @@ const App = () => {
         "price": "0",
         "priceCurrency": "USD"
       },
-      "description": getMetaTags().description,
+      "description": metaTags.description,
       "creator": {
         "@type": "Person",
         "name": "alienX"
@@ -101,7 +120,10 @@ const App = () => {
     }
     
     return baseSchema;
-  };
+  }, [algorithmName, algorithmTitle, currentAlgorithm, location.pathname, metaTags.description]);
+  
+  // Memoize the current date to prevent recreation on each render
+  const currentDate = useMemo(() => new Date().toISOString().split('T')[0], []);
   
   // Typing animation effect
   useEffect(() => {
@@ -114,18 +136,21 @@ const App = () => {
     } else {
       setIsTypingComplete(true);
     }
-  }, [displayText]);
+  }, [displayText, fullText]);
   
-  // Get metadata for the current page
-  const metaTags = getMetaTags();
-  
-  // Get current date in ISO format for meta tags
-  const currentDate = new Date().toISOString().split('T')[0];
+  // Loading fallback for lazy loaded components
+  const fallbackElement = useMemo(() => (
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="text-emerald-400 font-mono">Loading...</div>
+    </div>
+  ), []);
   
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-2 sm:p-5 overflow-hidden">
-      {/* Mobile Detection Overlay */}
-      <MobileOverlay />
+      {/* Mobile Detection Overlay - Lazy loaded */}
+      <Suspense fallback={null}>
+        <MobileOverlay />
+      </Suspense>
       
       {/* SEO Helmet */}
       <Helmet>
@@ -149,12 +174,12 @@ const App = () => {
         
         {/* Schema.org markup for Google */}
         <script type="application/ld+json">
-          {JSON.stringify(getSchemaMarkup())}
+          {JSON.stringify(schemaMarkup)}
         </script>
       </Helmet>
       
       {/* Header with logo and title */}
-      <header className="flex flex-col items-center mb-4 sm:mb-6 animate-fade-down animate-once animate-duration-[800ms] animate-delay-100">
+      <Header>
         <div className="flex items-center gap-2 sm:gap-3">
           <Terminal className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-400 animate-pulse animate-infinite animate-duration-[3000ms]" aria-hidden="true" />
           <h1 className="text-2xl sm:text-4xl font-mono font-bold text-white">
@@ -170,7 +195,7 @@ const App = () => {
           <span className="text-purple-400 hover:text-purple-300 transition-colors duration-300">.visualizer</span>
           <span className="text-slate-400 hover:text-white transition-colors duration-300">()</span>
         </div>
-      </header>
+      </Header>
       
       {/* Subtitle with typing animation */}
       <div className="text-center text-slate-400 font-mono mb-6 sm:mb-8 max-w-[90%] sm:max-w-md h-6 animate-fade-up animate-once animate-duration-[800ms] animate-delay-300">
@@ -178,16 +203,18 @@ const App = () => {
         {!isTypingComplete && <span className="inline-block w-2 h-4 bg-amber-400 ml-1 animate-pulse" aria-hidden="true"></span>}
       </div>
       
-      {/* Main Sorting Visualizer Component */}
+      {/* Main Sorting Visualizer Component - Lazy loaded */}
       <main className="animate-fade-up animate-once animate-duration-[1000ms] animate-delay-500 w-full max-w-4xl px-2 sm:px-4">
         <h2 className="text-xl sm:text-2xl font-mono font-bold text-emerald-400 mb-4 text-center">
           {algorithmName ? `${algorithmTitle} Visualization` : 'Sorting Algorithm Visualizer'}
         </h2>
-        <SortingVisualizer initialAlgorithm={currentAlgorithm} />
+        <Suspense fallback={fallbackElement}>
+          <SortingVisualizer initialAlgorithm={currentAlgorithm} />
+        </Suspense>
       </main>
       
       {/* Footer */}
-      <footer className="mt-8 sm:mt-10 text-slate-500 text-[10px] sm:text-xs font-mono text-center animate-fade-up animate-once animate-duration-[800ms] animate-delay-700">
+      <Footer>
         <span className="text-slate-600">/**</span> Built with 
         <span className="inline-block animate-bounce animate-infinite animate-duration-[2000ms] mx-1" aria-hidden="true">❤️</span> 
         by alienX <span className="text-slate-600">*/</span>
@@ -248,7 +275,7 @@ const App = () => {
             <span>X</span>
           </a>
         </div>
-      </footer>
+      </Footer>
     </div>
   );
 };
