@@ -104,51 +104,20 @@
     
     <!-- Debug script (development only) -->
     <script>
-      // Force debug logging to detect Vercel issues
+      // Add debug tools only in development or when debug parameter is present
       (function() {
-        console.error("INDEX.HTML START - " + new Date().toISOString());
+        var isDevEnvironment = window.location.hostname === 'localhost' || 
+                              window.location.hostname === '127.0.0.1';
+        var hasDebugParam = window.location.search.includes('cr7=goat');
         
-        // Create diagnostic element
-        window.addEventListener('DOMContentLoaded', function() {
-          console.error("DOM LOADED - " + new Date().toISOString());
-          
-          // Create a diagnostic element
-          const debugInfo = document.createElement('div');
-          debugInfo.id = 'debug-info';
-          debugInfo.style.position = 'fixed';
-          debugInfo.style.bottom = '5px';
-          debugInfo.style.left = '5px';
-          debugInfo.style.padding = '10px';
-          debugInfo.style.background = 'rgba(0,0,0,0.7)';
-          debugInfo.style.color = 'lime';
-          debugInfo.style.fontSize = '12px';
-          debugInfo.style.fontFamily = 'monospace';
-          debugInfo.style.zIndex = '999999';
-          debugInfo.style.maxWidth = '80%';
-          debugInfo.style.overflow = 'hidden';
-          debugInfo.style.border = '1px solid #333';
-          debugInfo.style.borderRadius = '4px';
-          
-          const debugParam = window.location.search.toLowerCase().includes('cr7=goat');
-          debugInfo.innerHTML = `
-            Host: ${window.location.hostname}<br>
-            Search: ${window.location.search}<br>
-            Debug Param: ${debugParam}<br>
-            Time: ${new Date().toISOString()}
-          `;
-          
-          document.body.appendChild(debugInfo);
-        });
-        
-        // Only include the debug script in development environments
-        if (window.location.hostname === 'localhost' || 
-            window.location.hostname === '127.0.0.1' ||
-            window.location.search.toLowerCase().includes('cr7=goat')) {
-          const debugScript = document.createElement('script');
-          debugScript.src = '/devTools.vizor.js';
-          debugScript.defer = true;
-          document.head.appendChild(debugScript);
-          console.error("DEBUG SCRIPT ADDED - " + new Date().toISOString());
+        if (isDevEnvironment || hasDebugParam) {
+          var script = document.createElement('script');
+          script.src = '/devTools.vizor.js';
+          script.type = 'text/javascript';
+          document.head.appendChild(script);
+        } else {
+          console.log('%c🔒 SortVision DevTools disabled in production 🔒\n✨ Access requires debug parameter ✨', 
+                      'background: #1a1a2e; color: #ff6b6b; font-size: 14px; padding: 5px 10px; border-radius: 4px;');
         }
       })();
     </script>

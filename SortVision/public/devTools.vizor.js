@@ -9,6 +9,36 @@
  * It only runs in development or when ?CR7=GOAT is in URL
  */
 
+// Testing console error visibility in production environments
+console.error("[SORTVISION-TEST] Debug message test at " + new Date().toISOString());
+
+// Create a debugLog function that survives minification and works in production
+function debugLog(message, style = null) {
+  // Use bracket notation for console methods to prevent removal during minification
+  if (typeof window !== 'undefined' && window['console']) {
+    // Default style for debug messages
+    const defaultStyle = 'background: #0F172A; color: #64ffda; padding: 6px; border-radius: 4px; font-weight: bold; font-size: 14px;';
+    
+    // Use the provided style or default
+    const finalStyle = style || defaultStyle;
+    
+    // Use bracket notation to access console methods to avoid minification issues
+    if (typeof message === 'string') {
+      window['console']['log']('%c [SORTVISION-DEBUG] ' + message, finalStyle);
+    } else {
+      // If not a string, log with a label first, then the object
+      window['console']['log']('%c [SORTVISION-DEBUG] ', finalStyle);
+      window['console']['log'](message);
+    }
+    
+    // Also send to error console for better visibility in production logs
+    if (window.location.hostname.includes('vercel.app') || 
+        !window.location.hostname.includes('localhost')) {
+      window['console']['error']('[SORTVISION-DEBUG] ' + (typeof message === 'string' ? message : JSON.stringify(message)));
+    }
+  }
+}
+
 // Always log something on load, regardless of other conditions
 (function logSiteLoad() {
   const loadMessage = "[SORTVISION] Site loaded at " + new Date().toISOString();
@@ -51,6 +81,23 @@
       });
   } catch {
     // Ignore errors
+  }
+})();
+
+// Self-executing function to initialize debugger when conditions are met
+(function initDevTools() {
+  // Only initialize in development or when debug param is present
+  if (
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1' ||
+    window.location.search.includes('CR7=GOAT')
+  ) {
+    // Clear and display activation message
+    debugLog('🔍 SortVision DevTools Activated', 'background: #0F172A; color: #64ffda; padding: 6px 10px; border-radius: 4px; font-weight: bold; font-size: 14px;');
+    
+    // These functions are already covered in the self-executing function below
+    // so we don't need to call separate functions
+    debugLog('SortVision DevTools initializing...');
   }
 })();
 
