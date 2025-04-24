@@ -11,6 +11,15 @@
  */
 
 (function() {
+  // Block on production domains
+  if (window.location.hostname.includes('vercel.app') || 
+      window.location.hostname.includes('netlify.app') ||
+      window.location.hostname.includes('github.io') ||
+      window.location.hostname.includes('sortvision.com')) {
+    console.log('📱 Mobile Debug Panel disabled on production sites');
+    return; // Exit immediately on production domains
+  }
+  
   // Only run in development or when debug param is set
   const isDev = window.location.hostname === 'localhost' || 
                 window.location.hostname === '127.0.0.1' ||
@@ -21,7 +30,7 @@
   const debugRequested = window.location.search.includes('debug=mobile');
   
   if (!isDev && !debugRequested) {
-    return; // Exit early in production without debug flag
+    return; // Exit early in non-dev without debug flag
   }
   
   console.log('📱 Mobile Debug Utilities Loaded');
