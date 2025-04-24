@@ -15,7 +15,7 @@
       window.location.hostname.includes('netlify.app') ||
       window.location.hostname.includes('github.io') ||
       window.location.hostname.includes('sortvision.com')) {
-    console.log('🐞📱 Debug Panel disabled on production sites');
+    console.log('%c 🚫 DevTools disabled on production sites', 'color: #ff5f56; font-weight: bold;');
     return; // Exit immediately on production domains
   }
   
@@ -32,7 +32,9 @@
     return; // Exit early in non-dev without debug flag
   }
   
-  console.log('🔧 DevTools Activated');
+  // Make the console message more prominent with multiple methods
+  console.log('%c 🔧 SortVision DevTools Activated! 🔧', 'background: #0F172A; color: #64ffda; padding: 6px; border-radius: 4px; font-weight: bold; font-size: 14px;');
+  console.debug('DevTools initialization started - debug param: ' + debugRequested + ', isDev: ' + isDev);
   
   // Create debug panel
   let panel;
@@ -830,7 +832,6 @@
       if (window.screen) {
         const screenW = window.screen.width;
         const screenH = window.screen.height;
-        // Removed unused pixelDepth variable
         screenInfo = ` | screen: ${screenW}x${screenH}`;
       }
       
@@ -957,7 +958,7 @@
             // Add event listener for network changes
             if (!connection._hasListener) {
               connection.addEventListener('change', () => {
-                console.log('Network connection changed');
+                console.log('%c 🌐 Network connection changed', 'color: #64ffda; font-weight: bold;');
                 updateDeviceInfo();
               });
               connection._hasListener = true;
@@ -1139,11 +1140,9 @@
               // Add event listeners for battery changes if not already added
               if (!battery._hasListeners) {
                 battery.addEventListener('levelchange', () => {
-                  console.log('Battery level changed:', Math.round(battery.level * 100) + '%');
                   updateDeviceInfo();
                 });
                 battery.addEventListener('chargingchange', () => {
-                  console.log('Battery charging state changed:', battery.charging ? 'charging' : 'discharging');
                   updateDeviceInfo();
                 });
                 battery.addEventListener('chargingtimechange', () => updateDeviceInfo());
@@ -1154,7 +1153,6 @@
           }
         } catch (/* eslint-disable-line no-unused-vars */ error) {
           void error; // Using void to suppress unused variable warning
-          console.log('Battery API error');
         }
         
         batteryEl.innerHTML = batteryInfo;
@@ -1637,7 +1635,7 @@
   function monitorViewportChanges() {
     ['resize', 'orientationchange'].forEach(eventType => {
       window.addEventListener(eventType, () => {
-        console.info(`📱 ${eventType} event triggered`);
+        console.log('%c 📐 ' + eventType.toUpperCase() + ' event detected', 'color: #64ffda; font-weight: bold;');
         
         // Update after a short delay to allow iOS to settle
         setTimeout(updateDeviceInfo, 100);
@@ -1667,7 +1665,7 @@
       }
     },
     log: (message) => {
-      console.log(`📱 ${message}`);
+      console.log('%c 🛠️ DevTools: ' + message, 'color: #64ffda; background: #1e293b; padding: 3px 6px; border-radius: 3px;');
     }
   };
 })(); 

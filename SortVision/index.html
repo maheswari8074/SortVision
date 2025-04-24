@@ -89,7 +89,6 @@
     
     <!-- Preload critical assets -->
     <link rel="preload" href="/src/main.jsx" as="script">
-    <link rel="preload" href="/mobile-fix.js" as="script">
     
     <!-- Load font stylesheet asynchronously with display=swap to avoid render blocking -->
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" fetchpriority="low">
@@ -102,10 +101,6 @@
     <noscript>
       <link rel="stylesheet" href="/mobile.css">
     </noscript>
-    
-    <!-- Mobile scrolling fix -->
-    <script src="/mobile-fix.js" defer></script>
-    
     
     <!-- Debug script (development only) -->
     <script>
@@ -249,14 +244,6 @@
         });
       }
       
-      // Fix for iOS viewport height issues
-      function setAppHeight() {
-        document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
-      }
-      window.addEventListener('resize', setAppHeight);
-      window.addEventListener('orientationchange', setAppHeight);
-      setAppHeight();
-      
       // Add mobile detection for adaptive features
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       if (isMobile) {
@@ -278,6 +265,14 @@
         document.body.classList.toggle('portrait', isPortrait);
         document.body.classList.toggle('landscape', !isPortrait);
       }
+      
+      // Basic iOS height fix (necessary even with the overlay)
+      function setAppHeight() {
+        document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+      }
+      window.addEventListener('resize', setAppHeight);
+      window.addEventListener('orientationchange', setAppHeight);
+      setAppHeight();
     </script>
   </body>
 </html>

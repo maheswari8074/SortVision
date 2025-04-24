@@ -28,12 +28,22 @@ const MobileOverlay = () => {
   
   useEffect(() => {
     const hasUserContinued = localStorage.getItem('continue-on-mobile');
+    const hasRequestedDesktop = localStorage.getItem('request-desktop-site') === 'true';
     
     const isMobileDevice = () => {
       return /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
              (window.innerWidth <= 768);
     };
     
+    // If user has requested desktop mode before, apply those settings
+    if (hasRequestedDesktop) {
+      const viewport = document.querySelector('meta[name=viewport]');
+      viewport.setAttribute('content', 'width=1280, initial-scale=1.0');
+      document.documentElement.classList.add('desktop-view-requested');
+      return; // Don't show overlay
+    }
+    
+    // Otherwise, show overlay for mobile devices if they haven't continued
     if (isMobileDevice() && hasUserContinued !== 'true') {
       setShowOverlay(true);
       document.body.style.overflow = 'hidden';
@@ -42,6 +52,21 @@ const MobileOverlay = () => {
       setTimeout(() => setAnimationStage(2), 600);
       setTimeout(() => setAnimationStage(3), 1100);
     }
+    
+    // Listen for orientation changes to update layout if needed
+    window.addEventListener('orientationchange', () => {
+      if (hasRequestedDesktop) {
+        // Ensure desktop view is maintained after orientation change
+        setTimeout(() => {
+          const viewport = document.querySelector('meta[name=viewport]');
+          viewport.setAttribute('content', 'width=1280, initial-scale=1.0');
+        }, 100);
+      }
+    });
+    
+    return () => {
+      window.removeEventListener('orientationchange', () => {});
+    };
   }, []);
   
   const handleContinue = () => {
@@ -56,14 +81,64 @@ const MobileOverlay = () => {
   const handleRequestDesktop = () => {
     setAnimationStage(4);
     setTimeout(() => {
+      // Try to request fullscreen for better experience
       if (typeof(document.documentElement.requestFullscreen) !== 'undefined') {
         document.documentElement.requestFullscreen().catch(err => {
           console.log("Error attempting to enable full-screen mode:", err);
         });
       }
+
+      // Set desktop-like viewport (more effective than just width)
       const viewport = document.querySelector('meta[name=viewport]');
-      viewport.setAttribute('content', 'width=1024');
+      viewport.setAttribute('content', 'width=1280, initial-scale=1.0');
       
+      // Inject a script that attempts to switch to desktop mode
+      const script = document.createElement('script');
+      script.textContent = `
+        // Try to trick browser into desktop mode by pretending to be a desktop browser
+        try {
+          // Set desktop user agent hint via navigator.userAgentData if available
+          if (navigator.userAgentData && navigator.userAgentData.brands) {
+            Object.defineProperty(navigator, 'userAgentData', {
+              value: {
+                ...navigator.userAgentData,
+                mobile: false,
+                platform: 'Windows'
+              },
+              configurable: true
+            });
+          }
+          
+          // Create a hidden link that would open in desktop mode
+          const link = document.createElement('a');
+          link.style.display = 'none';
+          link.href = '?desktop=1';
+          link.setAttribute('rel', 'nofollow');
+          link.setAttribute('data-view', 'desktop');
+          link.setAttribute('data-request-desktop', 'true');
+          document.body.appendChild(link);
+          
+          // Trigger click on the link
+          link.click();
+          
+          // Remove link after click
+          setTimeout(() => {
+            document.body.removeChild(link);
+          }, 100);
+          
+          // Also set a cookie and localStorage flag that our code can check
+          document.cookie = "view=desktop; path=/; max-age=86400";
+          localStorage.setItem('request-desktop-site', 'true');
+        } catch (e) {
+          console.error("Failed to set desktop mode:", e);
+        }
+      `;
+      document.head.appendChild(script);
+      
+      // Add a class to the HTML element to apply desktop-specific styles
+      document.documentElement.classList.add('desktop-view-requested');
+      
+      // Hide the overlay
       setShowOverlay(false);
       document.body.style.overflow = 'auto';
     }, 500);
@@ -147,7 +222,7 @@ const MobileOverlay = () => {
           className="py-3 px-4 bg-transparent text-slate-400 border border-slate-700 rounded-lg font-mono font-semibold text-sm transition-all hover:border-slate-600 hover:text-slate-300 flex items-center justify-center gap-2 hover:scale-105 active:scale-95 hover:bg-slate-800/30"
         >
           <LayoutTemplate className="h-4 w-4 animate-pulse animate-infinite animate-duration-[2000ms]" aria-hidden="true" />
-          Request Desktop Site
+          Switch to Desktop Mode
         </button>
       </div>
       
