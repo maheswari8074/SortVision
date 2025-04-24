@@ -186,7 +186,7 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
   return (
     <Card className="w-full max-w-5xl mx-auto border-slate-800 bg-slate-950 text-slate-200 shadow-lg">
       {/* Animation keyframes */}
-      <style jsx>{`
+      <style dangerouslySetInnerHTML={{__html: `
         @keyframes blink {
           0%, 100% { opacity: 1; }
           50% { opacity: 0; }
@@ -199,7 +199,7 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
         .animate-blink {
           animation: blink 1s step-end infinite;
         }
-      `}</style>
+      `}} />
       
       {/* Application header */}
       <SortingHeader />

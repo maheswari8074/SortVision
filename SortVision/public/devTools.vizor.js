@@ -11,6 +11,7 @@
 
 (function() {
   // Block on production domains
+  /* 
   if (window.location.hostname.includes('vercel.app') || 
       window.location.hostname.includes('netlify.app') ||
       window.location.hostname.includes('github.io') ||
@@ -18,6 +19,7 @@
     console.log('%c 🚫 DevTools disabled on production sites', 'color: #ff5f56; font-weight: bold;');
     return; // Exit immediately on production domains
   }
+  */
   
   // Only run in development or when debug param is set
   const isDev = window.location.hostname === 'localhost' || 
@@ -33,7 +35,7 @@
   }
   
   // Make the console message more prominent with multiple methods
-  console.log('%c 🔧 SortVision DevTools Activated! 🔧', 'background: #0F172A; color: #64ffda; padding: 6px; border-radius: 4px; font-weight: bold; font-size: 14px;');
+  console.log('%c SortVision DevTools Activated! 🔧', 'background: #0F172A; color: #64ffda; padding: 6px; border-radius: 4px; font-weight: bold; font-size: 14px;');
   console.debug('DevTools initialization started - debug param: ' + debugRequested + ', isDev: ' + isDev);
   
   // Create debug panel
@@ -832,6 +834,7 @@
       if (window.screen) {
         const screenW = window.screen.width;
         const screenH = window.screen.height;
+        // Removed unused pixelDepth variable
         screenInfo = ` | screen: ${screenW}x${screenH}`;
       }
       
@@ -1140,9 +1143,11 @@
               // Add event listeners for battery changes if not already added
               if (!battery._hasListeners) {
                 battery.addEventListener('levelchange', () => {
+                  // Removed battery level logging
                   updateDeviceInfo();
                 });
                 battery.addEventListener('chargingchange', () => {
+                  // Removed charging state logging
                   updateDeviceInfo();
                 });
                 battery.addEventListener('chargingtimechange', () => updateDeviceInfo());
