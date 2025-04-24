@@ -9,6 +9,35 @@
  * It only runs in development or when ?CR7=GOAT is in URL
  */
 
+// Always log something on load, regardless of other conditions
+(function logSiteLoad() {
+  const loadMessage = "[SORTVISION] Site loaded at " + new Date().toISOString();
+  
+  // Try multiple logging methods to ensure visibility
+  console.error(loadMessage); // Most likely to appear in Vercel logs
+  console.log(loadMessage);   // Standard log
+  
+  // Create a logging function that runs after a delay
+  const delayedLog = (msg) => setTimeout(() => console.error(msg), 1000);
+  
+  // Log after a delay to avoid potential race conditions
+  delayedLog("[SORTVISION] Delayed load confirmation");
+  
+  // Also log when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      console.error("[SORTVISION] DOM loaded at " + new Date().toISOString());
+    });
+  } else {
+    console.error("[SORTVISION] DOM already loaded at " + new Date().toISOString());
+  }
+  
+  // Log after window load as well
+  window.addEventListener('load', () => {
+    console.error("[SORTVISION] Window loaded at " + new Date().toISOString());
+  });
+})();
+
 (function() {
   // Only run in development or when debug param is set
   const isDev = window.location.hostname === 'localhost' || 
