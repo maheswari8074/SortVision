@@ -42,11 +42,12 @@ SortVision is an interactive web application that brings sorting algorithms to l
 4. [📸 Screenshots](#-screenshots)
 5. [🚀 Quick Start](#-quick-start)
 6. [👨‍🔧 Detailed Setup](#-detailed-setup)
-7. [🎯 Target Audience](#-target-audience)
-8. [🤝 Contributing](#-contributing)
-9. [🌟 Awesome Contributors](#-awesome-contributors)
-10. [📜 License](#-license)
-11. [📬 Feedback & Suggestions](#-feedback--suggestions)
+7. [🛠️ Developer Tools](#️-developer-tools)
+8. [🎯 Target Audience](#-target-audience)
+9. [🤝 Contributing](#-contributing)
+10. [🌟 Awesome Contributors](#-awesome-contributors)
+11. [📜 License](#-license)
+12. [📬 Feedback & Suggestions](#-feedback--suggestions)
 
 ---
 
@@ -310,6 +311,51 @@ SortVision/                  # Main project repository
 3. **Start Visualizing**
    - Click "Start" to begin the visualization
    - Use controls to adjust speed and pause/resume
+
+4. **Open in Browser**
+   - Visit `http://localhost:3000`
+   - Start exploring sorting algorithms!
+
+---
+
+## 🛠️ **Developer Tools**
+
+SortVision includes a powerful set of developer tools that help with debugging and performance monitoring. These tools are restricted to development environments only and are blocked in production deployments for security and performance reasons.
+
+### **Accessing DevTools**
+
+The DevTools can only be accessed in development mode:
+
+1. Run the application locally in development mode:
+   ```bash
+   npm run dev
+   # or
+   pnpm dev
+   ```
+
+2. Access your local instance:
+   ```
+   http://localhost:3000/?cr7=goat
+   ```
+
+> **Note**: DevTools access is intentionally blocked on production deployments (like `sortvision.vercel.app`) and cannot be accessed by appending URL parameters in those environments.
+
+### **DevTools Features**
+
+- **Performance Monitoring**: Track FPS, memory usage, and rendering performance
+- **Device Information**: View detailed information about the current device
+- **Console Integration**: Enhanced logging with visual formatting
+- **Error Tracking**: Capture and display runtime errors
+- **Network Analysis**: Monitor API calls and loading times
+
+### **Using DevTools for Development**
+
+- Toggle the panel with the "CLOSE" button
+- Performance metrics update in real-time as you interact with the application
+- Device information helps diagnose device-specific issues
+- All metrics can be useful when optimizing algorithm visualizations
+
+> **Note**: The DevTools are designed for developers and may impact performance when enabled. They should be disabled for regular usage.
 
 ---
 
