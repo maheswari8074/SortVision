@@ -103,7 +103,7 @@
     </noscript>
     
     <!-- Debug script (development only) -->
-    <script>
+    <script type="module">
       // Add debug tools only in development or when debug parameter is present
       (function() {
         var isDevEnvironment = window.location.hostname === 'localhost' || 
@@ -111,10 +111,11 @@
         var hasDebugParam = window.location.search.toLowerCase().includes('cr7=goat');
         
         if (isDevEnvironment || hasDebugParam) {
-          var script = document.createElement('script');
-          script.src = '/devTools.vizor.js';
-          script.type = 'text/javascript';
-          document.head.appendChild(script);
+          // Import the new modular debug tools
+          import('./public/devTools/index.js')
+            .catch(error => {
+              console.error('Failed to load debug tools:', error);
+            });
         } else {
           console.log('%c🔒 SortVision DevTools disabled in production 🔒\n✨ Access requires debug parameter ✨', 
                       'background: #1a1a2e; color: #ff6b6b; font-size: 14px; padding: 5px 10px; border-radius: 4px;');
