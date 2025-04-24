@@ -1,3 +1,4 @@
+<div align="center">
 # 🌟 **SortVision** 🌟  
 ### *Interactive Sorting Algorithm Visualizer*
 
@@ -477,7 +478,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-<div align="center">
 
 ### 📬 **Feedback & Suggestions**
 *We value your input! Share your thoughts through [GitHub Issues](https://github.com/alienx5499/sortvisioN/issues).*
