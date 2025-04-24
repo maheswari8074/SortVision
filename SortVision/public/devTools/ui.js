@@ -14,14 +14,6 @@ let panel;
  * @returns {HTMLElement} The debug panel element
  */
 function createDebugPanel() {
-  // Safety check - don't create the debug panel on production sites
-  if (window.location.hostname.includes('vercel.app') || 
-      window.location.hostname.includes('netlify.app') ||
-      window.location.hostname.includes('github.io') ||
-      window.location.hostname.includes('sortvision.com')) {
-    return null;
-  }
-  
   // Create panel if it doesn't exist
   if (panel) return panel;
   
