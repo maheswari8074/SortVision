@@ -121,10 +121,6 @@
           window.location.hostname.includes('github.io') ||
           window.location.hostname.includes('sortvision.com');
         
-        // Log detected parameter for troubleshooting
-        console.log('%c SortVision: Checking URL parameters... found cr7=' + debugParam, 
-                  'background: #1a1a2e; color: #64ffda; font-size: 12px; padding: 4px; border-radius: 4px;');
-        
         // Always block access on production domains
         if (isProductionDomain) {
           console.log('%c🔒 SortVision DevTools Access Denied on Production 🔒\n✨ Debug tools are disabled on production deployments ✨', 
