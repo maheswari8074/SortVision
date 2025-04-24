@@ -25,7 +25,7 @@
       window.location.hostname.includes('netlify.app') ||
       window.location.hostname.includes('github.io') ||
       window.location.hostname.includes('sortvision.com'))) {
-    console.log('%c 🚫 DevTools disabled on production sites', 'color: #ff5f56; font-weight: bold;');
+    console.log('Hello World');
     return; // Exit immediately on production domains without debug param
   }
   
