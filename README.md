@@ -1,4 +1,4 @@
-<div align="center">
+<img width="1512" alt="Screenshot 2025-04-25 at 1 22 48 AM" src="https://github.com/user-attachments/assets/ece9d813-a3ff-4212-8496-226d221a3d03" /><div align="center">
 
 # 🌟 **SortVision** 🌟  
 ### *Interactive Sorting Algorithm Visualizer*
@@ -275,9 +275,19 @@ SortVision/                  # Main project repository
 
 <table>
 <tr>
-  <td><img src="https://github.com/user-attachments/assets/ad19ce9d-8296-4191-a622-c1aa4b779c81" alt="Visualizer Screen" width="1600px"></td>
-  <td><img src="https://github.com/user-attachments/assets/02c5eeb7-f4d6-4dcc-9d76-0c2e15891014" alt="Metric Screen" width="1600px"></td>
-  <td><img src="https://github.com/user-attachments/assets/e9e486a4-8b53-429a-8d0d-1722262ec60a" alt="Metric Screen" width="1600px"></td>
+  <td><img src="https://github.com/user-attachments/assets/c409c51b-341b-4c91-9739-8e074abc8d95" alt="Visualizer Screen" width="1600px"></td>
+  <td><img src="https://github.com/user-attachments/assets/d5d9c1ed-1687-457f-bae6-0101537d4200" alt="Metric Screen" width="1600px"></td>
+  <td><img src="https://github.com/user-attachments/assets/20ec634a-ffb9-4b1a-8b03-1ceb003a2001" alt="Metric Screen" width="1600px"></td>
+</tr>
+<tr>
+  <td><b>Visualizer Screen</b></td>
+  <td><b>Metric Screen</b></td>
+  <td><b>Details Screen</b></td>
+</tr>
+<tr>
+  <td><img src="https://github.com/user-attachments/assets/e5164c6e-78bf-444f-a41a-e36b91a6527c" alt="Visualizer Screen" width="1600px"></td>
+  <td><img src="https://github.com/user-attachments/assets/671f67f9-53db-4dab-a4d3-003f53134307" alt="Metric Screen" width="1600px"></td>
+  <td><img src="https://github.com/user-attachments/assets/962b2e79-1f63-4a04-a36a-67d53c7b2561" alt="Metric Screen" width="1600px"></td>
 </tr>
 <tr>
   <td><b>Visualizer Screen</b></td>
