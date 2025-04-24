@@ -103,16 +103,30 @@
     </noscript>
     
     <!-- Debug script (development only) -->
-    <script type="module">
+    <script>
       (function() {
-        var hasDebugParam = window.location.search.toLowerCase().includes('cr7=goat');
+        // More reliable check for debug parameter
+        function getQueryParam(param) {
+          const urlParams = new URLSearchParams(window.location.search);
+          return urlParams.get(param);
+        }
+        
+        var debugParam = getQueryParam('cr7');
+        var hasDebugParam = debugParam === 'goat';
+        
+        // Log detected parameter for troubleshooting
+        console.log('%c SortVision: Checking URL parameters... found cr7=' + debugParam, 
+                  'background: #1a1a2e; color: #64ffda; font-size: 12px; padding: 4px; border-radius: 4px;');
         
         if (hasDebugParam) {
-          // Import the new modular debug tools
-          import('./public/devTools/index.js')
-            .catch(error => {
-              console.error('Failed to load debug tools:', error);
-            });
+          // Load debug tools with a script tag instead of import
+          var script = document.createElement('script');
+          script.type = 'module';
+          script.src = '/devTools/index.js';
+          script.onerror = function(error) {
+            console.error('Failed to load debug tools:', error);
+          };
+          document.head.appendChild(script);
         } else {
           console.log('%c🔒 SortVision DevTools disabled 🔒\n✨ Access requires debug parameter ✨', 
                       'background: #1a1a2e; color: #ff6b6b; font-size: 14px; padding: 5px 10px; border-radius: 4px;');

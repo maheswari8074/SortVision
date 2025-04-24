@@ -225,8 +225,19 @@ const _DEBUG_LOG = function(message, style = null) {
 
 // Main initialization function
 const initDevTools = () => {
-  // Check if we have the debug parameter first
-  const debugRequested = window.location.search.toLowerCase().includes('cr7=goat');
+  // More reliable check for debug parameter that works in all environments
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+  
+  // Check if we have the debug parameter using a more reliable method
+  const debugParam = getQueryParam('cr7');
+  const debugRequested = debugParam === 'goat';
+  
+  // Log detected parameter for troubleshooting
+  console.log('%c SortVision Debug: Checking parameters... URL contains cr7=' + debugParam, 
+              'background: #0F172A; color: #64ffda; padding: 4px; border-radius: 4px;');
   
   // Check if we're in a production environment
   const isProductionDomain = 
