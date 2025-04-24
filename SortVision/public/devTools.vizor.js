@@ -11,7 +11,6 @@
 
 (function() {
   // Block on production domains
-  /* 
   if (window.location.hostname.includes('vercel.app') || 
       window.location.hostname.includes('netlify.app') ||
       window.location.hostname.includes('github.io') ||
@@ -19,7 +18,6 @@
     console.log('%c 🚫 DevTools disabled on production sites', 'color: #ff5f56; font-weight: bold;');
     return; // Exit immediately on production domains
   }
-  */
   
   // Only run in development or when debug param is set
   const isDev = window.location.hostname === 'localhost' || 
