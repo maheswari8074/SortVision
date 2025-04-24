@@ -286,9 +286,9 @@ SortVision/                  # Main project repository
   <td><b>Details Screen</b></td>
 </tr>
 <tr>
-  <td><img src="https://github.com/user-attachments/assets/e5164c6e-78bf-444f-a41a-e36b91a6527c" alt="DevTools Panel" width="1600px" loading="lazy"></td>
-  <td><img src="https://github.com/user-attachments/assets/671f67f9-53db-4dab-a4d3-003f53134307" alt="DevTools Performance Monitoring" width="1600px" loading="lazy"></td>
-  <td><img src="https://github.com/user-attachments/assets/962b2e79-1f63-4a04-a36a-67d53c7b2561" alt="DevTools Device Information" width="1600px" loading="lazy"></td>
+  <td><img src="https://github.com/user-attachments/assets/3c5e9c91-b261-4c58-9dbe-50b6d7dbf829" alt="DevTools Panel" width="1600px" loading="lazy"></td>
+  <td><img src="https://github.com/user-attachments/assets/de9bf5df-13c6-44a1-b6e6-b272758c6104" alt="DevTools Performance Monitoring" width="1600px" loading="lazy"></td>
+  <td><img src="https://github.com/user-attachments/assets/6d70f354-ec5e-43b3-8ee5-34d5892c24d7" alt="DevTools Device Information" width="1600px" loading="lazy"></td>
 </tr>
 <tr>
   <td><b>DevTools Panel</b></td>
