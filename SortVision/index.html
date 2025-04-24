@@ -137,7 +137,7 @@
             console.error('Failed to load debug tools:', error);
           };
           document.head.appendChild(script);
-        } else {
+        } else if (!isProductionDomain){
           console.log('%c🔒 SortVision DevTools disabled 🔒\n✨ Access requires debug parameter ✨', 
                      'background: #FB923C; color: #7C2D12; font-size: 14px; padding: 8px 12px; border-radius: 4px; font-weight: bold; border-left: 4px solid #EA580C;');
         }
