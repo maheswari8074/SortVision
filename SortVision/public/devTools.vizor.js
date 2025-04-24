@@ -36,6 +36,22 @@
   window.addEventListener('load', () => {
     console.error("[SORTVISION] Window loaded at " + new Date().toISOString());
   });
+  
+  // Try to ping a nonexistent endpoint to generate a visible 404 in Vercel logs
+  try {
+    const diagnosticURL = '/api/diagnostic-log?time=' + Date.now() + 
+                          '&host=' + encodeURIComponent(window.location.hostname) + 
+                          '&search=' + encodeURIComponent(window.location.search) + 
+                          '&message=' + encodeURIComponent('Script loaded');
+                          
+    fetch(diagnosticURL, { method: 'GET', cache: 'no-store' })
+      .catch(() => {
+        // This error is expected and can be ignored
+        console.error("[SORTVISION] Diagnostic request completed");
+      });
+  } catch {
+    // Ignore errors
+  }
 })();
 
 (function() {
