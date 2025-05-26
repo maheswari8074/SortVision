@@ -140,10 +140,6 @@ updates:
       # Specific problematic versions (if any)
       - dependency-name: "node-gyp"
         versions: ["8.x", "9.x"]
-      
-      # Experimental or beta versions
-      - dependency-name: "*"
-        versions: ["*-alpha", "*-beta", "*-rc*", "*-canary*"]
 
   # GitHub Actions dependencies
   - package-ecosystem: "github-actions"
