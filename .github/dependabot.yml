@@ -29,8 +29,7 @@ updates:
         patterns:
           - "*"
         update-types:
-          - "security"
-        priority: 10
+          - "patch"
       
       # React ecosystem updates
       react-ecosystem:
@@ -42,7 +41,6 @@ updates:
         update-types:
           - "minor"
           - "patch"
-        priority: 8
       
       # Build tools and bundlers
       build-tools:
@@ -56,7 +54,6 @@ updates:
         update-types:
           - "minor"
           - "patch"
-        priority: 7
       
       # Styling and UI dependencies
       ui-dependencies:
@@ -70,7 +67,6 @@ updates:
         update-types:
           - "minor"
           - "patch"
-        priority: 6
       
       # Development tools
       dev-tools:
@@ -84,7 +80,6 @@ updates:
         update-types:
           - "minor"
           - "patch"
-        priority: 5
       
       # Testing dependencies
       testing-dependencies:
@@ -98,7 +93,6 @@ updates:
         update-types:
           - "minor"
           - "patch"
-        priority: 4
       
       # Analytics and monitoring
       analytics:
@@ -110,7 +104,6 @@ updates:
         update-types:
           - "minor"
           - "patch"
-        priority: 3
       
       # Minor utility updates
       utilities:
@@ -122,7 +115,6 @@ updates:
           - "zod*"
         update-types:
           - "patch"
-        priority: 2
       
       # All other dependencies (lowest priority)
       other-dependencies:
@@ -130,7 +122,6 @@ updates:
           - "*"
         update-types:
           - "patch"
-        priority: 1
 
     # Selective ignoring for stability
     ignore:
@@ -181,7 +172,7 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-      day: "first-monday"
+      day: "monday"
       time: "11:00"
       timezone: "UTC"
     open-pull-requests-limit: 3
