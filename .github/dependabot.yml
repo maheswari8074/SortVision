@@ -10,8 +10,6 @@ updates:
       timezone: "UTC"
     # Increase PR limit for active development
     open-pull-requests-limit: 15
-    # Enable security updates
-    insecure-external-code-execution: "allow"
     # Custom commit message for better tracking
     commit-message:
       prefix: "⬆️ deps"
