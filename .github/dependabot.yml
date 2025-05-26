@@ -1,6 +1,6 @@
 version: 2
 updates:
-  # Enable version updates for npm/pnpm
+  # Main SortVision app dependencies
   - package-ecosystem: "npm"
     directory: "/SortVision"
     schedule:
@@ -8,52 +8,185 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "UTC"
-    # Allow updates for all dependencies
-    open-pull-requests-limit: 10
-    # Group updates by dependency type
+    # Increase PR limit for active development
+    open-pull-requests-limit: 15
+    # Enable security updates
+    insecure-external-code-execution: "allow"
+    # Custom commit message for better tracking
+    commit-message:
+      prefix: "⬆️ deps"
+      prefix-development: "⬆️ dev-deps"
+      include: "scope"
+    # PR settings
+    pull-request-branch-name:
+      separator: "/"
+    reviewers:
+      - "alienx5499"
+    # Advanced grouping for better organization
     groups:
-      production-dependencies:
+      # Critical security updates (high priority)
+      security-updates:
         patterns:
           - "*"
         update-types:
-          - "major"
+          - "security"
+        priority: 10
+      
+      # React ecosystem updates
+      react-ecosystem:
+        patterns:
+          - "react*"
+          - "@types/react*"
+          - "react-dom*"
+          - "@vitejs/plugin-react*"
+        update-types:
           - "minor"
           - "patch"
-    # Ignore certain dependencies
+        priority: 8
+      
+      # Build tools and bundlers
+      build-tools:
+        patterns:
+          - "vite*"
+          - "rollup*"
+          - "@rollup/*"
+          - "esbuild*"
+          - "postcss*"
+          - "autoprefixer*"
+        update-types:
+          - "minor"
+          - "patch"
+        priority: 7
+      
+      # Styling and UI dependencies
+      ui-dependencies:
+        patterns:
+          - "tailwindcss*"
+          - "@tailwindcss/*"
+          - "lucide-react*"
+          - "framer-motion*"
+          - "clsx*"
+          - "class-variance-authority*"
+        update-types:
+          - "minor"
+          - "patch"
+        priority: 6
+      
+      # Development tools
+      dev-tools:
+        patterns:
+          - "eslint*"
+          - "@eslint/*"
+          - "prettier*"
+          - "@typescript-eslint/*"
+          - "typescript*"
+          - "@types/*"
+        update-types:
+          - "minor"
+          - "patch"
+        priority: 5
+      
+      # Testing dependencies
+      testing-dependencies:
+        patterns:
+          - "vitest*"
+          - "@testing-library/*"
+          - "jest*"
+          - "@jest/*"
+          - "cypress*"
+          - "playwright*"
+        update-types:
+          - "minor"
+          - "patch"
+        priority: 4
+      
+      # Analytics and monitoring
+      analytics:
+        patterns:
+          - "@vercel/analytics*"
+          - "@vercel/speed-insights*"
+          - "sentry*"
+          - "@sentry/*"
+        update-types:
+          - "minor"
+          - "patch"
+        priority: 3
+      
+      # Minor utility updates
+      utilities:
+        patterns:
+          - "lodash*"
+          - "uuid*"
+          - "date-fns*"
+          - "axios*"
+          - "zod*"
+        update-types:
+          - "patch"
+        priority: 2
+      
+      # All other dependencies (lowest priority)
+      other-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+        priority: 1
+
+    # Selective ignoring for stability
     ignore:
+      # Major version bumps for core dependencies (require manual review)
       - dependency-name: "react"
-        versions: ["18.x"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "react-dom"
-        versions: ["18.x"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "vite"
-        versions: ["5.x"]
-      - dependency-name: "@vitejs/plugin-react"
-        versions: ["4.x"]
-      - dependency-name: "tailwindcss"
-        versions: ["3.x"]
-      - dependency-name: "postcss"
-        versions: ["8.x"]
-      - dependency-name: "autoprefixer"
-        versions: ["10.x"]
-      - dependency-name: "eslint"
-        versions: ["8.x"]
-      - dependency-name: "eslint-plugin-react"
-        versions: ["7.x"]
-      - dependency-name: "eslint-plugin-react-hooks"
-        versions: ["4.x"]
-      - dependency-name: "eslint-plugin-react-refresh"
-        versions: ["0.x"]
-      - dependency-name: "prettier"
-        versions: ["3.x"]
-      - dependency-name: "@types/react"
-        versions: ["18.x"]
-      - dependency-name: "@types/react-dom"
-        versions: ["18.x"]
+        update-types: ["version-update:semver-major"]
       - dependency-name: "typescript"
-        versions: ["5.x"]
-      - dependency-name: "@types/node"
-        versions: ["20.x"]
-      - dependency-name: "@vercel/analytics"
-        versions: ["1.x"]
-      - dependency-name: "@vercel/speed-insights"
-        versions: ["1.x"]
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      
+      # Specific problematic versions (if any)
+      - dependency-name: "node-gyp"
+        versions: ["8.x", "9.x"]
+      
+      # Experimental or beta versions
+      - dependency-name: "*"
+        versions: ["*-alpha", "*-beta", "*-rc*", "*-canary*"]
+
+  # GitHub Actions dependencies
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "10:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "⬆️ ci"
+      include: "scope"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Docker dependencies (if using Docker in the future)
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "first-monday"
+      time: "11:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "⬆️ docker"
+      include: "scope"
+
+enable-beta-ecosystems: true
