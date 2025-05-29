@@ -55,6 +55,8 @@ if ('requestIdleCallback' in window) {
           <BrowserRouter>
             <Suspense fallback={<LoadingFallback />}>
               <Routes>
+                <Route path="/" element={<App />} />
+                <Route path="/algorithms/:algorithmName" element={<App />} />
                 <Route path="*" element={<App />} />
               </Routes>
             </Suspense>
@@ -78,6 +80,8 @@ if ('requestIdleCallback' in window) {
         <BrowserRouter>
           <Suspense fallback={<LoadingFallback />}>
             <Routes>
+              <Route path="/" element={<App />} />
+              <Route path="/algorithms/:algorithmName" element={<App />} />
               <Route path="*" element={<App />} />
             </Routes>
           </Suspense>
