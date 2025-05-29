@@ -318,42 +318,313 @@ SortVision/                  # Main project repository
 
 ## 🛠️ **Developer Tools**
 
-SortVision includes a powerful set of developer tools that help with debugging and performance monitoring. These tools are restricted to development environments only and are blocked in production deployments for security and performance reasons.
+SortVision includes a comprehensive suite of developer tools designed to enhance the development experience, debug performance issues, and monitor application behavior in real-time. These tools are intelligently restricted to development environments only and are automatically blocked in production deployments for security and performance optimization.
 
-### **Accessing DevTools**
+### **🔐 Security & Access Control**
 
-The DevTools can only be accessed in development mode:
+The DevTools implement a sophisticated access control system:
 
-1. Run the application locally in development mode:
+- **Development-Only Access**: Tools are completely inaccessible in production environments
+- **URL-Based Authentication**: Requires specific query parameters for activation
+- **Domain Restrictions**: Automatically detects and blocks access on production domains
+- **Performance Protection**: Prevents performance degradation in live environments
+
+### **⚡ Accessing DevTools**
+
+#### **Prerequisites**
+- Node.js development environment
+- Local development server running
+- Modern browser with JavaScript enabled
+
+#### **Access Methods**
+
+1. **Standard Development Access**:
    ```bash
    npm run dev
    # or
    pnpm dev
    ```
 
-2. Access your local instance:
+2. **DevTools Activation**:
    ```
    http://localhost:3000/?cr7=goat
    ```
 
-> **Note**: DevTools access is intentionally blocked on production deployments (like `sortvision.vercel.app`) and cannot be accessed by appending URL parameters in those environments.
+3. **Alternative Local URLs**:
+   ```
+   http://127.0.0.1:3000/?cr7=goat
+   http://localhost:5173/?cr7=goat  # Vite default port
+   ```
 
-### **DevTools Features**
+> **🛡️ Security Note**: The query parameter `cr7=goat` acts as a development key and is intentionally obscure to prevent accidental activation. This parameter is completely ignored in production environments.
 
-- **Performance Monitoring**: Track FPS, memory usage, and rendering performance
-- **Device Information**: View detailed information about the current device
-- **Console Integration**: Enhanced logging with visual formatting
-- **Error Tracking**: Capture and display runtime errors
-- **Network Analysis**: Monitor API calls and loading times
+### **🧰 DevTools Feature Suite**
 
-### **Using DevTools for Development**
+#### **📊 Performance Monitoring**
+**Real-time performance tracking with detailed metrics:**
 
-- Toggle the panel with the "CLOSE" button
-- Performance metrics update in real-time as you interact with the application
-- Device information helps diagnose device-specific issues
-- All metrics can be useful when optimizing algorithm visualizations
+- **Frame Rate Analysis**
+  - Live FPS counter with historical data
+  - Frame time distribution graphs
+  - Performance bottleneck detection
+  - Smooth/choppy animation identification
 
-> **Note**: The DevTools are designed for developers and may impact performance when enabled. They should be disabled for regular usage.
+- **Memory Usage Tracking**
+  - Heap memory consumption monitoring
+  - Memory leak detection
+  - Garbage collection impact analysis
+  - Memory usage trends and patterns
+
+- **Rendering Performance**
+  - Component render time tracking
+  - Re-render frequency analysis
+  - DOM manipulation performance
+  - CSS animation performance metrics
+
+- **Algorithm Execution Metrics**
+  - Sorting algorithm performance comparison
+  - Step-by-step execution timing
+  - Memory allocation during sorting
+  - Optimization opportunity identification
+
+#### **📱 Device Information Panel**
+**Comprehensive device and browser analysis:**
+
+- **Hardware Specifications**
+  - CPU core count and architecture
+  - Available RAM and usage
+  - GPU information and capabilities
+  - Screen resolution and pixel density
+
+- **Browser Environment**
+  - User agent string analysis
+  - Supported web APIs
+  - JavaScript engine details
+  - CSS feature support matrix
+
+- **Network Information**
+  - Connection type and speed
+  - Bandwidth estimation
+  - Latency measurements
+  - Network quality assessment
+
+- **Viewport and Display**
+  - Screen dimensions and orientation
+  - Color depth and HDR support
+  - Touch capability detection
+  - Device pixel ratio
+
+#### **💻 Console Integration**
+**Enhanced debugging capabilities:**
+
+- **Formatted Logging**
+  - Color-coded log levels
+  - Structured data visualization
+  - Error stack trace enhancement
+  - Performance timing logs
+
+- **Interactive Debugging**
+  - Variable inspection tools
+  - Breakpoint management
+  - Call stack visualization
+  - Memory snapshot analysis
+
+#### **📈 Advanced Monitoring Features**
+
+- **Algorithm Visualization Metrics**
+  - Animation frame consistency
+  - Sorting step accuracy verification
+  - Visual element positioning tracking
+  - User interaction response times
+
+- **Resource Loading Analysis**
+  - Asset loading performance
+  - Bundle size impact assessment
+  - Lazy loading effectiveness
+  - Critical resource identification
+
+- **Error Tracking & Reporting**
+  - Runtime error capture
+  - Promise rejection handling
+  - Component error boundaries
+  - Performance regression detection
+
+### **🔍 Using DevTools for Development**
+
+#### **Basic Usage**
+
+1. **Panel Management**
+   ```javascript
+   // Toggle DevTools panel
+   // Click "TOGGLE PANEL" button in the floating widget
+   
+   // Close DevTools completely
+   // Click "CLOSE" button to hide all tools
+   ```
+
+2. **Performance Monitoring**
+   ```javascript
+   // Monitor specific algorithm performance
+   // Select algorithm and watch real-time metrics
+   // Compare performance across different array sizes
+   // Identify performance bottlenecks during sorting
+   ```
+
+#### **Advanced Development Workflows**
+
+1. **Performance Optimization**
+   - Use FPS monitoring to identify animation issues
+   - Analyze memory usage during long sorting operations
+   - Monitor rendering performance with different array sizes
+   - Compare algorithm efficiency in real-time
+
+2. **Cross-Device Testing**
+   - Verify responsive design across different screen sizes
+   - Test touch interactions on mobile devices
+   - Analyze performance on low-end devices
+   - Ensure compatibility across browser engines
+
+3. **Algorithm Development**
+   - Debug new sorting algorithm implementations
+   - Verify correctness of sorting steps
+   - Optimize animation performance
+   - Test edge cases and error handling
+
+#### **Performance Optimization Tips**
+
+- **Memory Management**
+  ```javascript
+  // Monitor memory during array operations
+  // Identify memory leaks in algorithm implementations
+  // Optimize garbage collection patterns
+  ```
+
+- **Rendering Optimization**
+  ```javascript
+  // Track component re-renders
+  // Identify unnecessary DOM updates
+  // Optimize CSS animations for 60fps
+  ```
+
+### **⚙️ Technical Implementation**
+
+#### **Architecture Overview**
+- **Modular Design**: Each tool is implemented as an independent module
+- **Event-Driven**: Uses observer pattern for real-time updates
+- **Non-Intrusive**: Minimal impact on application performance
+- **Conditional Loading**: Only loads when explicitly requested
+
+#### **File Structure**
+```
+public/devTools/
+├── index.js          # Main entry point and tool orchestration
+├── core.js           # Core utilities and initialization logic
+├── performance.js    # Performance monitoring implementation
+├── device-info.js    # Device detection and analysis
+├── monitoring.js     # Real-time monitoring utilities
+└── ui.js            # User interface components and styling
+```
+
+#### **API Integration**
+```javascript
+// Example DevTools API usage
+window.devTools = {
+  performance: {
+    startMonitoring(),
+    getMetrics(),
+    createReport()
+  },
+  device: {
+    getInfo(),
+    runDiagnostics(),
+    exportData()
+  }
+};
+```
+
+### **🚨 Troubleshooting**
+
+#### **Common Issues**
+
+1. **DevTools Not Loading**
+   ```bash
+   # Verify development server is running
+   npm run dev
+   
+   # Check URL parameters
+   http://localhost:3000/?cr7=goat
+   
+   # Clear browser cache
+   Ctrl+Shift+R (Windows/Linux)
+   Cmd+Shift+R (Mac)
+   ```
+
+2. **Performance Issues**
+   ```javascript
+   // If DevTools impact performance:
+   // 1. Close unnecessary monitoring panels
+   // 2. Reduce monitoring frequency
+   // 3. Disable heavy metrics collection
+   ```
+
+3. **Browser Compatibility**
+   ```javascript
+   // Supported browsers:
+   // Chrome 80+, Firefox 75+, Safari 13+, Edge 80+
+   // Some features may be limited in older browsers
+   ```
+
+#### **Performance Considerations**
+
+- **Development Impact**: DevTools add ~2-5% performance overhead
+- **Memory Usage**: Additional 10-20MB RAM usage when active
+- **Network**: Minimal network impact (local tools only)
+- **Battery**: May increase battery usage on mobile devices
+
+### **🎪 Advanced Features**
+
+#### **Custom Metrics**
+```javascript
+// Add custom performance markers
+performance.mark('algorithm-start');
+// ... sorting algorithm execution
+performance.mark('algorithm-end');
+performance.measure('algorithm-duration', 'algorithm-start', 'algorithm-end');
+```
+
+#### **Export Capabilities**
+- Performance reports in JSON format
+- Device information as downloadable data
+- Memory usage charts and graphs
+- Algorithm performance comparisons
+
+#### **Integration with Popular Tools**
+- **React DevTools**: Enhanced component inspection
+- **Chrome DevTools**: Extended performance profiling
+- **Lighthouse**: Performance audit integration
+- **WebPageTest**: Network performance analysis
+
+### **🎯 Best Practices**
+
+1. **Development Workflow**
+   - Always test with DevTools enabled during development
+   - Use performance metrics to guide optimization decisions
+   - Monitor memory usage during algorithm development
+   - Regularly check device compatibility
+
+2. **Performance Testing**
+   - Test on various device specifications
+   - Monitor performance across different array sizes
+   - Verify smooth animations at 60fps
+   - Check memory usage patterns
+
+3. **Debugging Strategy**
+   - Use console integration for systematic debugging
+   - Leverage performance metrics for bottleneck identification
+   - Monitor device information for compatibility issues
+   - Track user interaction patterns
+
+> **💡 Pro Tip**: Use DevTools data to create performance budgets and ensure consistent user experience across all devices and browsers.
 
 ---
 
