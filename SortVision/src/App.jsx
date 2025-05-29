@@ -2,7 +2,8 @@ import React, { useState, useEffect, lazy, Suspense, useMemo, useCallback, memo 
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Terminal, Code, Github, Linkedin, Twitter } from 'lucide-react';
-import { getAlgorithmMetaTags, getAlgorithmSchema, algorithms } from './utils/seo';
+import { getAlgorithmMetaTags, getHomepageMetaTags, getAlgorithmSchema, algorithms } from './utils/seo';
+import SEOContent from './components/SEOContent';
 
 // Lazy load components that aren't needed immediately
 const SortingVisualizer = lazy(() => import('./components/sortingVisualizer/SortingVisualizer'));
@@ -50,15 +51,7 @@ const App = () => {
       return getAlgorithmMetaTags(algorithmName);
     }
     
-    return {
-      title: 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool',
-      description: 'Master sorting algorithms with interactive visualizations. Compare Bubble, Merge, Quick Sort and more with real-time animations and metrics.',
-      keywords: 'sorting visualizer, algorithm visualizer, bubble sort, merge sort, quick sort, insertion sort, selection sort, interactive sorting, learn sorting algorithms, algorithm comparison, sorting algorithm complexity, programming education',
-      ogTitle: 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool',
-      ogDescription: 'Master sorting algorithms with interactive visualizations. Compare Bubble, Merge, Quick Sort and more with real-time animations and metrics.',
-      twitterTitle: 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool',
-      twitterDescription: 'Master sorting algorithms with interactive visualizations. Compare Bubble, Merge, Quick Sort and more with real-time animations and metrics.'
-    };
+    return getHomepageMetaTags();
   }, [algorithmName]);
   
   // Generate schema markup - memoized to prevent recalculation
@@ -80,16 +73,115 @@ const App = () => {
       "description": metaTags.description,
       "creator": {
         "@type": "Person",
-        "name": "alienX"
+        "name": "alienX",
+        "url": "https://github.com/alienx5499"
       },
       "screenshot": "https://sortvision.vercel.app/og-image.png",
-      "featureList": "Bubble Sort, Insertion Sort, Selection Sort, Merge Sort, Quick Sort, Heap Sort, Radix Sort, Performance Metrics, Algorithm Comparison",
-      "keywords": `sorting algorithms, algorithm visualization, ${currentAlgorithm} sort, computer science education, programming tools`,
+      "featureList": [
+        "Interactive Bubble Sort Visualization",
+        "Interactive Insertion Sort Visualization", 
+        "Interactive Selection Sort Visualization",
+        "Interactive Merge Sort Visualization",
+        "Interactive Quick Sort Visualization",
+        "Interactive Heap Sort Visualization",
+        "Interactive Radix Sort Visualization",
+        "Real-time Performance Metrics",
+        "Algorithm Comparison Tools",
+        "Educational Content",
+        "Step-by-step Animation",
+        "Algorithm Complexity Analysis"
+      ],
+      "keywords": metaTags.keywords,
+      "educationalUse": [
+        "Computer Science Education",
+        "Algorithm Learning",
+        "Data Structures and Algorithms",
+        "Programming Education",
+        "Coding Interview Preparation"
+      ],
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": [
+          "student",
+          "teacher",
+          "self-learner",
+          "developer"
+        ]
+      },
       "sameAs": [
         "https://github.com/alienx5499/SortVision",
         "https://x.com/alienx5499"
       ]
     };
+
+    // Enhanced homepage schema
+    if (!algorithmName) {
+      const homepageSchema = {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "SortVision",
+        "url": "https://sortvision.vercel.app",
+        "description": metaTags.description,
+        "educationalCredentialAwarded": "Algorithm Visualization Knowledge",
+        "hasOfferingCatalog": {
+          "@type": "OfferingCatalog",
+          "name": "Sorting Algorithm Visualizations",
+          "itemListElement": [
+            {
+              "@type": "Course",
+              "name": "Bubble Sort Visualization",
+              "description": "Interactive learning of Bubble Sort algorithm",
+              "url": "https://sortvision.vercel.app/algorithms/bubble"
+            },
+            {
+              "@type": "Course", 
+              "name": "Merge Sort Visualization",
+              "description": "Interactive learning of Merge Sort algorithm",
+              "url": "https://sortvision.vercel.app/algorithms/merge"
+            },
+            {
+              "@type": "Course",
+              "name": "Quick Sort Visualization", 
+              "description": "Interactive learning of Quick Sort algorithm",
+              "url": "https://sortvision.vercel.app/algorithms/quick"
+            }
+          ]
+        }
+      };
+
+      const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is a sorting algorithm visualizer?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A sorting algorithm visualizer is an interactive tool that helps you understand how different sorting algorithms work by showing the step-by-step process of sorting data with visual animations and performance metrics."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which sorting algorithms can I visualize?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "SortVision supports visualization of Bubble Sort, Insertion Sort, Selection Sort, Merge Sort, Quick Sort, Heap Sort, and Radix Sort algorithms with interactive animations and performance comparison."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is SortVision free to use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, SortVision is completely free to use. It's an open-source educational tool designed to help students and developers learn sorting algorithms through interactive visualization."
+            }
+          }
+        ]
+      };
+
+      return [baseSchema, homepageSchema, faqSchema];
+    }
     
     // Add breadcrumbs for algorithm pages
     if (algorithmName) {
@@ -120,7 +212,7 @@ const App = () => {
     }
     
     return baseSchema;
-  }, [algorithmName, algorithmTitle, currentAlgorithm, location.pathname, metaTags.description]);
+  }, [algorithmName, algorithmTitle, currentAlgorithm, location.pathname, metaTags.description, metaTags.keywords]);
   
   // Memoize the current date to prevent recreation on each render
   const currentDate = useMemo(() => new Date().toISOString().split('T')[0], []);
@@ -276,6 +368,9 @@ const App = () => {
           </a>
         </div>
       </Footer>
+
+      {/* SEO Content for better search engine understanding */}
+      <SEOContent algorithm={algorithmName} />
     </div>
   );
 };
