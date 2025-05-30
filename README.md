@@ -8,7 +8,7 @@
 [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/alienx5499/sortvisioN/blob/main/CONTRIBUTING.md)
 [![License: MIT](https://custom-icon-badges.herokuapp.com/github/license/alienx5499/sortvisioN?logo=law&logoColor=white)](https://github.com/alienx5499/sortvisioN/blob/main/LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Web-brightgreen?style=flat-square)](https://sortvision.vercel.app/)
-[![Views](https://hits.dwyl.com/alienx5499/sortvisioN.svg)](https://hits.dwyl.com/alienx5499/sortvisioN)
+[![Views](https://visitor-badge.laobi.icu/badge?page_id=alienx5499.sortvision)](https://visitor-badge.laobi.icu/badge?page_id=alienx5499.sortvision)
 [![⭐ GitHub stars](https://img.shields.io/github/stars/alienx5499/sortvisioN?style=social)](https://github.com/alienx5499/sortvisioN/stargazers)
 [![🍴 GitHub forks](https://img.shields.io/github/forks/alienx5499/sortvisioN?style=social)](https://github.com/alienx5499/sortvisioN/network)
 [![Commits](https://badgen.net/github/commits/alienx5499/sortvisioN)](https://github.com/alienx5499/sortvisioN/commits/main)
