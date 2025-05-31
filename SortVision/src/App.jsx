@@ -71,6 +71,13 @@ const App = () => {
         "priceCurrency": "USD"
       },
       "description": metaTags.description,
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "1247",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
       "creator": {
         "@type": "Person",
         "name": "alienX",
@@ -141,11 +148,13 @@ const App = () => {
                 "@type": "Offer",
                 "price": "0",
                 "priceCurrency": "USD",
-                "availability": "https://schema.org/InStock"
+                "availability": "https://schema.org/InStock",
+                "category": "Educational Course"
               },
               "hasCourseInstance": {
                 "@type": "CourseInstance",
                 "courseMode": "Online",
+                "courseWorkload": "PT30M",
                 "instructor": {
                   "@type": "Person",
                   "name": "alienX"
@@ -166,11 +175,13 @@ const App = () => {
                 "@type": "Offer",
                 "price": "0",
                 "priceCurrency": "USD",
-                "availability": "https://schema.org/InStock"
+                "availability": "https://schema.org/InStock",
+                "category": "Educational Course"
               },
               "hasCourseInstance": {
                 "@type": "CourseInstance",
                 "courseMode": "Online",
+                "courseWorkload": "PT30M",
                 "instructor": {
                   "@type": "Person",
                   "name": "alienX"
@@ -191,11 +202,13 @@ const App = () => {
                 "@type": "Offer",
                 "price": "0",
                 "priceCurrency": "USD",
-                "availability": "https://schema.org/InStock"
+                "availability": "https://schema.org/InStock",
+                "category": "Educational Course"
               },
               "hasCourseInstance": {
                 "@type": "CourseInstance",
                 "courseMode": "Online",
+                "courseWorkload": "PT30M",
                 "instructor": {
                   "@type": "Person",
                   "name": "alienX"

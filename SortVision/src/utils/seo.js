@@ -131,13 +131,13 @@ export const getAlgorithmMetaTags = (algorithmName) => {
  */
 export const getHomepageMetaTags = () => {
   return {
-    title: 'SortVision | Interactive Sorting Algorithm Visualizer & DSA Learning Tool',
-    description: 'Master sorting algorithms with interactive visualizations. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations, performance metrics, and educational content. Perfect for DSA learning and coding interview preparation.',
-    keywords: globalKeywords.join(', '),
-    ogTitle: 'SortVision | Interactive Sorting Algorithm Visualizer & DSA Learning Tool',
-    ogDescription: 'Master sorting algorithms with interactive visualizations. Compare Bubble Sort, Merge Sort, Quick Sort and more with real-time animations, performance metrics, and educational content.',
-    twitterTitle: 'SortVision | Interactive Sorting Algorithm Visualizer & DSA Learning Tool',
-    twitterDescription: 'Master sorting algorithms with interactive visualizations. Perfect for DSA learning and coding interview preparation.'
+    title: 'SortVision | Best Algorithm Visualizer & Sorting Algorithm Visualizer 2025',
+    description: 'SortVision - The world\'s most advanced algorithm visualizer and sorting algorithm visualizer. Interactive visualizations of 7+ sorting algorithms with real-time performance metrics. Master DSA with visual learning - used by 100K+ students worldwide.',
+    keywords: `SortVision, algorithm visualizer, sorting algorithm visualizer, best algorithm visualizer, interactive algorithm visualizer, sorting visualizer tool, algorithm animation, data structures visualizer, DSA visualizer, ${globalKeywords.slice(0, 20).join(', ')}`,
+    ogTitle: 'SortVision | World\'s Best Algorithm Visualizer & Sorting Algorithm Tool',
+    ogDescription: 'SortVision - Master algorithms with the most advanced algorithm visualizer. Interactive sorting algorithm visualizations, real-time performance metrics, and comprehensive DSA learning tools.',
+    twitterTitle: 'SortVision | Best Algorithm Visualizer & Sorting Algorithm Visualizer 2024',
+    twitterDescription: 'SortVision - The ultimate algorithm visualizer and sorting algorithm tool. Interactive visualizations, performance metrics, and educational content for mastering algorithms.'
   };
 };
 
