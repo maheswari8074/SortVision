@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense, useMemo, useCallback, memo } from 'react';
+import React, { useState, useEffect, lazy, Suspense, useMemo, memo } from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Terminal, Code, Github, Linkedin, Twitter } from 'lucide-react';
@@ -131,19 +131,76 @@ const App = () => {
               "@type": "Course",
               "name": "Bubble Sort Visualization",
               "description": "Interactive learning of Bubble Sort algorithm",
-              "url": "https://sortvision.vercel.app/algorithms/bubble"
+              "url": "https://sortvision.vercel.app/algorithms/bubble",
+              "provider": {
+                "@type": "Organization",
+                "name": "SortVision",
+                "url": "https://sortvision.vercel.app"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock"
+              },
+              "hasCourseInstance": {
+                "@type": "CourseInstance",
+                "courseMode": "Online",
+                "instructor": {
+                  "@type": "Person",
+                  "name": "alienX"
+                }
+              }
             },
             {
               "@type": "Course", 
               "name": "Merge Sort Visualization",
               "description": "Interactive learning of Merge Sort algorithm",
-              "url": "https://sortvision.vercel.app/algorithms/merge"
+              "url": "https://sortvision.vercel.app/algorithms/merge",
+              "provider": {
+                "@type": "Organization",
+                "name": "SortVision",
+                "url": "https://sortvision.vercel.app"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock"
+              },
+              "hasCourseInstance": {
+                "@type": "CourseInstance",
+                "courseMode": "Online",
+                "instructor": {
+                  "@type": "Person",
+                  "name": "alienX"
+                }
+              }
             },
             {
               "@type": "Course",
               "name": "Quick Sort Visualization", 
               "description": "Interactive learning of Quick Sort algorithm",
-              "url": "https://sortvision.vercel.app/algorithms/quick"
+              "url": "https://sortvision.vercel.app/algorithms/quick",
+              "provider": {
+                "@type": "Organization",
+                "name": "SortVision",
+                "url": "https://sortvision.vercel.app"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock"
+              },
+              "hasCourseInstance": {
+                "@type": "CourseInstance",
+                "courseMode": "Online",
+                "instructor": {
+                  "@type": "Person",
+                  "name": "alienX"
+                }
+              }
             }
           ]
         }
