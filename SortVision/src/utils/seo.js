@@ -131,7 +131,7 @@ export const getAlgorithmMetaTags = (algorithmName) => {
  */
 export const getHomepageMetaTags = () => {
   return {
-    title: 'SortVision | Best Algorithm Visualizer & Sorting Algorithm Visualizer 2025',
+    title: 'SortVision - Interactive Sorting Algorithm Visualizer',
     description: 'SortVision - The world\'s most advanced algorithm visualizer and sorting algorithm visualizer. Interactive visualizations of 7+ sorting algorithms with real-time performance metrics. Master DSA with visual learning - used by 100K+ students worldwide.',
     keywords: `SortVision, algorithm visualizer, sorting algorithm visualizer, best algorithm visualizer, interactive algorithm visualizer, sorting visualizer tool, algorithm animation, data structures visualizer, DSA visualizer, ${globalKeywords.slice(0, 20).join(', ')}`,
     ogTitle: 'SortVision | World\'s Best Algorithm Visualizer & Sorting Algorithm Tool',

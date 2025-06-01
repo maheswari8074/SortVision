@@ -1,4 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "/algorithms/:algorithm/",
+      "destination": "/algorithms/:algorithm",
+      "permanent": true
+    },
+    {
+      "source": "/((?!api|_next|static|favicon|sw.js|manifest|og-image|devTools).*)/",
+      "destination": "/:1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

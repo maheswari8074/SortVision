@@ -287,6 +287,20 @@ const App = () => {
   // Memoize the current date to prevent recreation on each render
   const currentDate = useMemo(() => new Date().toISOString().split('T')[0], []);
   
+  // Generate clean canonical URL - memoized to prevent recalculation
+  const canonicalUrl = useMemo(() => {
+    // Clean pathname - remove trailing slashes and ensure proper format
+    let cleanPath = location.pathname.replace(/\/+$/, '') || '/';
+    
+    // For algorithm pages, ensure consistent format
+    if (algorithmName && !cleanPath.includes('/algorithms/')) {
+      cleanPath = `/algorithms/${algorithmName}`;
+    }
+    
+    // Always return clean URL without query parameters or fragments
+    return `https://sortvision.vercel.app${cleanPath}`;
+  }, [location.pathname, algorithmName]);
+  
   // Typing animation effect
   useEffect(() => {
     if (displayText.length < fullText.length) {
@@ -319,18 +333,18 @@ const App = () => {
         <title>{metaTags.title}</title>
         <meta name="description" content={metaTags.description} />
         <meta name="keywords" content={metaTags.keywords} />
-        <link rel="canonical" href={`https://sortvision.vercel.app${location.pathname}`} />
+        <link rel="canonical" href={canonicalUrl} />
         <meta property="article:modified_time" content={currentDate} />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://sortvision.vercel.app${location.pathname}`} />
+        <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={metaTags.ogTitle} />
         <meta property="og:description" content={metaTags.ogDescription} />
         <meta property="og:updated_time" content={currentDate} />
         
         {/* Twitter */}
-        <meta name="twitter:url" content={`https://sortvision.vercel.app${location.pathname}`} />
+        <meta name="twitter:url" content={canonicalUrl} />
         <meta name="twitter:title" content={metaTags.twitterTitle} />
         <meta name="twitter:description" content={metaTags.twitterDescription} />
         

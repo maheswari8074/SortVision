@@ -16,7 +16,8 @@ const ROUTES = [
   '/algorithms/selection',
   '/algorithms/merge',
   '/algorithms/quick',
-  '/algorithms/radix'
+  '/algorithms/radix',
+  '/algorithms/heap'
 ];
 
 async function prerender() {
@@ -65,6 +66,9 @@ async function prerender() {
       // Generate SEO-optimized HTML
       let html = transformedTemplate;
       
+      // Generate canonical URL for this route
+      const canonicalUrl = `https://sortvision.vercel.app${route}`;
+      
       if (isAlgorithmPage) {
         // Format algorithm name for display
         const displayName = algorithmName.charAt(0).toUpperCase() + algorithmName.slice(1) + ' Sort';
@@ -83,6 +87,19 @@ async function prerender() {
         html = html.replace(
           /<meta name="keywords" content="[^"]*"/g,
           `<meta name="keywords" content="sorting visualizer, algorithm visualizer, ${algorithmName} sort, sorting algorithms, interactive ${algorithmName} sort, learn sorting algorithms, algorithm comparison, sorting algorithm complexity, programming education"`
+        );
+      }
+      
+      // Add or update canonical URL
+      if (!html.includes('<link rel="canonical"')) {
+        html = html.replace(
+          '</head>',
+          `  <link rel="canonical" href="${canonicalUrl}" />\n</head>`
+        );
+      } else {
+        html = html.replace(
+          /<link rel="canonical" href="[^"]*" \/>/g,
+          `<link rel="canonical" href="${canonicalUrl}" />`
         );
       }
       

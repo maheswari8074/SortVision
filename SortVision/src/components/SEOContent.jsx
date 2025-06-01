@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 /**
  * SEO Content Component
@@ -11,10 +12,25 @@ import { Helmet } from 'react-helmet-async';
  * - Algorithm-specific optimization
  */
 const SEOContent = ({ algorithm = null }) => {
-  // Get current URL for canonical and social sharing
-  const currentUrl = typeof window !== 'undefined' ? window.location.href : 'https://sortvision.vercel.app/';
+  const location = useLocation();
   const baseUrl = 'https://sortvision.vercel.app';
   
+  // Generate clean canonical URL
+  const getCanonicalUrl = () => {
+    // Clean pathname - remove trailing slashes and ensure proper format
+    let cleanPath = location.pathname.replace(/\/+$/, '') || '/';
+    
+    // For algorithm pages, ensure consistent format
+    if (algorithm && !cleanPath.includes('/algorithms/')) {
+      cleanPath = `/algorithms/${algorithm}`;
+    }
+    
+    // Always return clean URL without query parameters or fragments
+    return `${baseUrl}${cleanPath}`;
+  };
+  
+  const currentUrl = getCanonicalUrl();
+
   // 1. Enhanced main heading with primary keywords
   const mainHeading = (
     <h1>SortVision: Top Sorting Algorithm Visualizer & DSA Interactive Learning Tool</h1>
@@ -195,12 +211,12 @@ const SEOContent = ({ algorithm = null }) => {
 
   // 4. Comprehensive meta tags and structured data
   const pageTitle = algorithm 
-    ? `${algorithm.charAt(0).toUpperCase() + algorithm.slice(1)} Sort Visualizer | Interactive DSA Learning Tool | SortVision`
-    : 'SortVision – #1 Sorting Algorithm Visualizer | DSA Learning, Interview Prep | Free Online Tool';
+    ? `${algorithm.charAt(0).toUpperCase() + algorithm.slice(1)} Sort Visualizer - SortVision`
+    : 'SortVision - Interactive Sorting Algorithm Visualizer';
     
   const pageDescription = algorithm
     ? `Master ${algorithm} sort algorithm with SortVision's interactive visualizer. Step-by-step animations, performance analysis, and comprehensive DSA learning for coding interviews.`
-    : 'SortVision: The ultimate free sorting algorithm visualizer for DSA learning. Interactive animations for merge sort, quick sort, heap sort, bubble sort & more. Perfect for coding interviews.';
+    : 'Interactive visualization of sorting algorithms including bubble sort, merge sort, quick sort, and more. Learn data structures and algorithms with real-time performance metrics and educational content.';
 
   return (
     <>
