@@ -1,143 +1,166 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 /**
  * SEO Content Component
- * 
+ *
  * Provides additional semantic content for search engines while remaining
- * invisible to users. This helps improve search rankings for relevant keywords.
+ * invisible to users (via `.sr-only`). Includes keyword-rich headings,
+ * meta tags, and structured data so that SortVision ranks for sorting,
+ * DSA, merge sort, etc.
  */
 const SEOContent = ({ algorithm = null }) => {
-  const generalContent = (
+  // 1. Primary <h1> with the most important keywords up front:
+  const mainHeading = (
+    <h1>SortVision: Top Sorting Algorithm Visualizer & DSA Interactive Tool</h1>
+  );
+
+  // 2. A broad set of sorting / DSA terms to cover long-tail keywords:
+  const allKeywordsContent = (
     <div className="sr-only" aria-hidden="true">
-      {/* Primary SEO Content for Algorithm Visualizer Keywords */}
-      <h1>SortVision: The Ultimate Algorithm Visualizer & Sorting Algorithm Visualizer</h1>
+      {mainHeading}
+
       <p>
-        SortVision is the world's most comprehensive algorithm visualizer and sorting algorithm visualizer, 
-        designed specifically for computer science students, software developers, and educators. Our interactive 
-        algorithm visualizer provides real-time visual representations of sorting algorithms, making complex 
-        data structures and algorithms concepts accessible through visual learning.
+        SortVision is the world's leading sorting algorithm visualizer, offering in-depth
+        interactive visualizations for merge sort, quick sort, heap sort, bubble sort,
+        insertion sort, selection sort, radix sort, and bucket sort. Whether you're studying data structures and algorithms (DSA), preparing
+        for coding interviews, or teaching computer science, SortVision provides real-time
+        step-by-step animations, performance metrics, and complexity analysis for every
+        major sorting technique.
       </p>
-      
-      <h2>Why Choose SortVision Algorithm Visualizer?</h2>
-      <p>
-        As the leading algorithm visualizer platform, SortVision offers unparalleled interactive sorting 
-        algorithm visualization tools. Our sorting algorithm visualizer supports 7+ major algorithms with 
-        step-by-step animation, performance metrics tracking, and educational insights that help users 
-        understand algorithmic complexity and behavior patterns.
-      </p>
-      
-      <h2>SortVision Interactive Sorting Algorithm Visualizer Features</h2>
-      <p>
-        SortVision's algorithm visualizer includes advanced features like real-time performance tracking, algorithm 
-        comparison tools, customizable visualization speeds, and detailed complexity analysis. This makes 
-        SortVision the perfect sorting algorithm visualizer tool for DSA learning, coding interview preparation, 
-        and computer science education.
-      </p>
-      
-      <h3>Complete Algorithm Visualizer Toolkit:</h3>
+
+      <h2>Comprehensive DSA & Sorting Algorithm Support</h2>
       <ul>
-        <li>Interactive Bubble Sort visualizer with step-by-step animation</li>
-        <li>Advanced Merge Sort algorithm visualizer with divide-and-conquer demonstration</li>
-        <li>Quick Sort sorting algorithm visualizer with partitioning visualization</li>
-        <li>Insertion Sort algorithm visualizer for small dataset optimization</li>
-        <li>Selection Sort interactive visualizer with minimum element tracking</li>
-        <li>Heap Sort binary heap-based algorithm visualizer</li>
-        <li>Radix Sort non-comparative algorithm visualizer</li>
-        <li>Real-time performance metrics and complexity analysis</li>
-        <li>Algorithm comparison tools for educational analysis</li>
-        <li>Mobile-responsive algorithm visualizer interface</li>
+        <li>Merge Sort algorithm visualizer: divide-and-conquer demonstration with recursive subarray merging</li>
+        <li>Quick Sort algorithm visualizer: pivot selection, partitioning visualization, and recursion tracing</li>
+        <li>Heap Sort visualizer: binary heap construction, heapify steps, and sorted extraction</li>
+        <li>Bubble Sort visualizer: pairwise swapping, best-case vs. worst-case time complexity</li>
+        <li>Insertion Sort visualizer: adaptive sorting for small arrays, step-by-step insertion</li>
+        <li>Selection Sort visualizer: scanning for minimum element, in-place swapping</li>
+        <li>Radix Sort visualizer: non-comparative, digit-by-digit sorting for integers</li>
+        <li>Bucket Sort visualizer: dividing into buckets and applying insertion sort for individual buckets</li>
       </ul>
-      
-      <h3>Educational Benefits of Our Algorithm Visualizer:</h3>
-      <ul>
-        <li>Visual learning enhances algorithm comprehension and retention</li>
-        <li>Interactive exploration of sorting algorithm behavior patterns</li>
-        <li>Comparative analysis tools for different algorithm visualizer techniques</li>
-        <li>Step-by-step algorithm execution for detailed learning</li>
-        <li>Performance metrics help understand time and space complexity</li>
-        <li>Perfect for coding interview preparation and DSA practice</li>
-        <li>Supports visual learners in computer science education</li>
-        <li>Free algorithm visualizer accessible worldwide</li>
-      </ul>
-      
-      <h2>Advanced Sorting Algorithm Visualizer Technology</h2>
+
+      <h2>Key Data Structures & DSA Concepts</h2>
       <p>
-        Our algorithm visualizer uses cutting-edge web technologies to provide smooth, real-time sorting 
-        algorithm visualization. Built with React and optimized for performance, this sorting algorithm 
-        visualizer delivers 60fps animations and handles datasets of various sizes efficiently.
+        Alongside sorting algorithms, SortVision also covers fundamental data structures:
+        arrays, linked lists, stacks, queues, binary search trees (BST), heaps, graphs,
+        hash tables, and complexity measures (Big O notation, time vs. space trade-offs).
+        Our platform helps you master:
       </p>
-      
-      <h3>Algorithm Visualizer Use Cases:</h3>
       <ul>
-        <li>Computer Science education and algorithm learning</li>
-        <li>Coding interview preparation and practice</li>
-        <li>Data structures and algorithms (DSA) study sessions</li>
-        <li>Teaching aids for educators and professors</li>
-        <li>Self-learning and algorithm exploration</li>
-        <li>Research and algorithm comparison studies</li>
-        <li>Programming bootcamp curriculum support</li>
-        <li>Algorithm visualization for presentations</li>
+        <li>Time complexity analysis (O(n log n), O(n²), O(n))</li>
+        <li>Space complexity evaluation</li>
+        <li>In-place vs. out-of-place algorithms</li>
+        <li>Stability in sorting algorithms</li>
+        <li>Divide and conquer, dynamic programming, and greedy strategies</li>
       </ul>
-      
+
+      <h2>Why SortVision Ranks #1 for Sorting & DSA Education</h2>
       <p>
-        Whether you're a beginner learning your first sorting algorithm or an experienced developer 
-        preparing for technical interviews, our algorithm visualizer provides the tools and insights 
-        needed to master algorithmic concepts through interactive visual learning. Join thousands of 
-        users who have improved their DSA skills with the best sorting algorithm visualizer available.
+        As the premier online sorting visualization tool, SortVision's unique combination
+        of interactive animations, real-time performance charts, and step-by-step explanations
+        makes it the go-to resource for:
       </p>
-      
-      <h2>Free Algorithm Visualizer for Everyone</h2>
+      <ul>
+        <li>Computer science students learning algorithms</li>
+        <li>Software engineers preparing for technical interviews (LeetCode, HackerRank)</li>
+        <li>Educators seeking a teaching aid for data structures classes</li>
+        <li>Self-learners exploring advanced algorithmic concepts</li>
+        <li>Algorithm researchers comparing sorting methodologies</li>
+      </ul>
+
+      <h2>SortVision Features for Sorting & DSA Mastery</h2>
+      <ul>
+        <li>60FPS real-time sorting animations for all major sorting algorithms</li>
+        <li>Customizable visualization speed and dataset size</li>
+        <li>Side-by-side comparison of two sorting algorithms</li>
+        <li>Interactive code walkthrough showing pseudocode alongside animations</li>
+        <li>Full support for array, list, tree, and graph visualizations</li>
+        <li>Complexity metrics dashboard (time, space, comparisons, swaps)</li>
+        <li>Mobile-responsive design for on-the-go learning</li>
+        <li>Completely free and open-source (MIT License)</li>
+      </ul>
+
+      <h2>Get Started: SortVision's Free Sorting Algorithm Visualizer</h2>
       <p>
-        SortVision is completely free to use and open-source, making advanced algorithm visualization 
-        accessible to students worldwide. Our commitment to free education ensures that anyone can 
-        access this powerful sorting algorithm visualizer without barriers.
+        Whether your focus is on merge sort optimizations, quick sort partition strategies,
+        or analyzing worst-case scenarios for bubble sort, SortVision provides the tools you
+        need. Join thousands of learners worldwide who have improved their DSA skills with
+        the most advanced sorting algorithm visualizer online.
       </p>
     </div>
   );
 
+  // 3. Algorithm-specific content (if `algorithm` prop is provided):
   const algorithmSpecificContent = algorithm ? (
     <div className="sr-only" aria-hidden="true">
-      <h2>{algorithm.charAt(0).toUpperCase() + algorithm.slice(1)} Sort Algorithm Visualizer</h2>
+      <h2>
+        {algorithm.charAt(0).toUpperCase() + algorithm.slice(1)} Sort Algorithm Visualizer – SortVision
+      </h2>
       <p>
-        Experience the power of our {algorithm} sort algorithm visualizer - part of the most comprehensive 
-        sorting algorithm visualizer platform available. This interactive {algorithm} sort visualizer 
-        demonstrates how the {algorithm} sorting algorithm works through step-by-step visual animation 
-        and real-time performance tracking.
+        Experience our interactive {algorithm} sort visualizer with step-by-step animations,
+        pivot tracking, recursive calls, and complexity analysis. Perfect for mastering
+        {algorithm} sort's best-, average-, and worst-case behavior. Key features include:
       </p>
-      
-      <h3>Interactive {algorithm.charAt(0).toUpperCase() + algorithm.slice(1)} Sort Algorithm Visualizer Features:</h3>
       <ul>
-        <li>Real-time {algorithm} sort algorithm visualization with smooth animations</li>
-        <li>Performance metrics tracking for {algorithm} sort analysis</li>
-        <li>Step-by-step {algorithm} sort execution breakdown and explanation</li>
-        <li>Interactive controls for {algorithm} sort algorithm exploration</li>
-        <li>Educational content explaining {algorithm} sort complexity and use cases</li>
-        <li>Comparison tools to analyze {algorithm} sort against other algorithms</li>
-        <li>Mobile-optimized {algorithm} sort visualizer interface</li>
-        <li>Free access to advanced {algorithm} sort algorithm visualization</li>
+        <li>Real-time {algorithm} sort animations at 60FPS</li>
+        <li>Performance metrics: comparisons, swaps, recursion depth</li>
+        <li>Custom dataset size and random seed for reproducibility</li>
+        <li>Visual pivot selection and partitioning breakdown</li>
+        <li>Interactive controls (pause, resume, step-through)</li>
+        <li>Compare {algorithm} sort vs. merge sort or quick sort side-by-side</li>
       </ul>
-      
+      <h3>Why Use SortVision's {algorithm.charAt(0).toUpperCase() + algorithm.slice(1)} Sort Visualizer?</h3>
       <p>
-        Master {algorithm} sort algorithm concepts with our dedicated {algorithm} sort visualizer. 
-        Perfect for understanding how {algorithm} sort works, when to use it, and how it compares 
-        to other sorting algorithms. This {algorithm} sort algorithm visualizer is ideal for 
-        computer science education, DSA learning, and coding interview preparation.
-      </p>
-      
-      <h3>Why Use Our {algorithm.charAt(0).toUpperCase() + algorithm.slice(1)} Sort Visualizer?</h3>
-      <p>
-        Our {algorithm} sort algorithm visualizer provides the most detailed and interactive 
-        visualization of the {algorithm} sorting algorithm available online. With real-time 
-        performance metrics, step-by-step explanations, and customizable visualization options, 
-        this {algorithm} sort visualizer helps users truly understand algorithmic behavior and 
-        optimization techniques.
+        SortVision is the only platform providing such detailed, educational
+        {algorithm} sort walkthroughs—ideal for coding interview prep, DSA coursework,
+        and self-guided study.
       </p>
     </div>
   ) : null;
 
   return (
     <>
-      {generalContent}
+      {/* 4. Inject meta tags and structured data via react-helmet */}
+      <Helmet>
+        {/* Primary title tag showing "SortVision" + top keywords */}
+        <title>
+          SortVision – #1 Sorting Algorithm Visualizer | DSA, Merge Sort, Quick Sort Tool
+        </title>
+
+        <meta
+          name="description"
+          content="SortVision: The ultimate sorting algorithm visualizer for DSA. Interactive merge sort, quick sort, heap sort, bubble sort, complexity analysis & more. Free educational tool."
+        />
+
+        {/* Canonical (replace with your actual domain if different) */}
+        <link rel="canonical" href="https://www.sortvision.io/" />
+
+        {/* Structured data: describing SortVision as a SoftwareApplication */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "http://schema.org",
+            "@type": "SoftwareApplication",
+            name: "SortVision",
+            url: "https://www.sortvision.io/",
+            description:
+              "SortVision is the world's leading sorting algorithm visualizer. Interactive DSA tool for merge sort, quick sort, heap sort, bubble sort, insertion sort, and more.",
+            applicationCategory: "EducationalApplication",
+            operatingSystem: "All",
+            author: {
+              "@type": "Organization",
+              name: "SortVision",
+              url: "https://www.sortvision.io/",
+            },
+            softwareVersion: "1.0.0",
+            datePublished: "2023-08-15",
+            license: "https://opensource.org/licenses/MIT",
+          })}
+        </script>
+      </Helmet>
+
+      {allKeywordsContent}
       {algorithmSpecificContent}
     </>
   );
