@@ -251,7 +251,7 @@ const App = () => {
     }
     
     return baseSchema;
-  }, [algorithmName, algorithmTitle, currentAlgorithm, location.pathname, metaTags.description, metaTags.keywords]);
+  }, [algorithmName, algorithmTitle, location.pathname, metaTags.description, metaTags.keywords]);
   
   // Memoize the current date to prevent recreation on each render
   const currentDate = useMemo(() => new Date().toISOString().split('T')[0], []);
