@@ -227,7 +227,7 @@ const SEOContent = ({ algorithm = null }) => {
         <meta name="keywords" content="sorting algorithm visualizer, DSA learning, data structures algorithms, coding interview prep, merge sort, quick sort, heap sort, bubble sort, computer science education, algorithm animation, interactive learning, programming tutorial, software engineering" />
         <meta name="author" content="SortVision" />
         <meta name="robots" content="index, follow" />
-        <meta name="language" content="English" />
+        <meta name="language" content="en" />
         <meta name="revisit-after" content="7 days" />
 
         {/* Canonical URL */}
@@ -336,7 +336,28 @@ const SEOContent = ({ algorithm = null }) => {
             ],
             "courseMode": "online",
             "isAccessibleForFree": true,
-            "inLanguage": "en"
+            "inLanguage": "en",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock",
+              "category": "Educational Course"
+            },
+            "hasCourseInstance": {
+              "@type": "CourseInstance",
+              "courseMode": "online",
+              "courseWorkload": "PT2H",
+              "instructor": {
+                "@type": "Person",
+                "name": "alienX"
+              },
+              "courseSchedule": {
+                "@type": "Schedule",
+                "startDate": "2024-01-01",
+                "repeatFrequency": "P1D"
+              }
+            }
           })}
         </script>
 

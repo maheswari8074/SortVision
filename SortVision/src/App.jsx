@@ -219,38 +219,7 @@ const App = () => {
         }
       };
 
-      const faqSchema = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "What is a sorting algorithm visualizer?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "A sorting algorithm visualizer is an interactive tool that helps you understand how different sorting algorithms work by showing the step-by-step process of sorting data with visual animations and performance metrics."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Which sorting algorithms can I visualize?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "SortVision supports visualization of Bubble Sort, Insertion Sort, Selection Sort, Merge Sort, Quick Sort, Heap Sort, and Radix Sort algorithms with interactive animations and performance comparison."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Is SortVision free to use?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, SortVision is completely free to use. It's an open-source educational tool designed to help students and developers learn sorting algorithms through interactive visualization."
-            }
-          }
-        ]
-      };
-
-      return [baseSchema, homepageSchema, faqSchema];
+      return [baseSchema, homepageSchema];
     }
     
     // Add breadcrumbs for algorithm pages
