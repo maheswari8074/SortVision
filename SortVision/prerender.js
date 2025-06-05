@@ -63,6 +63,11 @@ async function prerender() {
       const algorithmName = route.split('/').pop();
       const isAlgorithmPage = route !== '/';
       
+      // Format algorithm name for display if it's an algorithm page
+      const displayName = isAlgorithmPage 
+        ? algorithmName.charAt(0).toUpperCase() + algorithmName.slice(1) + ' Sort'
+        : '';
+      
       // Generate SEO-optimized HTML
       let html = transformedTemplate;
       
@@ -70,12 +75,9 @@ async function prerender() {
       const canonicalUrl = `https://sortvision.vercel.app${route}`;
       
       if (isAlgorithmPage) {
-        // Format algorithm name for display
-        const displayName = algorithmName.charAt(0).toUpperCase() + algorithmName.slice(1) + ' Sort';
-        
         // Update title and meta tags
         html = html.replace(
-          /<title>SortVision \| Interactive Sorting Algorithm Visualizer &amp; Learning Tool<\/title>/g,
+          /<title>SortVision \| Interactive Sorting Algorithm Visualizer & DSA Learning Tool<\/title>/g,
           `<title>${displayName} Visualizer | SortVision - Learn How ${displayName} Works</title>`
         );
         
@@ -94,12 +96,45 @@ async function prerender() {
       if (!html.includes('<link rel="canonical"')) {
         html = html.replace(
           '</head>',
-          `  <link rel="canonical" href="${canonicalUrl}" />\n</head>`
+          `  <link rel="canonical" href="${canonicalUrl}">\n</head>`
         );
       } else {
         html = html.replace(
-          /<link rel="canonical" href="[^"]*" \/>/g,
-          `<link rel="canonical" href="${canonicalUrl}" />`
+          /<link rel="canonical" href="[^"]*">/g,
+          `<link rel="canonical" href="${canonicalUrl}">`
+        );
+      }
+      
+      // Update Open Graph and Twitter URLs for algorithm pages
+      if (isAlgorithmPage) {
+        html = html.replace(
+          /<meta property="og:url" content="[^"]*">/g,
+          `<meta property="og:url" content="${canonicalUrl}">`
+        );
+        
+        html = html.replace(
+          /<meta name="twitter:url" content="[^"]*">/g,
+          `<meta name="twitter:url" content="${canonicalUrl}">`
+        );
+        
+        html = html.replace(
+          /<meta property="og:title" content="[^"]*">/g,
+          `<meta property="og:title" content="${displayName} Visualizer | SortVision - Learn How ${displayName} Works">`
+        );
+        
+        html = html.replace(
+          /<meta name="twitter:title" content="[^"]*">/g,
+          `<meta name="twitter:title" content="${displayName} Visualizer | SortVision - Learn How ${displayName} Works">`
+        );
+        
+        html = html.replace(
+          /<meta property="og:description" content="[^"]*">/g,
+          `<meta property="og:description" content="Interactive visualization of ${displayName}. Learn how ${displayName} works, see its performance metrics, and understand its time complexity through visual animation.">`
+        );
+        
+        html = html.replace(
+          /<meta name="twitter:description" content="[^"]*">/g,
+          `<meta name="twitter:description" content="Interactive visualization of ${displayName}. Learn how ${displayName} works and understand its complexity.">`
         );
       }
       

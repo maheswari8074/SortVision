@@ -5,6 +5,16 @@
 User-agent: *
 Allow: /
 Disallow: /sw.js
+Disallow: /index.html
+Disallow: /*?*
+Disallow: /*#
+Disallow: /algorithms/*?*
+Disallow: /algorithms/*/
+Disallow: /home
+Disallow: /index
+Disallow: /main
+Disallow: /sorting
+Disallow: /visualizer
 
 # Sitemaps
 Sitemap: https://sortvision.vercel.app/sitemap.xml
@@ -12,35 +22,141 @@ Sitemap: https://sortvision.vercel.app/sitemap.xml
 # Explicitly allow major search engines
 User-agent: Googlebot
 Allow: /
+Allow: /algorithms/bubble
+Allow: /algorithms/insertion
+Allow: /algorithms/selection
+Allow: /algorithms/merge
+Allow: /algorithms/quick
+Allow: /algorithms/heap
+Allow: /algorithms/radix
 Disallow: /sw.js
+Disallow: /index.html
+Disallow: /*?*
+Disallow: /*#
+Disallow: /algorithms/*?*
+Disallow: /algorithms/*/
+Disallow: /home
+Disallow: /index
+Disallow: /main
+Disallow: /sorting
+Disallow: /visualizer
 
 User-agent: bingbot
 Allow: /
+Allow: /algorithms/bubble
+Allow: /algorithms/insertion
+Allow: /algorithms/selection
+Allow: /algorithms/merge
+Allow: /algorithms/quick
+Allow: /algorithms/heap
+Allow: /algorithms/radix
 Disallow: /sw.js
+Disallow: /index.html
+Disallow: /*?*
+Disallow: /*#
+Disallow: /algorithms/*?*
+Disallow: /algorithms/*/
+Disallow: /home
+Disallow: /index
+Disallow: /main
+Disallow: /sorting
+Disallow: /visualizer
 
 User-agent: Slurp
 Allow: /
+Allow: /algorithms/bubble
+Allow: /algorithms/insertion
+Allow: /algorithms/selection
+Allow: /algorithms/merge
+Allow: /algorithms/quick
+Allow: /algorithms/heap
+Allow: /algorithms/radix
 Disallow: /sw.js
+Disallow: /index.html
+Disallow: /*?*
+Disallow: /*#
+Disallow: /algorithms/*?*
+Disallow: /algorithms/*/
 
 User-agent: DuckDuckBot
 Allow: /
+Allow: /algorithms/bubble
+Allow: /algorithms/insertion
+Allow: /algorithms/selection
+Allow: /algorithms/merge
+Allow: /algorithms/quick
+Allow: /algorithms/heap
+Allow: /algorithms/radix
 Disallow: /sw.js
+Disallow: /index.html
+Disallow: /*?*
+Disallow: /*#
+Disallow: /algorithms/*?*
+Disallow: /algorithms/*/
 
 User-agent: Baiduspider
 Allow: /
+Allow: /algorithms/bubble
+Allow: /algorithms/insertion
+Allow: /algorithms/selection
+Allow: /algorithms/merge
+Allow: /algorithms/quick
+Allow: /algorithms/heap
+Allow: /algorithms/radix
 Disallow: /sw.js
+Disallow: /index.html
+Disallow: /*?*
+Disallow: /*#
+Disallow: /algorithms/*?*
+Disallow: /algorithms/*/
 
 User-agent: Yandex
 Allow: /
+Allow: /algorithms/bubble
+Allow: /algorithms/insertion
+Allow: /algorithms/selection
+Allow: /algorithms/merge
+Allow: /algorithms/quick
+Allow: /algorithms/heap
+Allow: /algorithms/radix
 Disallow: /sw.js
+Disallow: /index.html
+Disallow: /*?*
+Disallow: /*#
+Disallow: /algorithms/*?*
+Disallow: /algorithms/*/
 
 User-agent: Sogou
 Allow: /
+Allow: /algorithms/bubble
+Allow: /algorithms/insertion
+Allow: /algorithms/selection
+Allow: /algorithms/merge
+Allow: /algorithms/quick
+Allow: /algorithms/heap
+Allow: /algorithms/radix
 Disallow: /sw.js
+Disallow: /index.html
+Disallow: /*?*
+Disallow: /*#
+Disallow: /algorithms/*?*
+Disallow: /algorithms/*/
 
 User-agent: ia_archiver
 Allow: /
+Allow: /algorithms/bubble
+Allow: /algorithms/insertion
+Allow: /algorithms/selection
+Allow: /algorithms/merge
+Allow: /algorithms/quick
+Allow: /algorithms/heap
+Allow: /algorithms/radix
 Disallow: /sw.js
+Disallow: /index.html
+Disallow: /*?*
+Disallow: /*#
+Disallow: /algorithms/*?*
+Disallow: /algorithms/*/
 
 # Crawl delays
 User-agent: Googlebot
@@ -81,6 +197,13 @@ Allow: /*.ico$
 Allow: /*.woff$
 Allow: /*.woff2$
 
-# Disallow archive copies
+# Disallow archive copies and prevent duplicate content
 User-agent: archive.org_bot
 Disallow: /
+
+# Block access to common duplicate paths
+User-agent: *
+Disallow: /*/index.html
+Disallow: /algorithm/
+Disallow: /sort/
+Disallow: /sorting/
