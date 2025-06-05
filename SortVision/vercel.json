@@ -9,6 +9,36 @@
       "source": "/((?!api|_next|static|favicon|sw.js|manifest|og-image|devTools).*)/",
       "destination": "/$1",
       "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/index",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/algorithm/:algorithm",
+      "destination": "/algorithms/:algorithm",
+      "permanent": true
+    },
+    {
+      "source": "/sort/:algorithm",
+      "destination": "/algorithms/:algorithm",
+      "permanent": true
+    },
+    {
+      "source": "/sorting/:algorithm",
+      "destination": "/algorithms/:algorithm",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -41,6 +71,19 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
+        },
+        {
+          "key": "Link",
+          "value": "<https://sortvision.vercel.app>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
+      "source": "/algorithms/:algorithm",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://sortvision.vercel.app/algorithms/:algorithm>; rel=\"canonical\""
         }
       ]
     }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
+import { generateCanonicalUrl } from '../utils/seo';
 
 /**
  * SEO Content Component
@@ -16,20 +17,7 @@ const SEOContent = ({ algorithm = null }) => {
   const baseUrl = 'https://sortvision.vercel.app';
   
   // Generate clean canonical URL
-  const getCanonicalUrl = () => {
-    // Clean pathname - remove trailing slashes and ensure proper format
-    let cleanPath = location.pathname.replace(/\/+$/, '') || '/';
-    
-    // For algorithm pages, ensure consistent format
-    if (algorithm && !cleanPath.includes('/algorithms/')) {
-      cleanPath = `/algorithms/${algorithm}`;
-    }
-    
-    // Always return clean URL without query parameters or fragments
-    return `${baseUrl}${cleanPath}`;
-  };
-  
-  const currentUrl = getCanonicalUrl();
+  const currentUrl = generateCanonicalUrl(location.pathname, algorithm);
 
   // 1. Enhanced main heading with primary keywords
   const mainHeading = (
@@ -232,6 +220,15 @@ const SEOContent = ({ algorithm = null }) => {
 
         {/* Canonical URL */}
         <link rel="canonical" href={currentUrl} />
+        
+        {/* Prevent duplicate content */}
+        <meta name="googlebot" content="index, follow, noarchive, max-snippet:160, max-image-preview:large" />
+        <meta name="bingbot" content="index, follow, noarchive" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        
+        {/* Hreflang for international SEO */}
+        <link rel="alternate" href={currentUrl} hreflang="en" />
+        <link rel="alternate" href={currentUrl} hreflang="x-default" />
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />

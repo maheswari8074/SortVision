@@ -1,8 +1,8 @@
 import React, { useState, useEffect, lazy, Suspense, useMemo, memo } from 'react';
-import { useParams, useLocation, Link } from 'react-router-dom';
+import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Terminal, Code, Github, Linkedin, Twitter } from 'lucide-react';
-import { getAlgorithmMetaTags, getHomepageMetaTags, getAlgorithmSchema, algorithms } from './utils/seo';
+import { getAlgorithmMetaTags, getHomepageMetaTags, getAlgorithmSchema, algorithms, generateCanonicalUrl, isCanonicalPath } from './utils/seo';
 import SEOContent from './components/SEOContent';
 
 // Lazy load components that aren't needed immediately
@@ -32,6 +32,7 @@ const App = () => {
   // Get route parameters and location
   const { algorithmName } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   
   // State for typing animation
   const [displayText, setDisplayText] = useState('');
@@ -44,6 +45,14 @@ const App = () => {
     algorithms[currentAlgorithm]?.name || 'Sorting Algorithms', 
     [currentAlgorithm]
   );
+  
+  // Check if current URL is canonical and redirect if necessary
+  useEffect(() => {
+    if (!isCanonicalPath(location.pathname)) {
+      const canonicalPath = generateCanonicalUrl(location.pathname, algorithmName).replace('https://sortvision.vercel.app', '');
+      navigate(canonicalPath, { replace: true });
+    }
+  }, [location.pathname, algorithmName, navigate]);
   
   // Memoize SEO metadata to prevent recalculation on each render
   const metaTags = useMemo(() => {
@@ -258,16 +267,7 @@ const App = () => {
   
   // Generate clean canonical URL - memoized to prevent recalculation
   const canonicalUrl = useMemo(() => {
-    // Clean pathname - remove trailing slashes and ensure proper format
-    let cleanPath = location.pathname.replace(/\/+$/, '') || '/';
-    
-    // For algorithm pages, ensure consistent format
-    if (algorithmName && !cleanPath.includes('/algorithms/')) {
-      cleanPath = `/algorithms/${algorithmName}`;
-    }
-    
-    // Always return clean URL without query parameters or fragments
-    return `https://sortvision.vercel.app${cleanPath}`;
+    return generateCanonicalUrl(location.pathname, algorithmName);
   }, [location.pathname, algorithmName]);
   
   // Typing animation effect

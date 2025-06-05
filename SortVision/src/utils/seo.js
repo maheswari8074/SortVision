@@ -208,4 +208,63 @@ export const formatPageTitle = (algorithm = null) => {
     return `${algorithms[algorithm].name} Visualizer | SortVision - Learn How ${algorithms[algorithm].name} Works`;
   }
   return 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool';
+};
+
+export const generateCanonicalUrl = (pathname, algorithm = null) => {
+  const baseUrl = 'https://sortvision.vercel.app';
+  
+  // Clean pathname - remove trailing slashes and ensure proper format
+  let cleanPath = pathname.replace(/\/+$/, '') || '/';
+  
+  // Remove any query parameters and hash fragments for canonical URL
+  cleanPath = cleanPath.split('?')[0].split('#')[0];
+  
+  // Normalize algorithm paths
+  if (algorithm && !cleanPath.includes('/algorithms/')) {
+    cleanPath = `/algorithms/${algorithm}`;
+  }
+  
+  // Ensure consistent algorithm path format
+  if (cleanPath.includes('/algorithms/')) {
+    const pathParts = cleanPath.split('/');
+    if (pathParts.length >= 3) {
+      const algorithmParam = pathParts[2];
+      // Validate algorithm parameter and normalize
+      const validAlgorithms = Object.keys(algorithms);
+      if (validAlgorithms.includes(algorithmParam.toLowerCase())) {
+        cleanPath = `/algorithms/${algorithmParam.toLowerCase()}`;
+      } else {
+        // Invalid algorithm, redirect to home
+        cleanPath = '/';
+      }
+    }
+  }
+  
+  // Handle edge cases for common URL variations
+  const urlMappings = {
+    '/index': '/',
+    '/home': '/',
+    '/index.html': '/',
+    '/main': '/',
+    '/sorting': '/',
+    '/visualizer': '/',
+  };
+  
+  if (urlMappings[cleanPath]) {
+    cleanPath = urlMappings[cleanPath];
+  }
+  
+  // Always return clean URL
+  return `${baseUrl}${cleanPath}`;
+};
+
+/**
+ * Validate if a URL path is canonical
+ * @param {string} pathname - The pathname to validate
+ * @returns {boolean} - Whether the path is in canonical format
+ */
+export const isCanonicalPath = (pathname) => {
+  const canonical = generateCanonicalUrl(pathname);
+  const current = `https://sortvision.vercel.app${pathname}`;
+  return canonical === current;
 }; 
