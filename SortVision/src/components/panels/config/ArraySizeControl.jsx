@@ -66,10 +66,12 @@ const ArraySizeControl = ({ arraySize, setArraySize, isSorting }) => {
           <div className="relative">
             {/* Track background with enhanced glow */}
             <div className="absolute inset-0 bg-blue-400/5 rounded-full group-hover/array:bg-blue-400/10 transition-all duration-300"></div>
-            {/* Active track with shimmer effect */}
-            <div 
-              className="absolute h-full bg-blue-400/20 rounded-full transition-all duration-300 overflow-hidden"
-              style={{ width: `${((arraySize - 10) / (200 - 10)) * 100}%` }}
+            {/* Active track with optimized performance */}
+            <div className="absolute h-full bg-blue-400/20 rounded-full overflow-hidden origin-left"
+              style={{ 
+                transform: `scaleX(${((arraySize - 10) / (200 - 10))})`,
+                transition: 'transform 0.1s ease-out'
+              }}
             >
               <div className="absolute inset-0 w-0 group-hover/array:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-blue-400/20 to-transparent"></div>
             </div>
@@ -136,15 +138,18 @@ const ArraySizeControl = ({ arraySize, setArraySize, isSorting }) => {
           </div>
         </div>
         
-        {/* Visual bar representation with enhanced styling */}
+        {/* Visual bar representation with optimized performance */}
         <div className="mt-4 h-8 bg-slate-800/80 rounded-lg border border-slate-700 overflow-hidden relative group/bar">
           <div 
-            className="h-full bg-gradient-to-r from-blue-500/20 to-blue-400/20 transition-all duration-300 relative overflow-hidden"
-            style={{ width: `${((arraySize - 10) / (200 - 10)) * 100}%` }}
+            className="h-full bg-gradient-to-r from-blue-500/20 to-blue-400/20 relative overflow-hidden origin-left"
+            style={{ 
+              transform: `scaleX(${((arraySize - 10) / (200 - 10))})`,
+              transition: 'transform 0.05s ease-out'
+            }}
           >
             {/* Shimmer effect on hover */}
             <div className="absolute inset-0 w-0 group-hover/array:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-blue-400/10 to-transparent"></div>
-            <div className="absolute inset-y-0 right-0 w-1 bg-blue-400/30 animate-pulse"></div>
+            <div className="absolute inset-y-0 right-0 w-1 bg-blue-400/30"></div>
           </div>
           <div className="absolute inset-0 flex items-center justify-center text-[10px] text-blue-400/70 font-mono group-hover/array:text-blue-400 transition-colors duration-300">
             {arraySize} elements

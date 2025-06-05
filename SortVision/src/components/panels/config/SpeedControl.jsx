@@ -65,10 +65,12 @@ const SpeedControl = ({ speed, setSpeed, isSorting }) => {
           <div className="relative">
             {/* Track background with enhanced glow */}
             <div className="absolute inset-0 bg-emerald-400/5 rounded-full group-hover/speed:bg-emerald-400/10 transition-all duration-300"></div>
-            {/* Active track with shimmer effect */}
-            <div 
-              className="absolute h-full bg-emerald-400/20 rounded-full transition-all duration-300 overflow-hidden"
-              style={{ width: `${((speed - 1) / (1000 - 1)) * 100}%` }}
+            {/* Active track with optimized performance */}
+            <div className="absolute h-full bg-emerald-400/20 rounded-full overflow-hidden origin-left"
+              style={{ 
+                transform: `scaleX(${((speed - 1) / (1000 - 1))})`,
+                transition: 'transform 0.1s ease-out'
+              }}
             >
               <div className="absolute inset-0 w-0 group-hover/speed:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent"></div>
             </div>
@@ -148,15 +150,18 @@ const SpeedControl = ({ speed, setSpeed, isSorting }) => {
           </div>
         </div>
         
-        {/* Visual speed representation with enhanced styling */}
+        {/* Visual speed representation with optimized performance */}
         <div className="mt-4 h-8 bg-slate-800/80 rounded-lg border border-slate-700 overflow-hidden relative group/bar">
           <div 
-            className="h-full bg-gradient-to-r from-emerald-500/20 to-emerald-400/20 transition-all duration-300 relative overflow-hidden"
-            style={{ width: `${((speed - 1) / (1000 - 1)) * 100}%` }}
+            className="h-full bg-gradient-to-r from-emerald-500/20 to-emerald-400/20 relative overflow-hidden origin-left"
+            style={{ 
+              transform: `scaleX(${((speed - 1) / (1000 - 1))})`,
+              transition: 'transform 0.05s ease-out'
+            }}
           >
             {/* Shimmer effect on hover */}
             <div className="absolute inset-0 w-0 group-hover/speed:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-emerald-400/10 to-transparent"></div>
-            <div className="absolute inset-y-0 right-0 w-1 bg-emerald-400/30 animate-pulse"></div>
+            <div className="absolute inset-y-0 right-0 w-1 bg-emerald-400/30"></div>
           </div>
           <div className="absolute inset-0 flex items-center justify-center text-[10px] text-emerald-400/70 font-mono group-hover/speed:text-emerald-400 transition-colors duration-300">
             {speed}ms delay
