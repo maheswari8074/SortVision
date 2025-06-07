@@ -6,6 +6,7 @@ import './index.css'
 
 // Lazy load App component for better initial load time
 const App = lazy(() => import('./App.jsx'));
+const Contributors = lazy(() => import('./components/ContributorsPage.jsx'));
 
 // Lazy load analytics components with more efficient dynamic imports
 const SpeedInsights = lazy(() => 
@@ -54,11 +55,13 @@ if ('requestIdleCallback' in window) {
         <HelmetProvider>
           <BrowserRouter>
             <Suspense fallback={<LoadingFallback />}>
-              <Routes>
-                <Route path="/" element={<App />} />
-                <Route path="/algorithms/:algorithmName" element={<App />} />
-                <Route path="*" element={<App />} />
-              </Routes>
+                          <Routes>
+              <Route path="/" element={<App />} />
+              <Route path="/algorithms/:algorithmName" element={<App />} />
+              <Route path="/contributions" element={<App />} />
+              <Route path="/contributors" element={<Contributors />} />
+              <Route path="*" element={<App />} />
+            </Routes>
             </Suspense>
             {shouldRenderAnalytics && (
               <Suspense fallback={null}>
@@ -82,6 +85,8 @@ if ('requestIdleCallback' in window) {
             <Routes>
               <Route path="/" element={<App />} />
               <Route path="/algorithms/:algorithmName" element={<App />} />
+              <Route path="/contributions" element={<App />} />
+              <Route path="/contributors" element={<Contributors />} />
               <Route path="*" element={<App />} />
             </Routes>
           </Suspense>

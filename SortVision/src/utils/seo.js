@@ -142,6 +142,22 @@ export const getHomepageMetaTags = () => {
 };
 
 /**
+ * Generate meta tags for the contributions page
+ * @returns {Object} - Object containing contributions page meta tags for SEO
+ */
+export const getContributionsMetaTags = () => {
+  return {
+    title: 'Contribute to SortVision - Open Source Algorithm Visualizer Project',
+    description: 'Join the SortVision open source community! Contribute to the world\'s best algorithm visualizer. View contributor stats, access contribution guides, and help improve algorithm education for developers worldwide.',
+    keywords: 'SortVision contributions, open source algorithm visualizer, contribute to SortVision, GitHub contributions, algorithm visualizer contributors, open source DSA project, algorithm visualization development, programming education contributions, computer science open source',
+    ogTitle: 'Contribute to SortVision | Open Source Algorithm Visualizer',
+    ogDescription: 'Join the SortVision open source community! Help improve the world\'s best algorithm visualizer and contribute to algorithm education.',
+    twitterTitle: 'Contribute to SortVision - Open Source Algorithm Visualizer',
+    twitterDescription: 'Join our open source community and help improve algorithm education for developers worldwide. View contributor stats and contribution guides.'
+  };
+};
+
+/**
  * Generate schema markup for algorithm pages
  * @param {string} algorithmName - The algorithm identifier
  * @param {string} path - Current URL path
@@ -248,6 +264,8 @@ export const generateCanonicalUrl = (pathname, algorithm = null) => {
     '/main': '/',
     '/sorting': '/',
     '/visualizer': '/',
+    '/contribute': '/contributions',
+    '/contributors': '/contributions',
   };
   
   if (urlMappings[cleanPath]) {

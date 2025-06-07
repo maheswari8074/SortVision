@@ -1,13 +1,14 @@
 import React, { useState, useEffect, lazy, Suspense, useMemo, memo } from 'react';
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Terminal, Code, Github, Linkedin, Twitter } from 'lucide-react';
-import { getAlgorithmMetaTags, getHomepageMetaTags, getAlgorithmSchema, algorithms, generateCanonicalUrl, isCanonicalPath } from './utils/seo';
+import { Terminal, Code, Github, Linkedin, Twitter, Users } from 'lucide-react';
+import { getAlgorithmMetaTags, getHomepageMetaTags, getContributionsMetaTags, getAlgorithmSchema, algorithms, generateCanonicalUrl, isCanonicalPath } from './utils/seo';
 import SEOContent from './components/SEOContent';
 
 // Lazy load components that aren't needed immediately
 const SortingVisualizer = lazy(() => import('./components/sortingVisualizer/SortingVisualizer'));
 const MobileOverlay = lazy(() => import('./components/MobileOverlay'));
+
 
 // Memoized header component to prevent unnecessary re-renders
 const Header = memo(({ children }) => (
@@ -37,6 +38,12 @@ const App = () => {
   // State for typing animation
   const [displayText, setDisplayText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
+  
+  // State for active tab in SortingVisualizer
+  const [activeTab, setActiveTab] = useState('controls');
+  
+  // State for special modes (contributors, future modes)
+  const [specialMode, setSpecialMode] = useState(null); // null = normal mode, 'contributors' = contributors mode
   const fullText = 'Interactive visualization of popular sorting algorithms';
   
   // Get the current algorithm name for SEO - memoized to prevent recalculation
@@ -53,15 +60,28 @@ const App = () => {
       navigate(canonicalPath, { replace: true });
     }
   }, [location.pathname, algorithmName, navigate]);
+
+  // Handle /contributions route - automatically switch to contributions mode
+  useEffect(() => {
+    if (location.pathname === '/contributions') {
+      setSpecialMode('contributors');
+      setActiveTab('contributions'); // Set to contributions tab
+    } else {
+      setSpecialMode(null);
+    }
+  }, [location.pathname]);
   
   // Memoize SEO metadata to prevent recalculation on each render
   const metaTags = useMemo(() => {
+    if (location.pathname === '/contributions') {
+      return getContributionsMetaTags();
+    }
     if (algorithmName) {
       return getAlgorithmMetaTags(algorithmName);
     }
     
     return getHomepageMetaTags();
-  }, [algorithmName]);
+  }, [algorithmName, location.pathname]);
   
   // Generate schema markup - memoized to prevent recalculation
   const schemaMarkup = useMemo(() => {
@@ -354,7 +374,12 @@ const App = () => {
           {algorithmName ? `${algorithmTitle} Visualization` : 'Sorting Algorithm Visualizer'}
         </h2>
         <Suspense fallback={fallbackElement}>
-          <SortingVisualizer initialAlgorithm={currentAlgorithm} />
+          <SortingVisualizer 
+            initialAlgorithm={currentAlgorithm} 
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            specialMode={specialMode}
+          />
         </Suspense>
       </main>
       
@@ -366,6 +391,28 @@ const App = () => {
         
         {/* Social links - Now wraps on mobile */}
         <div className="mt-2 flex flex-wrap items-center justify-center gap-2 sm:gap-4 px-2 sm:px-4">
+          <button 
+            onClick={() => {
+              if (specialMode === 'contributors') {
+                // Return to normal mode
+                setSpecialMode(null);
+                setActiveTab('controls');
+              } else {
+                // Go to contributors mode
+                setSpecialMode('contributors');
+              }
+            }}
+            className="flex items-center gap-1 text-slate-400 hover:text-indigo-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
+            aria-label={specialMode === 'contributors' ? "Return to SortVision main interface" : "View SortVision contributors"}
+          >
+            {specialMode === 'contributors' ? (
+              <Terminal className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
+            ) : (
+              <Users className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
+            )}
+            <span>{specialMode === 'contributors' ? 'SortVision' : 'Contributors'}</span>
+          </button>
+          
           <a 
             href="https://github.com/alienx5499/SortVision" 
             target="_blank" 
@@ -421,6 +468,8 @@ const App = () => {
           </a>
         </div>
       </Footer>
+
+
 
       {/* SEO Content for better search engine understanding */}
       <SEOContent algorithm={algorithmName} />
