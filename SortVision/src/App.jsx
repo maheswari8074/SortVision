@@ -412,7 +412,7 @@ const App = () => {
             {specialMode === 'contributors' ? (
               <Terminal className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
             ) : (
-              <Users className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
+            <Users className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
             )}
             <span>{specialMode === 'contributors' ? 'SortVision' : 'Contributors'}</span>
           </button>

@@ -3,7 +3,7 @@ export { default as ConfigPanel } from './ConfigPanel';
 export { default as MetricsPanel } from './MetricsPanel';
 export { default as DetailsPanel } from './DetailsPanel';
 export { default as ContributionPanel } from './ContributionPanel';
-export { default as ArrayVisualization } from '../visualizations/ArrayVisualization';
+export { default as ArrayVisualization } from '../visualizations/ArrayVisualization'; 
 
 // Export config components
 export { default as ConfigAlgorithmSelector } from './config/AlgorithmSelector';

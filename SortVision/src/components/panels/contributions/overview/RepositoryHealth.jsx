@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Activity, GitPullRequest, AlertCircle, Package, Tag, RefreshCw } from 'lucide-react';
 
 /**
@@ -6,7 +6,7 @@ import { Activity, GitPullRequest, AlertCircle, Package, Tag, RefreshCw } from '
  * 
  * Displays key project health metrics:
  * - Issues status (open vs closed)
- * - Pull requests status  
+ * - Pull requests status (open vs merged)
  * - Repository info (size, language)
  * - Latest release
  */
@@ -20,127 +20,122 @@ const RepositoryHealth = () => {
     error: null
   });
 
-  const fetchHealthData = async () => {
+  // Get configuration from environment variables
+  const REPO_OWNER = import.meta.env.VITE_GITHUB_REPO_OWNER || 'alienx5499';
+  const REPO_NAME = import.meta.env.VITE_GITHUB_REPO_NAME || 'SortVision';
+  const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.github.com';
+  const USER_AGENT = import.meta.env.VITE_API_USER_AGENT || 'SortVision-App';
+
+  // Create authenticated fetch function for direct GitHub API calls
+  const authenticatedFetch = useCallback(async (githubUrl) => {
+    const headers = {
+      'User-Agent': USER_AGENT,
+      'Accept': 'application/vnd.github.v3+json'
+    };
+
+    // Add authorization if token is available
+    if (GITHUB_TOKEN) {
+      headers['Authorization'] = `Bearer ${GITHUB_TOKEN}`;
+      
+      // Development-only logging to confirm token is being used
+      if (import.meta.env.VITE_DEV_MODE === 'true') {
+        console.log('RepositoryHealth: Using GitHub token for authentication');
+      }
+    } else {
+      // Development-only logging when no token
+      if (import.meta.env.VITE_DEV_MODE === 'true') {
+        console.log('RepositoryHealth: No GitHub token found, using unauthenticated requests');
+      }
+    }
+
+    const response = await fetch(githubUrl, { headers });
+    
+    // Log rate limit info if in development
+    if (import.meta.env.VITE_DEV_MODE === 'true') {
+      const remaining = response.headers.get('X-RateLimit-Remaining');
+      const reset = response.headers.get('X-RateLimit-Reset');
+      const resetTime = reset ? new Date(reset * 1000).toLocaleTimeString() : 'unknown';
+      const limit = GITHUB_TOKEN ? '5000' : '60';
+      console.log(`GitHub API Rate Limit - Remaining: ${remaining}/${limit}, Reset: ${resetTime}`);
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(`GitHub API Error: ${response.status} - ${errorData.message || 'Unknown error'}`);
+    }
+
+    return response.json();
+  }, [GITHUB_TOKEN, USER_AGENT]);
+
+  const fetchHealthData = useCallback(async () => {
     try {
       setHealthData(prev => ({ ...prev, loading: true, error: null }));
       
       // Development-only logging
-      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.port !== '') {
+      if (import.meta.env.VITE_ENABLE_API_LOGGING === 'true') {
         console.log('Repository Health: Fetching health data...');
       }
 
-      // Fetch repository basic info
-      const repoResponse = await fetch('https://api.github.com/repos/alienx5499/SortVision', {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'SortVision-Health-Dashboard'
-        }
-      });
-
-      // Fetch issues (open)
-      const issuesResponse = await fetch('https://api.github.com/repos/alienx5499/SortVision/issues?state=open&per_page=1', {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'SortVision-Health-Dashboard'
-        }
-      });
-
-      // Fetch pull requests (open)
-      const prsResponse = await fetch('https://api.github.com/repos/alienx5499/SortVision/pulls?state=open&per_page=1', {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'SortVision-Health-Dashboard'
-        }
-      });
-
-      // Fetch latest release
-      const releaseResponse = await fetch('https://api.github.com/repos/alienx5499/SortVision/releases/latest', {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'SortVision-Health-Dashboard'
-        }
-      });
-
-      let repoData = null, issuesData = null, prsData = null, releaseData = null;
-
-      if (repoResponse.ok) {
-        repoData = await repoResponse.json();
-      }
-
-      // Get total counts from headers (more efficient than fetching all)
-      let openIssuesCount = 0, openPRsCount = 0;
+      const repoUrl = `${API_BASE_URL}/repos/${REPO_OWNER}/${REPO_NAME}`;
       
-      if (issuesResponse.ok) {
-        const linkHeader = issuesResponse.headers.get('Link');
-        if (linkHeader && linkHeader.includes('rel="last"')) {
-          const lastPageMatch = linkHeader.match(/&page=(\d+)>; rel="last"/);
-          openIssuesCount = lastPageMatch ? parseInt(lastPageMatch[1]) : 1;
-        } else {
-          issuesData = await issuesResponse.json();
-          openIssuesCount = issuesData.length;
-        }
-      }
+      // Fetch all data concurrently
+      const [repoData, openIssuesData, closedIssuesData, openPullsData, closedPullsData] = await Promise.all([
+        authenticatedFetch(repoUrl),
+        authenticatedFetch(`${repoUrl}/issues?state=open&per_page=100`), // Get more to filter PRs
+        authenticatedFetch(`${repoUrl}/issues?state=closed&per_page=100`), // Get closed issues
+        authenticatedFetch(`${repoUrl}/pulls?state=open&per_page=100`),
+        authenticatedFetch(`${repoUrl}/pulls?state=closed&per_page=100`) // Get closed PRs to count merged ones
+      ]);
 
-      if (prsResponse.ok) {
-        const linkHeader = prsResponse.headers.get('Link');
-        if (linkHeader && linkHeader.includes('rel="last"')) {
-          const lastPageMatch = linkHeader.match(/&page=(\d+)>; rel="last"/);
-          openPRsCount = lastPageMatch ? parseInt(lastPageMatch[1]) : 1;
-        } else {
-          prsData = await prsResponse.json();
-          openPRsCount = prsData.length;
-        }
-      }
+      // Filter out pull requests from issues (GitHub API returns PRs as issues)
+      const actualOpenIssues = openIssuesData.filter(issue => !issue.pull_request);
+      const actualClosedIssues = closedIssuesData.filter(issue => !issue.pull_request);
 
-      if (releaseResponse.ok) {
-        releaseData = await releaseResponse.json();
-      }
+      // Count merged pull requests from closed PRs
+      const mergedPRs = closedPullsData.filter(pr => pr.merged_at !== null);
 
       setHealthData({
         issues: {
-          open: repoData?.open_issues_count || openIssuesCount,
-          closed: 'N/A' // GitHub API doesn't provide closed issues count directly
+          open: actualOpenIssues.length,
+          closed: actualClosedIssues.length
         },
         pullRequests: {
-          open: openPRsCount,
-          merged: 'N/A' // Would require additional API calls to get accurate count
+          open: openPullsData?.length || 0,
+          merged: mergedPRs.length
         },
         repository: {
           size: Math.round((repoData?.size || 0) / 1024), // Convert to MB
           language: repoData?.language || 'JavaScript'
         },
-        latestRelease: releaseData ? {
-          name: releaseData.name || releaseData.tag_name,
-          publishedAt: releaseData.published_at,
-          htmlUrl: releaseData.html_url
-        } : null,
+        latestRelease: null,
         loading: false,
         error: null
       });
 
       // Development-only logging
-      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.port !== '') {
+      if (import.meta.env.VITE_ENABLE_API_LOGGING === 'true') {
         console.log('Repository Health: Data updated successfully');
       }
 
     } catch (error) {
       console.error('Repository Health: Error fetching data:', error);
-      setHealthData(pre => ({
-        ...pre,
+      setHealthData(prev => ({
+        ...prev,
         loading: false,
         error: error.message,
-        // Fallback data
-        issues: { open: 0, closed: 'N/A' },
-        pullRequests: { open: 0, merged: 'N/A' },
+        // Fallback data - show 0 for unknown counts
+        issues: { open: 0, closed: 0 },
+        pullRequests: { open: 0, merged: 0 },
         repository: { size: 2, language: 'JavaScript' },
         latestRelease: null
       }));
     }
-  };
+  }, [API_BASE_URL, REPO_OWNER, REPO_NAME, authenticatedFetch]);
 
   useEffect(() => {
     fetchHealthData();
-  }, []);
+  }, [fetchHealthData]);
 
   const healthMetrics = [
     {
@@ -192,7 +187,7 @@ const RepositoryHealth = () => {
             <Activity className="mr-2 h-4 w-4 text-blue-400 animate-pulse" style={{ animationDuration: '3s' }} />
             <span>// repository health</span>
           </div>
-          <button
+          <button 
             onClick={fetchHealthData}
             disabled={healthData.loading}
             className="p-1 hover:bg-slate-800 rounded transition-colors duration-200 disabled:opacity-50"
@@ -201,7 +196,7 @@ const RepositoryHealth = () => {
             <RefreshCw className={`h-3 w-3 text-slate-500 hover:text-blue-400 transition-colors ${healthData.loading ? 'animate-spin' : ''}`} />
           </button>
         </div>
-
+        
         {/* Error Message */}
         {healthData.error && (
           <div className="mb-4 p-2 bg-red-500/10 border border-red-500/20 rounded text-xs text-red-400 font-mono relative z-10">
@@ -231,7 +226,7 @@ const RepositoryHealth = () => {
                     {new Date(healthData.latestRelease.publishedAt).toLocaleDateString()}
                   </div>
                 </div>
-                <a
+                <a 
                   href={healthData.latestRelease.htmlUrl}
                   target="_blank"
                   rel="noopener noreferrer"

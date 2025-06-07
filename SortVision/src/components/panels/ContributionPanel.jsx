@@ -34,24 +34,49 @@ const ContributionPanel = () => {
   const [activeSection, setActiveSection] = useState('overview');
 
   // Function to fetch contributors data
+  // Get configuration from environment variables
+  const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
+  const REPO_OWNER = import.meta.env.VITE_GITHUB_REPO_OWNER || 'alienx5499';
+  const REPO_NAME = import.meta.env.VITE_GITHUB_REPO_NAME || 'SortVision';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.github.com';
+  const USER_AGENT = import.meta.env.VITE_API_USER_AGENT || 'SortVision-Contribution-Panel';
+
+  // Create authenticated fetch function
+  const authenticatedFetch = useCallback(async (url) => {
+    const headers = {
+      'Accept': 'application/vnd.github.v3+json',
+      'User-Agent': USER_AGENT,
+    };
+
+    // Add authentication header if token is available
+    if (GITHUB_TOKEN && GITHUB_TOKEN !== 'your_github_personal_access_token_here') {
+      headers['Authorization'] = `Bearer ${GITHUB_TOKEN}`;
+    }
+
+    const response = await fetch(url, { headers });
+    
+    // Log rate limit info if in development
+    if (import.meta.env.VITE_DEV_MODE === 'true') {
+      const remaining = response.headers.get('X-RateLimit-Remaining');
+      const reset = response.headers.get('X-RateLimit-Reset');
+      console.log(`GitHub API Rate Limit - Remaining: ${remaining}, Reset: ${new Date(reset * 1000).toLocaleTimeString()}`);
+    }
+
+    return response;
+  }, [GITHUB_TOKEN, USER_AGENT]);
+
   const fetchContributors = useCallback(async () => {
     try {
       setLoading(true);
       
       // Development-only logging
-      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.port !== '') {
+      if (import.meta.env.VITE_ENABLE_API_LOGGING === 'true') {
         console.log('Contribution Panel: Fetching contributors data...');
       }
       
       // Fetch contributors with proper error handling
-      const contributorsResponse = await fetch(
-        'https://api.github.com/repos/alienx5499/SortVision/contributors?per_page=100',
-        {
-          headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'SortVision-Contribution-Panel'
-          }
-        }
+      const contributorsResponse = await authenticatedFetch(
+        `${API_BASE_URL}/repos/${REPO_OWNER}/${REPO_NAME}/contributors?per_page=100`
       );
       
       if (!contributorsResponse.ok) {
@@ -64,19 +89,13 @@ const ContributionPanel = () => {
       const contributorsData = await contributorsResponse.json();
       
       // Development-only logging
-      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.port !== '') {
+      if (import.meta.env.VITE_ENABLE_API_LOGGING === 'true') {
         console.log('Contribution Panel: Contributors fetched:', contributorsData.length);
       }
       
       // Fetch repository stats
-      const repoResponse = await fetch(
-        'https://api.github.com/repos/alienx5499/SortVision',
-        {
-          headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'SortVision-Contribution-Panel'
-          }
-        }
+      const repoResponse = await authenticatedFetch(
+        `${API_BASE_URL}/repos/${REPO_OWNER}/${REPO_NAME}`
       );
       
       let repoData = null;
@@ -84,7 +103,7 @@ const ContributionPanel = () => {
         repoData = await repoResponse.json();
         
         // Development-only logging
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.port !== '') {
+        if (import.meta.env.VITE_ENABLE_API_LOGGING === 'true') {
           console.log('Contribution Panel: Repository stats fetched:', {
             stars: repoData.stargazers_count,
             forks: repoData.forks_count
@@ -119,12 +138,7 @@ const ContributionPanel = () => {
       if (!existingAdmin) {
         // Fetch admin profile if not in contributors
         try {
-          const response = await fetch(`https://api.github.com/users/${projectAdmin}`, {
-            headers: {
-              'Accept': 'application/vnd.github.v3+json',
-              'User-Agent': 'SortVision-Contribution-Panel'
-            }
-          });
+          const response = await authenticatedFetch(`${API_BASE_URL}/users/${projectAdmin}`);
           if (response.ok) {
             const profile = await response.json();
             const adminProfile = {
@@ -138,7 +152,7 @@ const ContributionPanel = () => {
           }
         } catch (err) {
           // Development-only logging
-          if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.port !== '') {
+          if (import.meta.env.VITE_ENABLE_API_LOGGING === 'true') {
             console.warn(`Contribution Panel: Could not fetch profile for ${projectAdmin}:`, err);
           }
           // Fallback profile data
@@ -166,7 +180,7 @@ const ContributionPanel = () => {
       
     } catch (err) {
       // Development-only logging
-      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.port !== '') {
+      if (import.meta.env.VITE_ENABLE_API_LOGGING === 'true') {
         console.error('Contribution Panel: Error fetching contributors:', err);
       }
       setError(err.message);
@@ -192,7 +206,7 @@ const ContributionPanel = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [authenticatedFetch, API_BASE_URL, REPO_OWNER, REPO_NAME]);
 
   // useEffect for initial load and 60-minute refresh
   useEffect(() => {
