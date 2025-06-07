@@ -1,5 +1,12 @@
 # 🚀 Pull Request
 
+## ⭐ Repository Support
+**Have you starred the repository?**
+- [ ] ⭐ Yes, I have starred the repository
+- [ ] ❌ No, I will star it now → [Click here to star](https://github.com/alienx5499/SortVision)
+
+> 💡 **Why star?** Stars help increase project visibility and show your support for the project!
+
 ## 📝 Description
 **What does this PR do?**
 A clear and concise description of what this pull request accomplishes.
@@ -87,6 +94,15 @@ Please delete options that are not relevant:
 
 ### After
 <!-- Add screenshots or GIFs showing the state after your changes -->
+
+## 🎥 Demo Videos (if applicable)
+### Before Video
+<!-- Add a video link or upload showing functionality before your changes -->
+
+### After Video  
+<!-- Add a video link or upload showing functionality after your changes -->
+
+> 💡 **Video Tips:** Record a short 30-60 second video showing the sorting algorithm in action, highlighting the changes you made!
 
 ## ⚡ Performance Impact
 - [ ] No performance impact
