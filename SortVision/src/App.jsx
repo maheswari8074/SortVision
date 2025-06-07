@@ -68,6 +68,7 @@ const App = () => {
       setActiveTab('contributions'); // Set to contributions tab
     } else {
       setSpecialMode(null);
+      setActiveTab('controls'); // Reset to controls tab when leaving contributions
     }
   }, [location.pathname]);
   
@@ -394,8 +395,12 @@ const App = () => {
           <button 
             onClick={() => {
               if (specialMode === 'contributors') {
-                // Return to normal mode - navigate to home
-                navigate('/');
+                // Return to normal mode - go to algorithms
+                if (algorithmName) {
+                  navigate(`/algorithms/${algorithmName}`);
+                } else {
+                  navigate('/algorithms/bubble'); // Default to bubble sort
+                }
               } else {
                 // Go to contributors mode - navigate to contributions page
                 navigate('/contributions');
