@@ -394,12 +394,11 @@ const App = () => {
           <button 
             onClick={() => {
               if (specialMode === 'contributors') {
-                // Return to normal mode
-                setSpecialMode(null);
-                setActiveTab('controls');
+                // Return to normal mode - navigate to home
+                navigate('/');
               } else {
-                // Go to contributors mode
-                setSpecialMode('contributors');
+                // Go to contributors mode - navigate to contributions page
+                navigate('/contributions');
               }
             }}
             className="flex items-center gap-1 text-slate-400 hover:text-indigo-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
