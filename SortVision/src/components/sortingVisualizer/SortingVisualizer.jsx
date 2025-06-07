@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Import subcomponents
 import SortingHeader from './SortingHeader';
-import { ConfigPanel, MetricsPanel, DetailsPanel } from '../panels';
+import { ConfigPanel, MetricsPanel, DetailsPanel, ContributionPanel } from '../panels';
 import SortingControls from './SortingControls';
 import PerformanceMetrics from './PerformanceMetrics';
 
@@ -27,7 +27,7 @@ import PerformanceMetrics from './PerformanceMetrics';
  * 2. Metrics Panel - Performance data visualization and comparison
  * 3. Details Panel - Algorithm details and visual representation
  */
-const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
+const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls', onTabChange, specialMode = null }) => {
   // Router navigation
   const navigate = useNavigate();
   
@@ -206,22 +206,32 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
       
       {/* Main content area */}
       <CardContent className="p-4 space-y-4">
-        <Tabs defaultValue="controls" className="w-full">
-          {/* Tab navigation */}
-          <TabsList className="grid w-full grid-cols-3 bg-slate-900">
-            <TabsTrigger value="controls" className="font-mono">
-              <span className="text-emerald-400">config</span>
-              <span className="text-slate-400">.js</span>
-            </TabsTrigger>
-            <TabsTrigger value="metrics" className="font-mono">
-              <span className="text-emerald-400">metrics</span>
-              <span className="text-slate-400">.js</span>
-            </TabsTrigger>
-            <TabsTrigger value="details" className="font-mono">
-              <span className="text-emerald-400">details</span>
-              <span className="text-slate-400">.js</span>
-            </TabsTrigger>
-          </TabsList>
+        {specialMode ? (
+          // Special modes (contributors, etc.) - direct content without tab header
+          <div className="w-full space-y-4">
+            {specialMode === 'contributors' && <ContributionPanel />}
+            {/* Future special modes can be added here */}
+            {/* {specialMode === 'analytics' && <AnalyticsPanel />} */}
+            {/* {specialMode === 'tutorials' && <TutorialsPanel />} */}
+          </div>
+        ) : (
+          // Normal 3-tab mode
+          <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
+            {/* Tab navigation */}
+            <TabsList className="grid w-full grid-cols-3 bg-slate-900">
+              <TabsTrigger value="controls" className="font-mono">
+                <span className="text-emerald-400">config</span>
+                <span className="text-slate-400">.js</span>
+              </TabsTrigger>
+              <TabsTrigger value="metrics" className="font-mono">
+                <span className="text-emerald-400">metrics</span>
+                <span className="text-slate-400">.js</span>
+              </TabsTrigger>
+              <TabsTrigger value="details" className="font-mono">
+                <span className="text-emerald-400">details</span>
+                <span className="text-slate-400">.js</span>
+              </TabsTrigger>
+            </TabsList>
           
           {/* Configuration panel */}
           <TabsContent value="controls" className="space-y-4 mt-4">
@@ -272,8 +282,12 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble' }) => {
               setAlgorithm={handleAlgorithmChange}
             />
           </TabsContent>
-        </Tabs>
+          
+          </Tabs>
+        )}
       </CardContent>
+      
+
     </Card>
   );
 };
