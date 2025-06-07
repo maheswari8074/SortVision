@@ -17,7 +17,8 @@ const ROUTES = [
   '/algorithms/merge',
   '/algorithms/quick',
   '/algorithms/radix',
-  '/algorithms/heap'
+  '/algorithms/heap',
+  '/contributions'
 ];
 
 async function prerender() {

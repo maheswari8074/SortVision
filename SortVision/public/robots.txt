@@ -4,6 +4,7 @@
 # Default rule for all bots
 User-agent: *
 Allow: /
+Allow: /contributions
 Disallow: /sw.js
 
 # Sitemaps

@@ -39,6 +39,16 @@
       "source": "/sorting/:algorithm",
       "destination": "/algorithms/:algorithm",
       "permanent": true
+    },
+    {
+      "source": "/contribute",
+      "destination": "/contributions",
+      "permanent": true
+    },
+    {
+      "source": "/contributors",
+      "destination": "/contributions",
+      "permanent": true
     }
   ],
   "rewrites": [
