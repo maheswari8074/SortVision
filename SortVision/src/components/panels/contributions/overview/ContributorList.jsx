@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Github, ExternalLink, Crown, Bot, Filter, Search } from 'lucide-react';
+import { Github, ExternalLink, Crown, Bot, Filter, Search, Users } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 /**
@@ -207,6 +207,12 @@ const ContributorCard = ({ contributor, index, isAdmin, isBot }) => {
               <div className={`px-2 py-1 rounded text-xs border ${colors.badge} flex items-center gap-1`}>
                 <Bot className="w-3 h-3" />
                 BOT
+              </div>
+            )}
+            {!isAdmin && !isBot && (
+              <div className={`px-2 py-1 rounded text-xs border ${colors.badge} flex items-center gap-1`}>
+                <Users className="w-3 h-3" />
+                COMMUNITY
               </div>
             )}
           </div>

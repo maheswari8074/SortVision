@@ -65,7 +65,7 @@ const ContributionPanel = () => {
     return response;
   }, [GITHUB_TOKEN, USER_AGENT]);
 
-  const fetchContributors = useCallback(async () => {
+    const fetchContributors = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -191,7 +191,7 @@ const ContributionPanel = () => {
           login: "alienx5499",
           avatar_url: "https://github.com/alienx5499.png",
           html_url: "https://github.com/alienx5499",
-          contributions: 200,
+          contributions: 230,
           type: "User"
         }
       ];

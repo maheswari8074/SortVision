@@ -115,156 +115,150 @@ SortVision is an interactive web application that brings sorting algorithms to l
 
 ```
 SortVision/                  # Main project repository
-├── src/                     # Source code directory
-│   ├── algorithms/          # Sorting algorithm implementations
-│   ├── components/          # React components
-│   ├── styles/              # CSS styles
-│   ├── utils/               # Utility functions
-│   └── App.js               # Main application component
-├── public/                  # Public assets and static files
-│   ├── devTools/            # Development & debugging tools
-│   │   ├── core.js          # Core utilities & initialization
-│   │   ├── device-info.js   # Device information display
-│   │   ├── index.js         # Entry point for debug tools
-│   │   ├── monitoring.js    # Performance monitoring
-│   │   ├── performance.js   # Performance metrics tracking
-│   │   └── ui.js            # Debug UI components
-│   ├── assets/              # Static assets (images, fonts)
-│   └── index.html           # HTML entry point
-└── docs/                    # Documentation files
+├── .github/                 # GitHub specific configurations
+│   ├── ISSUE_TEMPLATE/      # Templates for GitHub issues
+│   │   ├── bug_report.md    # Bug report template
+│   │   ├── config.yml       # Issue template configuration
+│   │   ├── documentation.md # Documentation request template
+│   │   ├── feature_request.md # Feature request template
+│   │   └── performance.md   # Performance issue template
+│   ├── dependabot.yml       # Dependabot configuration
+│   └── pull_request_template.md # PR template
+├── .gitignore               # Git ignore configuration
+├── .vite/                   # Vite build tool cache
+│   └── deps/                # Dependency optimization cache
+│       ├── _metadata.json   # Dependency metadata
+│       └── package.json     # Dependency package information
+├── CODE_OF_CONDUCT.md       # Community code of conduct
+├── CONTRIBUTING.md          # Contribution guidelines
+├── LICENSE                  # MIT license file
+├── README.md                # Project documentation (this file)
+├── SECURITY.md              # Security policy and reporting
+└── SortVision/              # Main application directory
+    ├── .env.example         # Environment variables template
+    ├── .gitignore           # Application-specific git ignore
+    ├── components.json      # Component configuration
+    ├── eslint.config.js     # ESLint configuration
+    ├── index.html           # Main HTML entry point
+    ├── jsconfig.json        # JavaScript configuration
+    ├── package-lock.json    # NPM package lock
+    ├── package.json         # NPM package definition
+    ├── pnpm-lock.yaml       # PNPM package lock
+    ├── prerender.js         # Prerendering logic for SEO
+    ├── public/              # Public static assets
+    │   ├── devTools/        # Developer tools directory
+    │   │   ├── core.js      # Core utilities and initialization
+    │   │   ├── device-info.js # Device detection and information
+    │   │   ├── index.js     # Main entry point for debug tools
+    │   │   ├── monitoring.js # Performance monitoring utilities
+    │   │   ├── performance.js # Performance metrics tracking
+    │   │   └── ui.js        # Debug UI components and panel
+    │   ├── favicon.svg      # Site favicon
+    │   ├── google12e2679e2ea95334.html # Google site verification
+    │   ├── manifest.json    # PWA manifest
+    │   ├── mobile.css       # Mobile-specific styles
+    │   ├── og-image.png     # Open Graph image for sharing
+    │   ├── robots.txt       # Search engine crawling instructions
+    │   ├── sitemap.xml      # Site map for search engines
+    │   ├── splash.svg       # App splash screen
+    │   └── sw.js            # Service worker for offline support
+    ├── scripts/             # Build and utility scripts
+    │   ├── build-with-seo.js # Build script with SEO optimization
+    │   └── generate-sitemap.js # Sitemap generator
+    ├── src/                 # Source code directory
+    │   ├── App.css          # App-level styles
+    │   ├── App.jsx          # Main App component
+    │   ├── algorithms/      # Sorting algorithm implementations
+    │   │   ├── bubbleSort.jsx # Bubble sort implementation
+    │   │   ├── bucketSort.jsx # Bucket sort implementation
+    │   │   ├── heapSort.jsx # Heap sort implementation
+    │   │   ├── index.js     # Algorithm exports
+    │   │   ├── insertionSort.jsx # Insertion sort implementation
+    │   │   ├── mergeSort.jsx # Merge sort implementation
+    │   │   ├── quickSort.jsx # Quick sort implementation
+    │   │   ├── radixSort.jsx # Radix sort implementation
+    │   │   └── selectionSort.jsx # Selection sort implementation
+    │   ├── components/      # UI components
+    │   │   ├── MobileOverlay.jsx # Mobile device support
+    │   │   ├── SEOContent.jsx # SEO content component
+    │   │   ├── SortingVisualizer.jsx # Main visualization component
+    │   │   ├── panels/      # UI panels directory
+    │   │   │   ├── ConfigPanel.jsx # Configuration panel
+    │   │   │   ├── ContributionPanel.jsx # Contribution information panel
+    │   │   │   ├── DetailsPanel.jsx # Algorithm details panel
+    │   │   │   ├── MetricsPanel.jsx # Performance metrics panel
+    │   │   │   ├── config/  # Configuration components
+    │   │   │   │   ├── AlgorithmSelector.jsx # Algorithm selection
+    │   │   │   │   ├── ArraySizeControl.jsx # Array size controls
+    │   │   │   │   ├── ComplexityInfo.jsx # Complexity information
+    │   │   │   │   ├── ControlButtons.jsx # Control buttons
+    │   │   │   │   ├── SpeedControl.jsx # Animation speed control
+    │   │   │   │   └── index.js # Config component exports
+    │   │   │   ├── contributions/ # Contribution-related components
+    │   │   │   │   ├── ContributionHeader.jsx # Contribution header
+    │   │   │   │   ├── guide/   # Contribution guides
+    │   │   │   │   │   ├── BestPractices.jsx # Best practices guide
+    │   │   │   │   │   ├── ContributeGuide.jsx # How to contribute guide
+    │   │   │   │   │   ├── QuickReferences.jsx # Quick reference guide
+    │   │   │   │   │   └── index.js # Guide component exports
+    │   │   │   │   ├── index.js # Contribution component exports
+    │   │   │   │   └── overview/ # Contribution overview
+    │   │   │   │       ├── ContributorList.jsx # List of contributors
+    │   │   │   │       ├── ContributorStats.jsx # Contributor statistics
+    │   │   │   │       ├── RepositoryHealth.jsx # Repository health metrics
+    │   │   │   │       └── index.js # Overview component exports
+    │   │   │   ├── details/ # Detail components
+    │   │   │   │   ├── AlgorithmDetails.jsx # Algorithm detail display
+    │   │   │   │   ├── AlgorithmInfo.jsx # Algorithm information
+    │   │   │   │   ├── AlgorithmSelector.jsx # Algorithm selection
+    │   │   │   │   ├── DataPanel.jsx # Data display panel
+    │   │   │   │   ├── FunFact.jsx # Fun facts about algorithms
+    │   │   │   │   ├── InteractiveTip.jsx # Interactive tips
+    │   │   │   │   └── index.js # Detail component exports
+    │   │   │   ├── index.js # Panel component exports
+    │   │   │   └── metrics/ # Metric components
+    │   │   │       ├── AlgorithmComparison.jsx # Algorithm comparisons
+    │   │   │       ├── CurrentRunMetrics.jsx # Current run metrics
+    │   │   │       ├── RankingCard.jsx # Algorithm ranking display
+    │   │   │       ├── TestControls.jsx # Testing controls
+    │   │   │       ├── WinnerSummary.jsx # Algorithm comparison results
+    │   │   │       └── index.js # Metric component exports
+    │   │   ├── sortingVisualizer/ # Visualization components
+    │   │   │   ├── PerformanceMetrics.jsx # Performance display
+    │   │   │   ├── SortingControls.jsx # Sorting control buttons
+    │   │   │   ├── SortingHeader.jsx # Visualization header
+    │   │   │   ├── SortingVisualizer.jsx # Main visualizer
+    │   │   │   └── index.js # Visualizer component exports
+    │   │   ├── ui/          # UI component library
+    │   │   │   ├── badge.jsx # Badge component
+    │   │   │   ├── button.jsx # Button component
+    │   │   │   ├── card.jsx # Card component
+    │   │   │   ├── input.jsx # Input component
+    │   │   │   ├── select.jsx # Select dropdown component
+    │   │   │   ├── slider.jsx # Slider component
+    │   │   │   └── tabs.jsx # Tabs component
+    │   │   └── visualizations/ # Visualization components
+    │   │       ├── ArrayVisualization.jsx # Array visual representation
+    │   │       └── index.js # Visualization component exports
+    │   ├── index.css        # Global styles
+    │   ├── lib/             # Library utilities
+    │   │   └── utils.js     # Shared utility functions
+    │   ├── main.jsx         # Application entry point
+    │   └── utils/           # Utility modules
+    │       └── seo.js       # SEO optimization utilities
+    ├── vercel.json          # Vercel deployment configuration
+    └── vite.config.js       # Vite configuration
 ```
 
 ### 📁 **Key Directories and Files**:
 
-- **src/algorithms/**: Contains implementations of various sorting algorithms, including merge sort, quick sort, bubble sort, etc.
-- **src/components/**: React components that make up the user interface.
-- **src/styles/**: CSS files for styling components.
-- **src/utils/**: Utility functions used across the application.
-- **public/devTools/**: Development and debugging tools for monitoring performance and device information.
-  - **core.js**: Core utilities and initialization logic for debug tools.
-  - **device-info.js**: Detects and displays device-specific information.
-  - **index.js**: Main entry point that loads and initializes the debug tools.
-  - **monitoring.js**: Monitors application performance and logs issues.
-  - **performance.js**: Tracks and displays performance metrics.
-  - **ui.js**: Provides the UI components for the debug panel.
-- **public/assets/**: Static assets like images and fonts.
-- **docs/**: Documentation files, including algorithm explanations.
-
-### 📁 **Detailed Project Structure**:
-
-```
-📦 SortVision                # Root project directory
-├─ .github                   # GitHub specific configurations
-│  ├─ ISSUE_TEMPLATE         # Templates for GitHub issues
-│  │  ├─ bug_report.md       # Bug report template
-│  │  └─ feature_request.md  # Feature request template
-│  └─ dependabot.yml         # Dependabot configuration
-├─ .vite                     # Vite build tool cache
-│  └─ deps                   # Dependency optimization cache
-│     ├─ _metadata.json      # Dependency metadata
-│     └─ package.json        # Dependency package information
-├─ CODE_OF_CONDUCT.md        # Community code of conduct
-├─ CONTRIBUTING.md           # Contribution guidelines
-├─ LICENSE                   # MIT license file
-├─ README.md                 # Project documentation (this file)
-└─ SortVision                # Main application directory
-   ├─ .gitignore             # Git ignore configuration
-   ├─ components.json        # Component configuration
-   ├─ eslint.config.js       # ESLint configuration
-   ├─ index.html             # Main HTML entry point
-   ├─ jsconfig.json          # JavaScript configuration
-   ├─ package-lock.json      # NPM package lock
-   ├─ package.json           # NPM package definition
-   ├─ pnpm-lock.yaml         # PNPM package lock
-   ├─ prerender.js           # Prerendering logic for SEO
-   ├─ public                 # Public static assets
-   │  ├─ devTools            # Developer tools directory
-   │  │  ├─ core.js          # Core utilities and initialization
-   │  │  ├─ device-info.js   # Device detection and information
-   │  │  ├─ index.js         # Main entry point for debug tools
-   │  │  ├─ monitoring.js    # Performance monitoring utilities
-   │  │  ├─ performance.js   # Performance metrics tracking
-   │  │  └─ ui.js            # Debug UI components and panel
-   │  ├─ favicon.svg         # Site favicon
-   │  ├─ google12e2679e2ea95334.html # Google site verification
-   │  ├─ manifest.json       # PWA manifest
-   │  ├─ mobile.css          # Mobile-specific styles
-   │  ├─ og-image.png        # Open Graph image for sharing
-   │  ├─ robots.txt          # Search engine crawling instructions
-   │  ├─ sitemap.xml         # Site map for search engines
-   │  ├─ splash.svg          # App splash screen
-   │  └─ sw.js               # Service worker for offline support
-   ├─ scripts                # Build and utility scripts
-   │  ├─ build-with-seo.js   # Build script with SEO optimization
-   │  └─ generate-sitemap.js # Sitemap generator
-   ├─ src                    # Source code
-   │  ├─ App.css             # App-level styles
-   │  ├─ App.jsx             # Main App component
-   │  ├─ algorithms          # Sorting algorithm implementations
-   │  │  ├─ bubbleSort.jsx   # Bubble sort implementation
-   │  │  ├─ bucketSort.jsx   # Bucket sort implementation
-   │  │  ├─ heapSort.jsx     # Heap sort implementation
-   │  │  ├─ index.js         # Algorithm exports
-   │  │  ├─ insertionSort.jsx # Insertion sort implementation
-   │  │  ├─ mergeSort.jsx    # Merge sort implementation
-   │  │  ├─ quickSort.jsx    # Quick sort implementation
-   │  │  ├─ radixSort.jsx    # Radix sort implementation
-   │  │  └─ selectionSort.jsx # Selection sort implementation
-   │  ├─ components          # UI components
-   │  │  ├─ MobileOverlay.jsx # Mobile device support
-   │  │  ├─ SortingVisualizer.jsx # Main visualization component
-   │  │  ├─ panels           # UI panels
-   │  │  │  ├─ ConfigPanel.jsx # Configuration panel
-   │  │  │  ├─ DetailsPanel.jsx # Algorithm details panel
-   │  │  │  ├─ MetricsPanel.jsx # Performance metrics panel
-   │  │  │  ├─ config        # Configuration components
-   │  │  │  │  ├─ AlgorithmSelector.jsx # Algorithm selection
-   │  │  │  │  ├─ ArraySizeControl.jsx # Array size controls
-   │  │  │  │  ├─ ComplexityInfo.jsx # Complexity information
-   │  │  │  │  ├─ ControlButtons.jsx # Control buttons
-   │  │  │  │  ├─ SpeedControl.jsx # Animation speed control
-   │  │  │  │  └─ index.js   # Config component exports
-   │  │  │  ├─ details       # Detail components
-   │  │  │  │  ├─ AlgorithmDetails.jsx # Algorithm detail display
-   │  │  │  │  ├─ AlgorithmInfo.jsx # Algorithm information
-   │  │  │  │  ├─ AlgorithmSelector.jsx # Algorithm selection
-   │  │  │  │  ├─ DataPanel.jsx # Data display panel
-   │  │  │  │  ├─ FunFact.jsx # Fun facts about algorithms
-   │  │  │  │  ├─ InteractiveTip.jsx # Interactive tips
-   │  │  │  │  └─ index.js   # Detail component exports
-   │  │  │  ├─ index.js      # Panel component exports
-   │  │  │  └─ metrics       # Metric components
-   │  │  │     ├─ AlgorithmComparison.jsx # Algorithm comparisons
-   │  │  │     ├─ CurrentRunMetrics.jsx # Current run metrics
-   │  │  │     ├─ RankingCard.jsx # Algorithm ranking display
-   │  │  │     ├─ TestControls.jsx # Testing controls
-   │  │  │     ├─ WinnerSummary.jsx # Algorithm comparison results
-   │  │  │     └─ index.js   # Metric component exports
-   │  │  ├─ sortingVisualizer # Visualization components
-   │  │  │  ├─ PerformanceMetrics.jsx # Performance display
-   │  │  │  ├─ SortingControls.jsx # Sorting control buttons
-   │  │  │  ├─ SortingHeader.jsx # Visualization header
-   │  │  │  ├─ SortingVisualizer.jsx # Main visualizer
-   │  │  │  └─ index.js      # Visualizer component exports
-   │  │  ├─ ui               # UI component library
-   │  │  │  ├─ badge.jsx     # Badge component
-   │  │  │  ├─ button.jsx    # Button component
-   │  │  │  ├─ card.jsx      # Card component
-   │  │  │  ├─ input.jsx     # Input component
-   │  │  │  ├─ select.jsx    # Select dropdown component
-   │  │  │  ├─ slider.jsx    # Slider component
-   │  │  │  └─ tabs.jsx      # Tabs component
-   │  │  └─ visualizations   # Visualization components
-   │  │     ├─ ArrayVisualization.jsx # Array visual representation
-   │  │     └─ index.js      # Visualization component exports
-   │  ├─ index.css           # Global styles
-   │  ├─ lib                 # Library utilities
-   │  │  └─ utils.js         # Shared utility functions
-   │  ├─ main.jsx            # Application entry point
-   │  └─ utils               # Utility modules
-   │     └─ seo.js           # SEO optimization utilities
-   └─ vite.config.js         # Vite configuration
-```
+- **src/algorithms/**: Contains implementations of various sorting algorithms with step-by-step visualization logic
+- **src/components/**: React components organized by functionality (panels, visualizations, UI elements)
+- **src/components/panels/contributions/**: Complete contribution system with guides, statistics, and contributor information
+- **public/devTools/**: Development and debugging tools for performance monitoring and device information
+- **.github/ISSUE_TEMPLATE/**: Comprehensive issue templates for bugs, features, documentation, and performance
+- **scripts/**: Build automation and SEO optimization scripts
+- **SECURITY.md**: Security policy and vulnerability reporting guidelines
 
 ---
 
