@@ -47,7 +47,7 @@ SortVision is an interactive web application that brings sorting algorithms to l
   <img src="https://img.shields.io/badge/⭐%20Star%20this%20repo-Be%20part%20of%20our%20community!-yellow?style=for-the-badge&logo=github" alt="Star this repo" />
 </a>
 
-<a href="https://twitter.com/intent/tweet?text=🔥%20WOW!%20SortVision%20made%20sorting%20algorithms%20finally%20click%20for%20me!%20This%20interactive%20visualizer%20is%20a%20game-changer%20🧠✨%0AIf%20you're%20struggling%20with%20DSA,%20prepping%20for%20coding%20interviews,%20or%20just%20want%20to%20understand%20algorithms%20better%20-%20you%20NEED%20this!%20%F0%9F%9A%80%0Ahttps://github.com/alienx5499/SortVision%0A%23algorithms%20%23DSA%20%23coding%20@alienx5499">
+<a href="https://twitter.com/intent/tweet?text=🔥%20WOW!%20SortVision%20made%20sorting%20algorithms%20finally%20click%20for%20me!%20This%20interactive%20visualizer%20is%20a%20game-changer%20🧠✨%0AIf%20you're%20struggling%20with%20DSA,%20prepping%20for%20coding%20interviews,%20or%20just%20want%20to%20understand%20algorithms%20better%20-%20you%20NEED%20this!%20%F0%9F%9A%80%0Ahttps://github.com/alienx5499/SortVision%0A@alienx5499">
   <img src="https://img.shields.io/badge/🐦%20Share%20the%20love-Help%20a%20fellow%20developer!-1DA1F2?style=for-the-badge&logo=twitter" alt="Tweet about SortVision" />
 </a>
 
