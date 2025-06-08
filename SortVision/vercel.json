@@ -81,19 +81,6 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
-        },
-        {
-          "key": "Link",
-          "value": "<https://sortvision.vercel.app>; rel=\"canonical\""
-        }
-      ]
-    },
-    {
-      "source": "/algorithms/:algorithm",
-      "headers": [
-        {
-          "key": "Link",
-          "value": "<https://sortvision.vercel.app/algorithms/:algorithm>; rel=\"canonical\""
         }
       ]
     }

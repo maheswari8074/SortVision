@@ -323,7 +323,6 @@ const App = () => {
         <title>{metaTags.title}</title>
         <meta name="description" content={metaTags.description} />
         <meta name="keywords" content={metaTags.keywords} />
-        <link rel="canonical" href={canonicalUrl} />
         <meta property="article:modified_time" content={currentDate} />
         
         {/* Open Graph / Facebook */}
@@ -349,7 +348,7 @@ const App = () => {
         <div className="flex items-center gap-2 sm:gap-3">
           <Terminal className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-400 animate-pulse animate-infinite animate-duration-[3000ms]" aria-hidden="true" />
           <h1 className="text-2xl sm:text-4xl font-mono font-bold text-white">
-            <Link to="https://sortvision.vercel.app/" className="hover:opacity-90 transition-opacity">
+            <Link to="/" className="hover:opacity-90 transition-opacity">
               <span className="text-emerald-400 hover:text-emerald-300 transition-colors duration-300">Sort</span>
               <span className="text-purple-400 hover:text-purple-300 transition-colors duration-300">Vision</span>
             </Link>
