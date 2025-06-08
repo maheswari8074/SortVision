@@ -1,13 +1,16 @@
 {
-  "name": "SortVision",
+  "name": "SortVision - Interactive Sorting Algorithm Visualizer",
   "short_name": "SortVision",
-  "description": "Interactive visualization of popular sorting algorithms",
+  "description": "Master sorting algorithms with interactive visualizations, performance metrics, and educational content. Perfect for coding interviews, DSA learning, and computer science education.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#0F172A",
-  "theme_color": "#0F172A",
-  "categories": ["education", "development", "utilities"],
+  "theme_color": "#10B981",
+  "categories": ["education", "development", "utilities", "productivity"],
+  "lang": "en-US",
+  "dir": "ltr",
   "icons": [
     {
       "src": "/favicon.svg",
@@ -40,9 +43,28 @@
   ],
   "shortcuts": [
     {
-      "name": "Start Visualization",
-      "url": "/?quickstart=true",
-      "description": "Start visualizing sorting algorithms"
+      "name": "Merge Sort",
+      "url": "/algorithms/merge",
+      "description": "Visualize Merge Sort - O(n log n) divide and conquer",
+      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Quick Sort", 
+      "url": "/algorithms/quick",
+      "description": "Visualize Quick Sort - Average O(n log n) performance",
+      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Bubble Sort",
+      "url": "/algorithms/bubble", 
+      "description": "Learn Bubble Sort basics - O(n²) educational algorithm",
+      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Contribute",
+      "url": "/contributions",
+      "description": "Contribute to SortVision open source project",
+      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
     }
   ],
   "related_applications": [],

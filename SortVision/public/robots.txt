@@ -4,15 +4,25 @@
 # Default rule for all bots
 User-agent: *
 Allow: /
+Allow: /algorithms
+Allow: /algorithms/
 Allow: /contributions
 Disallow: /sw.js
+Disallow: /vite.config.js
+Disallow: /.env
+Disallow: /node_modules/
 
 # Sitemaps
 Sitemap: https://sortvision.vercel.app/sitemap.xml
 
+# Host declaration
+Host: https://sortvision.vercel.app
+
 # Explicitly allow major search engines
 User-agent: Googlebot
 Allow: /
+Allow: /algorithms
+Allow: /algorithms/
 Allow: /algorithms/bubble
 Allow: /algorithms/insertion
 Allow: /algorithms/selection
@@ -20,10 +30,13 @@ Allow: /algorithms/merge
 Allow: /algorithms/quick
 Allow: /algorithms/heap
 Allow: /algorithms/radix
+Allow: /contributions
 Disallow: /sw.js
 
 User-agent: bingbot
 Allow: /
+Allow: /algorithms
+Allow: /algorithms/
 Allow: /algorithms/bubble
 Allow: /algorithms/insertion
 Allow: /algorithms/selection
@@ -31,10 +44,13 @@ Allow: /algorithms/merge
 Allow: /algorithms/quick
 Allow: /algorithms/heap
 Allow: /algorithms/radix
+Allow: /contributions
 Disallow: /sw.js
 
 User-agent: Slurp
 Allow: /
+Allow: /algorithms
+Allow: /algorithms/
 Allow: /algorithms/bubble
 Allow: /algorithms/insertion
 Allow: /algorithms/selection
@@ -42,10 +58,13 @@ Allow: /algorithms/merge
 Allow: /algorithms/quick
 Allow: /algorithms/heap
 Allow: /algorithms/radix
+Allow: /contributions
 Disallow: /sw.js
 
 User-agent: DuckDuckBot
 Allow: /
+Allow: /algorithms
+Allow: /algorithms/
 Allow: /algorithms/bubble
 Allow: /algorithms/insertion
 Allow: /algorithms/selection
@@ -53,10 +72,13 @@ Allow: /algorithms/merge
 Allow: /algorithms/quick
 Allow: /algorithms/heap
 Allow: /algorithms/radix
+Allow: /contributions
 Disallow: /sw.js
 
 User-agent: Baiduspider
 Allow: /
+Allow: /algorithms
+Allow: /algorithms/
 Allow: /algorithms/bubble
 Allow: /algorithms/insertion
 Allow: /algorithms/selection
@@ -64,10 +86,13 @@ Allow: /algorithms/merge
 Allow: /algorithms/quick
 Allow: /algorithms/heap
 Allow: /algorithms/radix
+Allow: /contributions
 Disallow: /sw.js
 
 User-agent: Yandex
 Allow: /
+Allow: /algorithms
+Allow: /algorithms/
 Allow: /algorithms/bubble
 Allow: /algorithms/insertion
 Allow: /algorithms/selection
@@ -75,10 +100,13 @@ Allow: /algorithms/merge
 Allow: /algorithms/quick
 Allow: /algorithms/heap
 Allow: /algorithms/radix
+Allow: /contributions
 Disallow: /sw.js
 
 User-agent: Sogou
 Allow: /
+Allow: /algorithms
+Allow: /algorithms/
 Allow: /algorithms/bubble
 Allow: /algorithms/insertion
 Allow: /algorithms/selection
@@ -86,10 +114,13 @@ Allow: /algorithms/merge
 Allow: /algorithms/quick
 Allow: /algorithms/heap
 Allow: /algorithms/radix
+Allow: /contributions
 Disallow: /sw.js
 
 User-agent: ia_archiver
 Allow: /
+Allow: /algorithms
+Allow: /algorithms/
 Allow: /algorithms/bubble
 Allow: /algorithms/insertion
 Allow: /algorithms/selection
@@ -97,6 +128,7 @@ Allow: /algorithms/merge
 Allow: /algorithms/quick
 Allow: /algorithms/heap
 Allow: /algorithms/radix
+Allow: /contributions
 Disallow: /sw.js
 
 # Crawl delays
