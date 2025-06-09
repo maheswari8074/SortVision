@@ -5,17 +5,23 @@ import { Activity, GitPullRequest, AlertCircle, Package, Tag, RefreshCw } from '
  * Repository Health Component
  * 
  * Displays key project health metrics:
- * - Issues status (open vs closed)
- * - Pull requests status (open vs merged)
- * - Repository info (size, language)
- * - Latest release
+ * - Issues status (open vs closed vs recently updated)
+ * - Pull requests status (open vs merged vs closed)
+ * - Repository info (size, language, stars)
+ * - Latest release information
  */
 const RepositoryHealth = () => {
   const [healthData, setHealthData] = useState({
-    issues: { open: 0, closed: 0 },
-    pullRequests: { open: 0, merged: 0 },
-    repository: { size: 0, language: 'JavaScript' },
-    latestRelease: null,
+    issues: { open: 0, closed: 0, recentlyUpdated: 0 },
+    pullRequests: { open: 0, merged: 0, closed: 0 },
+    repository: { 
+      size: 0, 
+      language: 'JavaScript', 
+      stars: 0
+    },
+    releases: {
+      latest: null
+    },
     loading: true,
     error: null
   });
@@ -68,6 +74,8 @@ const RepositoryHealth = () => {
     return response.json();
   }, [GITHUB_TOKEN, USER_AGENT]);
 
+
+
   const fetchHealthData = useCallback(async () => {
     try {
       setHealthData(prev => ({ ...prev, loading: true, error: null }));
@@ -80,17 +88,28 @@ const RepositoryHealth = () => {
       const repoUrl = `${API_BASE_URL}/repos/${REPO_OWNER}/${REPO_NAME}`;
       
       // Fetch all data concurrently
-      const [repoData, openIssuesData, closedIssuesData, openPullsData, closedPullsData] = await Promise.all([
+      const [
+        repoData, 
+        openIssuesData, 
+        closedIssuesData, 
+        openPullsData, 
+        closedPullsData,
+        releasesData
+      ] = await Promise.all([
         authenticatedFetch(repoUrl),
-        authenticatedFetch(`${repoUrl}/issues?state=open&per_page=100`), // Get more to filter PRs
-        authenticatedFetch(`${repoUrl}/issues?state=closed&per_page=100`), // Get closed issues
+        authenticatedFetch(`${repoUrl}/issues?state=open&per_page=100`),
+        authenticatedFetch(`${repoUrl}/issues?state=closed&per_page=100`),
         authenticatedFetch(`${repoUrl}/pulls?state=open&per_page=100`),
-        authenticatedFetch(`${repoUrl}/pulls?state=closed&per_page=100`) // Get closed PRs to count merged ones
+        authenticatedFetch(`${repoUrl}/pulls?state=closed&per_page=100`),
+        authenticatedFetch(`${repoUrl}/releases?per_page=10`)
       ]);
 
       // Filter out pull requests from issues (GitHub API returns PRs as issues)
       const actualOpenIssues = openIssuesData.filter(issue => !issue.pull_request);
       const actualClosedIssues = closedIssuesData.filter(issue => !issue.pull_request);
+      const recentlyUpdatedIssues = actualOpenIssues.filter(issue => 
+        new Date(issue.updated_at).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000
+      );
 
       // Count merged pull requests from closed PRs
       const mergedPRs = closedPullsData.filter(pr => pr.merged_at !== null);
@@ -98,17 +117,22 @@ const RepositoryHealth = () => {
       setHealthData({
         issues: {
           open: actualOpenIssues.length,
-          closed: actualClosedIssues.length
+          closed: actualClosedIssues.length,
+          recentlyUpdated: recentlyUpdatedIssues.length
         },
         pullRequests: {
           open: openPullsData?.length || 0,
-          merged: mergedPRs.length
+          merged: mergedPRs.length,
+          closed: closedPullsData.length - mergedPRs.length
         },
         repository: {
-          size: Math.round((repoData?.size || 0) / 1024), // Convert to MB
-          language: repoData?.language || 'JavaScript'
+          size: Math.round((repoData?.size || 0) / 1024),
+          language: repoData?.language || 'JavaScript',
+          stars: repoData?.stargazers_count || 0
         },
-        latestRelease: null,
+        releases: {
+          latest: releasesData[0] || null
+        },
         loading: false,
         error: null
       });
@@ -125,10 +149,14 @@ const RepositoryHealth = () => {
         loading: false,
         error: error.message,
         // Fallback data - show 0 for unknown counts
-        issues: { open: 0, closed: 0 },
-        pullRequests: { open: 0, merged: 0 },
-        repository: { size: 2, language: 'JavaScript' },
-        latestRelease: null
+        issues: { open: 0, closed: 0, recentlyUpdated: 0 },
+        pullRequests: { open: 0, merged: 0, closed: 0 },
+        repository: { 
+          size: 2, 
+          language: 'JavaScript', 
+          stars: 0
+        },
+        releases: { latest: null }
       }));
     }
   }, [API_BASE_URL, REPO_OWNER, REPO_NAME, authenticatedFetch]);
@@ -144,7 +172,8 @@ const RepositoryHealth = () => {
       color: 'blue',
       data: [
         { label: 'Open', value: healthData.issues.open, color: 'text-yellow-400' },
-        { label: 'Closed', value: healthData.issues.closed, color: 'text-green-400' }
+        { label: 'Closed', value: healthData.issues.closed, color: 'text-green-400' },
+        { label: 'Recent', value: healthData.issues.recentlyUpdated, color: 'text-blue-400' }
       ]
     },
     {
@@ -153,7 +182,8 @@ const RepositoryHealth = () => {
       color: 'purple',
       data: [
         { label: 'Open', value: healthData.pullRequests.open, color: 'text-blue-400' },
-        { label: 'Merged', value: healthData.pullRequests.merged, color: 'text-emerald-400' }
+        { label: 'Merged', value: healthData.pullRequests.merged, color: 'text-emerald-400' },
+        { label: 'Closed', value: healthData.pullRequests.closed, color: 'text-slate-400' }
       ]
     },
     {
@@ -162,10 +192,13 @@ const RepositoryHealth = () => {
       color: 'emerald',
       data: [
         { label: 'Size', value: `${healthData.repository.size}MB`, color: 'text-slate-300' },
-        { label: 'Language', value: healthData.repository.language, color: 'text-blue-400' }
+        { label: 'Language', value: healthData.repository.language, color: 'text-blue-400' },
+        { label: 'Stars', value: healthData.repository.stars, color: 'text-yellow-400' }
       ]
     }
   ];
+
+
 
   return (
     <div className="mb-4 relative group">
@@ -204,40 +237,43 @@ const RepositoryHealth = () => {
           </div>
         )}
 
+
+
         {/* Health Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 relative z-10">
           {healthMetrics.map((metric, index) => (
             <HealthCard key={metric.title} metric={metric} index={index} loading={healthData.loading} />
           ))}
         </div>
 
-        {/* Latest Release */}
-        {healthData.latestRelease && (
-          <div className="relative z-10">
+        {/* Additional Info Sections */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+          {/* Latest Release */}
+          {healthData.releases.latest && (
             <div className="p-3 bg-slate-800/50 rounded-lg border border-slate-700">
               <div className="flex items-center mb-2">
                 <Tag className="h-3 w-3 text-emerald-400 mr-2" />
                 <span className="font-mono text-xs font-bold text-emerald-400">Latest Release</span>
               </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-mono text-sm text-white">{healthData.latestRelease.name}</div>
-                  <div className="font-mono text-xs text-slate-400">
-                    {new Date(healthData.latestRelease.publishedAt).toLocaleDateString()}
-                  </div>
+              <div className="space-y-2">
+                <div className="font-mono text-sm text-white">{healthData.releases.latest.name || healthData.releases.latest.tag_name}</div>
+                <div className="font-mono text-xs text-slate-400">
+                  {new Date(healthData.releases.latest.published_at).toLocaleDateString()}
                 </div>
                 <a 
-                  href={healthData.latestRelease.htmlUrl}
+                  href={healthData.releases.latest.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-2 py-1 bg-emerald-600/20 border border-emerald-500/30 rounded text-emerald-400 hover:text-emerald-300 font-mono text-xs transition-colors duration-200"
+                  className="inline-block px-2 py-1 bg-emerald-600/20 border border-emerald-500/30 rounded text-emerald-400 hover:text-emerald-300 font-mono text-xs transition-colors duration-200"
                 >
-                  View →
+                  View Release →
                 </a>
               </div>
             </div>
-          </div>
-        )}
+          )}
+
+
+        </div>
       </div>
     </div>
   );
