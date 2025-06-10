@@ -234,7 +234,7 @@ export const formatPageTitle = (algorithm = null) => {
   return 'SortVision | Interactive Sorting Algorithm Visualizer & Learning Tool';
 };
 
-export const generateCanonicalUrl = (pathname, algorithm = null) => {
+export const generateCanonicalUrl = (pathname) => {
   const baseUrl = 'https://sortvision.vercel.app';
   
   // Clean pathname - remove trailing slashes and ensure proper format
@@ -243,24 +243,48 @@ export const generateCanonicalUrl = (pathname, algorithm = null) => {
   // Remove any query parameters and hash fragments for canonical URL
   cleanPath = cleanPath.split('?')[0].split('#')[0];
   
-  // Normalize algorithm paths
-  if (algorithm && !cleanPath.includes('/algorithms/')) {
-    cleanPath = `/algorithms/${algorithm}`;
-  }
+  // Handle new path-based routing structure
+  const pathParts = cleanPath.split('/').filter(Boolean);
   
-  // Ensure consistent algorithm path format
-  if (cleanPath.includes('/algorithms/')) {
-    const pathParts = cleanPath.split('/');
-    if (pathParts.length >= 3) {
+  // Handle algorithm paths with tab structure: /algorithms/{tab}/{algorithm}
+  if (pathParts[0] === 'algorithms') {
+    if (pathParts.length === 3) {
+      // Format: /algorithms/config/bubble or /algorithms/details/bubble
+      const tab = pathParts[1];
       const algorithmParam = pathParts[2];
-      // Validate algorithm parameter and normalize
+      const validTabs = ['config', 'details', 'metrics'];
       const validAlgorithms = Object.keys(algorithms);
-      if (validAlgorithms.includes(algorithmParam.toLowerCase())) {
-        cleanPath = `/algorithms/${algorithmParam.toLowerCase()}`;
+      
+      if (validTabs.includes(tab) && validAlgorithms.includes(algorithmParam.toLowerCase())) {
+        cleanPath = `/algorithms/${tab}/${algorithmParam.toLowerCase()}`;
       } else {
-        // Invalid algorithm, redirect to home
         cleanPath = '/';
       }
+    } else if (pathParts.length === 2) {
+      // Legacy format: /algorithms/bubble -> redirect to /algorithms/config/bubble
+      const algorithmParam = pathParts[1];
+      const validAlgorithms = Object.keys(algorithms);
+      if (validAlgorithms.includes(algorithmParam.toLowerCase())) {
+        cleanPath = `/algorithms/config/${algorithmParam.toLowerCase()}`;
+      } else {
+        cleanPath = '/';
+      }
+    } else {
+      cleanPath = '/';
+    }
+  }
+  // Handle contribution paths: /contributions/{section}
+  else if (pathParts[0] === 'contributions') {
+    if (pathParts.length === 2) {
+      const section = pathParts[1];
+      const validSections = ['overview', 'guide'];
+      if (validSections.includes(section)) {
+        cleanPath = `/contributions/${section}`;
+      } else {
+        cleanPath = '/contributions/overview';
+      }
+    } else if (pathParts.length === 1) {
+      cleanPath = '/contributions/overview';
     }
   }
   
@@ -272,8 +296,8 @@ export const generateCanonicalUrl = (pathname, algorithm = null) => {
     '/main': '/',
     '/sorting': '/',
     '/visualizer': '/',
-    '/contribute': '/contributions',
-    '/contributors': '/contributions',
+    '/contribute': '/contributions/overview',
+    '/contributors': '/contributions/overview',
   };
   
   if (urlMappings[cleanPath]) {

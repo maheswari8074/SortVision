@@ -1,11 +1,6 @@
 {
   "redirects": [
     {
-      "source": "/algorithms/:algorithm/",
-      "destination": "/algorithms/:algorithm",
-      "permanent": true
-    },
-    {
       "source": "/((?!api|_next|static|favicon|sw.js|manifest|og-image|devTools).*)/",
       "destination": "/$1",
       "permanent": true
@@ -26,37 +21,49 @@
       "permanent": true
     },
     {
+      "source": "/algorithms/:algorithm",
+      "destination": "/algorithms/config/:algorithm",
+      "permanent": true
+    },
+    {
       "source": "/algorithm/:algorithm",
-      "destination": "/algorithms/:algorithm",
+      "destination": "/algorithms/config/:algorithm",
       "permanent": true
     },
     {
       "source": "/sort/:algorithm",
-      "destination": "/algorithms/:algorithm",
+      "destination": "/algorithms/config/:algorithm",
       "permanent": true
     },
     {
       "source": "/sorting/:algorithm",
-      "destination": "/algorithms/:algorithm",
+      "destination": "/algorithms/config/:algorithm",
+      "permanent": true
+    },
+    {
+      "source": "/contributions",
+      "destination": "/contributions/overview",
       "permanent": true
     },
     {
       "source": "/contribute",
-      "destination": "/contributions",
+      "destination": "/contributions/overview",
       "permanent": true
     },
     {
       "source": "/contributors",
-      "destination": "/contributions",
+      "destination": "/contributions/overview",
       "permanent": true
     }
   ],
+  
   "rewrites": [
     {
       "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
+  
   "headers": [
     {
       "source": "/sw.js",

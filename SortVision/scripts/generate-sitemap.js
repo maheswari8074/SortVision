@@ -60,22 +60,79 @@ const generateSitemap = () => {
   
   <!-- Algorithm Pages -->`;
 
-  // Add entries for each algorithm
+  // Add entries for each algorithm with different tabs
   algorithms.forEach(algorithm => {
     const capitalizedAlgorithm = algorithm.charAt(0).toUpperCase() + algorithm.slice(1);
+    
+    // Config tab (default)
     sitemap += `
   <url>
-    <loc>https://sortvision.vercel.app/algorithms/${algorithm}</loc>
+    <loc>https://sortvision.vercel.app/algorithms/config/${algorithm}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
-      <image:title>${capitalizedAlgorithm} Sort Visualization - SortVision</image:title>
-      <image:caption>Interactive visualization of ${capitalizedAlgorithm} Sort algorithm</image:caption>
+      <image:title>${capitalizedAlgorithm} Sort Configuration - SortVision</image:title>
+      <image:caption>Configure and run ${capitalizedAlgorithm} Sort algorithm</image:caption>
+    </image:image>
+  </url>`;
+
+    // Details tab
+    sitemap += `
+  <url>
+    <loc>https://sortvision.vercel.app/algorithms/details/${algorithm}</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>${capitalizedAlgorithm} Sort Algorithm Details - SortVision</image:title>
+      <image:caption>Learn about ${capitalizedAlgorithm} Sort algorithm implementation and complexity</image:caption>
+    </image:image>
+  </url>`;
+
+    // Metrics tab
+    sitemap += `
+  <url>
+    <loc>https://sortvision.vercel.app/algorithms/metrics/${algorithm}</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>${capitalizedAlgorithm} Sort Performance Metrics - SortVision</image:title>
+      <image:caption>Analyze ${capitalizedAlgorithm} Sort algorithm performance and metrics</image:caption>
     </image:image>
   </url>`;
   });
+
+  // Add contributions pages
+  sitemap += `
+  <url>
+    <loc>https://sortvision.vercel.app/contributions/overview</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>SortVision Contributors Overview</image:title>
+      <image:caption>View contributor statistics and repository health</image:caption>
+    </image:image>
+  </url>`;
+
+  sitemap += `
+  <url>
+    <loc>https://sortvision.vercel.app/contributions/guide</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>SortVision Contribution Guide</image:title>
+      <image:caption>Learn how to contribute to SortVision project</image:caption>
+    </image:image>
+  </url>`;
 
   sitemap += `
 </urlset>`;
