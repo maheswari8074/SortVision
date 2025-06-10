@@ -28,6 +28,17 @@ const Footer = memo(({ children }) => (
  * Main Application Component
  * 
  * Renders the sorting visualizer application with header and footer
+ * 
+ * URL Structure:
+ * - /                              -> Homepage with default algorithm (bubble) and 'controls' tab
+ * - /algorithms/{algorithm}        -> Algorithm page with 'controls' tab (default)
+ * - /algorithms/{algorithm}?tab={tab} -> Algorithm page with specific tab
+ * - /contributions                 -> Contributors page
+ * 
+ * Query Parameters:
+ * - tab: controls|metrics|details  -> Sets the active tab
+ * - Other parameters are preserved for debugging, analytics, etc.
+ *   Example: ?tab=details&debug=true&cr7=goat
  */
 const App = () => {
   // Get route parameters and location
@@ -46,8 +57,29 @@ const App = () => {
   const [specialMode, setSpecialMode] = useState(null); // null = normal mode, 'contributors' = contributors mode
   const fullText = 'Interactive visualization of popular sorting algorithms';
   
+  // Extract tab and algorithm/contribution section from path-based routing
+  const pathParts = location.pathname.split('/').filter(Boolean);
+  const isAlgorithmPath = pathParts[0] === 'algorithms';
+  const isContributionPath = pathParts[0] === 'contributions';
+  
+  // Get tab from path
+  let tabFromPath = null;
+  let algorithmFromPath = algorithmName;
+  let contributionSection = null;
+  
+  if (isAlgorithmPath && pathParts.length >= 3) {
+    tabFromPath = pathParts[1]; // config, details, metrics
+    algorithmFromPath = pathParts[2];
+  } else if (isAlgorithmPath && pathParts.length === 2) {
+    algorithmFromPath = pathParts[1];
+  }
+  
+  if (isContributionPath && pathParts.length >= 2) {
+    contributionSection = pathParts[1]; // overview, guide
+  }
+  
   // Get the current algorithm name for SEO - memoized to prevent recalculation
-  const currentAlgorithm = useMemo(() => algorithmName || 'bubble', [algorithmName]);
+  const currentAlgorithm = useMemo(() => algorithmFromPath || 'bubble', [algorithmFromPath]);
   const algorithmTitle = useMemo(() => 
     algorithms[currentAlgorithm]?.name || 'Sorting Algorithms', 
     [currentAlgorithm]
@@ -56,21 +88,51 @@ const App = () => {
   // Check if current URL is canonical and redirect if necessary
   useEffect(() => {
     if (!isCanonicalPath(location.pathname)) {
-      const canonicalPath = generateCanonicalUrl(location.pathname, algorithmName).replace('https://sortvision.vercel.app', '');
+      const canonicalPath = generateCanonicalUrl(location.pathname).replace('https://sortvision.vercel.app', '');
       navigate(canonicalPath, { replace: true });
     }
-  }, [location.pathname, algorithmName, navigate]);
+  }, [location.pathname, navigate]);
 
-  // Handle /contributions route - automatically switch to contributions mode
+  // Handle routing and tab state management
   useEffect(() => {
-    if (location.pathname === '/contributions') {
+    if (isContributionPath) {
       setSpecialMode('contributors');
-      setActiveTab('contributions'); // Set to contributions tab
+      
+      // Handle contribution section routing
+      if (contributionSection === 'guide') {
+        setActiveTab('guide');
+      } else if (contributionSection === 'overview') {
+        setActiveTab('overview');
+      } else {
+        // Redirect /contributions to /contributions/overview
+        navigate('/contributions/overview', { replace: true });
+        return;
+      }
     } else {
       setSpecialMode(null);
-      setActiveTab('controls'); // Reset to controls tab when leaving contributions
+      
+      // Handle path-based tab routing for algorithms
+      if (tabFromPath && ['config', 'metrics', 'details'].includes(tabFromPath)) {
+        // Map path-based tabs to internal tab names
+        const tabMapping = {
+          'config': 'controls',
+          'metrics': 'metrics', 
+          'details': 'details'
+        };
+        setActiveTab(tabMapping[tabFromPath]);
+      } else if (isAlgorithmPath && pathParts.length === 2) {
+        // Handle old format /algorithms/bucket -> redirect to /algorithms/config/bucket
+        const algorithm = pathParts[1];
+        const validAlgorithms = ['bubble', 'insertion', 'selection', 'merge', 'quick', 'heap', 'radix', 'bucket'];
+        if (validAlgorithms.includes(algorithm)) {
+          navigate(`/algorithms/config/${algorithm}`, { replace: true });
+          return;
+        }
+      } else if (!isAlgorithmPath) {
+        setActiveTab('controls'); // Default tab
+      }
     }
-  }, [location.pathname]);
+  }, [location.pathname, tabFromPath, isAlgorithmPath, isContributionPath, contributionSection, pathParts, navigate]);
   
   // Memoize SEO metadata to prevent recalculation on each render
   const metaTags = useMemo(() => {
@@ -288,8 +350,8 @@ const App = () => {
   
   // Generate clean canonical URL - memoized to prevent recalculation
   const canonicalUrl = useMemo(() => {
-    return generateCanonicalUrl(location.pathname, algorithmName);
-  }, [location.pathname, algorithmName]);
+    return generateCanonicalUrl(location.pathname);
+  }, [location.pathname]);
   
   // Typing animation effect
   useEffect(() => {
@@ -377,7 +439,31 @@ const App = () => {
           <SortingVisualizer 
             initialAlgorithm={currentAlgorithm} 
             activeTab={activeTab}
-            onTabChange={setActiveTab}
+            onTabChange={(newTab) => {
+              setActiveTab(newTab);
+              
+              // Handle path-based routing for tab changes
+              if (specialMode === 'contributors') {
+                // Handle contribution tab changes
+                const sectionMapping = {
+                  'overview': 'overview',
+                  'guide': 'guide'
+                };
+                const section = sectionMapping[newTab] || 'overview';
+                navigate(`/contributions/${section}`, { replace: true });
+              } else {
+                // Handle algorithm tab changes
+                const pathMapping = {
+                  'controls': 'config',
+                  'metrics': 'metrics',
+                  'details': 'details'
+                };
+                const pathSegment = pathMapping[newTab] || 'config';
+                const currentParams = new URLSearchParams(location.search);
+                const newUrl = `/algorithms/${pathSegment}/${currentAlgorithm}${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
+                navigate(newUrl, { replace: true });
+              }
+            }}
             specialMode={specialMode}
           />
         </Suspense>
@@ -395,14 +481,14 @@ const App = () => {
             onClick={() => {
               if (specialMode === 'contributors') {
                 // Return to normal mode - go to algorithms
-                if (algorithmName) {
-                  navigate(`/algorithms/${algorithmName}`);
+                if (currentAlgorithm) {
+                  navigate(`/algorithms/config/${currentAlgorithm}`);
                 } else {
-                  navigate('/algorithms/bubble'); // Default to bubble sort
+                  navigate('/algorithms/config/bubble'); // Default to bubble sort
                 }
               } else {
                 // Go to contributors mode - navigate to contributions page
-                navigate('/contributions');
+                navigate('/contributions/overview');
               }
             }}
             className="flex items-center gap-1 text-slate-400 hover:text-indigo-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"

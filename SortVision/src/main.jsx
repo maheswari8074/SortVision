@@ -82,7 +82,12 @@ if ('requestIdleCallback' in window) {
           <Suspense fallback={<LoadingFallback />}>
             <Routes>
               <Route path="/" element={<App />} />
+              <Route path="/algorithms/config/:algorithmName" element={<App />} />
+              <Route path="/algorithms/details/:algorithmName" element={<App />} />
+              <Route path="/algorithms/metrics/:algorithmName" element={<App />} />
               <Route path="/algorithms/:algorithmName" element={<App />} />
+              <Route path="/contributions/overview" element={<App />} />
+              <Route path="/contributions/guide" element={<App />} />
               <Route path="/contributions" element={<App />} />
               <Route path="*" element={<App />} />
             </Routes>

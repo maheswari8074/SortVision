@@ -19,7 +19,7 @@ const projectAdmin = "alienx5499";
 const projectAdmins = [projectAdmin];
 const botUsers = ["dependabot[bot]", "dependabot"];
 
-const ContributionPanel = () => {
+const ContributionPanel = ({ activeTab = 'overview', onTabChange }) => {
   const [contributors, setContributors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,8 +30,8 @@ const ContributionPanel = () => {
     totalForks: 0
   });
 
-  // Add new state for internal tabs
-  const [activeSection, setActiveSection] = useState('overview');
+  // Use activeTab prop instead of internal state, with fallback
+  const activeSection = activeTab || 'overview';
 
   // Function to fetch contributors data
   // Get configuration from environment variables
@@ -248,7 +248,7 @@ const ContributionPanel = () => {
           role="tab"
           aria-selected={activeSection === 'overview'}
           data-state={activeSection === 'overview' ? 'active' : 'inactive'}
-          onClick={() => setActiveSection('overview')}
+          onClick={() => onTabChange && onTabChange('overview')}
           className="data-[state=active]:bg-background data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring inline-flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 font-mono"
           tabIndex={activeSection === 'overview' ? 0 : -1}
         >
@@ -261,7 +261,7 @@ const ContributionPanel = () => {
           role="tab"
           aria-selected={activeSection === 'guide'}
           data-state={activeSection === 'guide' ? 'active' : 'inactive'}
-          onClick={() => setActiveSection('guide')}
+          onClick={() => onTabChange && onTabChange('guide')}
           className="data-[state=active]:bg-background data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring inline-flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 font-mono"
           tabIndex={activeSection === 'guide' ? 0 : -1}
         >

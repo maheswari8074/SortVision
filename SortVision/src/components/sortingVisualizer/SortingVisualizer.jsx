@@ -131,9 +131,24 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
   const handleAlgorithmChange = (newAlgorithm) => {
     setAlgorithm(newAlgorithm);
     
-    // Update URL for SEO without page reload
+    // Update URL with path-based routing, preserving current tab and query parameters
     if (newAlgorithm !== initialAlgorithm) {
-      navigate(`/algorithms/${newAlgorithm}`, { replace: true });
+      const currentPath = window.location.pathname;
+      const currentParams = new URLSearchParams(window.location.search);
+      
+      // Determine current tab from path
+      let currentTab = 'config'; // default
+      if (currentPath.includes('/details/')) {
+        currentTab = 'details';
+      } else if (currentPath.includes('/metrics/')) {
+        currentTab = 'metrics';
+      }
+      
+      // Build new URL with same tab structure
+      const newSearch = currentParams.toString();
+      const newUrl = `/algorithms/${currentTab}/${newAlgorithm}${newSearch ? `?${newSearch}` : ''}`;
+      
+      navigate(newUrl, { replace: true });
     }
   };
   
@@ -209,7 +224,12 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
         {specialMode ? (
           // Special modes (contributors, etc.) - direct content without tab header
           <div className="w-full space-y-4">
-            {specialMode === 'contributors' && <ContributionPanel />}
+            {specialMode === 'contributors' && (
+              <ContributionPanel 
+                activeTab={activeTab} 
+                onTabChange={onTabChange}
+              />
+            )}
             {/* Future special modes can be added here */}
             {/* {specialMode === 'analytics' && <AnalyticsPanel />} */}
             {/* {specialMode === 'tutorials' && <TutorialsPanel />} */}
