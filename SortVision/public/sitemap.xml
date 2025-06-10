@@ -6,122 +6,103 @@
   <!-- Homepage -->
   <url>
     <loc>https://sortvision.vercel.app/</loc>
-    <lastmod>2024-06-08</lastmod>
-    <changefreq>daily</changefreq>
+    <lastmod>2025-06-10</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
-      <image:title>SortVision - Interactive Sorting Algorithm Visualizer &amp; DSA Learning Platform</image:title>
-      <image:caption>Master sorting algorithms with interactive visualizations, performance metrics, and educational content for coding interviews and computer science learning</image:caption>
+      <image:title>SortVision - Sorting Algorithm Visualizer</image:title>
+      <image:caption>Interactive visualization of sorting algorithms</image:caption>
     </image:image>
   </url>
   
-  <!-- High-Priority Algorithm Pages - Most Popular Algorithms -->
+  <!-- Algorithm Pages -->
   <url>
-    <loc>https://sortvision.vercel.app/algorithms/merge</loc>
-    <lastmod>2024-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
-      <image:title>Merge Sort Algorithm Visualizer - O(n log n) Divide &amp; Conquer | SortVision</image:title>
-      <image:caption>Master Merge Sort with interactive step-by-step visualization. Learn divide-and-conquer technique, time complexity O(n log n), and space complexity analysis for coding interviews</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://sortvision.vercel.app/algorithms/quick</loc>
-    <lastmod>2024-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
-      <image:title>Quick Sort Algorithm Visualizer - O(n log n) Average Case | SortVision</image:title>
-      <image:caption>Interactive Quick Sort visualization with pivot selection strategies. Learn partitioning, time complexity analysis, and optimization techniques for technical interviews</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://sortvision.vercel.app/algorithms/heap</loc>
-    <lastmod>2024-06-08</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://sortvision.vercel.app/algorithms/bubble</loc>
+    <lastmod>2025-06-10</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
-      <image:title>Heap Sort Algorithm Visualizer - Binary Heap &amp; Priority Queue | SortVision</image:title>
-      <image:caption>Visualize Heap Sort algorithm with binary heap operations. Learn heapify process, max-heap construction, and O(n log n) guaranteed performance for DSA mastery</image:caption>
-    </image:image>
-  </url>
-  
-  <!-- Medium-Priority Algorithm Pages - Educational Algorithms -->
-  <url>
-    <loc>https://sortvision.vercel.app/algorithms/bubble</loc>
-    <lastmod>2024-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
-      <image:title>Bubble Sort Algorithm Visualizer - O(n²) Simple Sorting | SortVision</image:title>
-      <image:caption>Learn Bubble Sort fundamentals with animated visualization. Understand nested loops, comparison-based sorting, and why it's O(n²) time complexity for beginners</image:caption>
+      <image:title>Bubble Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Bubble Sort algorithm</image:caption>
     </image:image>
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/insertion</loc>
-    <lastmod>2024-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2025-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
     <image:image>
       <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
-      <image:title>Insertion Sort Algorithm Visualizer - O(n²) Adaptive Sorting | SortVision</image:title>
-      <image:caption>Interactive Insertion Sort with step-by-step animation. Learn adaptive sorting behavior, best-case O(n) performance, and practical applications in small datasets</image:caption>
+      <image:title>Insertion Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Insertion Sort algorithm</image:caption>
     </image:image>
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/selection</loc>
-    <lastmod>2024-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <lastmod>2025-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
     <image:image>
       <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
-      <image:title>Selection Sort Algorithm Visualizer - O(n²) Minimum Selection | SortVision</image:title>
-      <image:caption>Visualize Selection Sort algorithm with minimum element selection process. Understand in-place sorting, O(n²) time complexity, and comparison with other quadratic algorithms</image:caption>
+      <image:title>Selection Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Selection Sort algorithm</image:caption>
     </image:image>
   </url>
-  
-  <!-- Specialized Algorithm Pages - Advanced Techniques -->
+  <url>
+    <loc>https://sortvision.vercel.app/algorithms/merge</loc>
+    <lastmod>2025-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>Merge Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Merge Sort algorithm</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://sortvision.vercel.app/algorithms/quick</loc>
+    <lastmod>2025-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>Quick Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Quick Sort algorithm</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://sortvision.vercel.app/algorithms/heap</loc>
+    <lastmod>2025-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>Heap Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Heap Sort algorithm</image:caption>
+    </image:image>
+  </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/radix</loc>
-    <lastmod>2024-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2025-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
     <image:image>
       <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
-      <image:title>Radix Sort Algorithm Visualizer - O(nk) Non-Comparison Sorting | SortVision</image:title>
-      <image:caption>Master Radix Sort with digit-by-digit visualization. Learn non-comparison sorting, counting sort subroutine, and linear time complexity for integer sorting</image:caption>
+      <image:title>Radix Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Radix Sort algorithm</image:caption>
     </image:image>
   </url>
-  
-  <!-- Community & Learning Pages -->
   <url>
-    <loc>https://sortvision.vercel.app/contributions</loc>
-    <lastmod>2024-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
+    <loc>https://sortvision.vercel.app/algorithms/bucket</loc>
+    <lastmod>2025-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
     <image:image>
       <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
-      <image:title>Contribute to SortVision - Open Source DSA Learning Platform | GitHub</image:title>
-      <image:caption>Join the SortVision community! Contribute to open-source algorithm visualization, add new sorting algorithms, improve UI/UX, and help students worldwide learn DSA</image:caption>
-    </image:image>
-  </url>
-  
-  <!-- Additional SEO Landing Pages for Long-tail Keywords -->
-  <url>
-    <loc>https://sortvision.vercel.app/algorithms</loc>
-    <lastmod>2024-06-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
-      <image:title>All Sorting Algorithms Visualized - Complete DSA Learning Guide | SortVision</image:title>
-      <image:caption>Comprehensive collection of sorting algorithm visualizations: Bubble Sort, Merge Sort, Quick Sort, Heap Sort, Insertion Sort, Selection Sort, and Radix Sort with performance analysis</image:caption>
+      <image:title>Bucket Sort Visualization - SortVision</image:title>
+      <image:caption>Interactive visualization of Bucket Sort algorithm</image:caption>
     </image:image>
   </url>
 </urlset>

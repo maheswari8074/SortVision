@@ -62,6 +62,14 @@ export const algorithms = {
     keywords: 'radix sort, sorting visualizer, algorithm visualizer, dsa sorting, data structures algorithms, digit-by-digit sort, non-comparative sort, linear time, sorting animation, learn sorting, radix sort tutorial, computer science education, programming tutorial',
     seo_title: 'Radix Sort Visualizer | Non-Comparative DSA Sorting Algorithm',
     seo_description: 'Visualize Radix Sort with our DSA visualizer - a unique non-comparative sorting algorithm. Learn how it processes data digit by digit for efficient sorting.',
+  },
+  bucket: {
+    name: 'Bucket Sort',
+    description: 'A distribution sorting algorithm that works by distributing elements into a number of buckets, sorting each bucket individually, and then concatenating the buckets.',
+    complexity: 'O(n + k) average case, O(n²) worst case',
+    keywords: 'bucket sort, sorting visualizer, algorithm visualizer, dsa sorting, data structures algorithms, distribution sort, bucket algorithm, uniformly distributed data, sorting animation, learn sorting, bucket sort tutorial, computer science education, programming tutorial',
+    seo_title: 'Bucket Sort Visualizer | Distribution-Based DSA Sorting Algorithm',
+    seo_description: 'Learn Bucket Sort algorithm with our interactive DSA visualizer. See how this distribution-based sorting algorithm efficiently sorts uniformly distributed data into buckets.',
   }
 };
 
@@ -132,7 +140,7 @@ export const getAlgorithmMetaTags = (algorithmName) => {
 export const getHomepageMetaTags = () => {
   return {
     title: 'SortVision - Interactive Sorting Algorithm Visualizer',
-    description: 'SortVision - The world\'s most advanced algorithm visualizer and sorting algorithm visualizer. Interactive visualizations of 7+ sorting algorithms with real-time performance metrics. Master DSA with visual learning - used by 100K+ students worldwide.',
+    description: 'SortVision - The world\'s most advanced algorithm visualizer and sorting algorithm visualizer. Interactive visualizations of 8+ sorting algorithms with real-time performance metrics. Master DSA with visual learning - used by 100K+ students worldwide.',
     keywords: `SortVision, algorithm visualizer, sorting algorithm visualizer, best algorithm visualizer, interactive algorithm visualizer, sorting visualizer tool, algorithm animation, data structures visualizer, DSA visualizer, ${globalKeywords.slice(0, 20).join(', ')}`,
     ogTitle: 'SortVision | World\'s Best Algorithm Visualizer & Sorting Algorithm Tool',
     ogDescription: 'SortVision - Master algorithms with the most advanced algorithm visualizer. Interactive sorting algorithm visualizations, real-time performance metrics, and comprehensive DSA learning tools.',

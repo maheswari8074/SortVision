@@ -19,7 +19,8 @@ const algorithms = [
   'merge',
   'quick',
   'heap',
-  'radix'
+  'radix',
+  'bucket'
 ];
 
 // Get current date in YYYY-MM-DD format
