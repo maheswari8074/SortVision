@@ -21,7 +21,7 @@ const botUsers = ["dependabot[bot]", "dependabot"];
 
 const ContributionPanel = ({ activeTab = 'overview', onTabChange }) => {
   const [contributors, setContributors] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // unified loading state for all sections
   const [error, setError] = useState(null);
   const [stats, setStats] = useState({
     totalContributors: 0,
@@ -65,7 +65,7 @@ const ContributionPanel = ({ activeTab = 'overview', onTabChange }) => {
     return response;
   }, [GITHUB_TOKEN, USER_AGENT]);
 
-    const fetchContributors = useCallback(async () => {
+  const fetchContributors = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -281,6 +281,7 @@ const ContributionPanel = ({ activeTab = 'overview', onTabChange }) => {
             <ContributorList 
               contributors={contributors} 
               loading={loading}
+              onRefresh={fetchContributors}
               projectAdmins={projectAdmins}
               botUsers={botUsers}
             />
