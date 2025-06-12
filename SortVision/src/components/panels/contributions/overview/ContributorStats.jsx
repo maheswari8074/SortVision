@@ -135,6 +135,8 @@ const StatCard = ({ item, loading, index }) => {
   const Icon = item.icon;
   const delay = index * 100;
 
+  const isStar = item.label === 'GitHub Stars';
+
   return (
     <div 
       className={`group/card relative p-3 rounded-lg border ${colors.border} ${colors.bg} hover:scale-105 transition-all duration-300 animate-fade-up animate-once overflow-hidden`}
@@ -144,9 +146,21 @@ const StatCard = ({ item, loading, index }) => {
       <div className="absolute inset-0 w-0 group-hover/card:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
       
       <div className="flex items-center space-x-3 relative z-10">
-        <div className={`p-2 rounded-md ${colors.bg} border ${colors.border} ${colors.glow} shadow-lg`}>
-          <Icon className={`w-4 h-4 ${colors.text}`} />
-        </div>
+        {isStar ? (
+          <a
+            href="https://github.com/alienx5499/SortVision"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`group/star p-2 rounded-md ${colors.bg} border ${colors.border} ${colors.glow} shadow-lg hover:bg-yellow-500/20 transition-colors`}
+            title="Star this repo on GitHub"
+          >
+            <Icon className={`w-4 h-4 ${colors.text} group-hover/star:animate-ping`} />
+          </a>
+        ) : (
+          <div className={`p-2 rounded-md ${colors.bg} border ${colors.border} ${colors.glow} shadow-lg`}>
+            <Icon className={`w-4 h-4 ${colors.text}`} />
+          </div>
+        )}
         <div>
           <AnimatedNumber loading={loading} value={item.value} className={`text-lg font-bold ${colors.text} font-mono`} />
           <div className="text-xs text-slate-400 font-mono">{item.label}</div>
