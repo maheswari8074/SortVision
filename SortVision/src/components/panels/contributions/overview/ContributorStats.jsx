@@ -148,13 +148,7 @@ const StatCard = ({ item, loading, index }) => {
           <Icon className={`w-4 h-4 ${colors.text}`} />
         </div>
         <div>
-          <div className={`text-lg font-bold ${colors.text} font-mono`}>
-            {loading ? (
-              <div className="w-8 h-4 bg-slate-700 rounded animate-pulse"></div>
-            ) : (
-              item.value.toLocaleString()
-            )}
-          </div>
+          <AnimatedNumber loading={loading} value={item.value} className={`text-lg font-bold ${colors.text} font-mono`} />
           <div className="text-xs text-slate-400 font-mono">{item.label}</div>
           <div className="text-[10px] text-slate-500">{item.description}</div>
         </div>
@@ -173,6 +167,47 @@ const StatCard = ({ item, loading, index }) => {
       </div>
     </div>
   );
+};
+
+// Animated number component
+const AnimatedNumber = ({ loading, value, className }) => {
+  const [displayValue, setDisplayValue] = React.useState(0);
+
+  React.useEffect(() => {
+    if (loading) {
+      setDisplayValue(0);
+      return;
+    }
+    let start = 0;
+    const end = value || 0;
+    if (start === end) {
+      setDisplayValue(end);
+      return;
+    }
+
+    const duration = 1200; // total animation time in ms
+    const minStepTime = 20; // minimum interval between updates
+    const stepTime = Math.max(Math.floor(duration / end), minStepTime);
+
+    const increment = Math.ceil(end / (duration / stepTime));
+
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= end) {
+        start = end;
+        clearInterval(timer);
+      }
+      setDisplayValue(start);
+    }, stepTime);
+
+    return () => clearInterval(timer);
+  }, [loading, value]);
+
+  if (loading) {
+    return <div className="w-8 h-4 bg-slate-700 rounded animate-pulse"></div>;
+  }
+
+  return <div className={className}>{displayValue.toLocaleString()}</div>;
 };
 
 export default ContributorStats; 
