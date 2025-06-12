@@ -136,6 +136,9 @@ const StatCard = ({ item, loading, index }) => {
   const delay = index * 100;
 
   const isStar = item.label === 'GitHub Stars';
+  const isFork = item.label === 'Forks';
+  const groupName = isStar ? 'star' : isFork ? 'fork' : 'icon';
+  const hoverBg = isStar ? 'hover:bg-yellow-500/20' : isFork ? 'hover:bg-purple-500/20' : '';
 
   // Fire confetti when user clicks star link
   const handleStarClick = async () => {
@@ -154,6 +157,20 @@ const StatCard = ({ item, loading, index }) => {
     }
   };
 
+  const handleForkClick = async () => {
+    try {
+      const confetti = (await import('canvas-confetti')).default;
+      confetti({
+        particleCount: 60,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#A78BFA', '#C4B5FD', '#DDD6FE'] // purple-ish confetti for forks
+      });
+    } catch (err) {
+      console.error('Confetti load failed', err);
+    }
+  };
+
   return (
     <div 
       className={`group/card relative p-3 rounded-lg border ${colors.border} ${colors.bg} hover:scale-105 transition-all duration-300 animate-fade-up animate-once overflow-hidden`}
@@ -163,16 +180,16 @@ const StatCard = ({ item, loading, index }) => {
       <div className="absolute inset-0 w-0 group-hover/card:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
       
       <div className="flex items-center space-x-3 relative z-10">
-        {isStar ? (
+        {isStar || isFork ? (
           <a
             href="https://github.com/alienx5499/SortVision"
             target="_blank"
             rel="noopener noreferrer"
-            className={`group/star p-2 rounded-md ${colors.bg} border ${colors.border} ${colors.glow} shadow-lg hover:bg-yellow-500/20 transition-colors`}
+            className={`group/${groupName} p-2 rounded-md ${colors.bg} border ${colors.border} ${colors.glow} shadow-lg ${hoverBg} transition-colors`}
             title="Star this repo on GitHub"
-            onClick={handleStarClick}
+            onClick={isStar ? handleStarClick : handleForkClick}
           >
-            <Icon className={`w-4 h-4 ${colors.text} group-hover/star:animate-ping`} />
+            <Icon className={`w-4 h-4 ${colors.text} transition-transform duration-500 ${isStar ? 'group-hover/star:animate-ping' : 'group-hover/fork:rotate-180 group-hover/fork:scale-110'}`} />
           </a>
         ) : (
           <div className={`p-2 rounded-md ${colors.bg} border ${colors.border} ${colors.glow} shadow-lg`}>
