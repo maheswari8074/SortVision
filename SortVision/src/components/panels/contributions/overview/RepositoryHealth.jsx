@@ -206,6 +206,9 @@ const RepositoryHealth = () => {
       <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-emerald-500/20 rounded-xl blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
       
       <div className="relative bg-slate-900 p-4 rounded border border-slate-800 transition-all duration-500 hover:border-slate-700 hover:shadow-lg hover:shadow-slate-900/50 group/health overflow-hidden">
+        {/* Animated bottom line */}
+        <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover/health:w-full bg-gradient-to-r from-blue-500/50 via-purple-500/50 to-emerald-500/50 rounded transition-all duration-700"></div>
+        
         {/* Background effects */}
         <div className="absolute inset-0 overflow-hidden opacity-10">
           <div className="absolute inset-0 bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:8px_8px] opacity-30"></div>
@@ -292,9 +295,11 @@ const HealthCard = ({ metric, index, loading }) => {
 
   return (
     <div 
-      className={`p-3 rounded-lg border ${colors.border} ${colors.bg} transition-all duration-300 hover:scale-105 animate-fade-up animate-once`}
+      className={`group/card relative p-3 rounded-lg border ${colors.border} ${colors.bg} transition-all duration-300 hover:scale-105 animate-fade-up animate-once overflow-hidden`}
       style={{ animationDelay: `${index * 100}ms` }}
     >
+      {/* Card shimmer effect */}
+      <div className="absolute inset-0 w-0 group-hover/card:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
       <div className="flex items-center mb-3">
         <div className={`p-1.5 rounded-md ${colors.bg} border ${colors.border}`}>
           <Icon className={`w-3 h-3 ${colors.text}`} />
