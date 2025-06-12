@@ -137,35 +137,102 @@ const StatCard = ({ item, loading, index }) => {
 
   const isStar = item.label === 'GitHub Stars';
   const isFork = item.label === 'Forks';
-  const groupName = isStar ? 'star' : isFork ? 'fork' : 'icon';
-  const hoverBg = isStar ? 'hover:bg-yellow-500/20' : isFork ? 'hover:bg-purple-500/20' : '';
-
-  // Fire confetti when user clicks star link
-  const handleStarClick = async () => {
-    // allow normal navigation in new tab
-    // trigger confetti on current page for delight
-    try {
-      const confetti = (await import('canvas-confetti')).default;
-      confetti({
-        particleCount: 60,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#FCD34D', '#FBBF24', '#FDE68A']
-      });
-    } catch (err) {
-      console.error('Confetti load failed', err);
-    }
+  const isCommits = item.label === 'Total Commits';
+  const isContributors = item.label === 'Contributors';
+  
+  const getIconConfig = () => {
+    if (isStar) return {
+      href: 'https://github.com/alienx5499/SortVision',
+      title: 'Star this repo on GitHub',
+      group: 'star',
+      hoverBg: 'hover:bg-yellow-500/20 hover:shadow-yellow-500/40',
+      animation: 'group-hover/star:animate-ping group-hover/star:drop-shadow-lg',
+      confettiColors: ['#FCD34D', '#FBBF24', '#FDE68A']
+    };
+    if (isFork) return {
+      href: 'https://github.com/alienx5499/SortVision/fork',
+      title: 'Fork this repo on GitHub',
+      group: 'fork',
+      hoverBg: 'hover:bg-purple-500/20 hover:shadow-purple-500/40',
+      animation: 'group-hover/fork:rotate-180 group-hover/fork:scale-110 group-hover/fork:drop-shadow-lg',
+      confettiColors: ['#A78BFA', '#C4B5FD', '#DDD6FE']
+    };
+    if (isCommits) return {
+      href: 'https://github.com/alienx5499/SortVision/commits/main',
+      title: 'View commit history on GitHub',
+      group: 'commits',
+      hoverBg: 'hover:bg-blue-500/20 hover:shadow-blue-500/40',
+      animation: 'group-hover/commits:animate-pulse group-hover/commits:scale-105',
+      confettiColors: ['#60A5FA', '#93C5FD', '#DBEAFE']
+    };
+    if (isContributors) return {
+      href: 'https://github.com/alienx5499/SortVision/graphs/contributors',
+      title: 'View contributors on GitHub',
+      group: 'contributors',
+      hoverBg: 'hover:bg-emerald-500/20 hover:shadow-emerald-500/40',
+      animation: 'group-hover/contributors:animate-bounce group-hover/contributors:scale-105',
+      confettiColors: ['#34D399', '#6EE7B7', '#A7F3D0']
+    };
+    return null;
   };
 
-  const handleForkClick = async () => {
+  const iconConfig = getIconConfig();
+
+  const handleIconClick = async () => {
+    if (!iconConfig) return;
+    
     try {
       const confetti = (await import('canvas-confetti')).default;
-      confetti({
-        particleCount: 60,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#A78BFA', '#C4B5FD', '#DDD6FE'] // purple-ish confetti for forks
-      });
+      
+      // Different confetti patterns for different icons
+      if (isStar) {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: iconConfig.confettiColors,
+          shapes: ['star']
+        });
+      } else if (isFork) {
+        confetti({
+          particleCount: 80,
+          spread: 60,
+          origin: { y: 0.6 },
+          colors: iconConfig.confettiColors,
+          angle: 60
+        });
+        setTimeout(() => {
+          confetti({
+            particleCount: 80,
+            spread: 60,
+            origin: { y: 0.6 },
+            colors: iconConfig.confettiColors,
+            angle: 120
+          });
+        }, 150);
+      } else if (isCommits) {
+        // Sequential burst for commits
+        for (let i = 0; i < 3; i++) {
+          setTimeout(() => {
+            confetti({
+              particleCount: 30,
+              spread: 55,
+              origin: { y: 0.6 },
+              colors: iconConfig.confettiColors
+            });
+          }, i * 200);
+        }
+      } else if (isContributors) {
+        // Circular burst for contributors
+        confetti({
+          particleCount: 150,
+          spread: 360,
+          origin: { y: 0.6 },
+          colors: iconConfig.confettiColors,
+          startVelocity: 30,
+          gravity: 0.5
+        });
+      }
     } catch (err) {
       console.error('Confetti load failed', err);
     }
@@ -180,16 +247,16 @@ const StatCard = ({ item, loading, index }) => {
       <div className="absolute inset-0 w-0 group-hover/card:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
       
       <div className="flex items-center space-x-3 relative z-10">
-        {isStar || isFork ? (
+        {iconConfig ? (
           <a
-            href="https://github.com/alienx5499/SortVision"
+            href={iconConfig.href}
             target="_blank"
             rel="noopener noreferrer"
-            className={`group/${groupName} p-2 rounded-md ${colors.bg} border ${colors.border} ${colors.glow} shadow-lg ${hoverBg} transition-colors`}
-            title="Star this repo on GitHub"
-            onClick={isStar ? handleStarClick : handleForkClick}
+            className={`group/${iconConfig.group} p-2 rounded-md ${colors.bg} border ${colors.border} ${colors.glow} shadow-lg ${iconConfig.hoverBg} transition-all duration-300 hover:border-opacity-60`}
+            title={iconConfig.title}
+            onClick={handleIconClick}
           >
-            <Icon className={`w-4 h-4 ${colors.text} transition-transform duration-500 ${isStar ? 'group-hover/star:animate-ping' : 'group-hover/fork:rotate-180 group-hover/fork:scale-110'}`} />
+            <Icon className={`w-4 h-4 ${colors.text} transition-all duration-500 ${iconConfig.animation}`} />
           </a>
         ) : (
           <div className={`p-2 rounded-md ${colors.bg} border ${colors.border} ${colors.glow} shadow-lg`}>
