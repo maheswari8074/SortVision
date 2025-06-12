@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Github, ExternalLink, Crown, Bot, Filter, Search, Users } from 'lucide-react';
+import { Github, ExternalLink, Crown, Bot, Filter, Search, Users, RefreshCw } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 /**
@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
  * - Interactive hover states
  * - Responsive grid layout
  */
-const ContributorList = ({ contributors, loading, projectAdmins = [], botUsers = [] }) => {
+const ContributorList = ({ contributors, loading, onRefresh, projectAdmins = [], botUsers = [] }) => {
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -66,7 +66,17 @@ const ContributorList = ({ contributors, loading, projectAdmins = [], botUsers =
         
         <div className="font-mono text-sm text-slate-400 mb-4 flex items-center relative z-10 group-hover/list:text-emerald-400 transition-colors duration-300">
           <Github className="mr-2 h-4 w-4 text-emerald-400 animate-pulse" style={{ animationDuration: '4s' }} />
-          <span className="transition-colors duration-300">// contributor list</span>
+          <span className="transition-colors duration-300 mr-auto">// contributor list</span>
+          {onRefresh && (
+            <button
+              onClick={onRefresh}
+              disabled={loading}
+              className="p-1 hover:bg-slate-800 rounded transition-colors duration-200 disabled:opacity-50"
+              title="Refresh contributors data"
+            >
+              <RefreshCw className={`h-3 w-3 text-slate-500 hover:text-emerald-400 transition-colors ${loading ? 'animate-spin' : ''}`} />
+            </button>
+          )}
         </div>
 
         {/* Controls */}
