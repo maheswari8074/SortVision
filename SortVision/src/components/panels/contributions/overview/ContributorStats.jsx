@@ -137,6 +137,23 @@ const StatCard = ({ item, loading, index }) => {
 
   const isStar = item.label === 'GitHub Stars';
 
+  // Fire confetti when user clicks star link
+  const handleStarClick = async () => {
+    // allow normal navigation in new tab
+    // trigger confetti on current page for delight
+    try {
+      const confetti = (await import('canvas-confetti')).default;
+      confetti({
+        particleCount: 60,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#FCD34D', '#FBBF24', '#FDE68A']
+      });
+    } catch (err) {
+      console.error('Confetti load failed', err);
+    }
+  };
+
   return (
     <div 
       className={`group/card relative p-3 rounded-lg border ${colors.border} ${colors.bg} hover:scale-105 transition-all duration-300 animate-fade-up animate-once overflow-hidden`}
@@ -153,6 +170,7 @@ const StatCard = ({ item, loading, index }) => {
             rel="noopener noreferrer"
             className={`group/star p-2 rounded-md ${colors.bg} border ${colors.border} ${colors.glow} shadow-lg hover:bg-yellow-500/20 transition-colors`}
             title="Star this repo on GitHub"
+            onClick={handleStarClick}
           >
             <Icon className={`w-4 h-4 ${colors.text} group-hover/star:animate-ping`} />
           </a>
