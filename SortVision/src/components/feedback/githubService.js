@@ -1,0 +1,311 @@
+/**
+ * GitHub API service for SortVision feedback submission
+ * Handles creating issues in the GitHub repository
+ */
+
+const GITHUB_API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://api.github.com';
+const REPO_OWNER = import.meta.env.VITE_GITHUB_REPO_OWNER || 'alienx5499';
+const REPO_NAME = 'SortVision-FeedBack'; // Private feedback repository
+const USER_AGENT = import.meta.env.VITE_API_USER_AGENT || 'SortVision-App';
+const DEV_MODE = import.meta.env.VITE_DEV_MODE === 'true';
+const ENABLE_API_LOGGING = import.meta.env.VITE_ENABLE_API_LOGGING === 'true';
+
+/**
+ * Submit feedback by creating a GitHub issue
+ * @param {Object} feedbackData - The feedback form data
+ * @param {string} feedbackData.name - User's name
+ * @param {string} feedbackData.email - User's email (optional)
+ * @param {string} feedbackData.feedbackType - Type of feedback (Bug, Feature Request, etc.)
+ * @param {string} feedbackData.detailedFeedback - Detailed feedback text
+ * @param {number} feedbackData.rating - Star rating (0-5)
+ * @param {string} feedbackData.region - User's region
+ * @returns {Promise<Object>} - Response from GitHub API
+ */
+export const submitFeedback = async (feedbackData) => {
+  const token = import.meta.env.VITE_GITHUB_TOKEN;
+  
+  if (!token) {
+    throw new Error('GitHub token not found. Please set VITE_GITHUB_TOKEN in your environment variables.');
+  }
+
+  if (!REPO_OWNER) {
+    throw new Error('Repository owner missing. Please set VITE_GITHUB_REPO_OWNER in your environment variables.');
+  }
+
+  // Generate star rating display
+  const getRatingDisplay = (rating) => {
+    if (rating === 0) return '⭐ Not rated';
+    const stars = '⭐'.repeat(rating);
+    const labels = ['', 'Poor', 'Fair', 'Good', 'Great', 'Excellent'];
+    return `${stars} ${rating}/5 - ${labels[rating]}`;
+  };
+
+  // Format location information like "Bengaluru, India, Asia Pacific"
+  const formatLocationInfo = (locationData) => {
+    if (!locationData) {
+      return 'Location: Not detected';
+    }
+
+    const parts = [];
+    // Same order as UI: City, Country, Region
+    if (locationData.city && locationData.city !== 'Unknown') parts.push(locationData.city);
+    if (locationData.country && locationData.country !== 'Unknown') parts.push(locationData.country);
+    if (locationData.region && locationData.region !== 'Unknown') parts.push(locationData.region);
+    
+    const location = parts.length > 0 ? parts.join(', ') : 'Unknown';
+    const method = locationData.detectionMethod || 'Unknown';
+    const accuracy = locationData.accuracy || 'unknown';
+    
+    return `📍 **Location:** ${location} (via ${method}, ${accuracy} accuracy)`;
+  };
+
+  // Format enhanced location details
+  const formatLocationDetails = (locationData) => {
+    if (!locationData) {
+      return '';
+    }
+
+    let details = '\n## 🌍 Location Information\n\n';
+    
+    if (locationData.ip && locationData.ip !== 'Unknown') {
+      details += `- **IP Address:** ${locationData.ip}\n`;
+    }
+    
+    if (locationData.country && locationData.country !== 'Unknown') {
+      details += `- **Country:** ${locationData.country}`;
+      if (locationData.countryCode && locationData.countryCode !== 'Unknown') {
+        details += ` (${locationData.countryCode})`;
+      }
+      details += '\n';
+    }
+    
+    if (locationData.region && locationData.region !== 'Unknown') {
+      details += `- **Region/State:** ${locationData.region}\n`;
+    }
+    
+    if (locationData.city && locationData.city !== 'Unknown') {
+      details += `- **City:** ${locationData.city}\n`;
+    }
+    
+    if (locationData.latitude && locationData.longitude) {
+      details += `- **Coordinates:** ${locationData.latitude}, ${locationData.longitude}\n`;
+    }
+    
+    if (locationData.timezone && locationData.timezone !== 'Unknown') {
+      details += `- **Timezone:** ${locationData.timezone}\n`;
+    }
+    
+    if (locationData.isp && locationData.isp !== 'Unknown') {
+      details += `- **ISP:** ${locationData.isp}\n`;
+    }
+    
+    if (locationData.org && locationData.org !== 'Unknown' && locationData.org !== locationData.isp) {
+      details += `- **Organization:** ${locationData.org}\n`;
+    }
+    
+    if (locationData.asn && locationData.asn !== 'Unknown') {
+      details += `- **ASN:** ${locationData.asn}\n`;
+    }
+    
+    details += `- **Detection Method:** ${locationData.detectionMethod || 'Unknown'}\n`;
+    details += `- **Accuracy Level:** ${locationData.accuracy || 'unknown'}\n`;
+    details += `- **Detected At:** ${locationData.detectedAt || new Date().toISOString()}\n`;
+    
+    return details;
+  };
+
+  // Format the issue body with proper markdown and enhanced location data
+  const issueBody = `## Feedback Details
+
+**👤 From:** ${feedbackData.name}
+**📧 Email:** ${feedbackData.email || 'Not provided (anonymous feedback)'}
+**⭐ Rating:** ${getRatingDisplay(feedbackData.rating)}
+**🌍 Region:** ${feedbackData.region || 'Not specified'}
+${formatLocationInfo(feedbackData.locationData)}
+**🏷️ Type:** ${feedbackData.feedbackType}
+**📬 Follow-up:** ${feedbackData.email ? '✅ Email provided - can follow up' : '❌ Anonymous - no follow-up possible'}
+
+---
+
+## Detailed Feedback
+
+${feedbackData.detailedFeedback}
+${formatLocationDetails(feedbackData.locationData)}
+---
+
+**📊 Technical Metadata:**
+- **Submitted:** ${new Date().toLocaleString()}
+- **Source:** SortVision Feedback Form
+- **User Agent:** ${navigator.userAgent}
+- **Environment:** ${DEV_MODE ? 'Development' : 'Production'}
+- **Form Region:** ${feedbackData.region || 'Unknown'}
+- **Page URL:** ${typeof window !== 'undefined' ? window.location.href : 'Unknown'}`;
+
+  // Create labels based on feedback type
+  const labels = [
+    'user-feedback',
+    feedbackData.feedbackType.toLowerCase().replace(/\s+/g, '-')
+  ];
+
+  // Add priority label for bugs
+  if (feedbackData.feedbackType === 'Bug') {
+    labels.push('bug');
+  }
+
+  // Add enhancement label for feature requests
+  if (feedbackData.feedbackType === 'Feature Request') {
+    labels.push('enhancement');
+  }
+
+  // Add environment label
+  if (DEV_MODE) {
+    labels.push('development');
+  }
+
+  const issueData = {
+    title: `${getEmojiForType(feedbackData.feedbackType)} ${feedbackData.feedbackType}: ${feedbackData.name}`,
+    body: issueBody,
+    labels: labels,
+    assignees: [], // You can add assignees here if needed
+  };
+
+  if (ENABLE_API_LOGGING) {
+    console.log('Submitting feedback to GitHub:', {
+      repo: `${REPO_OWNER}/${REPO_NAME}`,
+      title: issueData.title,
+      labels: issueData.labels
+    });
+  }
+
+  try {
+    const response = await fetch(`${GITHUB_API_BASE}/repos/${REPO_OWNER}/${REPO_NAME}/issues`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': USER_AGENT,
+      },
+      body: JSON.stringify(issueData)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (ENABLE_API_LOGGING) {
+        console.error('GitHub API Error Response:', errorData);
+      }
+      throw new Error(`GitHub API Error: ${errorData.message || 'Failed to create issue'}`);
+    }
+
+    const result = await response.json();
+    
+    if (ENABLE_API_LOGGING) {
+      console.log('Feedback submitted successfully:', {
+        issueNumber: result.number,
+        issueUrl: result.html_url
+      });
+    }
+
+    return {
+      success: true,
+      issueNumber: result.number,
+      issueUrl: result.html_url,
+      data: result
+    };
+  } catch (error) {
+    if (ENABLE_API_LOGGING) {
+      console.error('Error submitting feedback to GitHub:', error);
+    }
+    throw error;
+  }
+};
+
+/**
+ * Get emoji for feedback type
+ * @param {string} type - Feedback type
+ * @returns {string} - Emoji for the type
+ */
+const getEmojiForType = (type) => {
+  const emojiMap = {
+    'Bug': '🐛',
+    'Feature Request': '✨',
+    'Suggestion': '💡',
+    'Other': '📝'
+  };
+  return emojiMap[type] || '📝';
+};
+
+/**
+ * Validate GitHub token and repository access
+ * @returns {Promise<boolean>} - Whether the token is valid
+ */
+export const validateGitHubAccess = async () => {
+  const token = import.meta.env.VITE_GITHUB_TOKEN;
+  
+  if (!token || !REPO_OWNER) {
+    return false;
+  }
+
+  try {
+    const response = await fetch(`${GITHUB_API_BASE}/repos/${REPO_OWNER}/${REPO_NAME}`, {
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': USER_AGENT,
+      }
+    });
+
+    if (ENABLE_API_LOGGING) {
+      console.log('GitHub access validation:', response.ok ? 'Success' : 'Failed');
+    }
+
+    return response.ok;
+  } catch (error) {
+    if (ENABLE_API_LOGGING) {
+      console.error('Error validating GitHub access:', error);
+    }
+    return false;
+  }
+};
+
+/**
+ * Get repository information
+ * @returns {Promise<Object>} - Repository information
+ */
+export const getRepoInfo = async () => {
+  const token = import.meta.env.VITE_GITHUB_TOKEN;
+  
+  if (!token || !REPO_OWNER) {
+    return null;
+  }
+  
+  try {
+    const response = await fetch(`${GITHUB_API_BASE}/repos/${REPO_OWNER}/${REPO_NAME}`, {
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': USER_AGENT,
+      }
+    });
+
+    if (response.ok) {
+      const repoData = await response.json();
+      if (ENABLE_API_LOGGING) {
+        console.log('Repository info fetched:', {
+          name: repoData.name,
+          private: repoData.private,
+          owner: repoData.owner.login
+        });
+      }
+      return repoData;
+    }
+    return null;
+  } catch (error) {
+    if (ENABLE_API_LOGGING) {
+      console.error('Error fetching repository info:', error);
+    }
+    return null;
+  }
+};
+
+ 
