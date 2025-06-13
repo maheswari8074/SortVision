@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Terminal, Code, Github, Linkedin, Twitter, Users } from 'lucide-react';
 import { getAlgorithmMetaTags, getHomepageMetaTags, getContributionsMetaTags, getAlgorithmSchema, algorithms, generateCanonicalUrl, isCanonicalPath } from './utils/seo';
 import SEOContent from './components/SEOContent';
+import { FeedbackButton } from './components/feedback';
 
 // Lazy load components that aren't needed immediately
 const SortingVisualizer = lazy(() => import('./components/sortingVisualizer/SortingVisualizer'));
@@ -562,6 +563,9 @@ const App = () => {
 
       {/* SEO Content for better search engine understanding */}
       <SEOContent algorithm={algorithmName} />
+      
+      {/* Floating Feedback Button */}
+      <FeedbackButton />
     </div>
   );
 };
