@@ -11,13 +11,19 @@ const App = lazy(() => import('./App.jsx'));
 const SpeedInsights = lazy(() => 
   import('@vercel/speed-insights/react')
     .then(module => ({ default: module.SpeedInsights }))
-    .catch(() => ({ default: () => null })) // Fallback if analytics fails to load
+    .catch((error) => {
+      console.warn('Speed Insights failed to load:', error);
+      return { default: () => null };
+    })
 );
 
 const Analytics = lazy(() => 
   import('@vercel/analytics/react')
     .then(module => ({ default: module.Analytics }))
-    .catch(() => ({ default: () => null })) // Fallback if analytics fails to load
+    .catch((error) => {
+      console.warn('Analytics failed to load:', error);
+      return { default: () => null };
+    })
 );
 
 // Custom event handler for analytics
@@ -63,7 +69,7 @@ if ('requestIdleCallback' in window) {
             </Suspense>
             {shouldRenderAnalytics && (
               <Suspense fallback={null}>
-                <SpeedInsights />
+                <SpeedInsights debug={import.meta.env.DEV} />
                 <Analytics beforeSend={beforeSend} />
               </Suspense>
             )}
@@ -94,7 +100,7 @@ if ('requestIdleCallback' in window) {
           </Suspense>
           {shouldRenderAnalytics && (
             <Suspense fallback={null}>
-              <SpeedInsights />
+              <SpeedInsights debug={import.meta.env.DEV} />
               <Analytics beforeSend={beforeSend} />
             </Suspense>
           )}

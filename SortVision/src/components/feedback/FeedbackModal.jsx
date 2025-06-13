@@ -35,8 +35,12 @@ const FeedbackModal = ({ isOpen, onClose }) => {
     let existingSessionId = localStorage.getItem('sortvision_session_id');
     
     if (!existingSessionId) {
-      // Generate new session ID if none exists
-      existingSessionId = `sess_${Date.now().toString(36).toUpperCase()}_${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      // Generate new session ID using cryptographically secure random values
+      const timestamp = Date.now().toString(36).toUpperCase();
+      const randomBytes = new Uint8Array(4);
+      crypto.getRandomValues(randomBytes);
+      const randomString = Array.from(randomBytes, byte => byte.toString(36)).join('').toUpperCase();
+      existingSessionId = `sess_${timestamp}_${randomString}`;
       localStorage.setItem('sortvision_session_id', existingSessionId);
       localStorage.setItem('sortvision_session_start', Date.now().toString());
     }
