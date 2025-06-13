@@ -8,6 +8,7 @@ import { MessageSquare, Send, CheckCircle2, AlertCircle, Loader2, X, Star, MapPi
 import { submitFeedback } from './githubService';
 import { detectUserLocation, getSimplifiedRegion, formatLocationString, getLocationAccuracy } from './locationService';
 
+
 const FeedbackModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -25,6 +26,8 @@ const FeedbackModal = ({ isOpen, onClose }) => {
   const [detectedRegion, setDetectedRegion] = useState('');
   const [locationData, setLocationData] = useState(null);
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
+  const [timeSpentOnSite, setTimeSpentOnSite] = useState(0);
+  const [sessionStartTime] = useState(Date.now());
   
   // Development mode detection
   const isDevelopment = import.meta.env.DEV;
@@ -68,6 +71,23 @@ const FeedbackModal = ({ isOpen, onClose }) => {
       detectUserLocationEnhanced();
     }
   }, [isOpen]);
+
+  // Track time spent on site
+  useEffect(() => {
+    const updateTimeSpent = () => {
+      const currentTime = Date.now();
+      const timeSpent = Math.round((currentTime - sessionStartTime) / 1000); // in seconds
+      setTimeSpentOnSite(timeSpent);
+    };
+
+    // Update time immediately when modal opens
+    if (isOpen) {
+      updateTimeSpent();
+      // Update every 10 seconds while modal is open
+      const interval = setInterval(updateTimeSpent, 10000);
+      return () => clearInterval(interval);
+    }
+  }, [isOpen, sessionStartTime]);
 
   // Reset form when modal closes
   useEffect(() => {
@@ -159,10 +179,20 @@ const FeedbackModal = ({ isOpen, onClose }) => {
     await new Promise(resolve => setTimeout(resolve, 500));
 
     try {
-      // Include enhanced location data in submission
+      // Include enhanced location data and time tracking in submission
       const enhancedFormData = {
         ...formData,
-        locationData: locationData // Include detailed location information
+        locationData: locationData, // Include detailed location information
+        sessionData: {
+          timeSpentOnSite: timeSpentOnSite,
+          sessionStartTime: new Date(sessionStartTime).toISOString(),
+          submissionTime: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+          screenResolution: `${screen.width}x${screen.height}`,
+          viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+          language: navigator.language,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        }
       };
       
       const result = await submitFeedback(enhancedFormData);
@@ -205,6 +235,15 @@ const FeedbackModal = ({ isOpen, onClose }) => {
       ...prev,
       [field]: value
     }));
+  };
+
+  // Format time for display
+  const formatTimeSpent = (seconds) => {
+    if (seconds < 60) return `${seconds}s`;
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${hours}h ${minutes}m`;
   };
 
   const isFormValid = formData.name && formData.feedbackType && formData.detailedFeedback;
@@ -376,6 +415,8 @@ const FeedbackModal = ({ isOpen, onClose }) => {
               </label>
               <Input
                 id="name"
+                name="name"
+                autoComplete="name"
                 placeholder="Enter your name..."
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
@@ -391,7 +432,9 @@ const FeedbackModal = ({ isOpen, onClose }) => {
               </label>
               <Input
                 id="email"
+                name="email"
                 type="email"
+                autoComplete="email"
                 placeholder="your.email@example.com"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
@@ -404,7 +447,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
 
             {/* Enhanced Star Rating */}
             <div className="space-y-4 p-4 rounded-lg border border-slate-600 bg-slate-800/30">
-              <label className="text-sm font-medium font-mono text-amber-400 flex items-center gap-2">
+              <label htmlFor="rating-container" className="text-sm font-medium font-mono text-amber-400 flex items-center gap-2">
                 <span className="text-amber-400">$</span> Rate SortVision
                 <span className="text-xs text-slate-500 font-normal">
                   {(hoverRating || formData.rating) > 0 && `(${hoverRating || formData.rating}/5)`}
@@ -414,8 +457,11 @@ const FeedbackModal = ({ isOpen, onClose }) => {
               <div className="flex flex-col gap-3">
                 {/* Star Container */}
                 <div 
+                  id="rating-container"
                   className="flex items-center justify-center gap-2 p-3 rounded-md bg-slate-700/50 border border-slate-600"
                   onMouseLeave={() => setHoverRating(0)}
+                  role="radiogroup"
+                  aria-labelledby="rating-container"
                 >
                   {[1, 2, 3, 4, 5].map((star) => {
                     // Better UX: Show hover preview only if it's higher than current rating
@@ -447,6 +493,8 @@ const FeedbackModal = ({ isOpen, onClose }) => {
                                 : 'bg-amber-500/20 shadow-lg shadow-amber-500/25')
                             : 'hover:bg-slate-600 hover:shadow-md'
                         }`}
+                        role="radio"
+                        aria-checked={star <= formData.rating}
                         aria-label={`Rate ${star} star${star > 1 ? 's' : ''}`}
                       >
                         <Star
@@ -522,7 +570,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
             {/* Enhanced Location & Region */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium font-mono text-purple-400 flex items-center gap-2">
+                <label htmlFor="location-info" className="text-sm font-medium font-mono text-purple-400 flex items-center gap-2">
                   <span className="text-amber-400">$</span> Location & Region
                   {isDetectingLocation && (
                     <span className="text-xs text-amber-400 bg-amber-900/20 px-2 py-1 rounded border border-amber-500/30 flex items-center gap-1">
@@ -550,7 +598,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
 
               {/* Auto-detected Location Display - NOT CLICKABLE */}
               {locationData && !isDetectingLocation && detectedRegion && (
-                <div className="bg-slate-800/50 border border-emerald-500/30 rounded-md p-3 space-y-2 cursor-default">
+                <div id="location-info" className="bg-slate-800/50 border border-emerald-500/30 rounded-md p-3 space-y-2 cursor-default">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <MapPin className="h-4 w-4 text-emerald-400" />
@@ -586,11 +634,15 @@ const FeedbackModal = ({ isOpen, onClose }) => {
               {/* Manual Region Selection - only show when NOT auto-detected */}
               {(!detectedRegion || !locationData) && (
                 <div className="space-y-2">
+                  <label htmlFor="region-select" className="text-sm font-medium font-mono text-purple-400 flex items-center gap-2">
+                    <span className="text-amber-400">$</span> Select your region manually
+                  </label>
                   <Select 
                     value={formData.region} 
                     onValueChange={(value) => handleInputChange('region', value)}
+                    name="region"
                   >
-                    <SelectTrigger className="bg-slate-800 border-slate-600 text-white focus:border-purple-500 focus:ring-purple-500/20 font-mono">
+                    <SelectTrigger id="region-select" name="region" className="bg-slate-800 border-slate-600 text-white focus:border-purple-500 focus:ring-purple-500/20 font-mono">
                       <SelectValue placeholder="Select your region..." />
                     </SelectTrigger>
                     <SelectContent className="bg-slate-800 border-slate-600">
@@ -651,8 +703,9 @@ const FeedbackModal = ({ isOpen, onClose }) => {
               <Select 
                 value={formData.feedbackType} 
                 onValueChange={(value) => handleInputChange('feedbackType', value)}
+                name="feedbackType"
               >
-                <SelectTrigger id="feedback-type" className="bg-slate-800 border-slate-600 text-white focus:border-emerald-500 focus:ring-emerald-500/20 font-mono">
+                <SelectTrigger id="feedback-type" name="feedbackType" className="bg-slate-800 border-slate-600 text-white focus:border-emerald-500 focus:ring-emerald-500/20 font-mono">
                   <SelectValue placeholder="Select feedback type..." />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-600">
@@ -686,16 +739,26 @@ const FeedbackModal = ({ isOpen, onClose }) => {
 
             {/* Detailed Feedback */}
             <div className="space-y-2">
-              <label htmlFor="detailed-feedback" className="text-sm font-medium font-mono text-emerald-400 flex items-center gap-2">
-                <span className="text-amber-400">$</span> Detailed Feedback 
-                <div className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  formData.detailedFeedback 
-                    ? 'bg-emerald-400 shadow-lg shadow-emerald-400/50' 
-                    : 'bg-red-400 animate-pulse shadow-lg shadow-red-400/50'
-                }`} />
-              </label>
+              <div className="flex items-center justify-between">
+                <label htmlFor="detailed-feedback" className="text-sm font-medium font-mono text-emerald-400 flex items-center gap-2">
+                  <span className="text-amber-400">$</span> Detailed Feedback 
+                  <div className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    formData.detailedFeedback 
+                      ? 'bg-emerald-400 shadow-lg shadow-emerald-400/50' 
+                      : 'bg-red-400 animate-pulse shadow-lg shadow-red-400/50'
+                  }`} />
+                </label>
+                {timeSpentOnSite > 0 && (
+                  <span className="text-xs font-mono text-amber-400 bg-amber-900/20 px-2 py-1 rounded border border-amber-500/30">
+                    ⏱️ {formatTimeSpent(timeSpentOnSite)} on site
+                  </span>
+                )}
+              </div>
+              
               <textarea
                 id="detailed-feedback"
+                name="detailedFeedback"
+                autoComplete="off"
                 placeholder="// Type your detailed feedback here..."
                 value={formData.detailedFeedback}
                 onChange={(e) => handleInputChange('detailedFeedback', e.target.value)}
@@ -785,4 +848,4 @@ const FeedbackModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default FeedbackModal; 
+export default FeedbackModal;

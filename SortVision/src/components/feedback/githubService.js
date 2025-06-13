@@ -114,7 +114,30 @@ export const submitFeedback = async (feedbackData) => {
     return details;
   };
 
-  // Format the issue body with proper markdown and enhanced location data
+  // Format session data for better insight
+  const formatSessionData = (sessionData) => {
+    if (!sessionData) return '';
+    
+    const formatTime = (seconds) => {
+      if (seconds < 60) return `${seconds}s`;
+      if (seconds < 3600) return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      return `${hours}h ${minutes}m`;
+    };
+
+    return `
+## 📊 Session Analytics
+
+**⏱️ Time on Site:** ${formatTime(sessionData.timeSpentOnSite)} *(${sessionData.timeSpentOnSite > 300 ? 'Engaged user' : sessionData.timeSpentOnSite > 60 ? 'Active session' : 'Quick visit'})*
+**🕐 Session Started:** ${new Date(sessionData.sessionStartTime).toLocaleString()}
+**📤 Submitted:** ${new Date(sessionData.submissionTime).toLocaleString()}
+**🖥️ Screen:** ${sessionData.screenResolution} (Viewport: ${sessionData.viewportSize})
+**🌐 Language:** ${sessionData.language}
+**🕐 Timezone:** ${sessionData.timezone}`;
+  };
+
+  // Format the issue body with comprehensive data
   const issueBody = `## Feedback Details
 
 **👤 From:** ${feedbackData.name}
@@ -131,15 +154,16 @@ ${formatLocationInfo(feedbackData.locationData)}
 
 ${feedbackData.detailedFeedback}
 ${formatLocationDetails(feedbackData.locationData)}
+${formatSessionData(feedbackData.sessionData)}
+
 ---
 
-**📊 Technical Metadata:**
-- **Submitted:** ${new Date().toLocaleString()}
+**🔧 Technical Metadata:**
 - **Source:** SortVision Feedback Form
-- **User Agent:** ${navigator.userAgent}
 - **Environment:** ${DEV_MODE ? 'Development' : 'Production'}
-- **Form Region:** ${feedbackData.region || 'Unknown'}
-- **Page URL:** ${typeof window !== 'undefined' ? window.location.href : 'Unknown'}`;
+- **User Agent:** ${feedbackData.sessionData?.userAgent || navigator.userAgent}
+- **Page URL:** ${typeof window !== 'undefined' ? window.location.href : 'Unknown'}
+- **Submission ID:** ${Date.now().toString(36).toUpperCase()}`;
 
   // Create labels based on feedback type
   const labels = [
