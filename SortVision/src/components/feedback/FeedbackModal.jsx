@@ -533,7 +533,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
           <div className="flex items-center justify-center gap-3 mb-4">
             <MessageSquare className={`h-7 w-7 transition-all duration-300 ${
               isSubmitting ? 'text-amber-400 animate-spin' : 'text-emerald-400 animate-pulse'
-            }`} />
+            }`} style={{ animationDuration: isSubmitting ? '1s' : '2.5s' }} />
             <CardTitle className="text-2xl font-bold font-mono text-white">
               <span className="text-emerald-400">User</span>
               <span className="text-purple-400">Feedback</span>
@@ -546,7 +546,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
               <div className="w-full bg-slate-700 rounded-full h-1 overflow-hidden">
                 <div className="h-full bg-gradient-to-r from-amber-400 via-emerald-400 to-amber-400 animate-pulse bg-size-200 animate-shimmer" />
               </div>
-              <div className="text-xs text-amber-400 font-mono mt-2 animate-pulse">
+              <div className="text-xs text-amber-400 font-mono mt-2 animate-pulse" style={{ animationDuration: '2s' }}>
                 Processing your feedback securely...
               </div>
             </div>
@@ -571,7 +571,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
                   formData.name 
                     ? 'bg-emerald-400 shadow-lg shadow-emerald-400/50' 
                     : 'bg-red-400 animate-pulse shadow-lg shadow-red-400/50'
-                }`} />
+                }`} style={{ animationDuration: formData.name ? 'none' : '2.5s' }} />
               </label>
               <Input
                 id="name"
@@ -665,6 +665,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
                                   : 'text-amber-400 fill-amber-400 drop-shadow-sm')
                               : 'text-slate-500 hover:text-amber-400/70'
                           } ${isHoverPreview && showHoverEffect ? 'scale-110' : ''}`}
+                          style={{ animationDuration: (isHoverPreview && showHoverEffect) ? '2s' : 'none' }}
                         />
                       </button>
                     );
@@ -690,7 +691,8 @@ const FeedbackModal = ({ isOpen, onClose }) => {
                           };
                           const label = labels[currentRating];
                           return (
-                            <span className={`${label.color} ${hoverRating ? 'animate-pulse' : ''}`}>
+                            <span className={`${label.color} ${hoverRating ? 'animate-pulse' : ''}`} 
+                                  style={{ animationDuration: hoverRating ? '2s' : 'none' }}>
                               {label.text}
                             </span>
                           );
@@ -698,7 +700,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
                       </span>
                     </div>
                   ) : (
-                    <span className="text-sm font-mono text-slate-500 animate-pulse">
+                    <span className="text-sm font-mono text-slate-500 animate-pulse" style={{ animationDuration: '3s' }}>
                       <span className="text-amber-400">//</span> Hover to preview • Click to rate
                     </span>
                   )}
@@ -858,7 +860,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
                   formData.feedbackType 
                     ? 'bg-emerald-400 shadow-lg shadow-emerald-400/50' 
                     : 'bg-red-400 animate-pulse shadow-lg shadow-red-400/50'
-                }`} />
+                }`} style={{ animationDuration: formData.feedbackType ? 'none' : '2.5s' }} />
               </label>
               <Select 
                 value={formData.feedbackType} 
@@ -906,7 +908,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
                     formData.detailedFeedback 
                       ? 'bg-emerald-400 shadow-lg shadow-emerald-400/50' 
                       : 'bg-red-400 animate-pulse shadow-lg shadow-red-400/50'
-                  }`} />
+                  }`} style={{ animationDuration: formData.detailedFeedback ? 'none' : '2.5s' }} />
                 </label>
                 {timeSpentOnSite > 0 && (
                   <span className="text-xs font-mono text-amber-400 bg-amber-900/20 px-2 py-1 rounded border border-amber-500/30">
