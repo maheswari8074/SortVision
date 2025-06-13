@@ -17,6 +17,11 @@ const SpeedInsights = lazy(() =>
     })
 );
 
+// GitHub API debugging enabled in development mode
+if (import.meta.env.DEV) {
+  console.log('🔧 GitHub API debugging enabled. Check console for detailed feedback submission logs.');
+}
+
 const Analytics = lazy(() => 
   import('@vercel/analytics/react')
     .then(module => ({ default: module.Analytics }))

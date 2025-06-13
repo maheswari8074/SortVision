@@ -27,11 +27,11 @@ const RepositoryHealth = () => {
   });
 
   // Get configuration from environment variables
-  const REPO_OWNER = import.meta.env.VITE_GITHUB_REPO_OWNER || 'alienx5499';
-  const REPO_NAME = import.meta.env.VITE_GITHUB_REPO_NAME || 'SortVision';
+  const REPO_OWNER = import.meta.env.VITE_GITHUB_REPO_OWNER;
+  const REPO_NAME = import.meta.env.VITE_GITHUB_REPO_NAME;
   const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.github.com';
-  const USER_AGENT = import.meta.env.VITE_API_USER_AGENT || 'SortVision-App';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const USER_AGENT = import.meta.env.VITE_API_USER_AGENT;
 
   // Create authenticated fetch function for direct GitHub API calls
   const authenticatedFetch = useCallback(async (githubUrl) => {

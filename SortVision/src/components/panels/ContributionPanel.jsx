@@ -36,10 +36,10 @@ const ContributionPanel = ({ activeTab = 'overview', onTabChange }) => {
   // Function to fetch contributors data
   // Get configuration from environment variables
   const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
-  const REPO_OWNER = import.meta.env.VITE_GITHUB_REPO_OWNER || 'alienx5499';
-  const REPO_NAME = import.meta.env.VITE_GITHUB_REPO_NAME || 'SortVision';
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.github.com';
-  const USER_AGENT = import.meta.env.VITE_API_USER_AGENT || 'SortVision-Contribution-Panel';
+  const REPO_OWNER = import.meta.env.VITE_GITHUB_REPO_OWNER;
+  const REPO_NAME = import.meta.env.VITE_GITHUB_REPO_NAME;
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const USER_AGENT = import.meta.env.VITE_API_USER_AGENT;
 
   // Create authenticated fetch function
   const authenticatedFetch = useCallback(async (url) => {

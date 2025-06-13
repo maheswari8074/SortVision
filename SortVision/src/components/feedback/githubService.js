@@ -3,12 +3,12 @@
  * Handles creating issues in the GitHub repository
  */
 
-const GITHUB_API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://api.github.com';
-const REPO_OWNER = import.meta.env.VITE_GITHUB_REPO_OWNER || 'alienx5499';
-const REPO_NAME = 'SortVision-FeedBack'; // Private feedback repository
-const USER_AGENT = import.meta.env.VITE_API_USER_AGENT || 'SortVision-App';
+const GITHUB_API_BASE = import.meta.env.VITE_API_BASE_URL;
+const REPO_OWNER = import.meta.env.VITE_FEEDBACK_REPO_OWNER;
+const REPO_NAME = import.meta.env.VITE_FEEDBACK_REPO_NAME;
+const USER_AGENT = import.meta.env.VITE_API_USER_AGENT;
 const DEV_MODE = import.meta.env.VITE_DEV_MODE === 'true';
-const ENABLE_API_LOGGING = import.meta.env.VITE_ENABLE_API_LOGGING === 'true';
+const ENABLE_API_LOGGING = import.meta.env.VITE_ENABLE_API_LOGGING === 'true' || DEV_MODE;
 
 /**
  * Submit feedback by creating a GitHub issue
@@ -25,11 +25,25 @@ export const submitFeedback = async (feedbackData) => {
   const token = import.meta.env.VITE_GITHUB_TOKEN;
   
   if (!token) {
+    console.error('❌ GitHub token not found. Please set VITE_GITHUB_TOKEN in your environment variables.');
     throw new Error('GitHub token not found. Please set VITE_GITHUB_TOKEN in your environment variables.');
   }
 
   if (!REPO_OWNER) {
+    console.error('❌ Repository owner missing. Please set VITE_GITHUB_REPO_OWNER in your environment variables.');
     throw new Error('Repository owner missing. Please set VITE_GITHUB_REPO_OWNER in your environment variables.');
+  }
+
+  // Debug logging for API access
+  if (ENABLE_API_LOGGING) {
+    console.log('🔍 GitHub API Debug Info:', {
+      apiBase: GITHUB_API_BASE,
+      repoOwner: REPO_OWNER,
+      repoName: REPO_NAME,
+      tokenPresent: !!token,
+      tokenPrefix: token ? `${token.substring(0, 8)}...` : 'None',
+      environment: DEV_MODE ? 'Development' : 'Production'
+    });
   }
 
   // Generate star rating display
@@ -353,7 +367,18 @@ ${formatErrorHistory(feedbackData.errorHistory)}
   }
 
   try {
-    const response = await fetch(`${GITHUB_API_BASE}/repos/${REPO_OWNER}/${REPO_NAME}/issues`, {
+    const apiUrl = `${GITHUB_API_BASE}/repos/${REPO_OWNER}/${REPO_NAME}/issues`;
+    
+    if (ENABLE_API_LOGGING) {
+      console.log('🚀 Making GitHub API request:', {
+        url: apiUrl,
+        method: 'POST',
+        hasToken: !!token,
+        tokenLength: token ? token.length : 0
+      });
+    }
+
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Authorization': `token ${token}`,
@@ -365,11 +390,34 @@ ${formatErrorHistory(feedbackData.errorHistory)}
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      if (ENABLE_API_LOGGING) {
-        console.error('GitHub API Error Response:', errorData);
+      console.error(`❌ GitHub API Error ${response.status}: ${response.statusText}`);
+      
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch (parseError) {
+        errorData = { message: `HTTP ${response.status}: ${response.statusText}` };
       }
-      throw new Error(`GitHub API Error: ${errorData.message || 'Failed to create issue'}`);
+      
+      console.error('📋 Error Details:', {
+        status: response.status,
+        statusText: response.statusText,
+        url: apiUrl,
+        repoOwner: REPO_OWNER,
+        repoName: REPO_NAME,
+        errorData: errorData
+      });
+      
+      // Specific error messages for common issues
+      if (response.status === 404) {
+        throw new Error(`Repository '${REPO_OWNER}/${REPO_NAME}' not found or token lacks access. Verify: 1) Repository exists 2) Token has 'repo' scope 3) Token has access to private repos`);
+      } else if (response.status === 401) {
+        throw new Error('GitHub token is invalid or expired. Please check your VITE_GITHUB_TOKEN.');
+      } else if (response.status === 403) {
+        throw new Error('GitHub token lacks required permissions. Ensure token has "repo" and "issues" scopes.');
+      }
+      
+      throw new Error(`GitHub API Error (${response.status}): ${errorData.message || response.statusText}`);
     }
 
     const result = await response.json();
