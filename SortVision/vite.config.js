@@ -16,12 +16,17 @@ export default defineConfig({
     tailwindcss(),
     compression(),
     VitePWA({
+      registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'splash.svg', 'robots.txt'],
       manifest: {
         name: 'SortVision',
         short_name: 'SortVision',
         description: 'Interactive visualization of popular sorting algorithms',
         theme_color: '#0F172A',
+        background_color: '#0F172A',
+        display: 'standalone',
+        scope: '/',
+        start_url: '/',
         icons: [
           {
             src: '/favicon.svg',
@@ -38,6 +43,8 @@ export default defineConfig({
         ]
       },
       workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}'],
+        navigateFallback: null,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
