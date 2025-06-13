@@ -40,12 +40,17 @@ const FeedbackModal = ({ isOpen, onClose }) => {
     const debugParam = getQueryParam('cr7');
     const hasDebugParam = debugParam === 'goat';
     
-    // Check if we're on a production domain
+    // Check if we're on a production domain (secure validation)
+    const hostname = window.location.hostname.toLowerCase();
     const isProductionDomain = 
-      window.location.hostname.includes('vercel.app') || 
-      window.location.hostname.includes('netlify.app') ||
-      window.location.hostname.includes('github.io') ||
-      window.location.hostname.includes('sortvision.com');
+      hostname.endsWith('.vercel.app') || 
+      hostname === 'vercel.app' ||
+      hostname.endsWith('.netlify.app') || 
+      hostname === 'netlify.app' ||
+      hostname.endsWith('.github.io') || 
+      hostname === 'github.io' ||
+      hostname.endsWith('.sortvision.com') || 
+      hostname === 'sortvision.com';
     
     // Always block access on production domains
     if (isProductionDomain && hasDebugParam) {
