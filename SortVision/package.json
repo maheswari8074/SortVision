@@ -31,7 +31,7 @@
     "filelist": "^1.0.4",
     "http-proxy-middleware": "^3.0.5",
     "jake": "^10.9.2",
-    "lucide-react": "^0.514.0",
+    "lucide-react": "^0.515.0",
     "micromatch": "^4.0.8",
     "minimatch": "3.0.8",
     "react": "^19.1.0",
