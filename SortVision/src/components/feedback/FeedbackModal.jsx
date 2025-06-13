@@ -29,6 +29,27 @@ const FeedbackModal = ({ isOpen, onClose }) => {
   const [timeSpentOnSite, setTimeSpentOnSite] = useState(0);
   const [sessionStartTime] = useState(Date.now());
   
+  // Persistent session ID that survives page refreshes
+  const [sessionId] = useState(() => {
+    // Try to get existing session ID from localStorage
+    let existingSessionId = localStorage.getItem('sortvision_session_id');
+    
+    if (!existingSessionId) {
+      // Generate new session ID if none exists
+      existingSessionId = `sess_${Date.now().toString(36).toUpperCase()}_${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      localStorage.setItem('sortvision_session_id', existingSessionId);
+      localStorage.setItem('sortvision_session_start', Date.now().toString());
+    }
+    
+    return existingSessionId;
+  });
+  
+  // Get persistent session start time
+  const [persistentSessionStart] = useState(() => {
+    const storedStart = localStorage.getItem('sortvision_session_start');
+    return storedStart ? parseInt(storedStart) : Date.now();
+  });
+  
   // Development mode detection
   const isDevelopment = import.meta.env.DEV;
 
@@ -76,7 +97,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     const updateTimeSpent = () => {
       const currentTime = Date.now();
-      const timeSpent = Math.round((currentTime - sessionStartTime) / 1000); // in seconds
+      const timeSpent = Math.round((currentTime - persistentSessionStart) / 1000); // in seconds
       setTimeSpentOnSite(timeSpent);
     };
 
@@ -87,7 +108,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
       const interval = setInterval(updateTimeSpent, 10000);
       return () => clearInterval(interval);
     }
-  }, [isOpen, sessionStartTime]);
+  }, [isOpen, persistentSessionStart]);
 
   // Reset form when modal closes
   useEffect(() => {
@@ -184,8 +205,9 @@ const FeedbackModal = ({ isOpen, onClose }) => {
         ...formData,
         locationData: locationData, // Include detailed location information
         sessionData: {
+          sessionId: sessionId, // Persistent session ID
           timeSpentOnSite: timeSpentOnSite,
-          sessionStartTime: new Date(sessionStartTime).toISOString(),
+          sessionStartTime: new Date(persistentSessionStart).toISOString(),
           submissionTime: new Date().toISOString(),
           userAgent: navigator.userAgent,
           screenResolution: `${screen.width}x${screen.height}`,
@@ -447,12 +469,12 @@ const FeedbackModal = ({ isOpen, onClose }) => {
 
             {/* Enhanced Star Rating */}
             <div className="space-y-4 p-4 rounded-lg border border-slate-600 bg-slate-800/30">
-              <label htmlFor="rating-container" className="text-sm font-medium font-mono text-amber-400 flex items-center gap-2">
+              <div className="text-sm font-medium font-mono text-amber-400 flex items-center gap-2">
                 <span className="text-amber-400">$</span> Rate SortVision
                 <span className="text-xs text-slate-500 font-normal">
                   {(hoverRating || formData.rating) > 0 && `(${hoverRating || formData.rating}/5)`}
                 </span>
-              </label>
+              </div>
               
               <div className="flex flex-col gap-3">
                 {/* Star Container */}
@@ -461,7 +483,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
                   className="flex items-center justify-center gap-2 p-3 rounded-md bg-slate-700/50 border border-slate-600"
                   onMouseLeave={() => setHoverRating(0)}
                   role="radiogroup"
-                  aria-labelledby="rating-container"
+                  aria-label="Rate SortVision from 1 to 5 stars"
                 >
                   {[1, 2, 3, 4, 5].map((star) => {
                     // Better UX: Show hover preview only if it's higher than current rating
@@ -570,7 +592,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
             {/* Enhanced Location & Region */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label htmlFor="location-info" className="text-sm font-medium font-mono text-purple-400 flex items-center gap-2">
+                <div className="text-sm font-medium font-mono text-purple-400 flex items-center gap-2">
                   <span className="text-amber-400">$</span> Location & Region
                   {isDetectingLocation && (
                     <span className="text-xs text-amber-400 bg-amber-900/20 px-2 py-1 rounded border border-amber-500/30 flex items-center gap-1">
@@ -578,7 +600,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
                       Detecting...
                     </span>
                   )}
-                </label>
+                </div>
 
                 {/* Manual Override Button - only show when auto-detected */}
                 {!isDetectingLocation && detectedRegion && (
