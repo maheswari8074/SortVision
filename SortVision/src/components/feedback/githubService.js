@@ -114,7 +114,7 @@ export const submitFeedback = async (feedbackData) => {
     return details;
   };
 
-  // Format session data for better insight
+  // Format comprehensive session and technical data
   const formatSessionData = (sessionData) => {
     if (!sessionData) return '';
     
@@ -129,12 +129,154 @@ export const submitFeedback = async (feedbackData) => {
     return `
 ## 📊 Session Analytics
 
+**🆔 Session ID:** \`${sessionData.sessionId}\`
 **⏱️ Time on Site:** ${formatTime(sessionData.timeSpentOnSite)} *(${sessionData.timeSpentOnSite > 300 ? 'Engaged user' : sessionData.timeSpentOnSite > 60 ? 'Active session' : 'Quick visit'})*
 **🕐 Session Started:** ${new Date(sessionData.sessionStartTime).toLocaleString()}
 **📤 Submitted:** ${new Date(sessionData.submissionTime).toLocaleString()}
 **🖥️ Screen:** ${sessionData.screenResolution} (Viewport: ${sessionData.viewportSize})
-**🌐 Language:** ${sessionData.language}
+**🎨 Color Depth:** ${sessionData.colorDepth}bit, **Pixel Ratio:** ${sessionData.pixelRatio}x
+**🌐 Language:** ${sessionData.language} (Available: ${sessionData.languages?.join(', ') || 'N/A'})
 **🕐 Timezone:** ${sessionData.timezone}`;
+  };
+
+  // Format device and browser information
+  const formatDeviceInfo = (deviceInfo, browserCapabilities) => {
+    if (!deviceInfo) return '';
+    
+    const caps = browserCapabilities || {};
+    const supportedFeatures = Object.entries(caps)
+      .filter(([, supported]) => supported)
+      .map(([feature]) => feature)
+      .join(', ');
+    
+    const unsupportedFeatures = Object.entries(caps)
+      .filter(([, supported]) => !supported)
+      .map(([feature]) => feature)
+      .join(', ');
+
+    return `
+## 📱 Device & Browser Information
+
+**📱 Device Type:** ${deviceInfo.deviceType} (Mobile: ${deviceInfo.isMobile ? '✅' : '❌'}, Tablet: ${deviceInfo.isTablet ? '✅' : '❌'})
+**💻 Platform:** ${deviceInfo.platform}
+**🏢 Vendor:** ${deviceInfo.vendor}
+**🌐 Online Status:** ${deviceInfo.onlineStatus ? '🟢 Online' : '🔴 Offline'}
+**🍪 Cookies:** ${deviceInfo.cookieEnabled ? '✅ Enabled' : '❌ Disabled'}
+**🔒 Do Not Track:** ${deviceInfo.doNotTrack}
+
+### Browser Capabilities
+**✅ Supported:** ${supportedFeatures || 'None detected'}
+**❌ Unsupported:** ${unsupportedFeatures || 'All supported'}`;
+  };
+
+  // Format network information
+  const formatNetworkInfo = (networkInfo) => {
+    if (!networkInfo) return '';
+    
+    const connectionQuality = networkInfo.effectiveType === '4g' ? '🟢 Excellent' :
+                             networkInfo.effectiveType === '3g' ? '🟡 Good' :
+                             networkInfo.effectiveType === '2g' ? '🟠 Poor' : '⚪ Unknown';
+
+    return `
+## 🌐 Network Information
+
+**📶 Connection:** ${networkInfo.effectiveType} ${connectionQuality}
+**⬇️ Downlink:** ${networkInfo.downlink}Mbps
+**⏱️ RTT:** ${networkInfo.rtt}ms
+**💾 Data Saver:** ${networkInfo.saveData ? '✅ Enabled' : '❌ Disabled'}`;
+  };
+
+  // Format performance metrics
+  const formatPerformanceInfo = (performanceInfo) => {
+    if (!performanceInfo) return '';
+    
+    return `
+## ⚡ Performance Metrics
+
+**🏠 DOM Content Loaded:** ${performanceInfo.domContentLoaded}ms
+**📄 Page Load:** ${performanceInfo.pageLoad}ms
+**🔍 DNS Lookup:** ${performanceInfo.dnsLookup}ms
+**🔗 TCP Connect:** ${performanceInfo.tcpConnect}ms
+**📡 Server Response:** ${performanceInfo.serverResponse}ms`;
+  };
+
+  // Format page context
+  const formatPageContext = (pageContext) => {
+    if (!pageContext) return '';
+    
+    return `
+## 📄 Page Context
+
+**📍 Current Page:** ${pageContext.pathname}
+**🔗 Full URL:** ${pageContext.url}
+**🔍 Query Parameters:** ${pageContext.search || 'None'}
+**⚓ Hash:** ${pageContext.hash || 'None'}
+**👈 Referrer:** ${pageContext.referrer}
+**📜 Page Title:** ${pageContext.title}
+**📏 Scroll Position:** ${pageContext.scrollPosition.x}, ${pageContext.scrollPosition.y}
+**📐 Document Height:** ${pageContext.documentHeight}px`;
+  };
+
+  // Format memory information
+  const formatMemoryInfo = (memoryInfo) => {
+    if (!memoryInfo) return '';
+    
+    const memoryUsage = ((memoryInfo.usedJSHeapSize / memoryInfo.jsHeapSizeLimit) * 100).toFixed(1);
+    const memoryStatus = memoryUsage > 80 ? '🔴 High' : memoryUsage > 50 ? '🟡 Medium' : '🟢 Low';
+    
+    return `
+## 🧠 Memory Information
+
+**💾 Used Heap:** ${memoryInfo.usedJSHeapSize}MB
+**📦 Total Heap:** ${memoryInfo.totalJSHeapSize}MB
+**🏗️ Heap Limit:** ${memoryInfo.jsHeapSizeLimit}MB
+**📊 Usage:** ${memoryUsage}% ${memoryStatus}`;
+  };
+
+  // Format error history
+  const formatErrorHistory = (errorHistory) => {
+    if (!errorHistory || errorHistory.length === 0) return '';
+    
+    const errorList = errorHistory.map((error, index) => 
+      `${index + 1}. **${error.message || 'Unknown Error'}** at ${error.timestamp || 'Unknown time'}\n   \`${error.stack || 'No stack trace'}\``
+    ).join('\n');
+    
+    return `
+## ⚠️ Recent Errors (Last 5)
+
+${errorList}`;
+  };
+
+  // Format feature usage
+  const formatFeatureUsage = (featureUsage) => {
+    if (!featureUsage) return '';
+    
+    const usageList = Object.entries(featureUsage)
+      .map(([feature, data]) => {
+        if (typeof data === 'object' && data.count) {
+          return `**${feature}:** ${data.count} times (Last used: ${new Date(data.lastUsed).toLocaleString()})`;
+        }
+        return `**${feature}:** ${data}`;
+      })
+      .join('\n');
+    
+    return `
+## 🎯 Feature Usage Analytics
+
+${usageList}`;
+  };
+
+  // Format accessibility information
+  const formatAccessibilityInfo = (accessibilityInfo) => {
+    if (!accessibilityInfo) return '';
+    
+    return `
+## ♿ Accessibility Preferences
+
+**🎬 Reduce Motion:** ${accessibilityInfo.reduceMotion ? '✅ Enabled' : '❌ Disabled'}
+**🌗 Dark Mode:** ${accessibilityInfo.darkMode ? '🌙 Preferred' : '☀️ Light mode'}
+**🔆 High Contrast:** ${accessibilityInfo.highContrast ? '✅ Enabled' : '❌ Disabled'}
+**🎨 Forced Colors:** ${accessibilityInfo.forcedColors ? '✅ Active' : '❌ Inactive'}`;
   };
 
   // Format the issue body with comprehensive data
@@ -155,12 +297,21 @@ ${formatLocationInfo(feedbackData.locationData)}
 ${feedbackData.detailedFeedback}
 ${formatLocationDetails(feedbackData.locationData)}
 ${formatSessionData(feedbackData.sessionData)}
+${formatDeviceInfo(feedbackData.deviceInfo, feedbackData.browserCapabilities)}
+${formatNetworkInfo(feedbackData.networkInfo)}
+${formatPerformanceInfo(feedbackData.performanceInfo)}
+${formatPageContext(feedbackData.pageContext)}
+${formatMemoryInfo(feedbackData.memoryInfo)}
+${formatAccessibilityInfo(feedbackData.accessibilityInfo)}
+${formatFeatureUsage(feedbackData.featureUsage)}
+${formatErrorHistory(feedbackData.errorHistory)}
 
 ---
 
 **🔧 Technical Metadata:**
 - **Source:** SortVision Feedback Form
 - **Environment:** ${DEV_MODE ? 'Development' : 'Production'}
+- **Session ID:** \`${feedbackData.sessionData?.sessionId || 'Unknown'}\`
 - **User Agent:** ${feedbackData.sessionData?.userAgent || navigator.userAgent}
 - **Page URL:** ${typeof window !== 'undefined' ? window.location.href : 'Unknown'}
 - **Submission ID:** ${Date.now().toString(36).toUpperCase()}`;
