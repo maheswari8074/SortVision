@@ -1,7 +1,7 @@
 import React, { useState, useEffect, lazy, Suspense, useMemo, memo } from 'react';
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Terminal, Code, Github, Linkedin, Twitter, Users } from 'lucide-react';
+import { Terminal, Code, Github, Linkedin, X, Users } from 'lucide-react';
 import { getAlgorithmMetaTags, getHomepageMetaTags, getContributionsMetaTags, getAlgorithmSchema, algorithms, generateCanonicalUrl, isCanonicalPath } from './utils/seo';
 import SEOContent from './components/SEOContent';
 import { FeedbackButton } from './components/feedback';
@@ -10,7 +10,6 @@ import { SettingsButton } from './components/settings';
 // Lazy load components that aren't needed immediately
 const SortingVisualizer = lazy(() => import('./components/sortingVisualizer/SortingVisualizer'));
 const MobileOverlay = lazy(() => import('./components/MobileOverlay'));
-
 
 // Memoized header component to prevent unnecessary re-renders
 const Header = memo(({ children }) => (
@@ -556,13 +555,11 @@ const App = () => {
             className="flex items-center gap-1 text-slate-400 hover:text-sky-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
             aria-label="Follow the developer on X (Twitter)"
           >
-            <Twitter className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
+            <X className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
             <span>X</span>
           </a>
         </div>
       </Footer>
-
-
 
       {/* SEO Content for better search engine understanding */}
       <SEOContent algorithm={algorithmName} />
@@ -573,4 +570,4 @@ const App = () => {
   );
 };
 
-export default App; 
+export default App;
