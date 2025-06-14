@@ -129,8 +129,8 @@ const CurrentRunMetrics = ({
       </div>
       
       {/* Advanced Metrics */}
-      <div className="grid grid-cols-4 gap-3">
-        <div className="bg-slate-800 p-2 rounded border border-slate-700 relative overflow-hidden group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+      <div className="flex flex-wrap sm:grid sm:grid-cols-4 gap-3">
+        <div className="flex-1 min-w-[120px] bg-slate-800 p-2 rounded border border-slate-700 relative overflow-hidden group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
           {/* Animated gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-amber-500/10 to-amber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           
@@ -149,7 +149,7 @@ const CurrentRunMetrics = ({
           </div>
         </div>
         
-        <div className="bg-slate-800 p-2 rounded border border-slate-700 relative overflow-hidden group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+        <div className="flex-1 min-w-[120px] bg-slate-800 p-2 rounded border border-slate-700 relative overflow-hidden group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
           {/* Animated gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-amber-500/10 to-amber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           
@@ -168,7 +168,7 @@ const CurrentRunMetrics = ({
           </div>
         </div>
         
-        <div className="bg-slate-800 p-2 rounded border border-slate-700 relative overflow-hidden group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+        <div className="flex-1 min-w-[120px] bg-slate-800 p-2 rounded border border-slate-700 relative overflow-hidden group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
           {/* Animated gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-amber-500/10 to-amber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           
@@ -187,7 +187,7 @@ const CurrentRunMetrics = ({
           </div>
         </div>
         
-        <div className="bg-slate-800 p-2 rounded border border-slate-700 relative overflow-hidden group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+        <div className="flex-1 min-w-[120px] bg-slate-800 p-2 rounded border border-slate-700 relative overflow-hidden group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
           {/* Animated gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-amber-500/10 to-amber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           

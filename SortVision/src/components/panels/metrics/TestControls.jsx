@@ -16,11 +16,17 @@ const TestControls = ({
       </div>
       <div className="flex space-x-2">
         <Button 
+          variant="secondary"
           onClick={testAllAlgorithms} 
           disabled={isSorting && !currentTestingAlgo}
+          style={{
+            backgroundColor: '#9333ea',
+            borderColor: '#a855f7',
+            color: 'white'
+          }}
           className={`
-            bg-purple-600 hover:bg-purple-500 text-white font-mono text-sm flex items-center
-            border border-purple-500 shadow-md hover:shadow-lg transition-all duration-300
+            font-mono text-sm flex items-center hover:!bg-purple-500
+            shadow-md hover:shadow-lg transition-all duration-300
             ${isSorting && !currentTestingAlgo ? 'opacity-50 cursor-not-allowed' : 'hover:translate-y-[-1px]'}
           `}
         >
