@@ -1,49 +1,306 @@
-# Environment variables
+# 🧪 SortVision's Secret Recipe - Things We Don't Share
+# ===============================================================
+# This .gitignore is like our secret cookbook - it keeps the 
+# special ingredients (sensitive files) away from prying eyes!
+# 
+# Created with ❤️ by alienX for SortVision
+# Because some things are meant to stay in the kitchen! 👨‍🍳
+# ===============================================================
+
+# 📦 The Secret Pantry (Dependencies)
+# -----------------------------------
+# These are our ingredients - fresh every time!
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# 🏗️ The Kitchen Workshop (Build Artifacts)
+# ------------------------------------------
+# Don't share the messy workspace, just the final dish!
+dist/
+build/
+.vite/
+*.tsbuildinfo
+.turbo/
+
+# 🔐 The Chef's Secret Vault (Environment & Config)
+# -------------------------------------------------
+# These are our secret spices - keep them locked away!
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env.staging
 
-# Dependencies
-node_modules/
-
-# Build outputs
-dist/
-build/
-
-# IDE files
-.vscode/
+# Personal chef notes (local config overrides)
+.vscode/settings.json
 .idea/
-*.swp
-*.swo
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# OS files
-.DS_Store
-Thumbs.db
+# 🧪 The Laboratory (Testing & Coverage)
+# --------------------------------------
+# Keep the experimental data private!
+coverage/
+.coverage/
+*.lcov
+.nyc_output/
+test-results/
+playwright-report/
+playwright/.cache/
 
-# Logs
+# 📊 The Recipe Analytics (Logs & Monitoring)
+# -------------------------------------------
+# Don't expose our cooking process logs!
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
+# 🎯 The Taste Test Records (OS & Editor Files)
+# ---------------------------------------------
+# Every chef has their own utensils!
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
 
-# Coverage directory used by tools like istanbul
-coverage/
+# 🔧 The Special Kitchen Tools (Development)
+# ------------------------------------------
+# Our custom utensils and gadgets!
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.example
+.idea/
+*.swp
+*.swo
+*~
 
-# Cache directories
+# 🗂️ The Recipe Archive (Temporary Files)
+# ----------------------------------------
+# Don't save the messy drafts!
+*.tmp
+*.temp
 .cache/
-.parcel-cache/
+.temp/
+.vercel/
+.next/
 
-# Temporary folders
-tmp/
-temp/
+# 🎨 The Presentation Studio (Generated Assets)
+# ---------------------------------------------
+# Auto-generated garnishes stay in the kitchen!
+.eslintcache
+*.tgz
+*.tar.gz
 
-# Issue files
-issue/
+# 🚀 The Delivery Truck (Deployment)
+# ----------------------------------
+# Keep deployment secrets under wraps!
+.vercel/
+.netlify/
+.firebase/
+.aws/
+.gcp/
+
+# 📱 The Mobile Kitchen (React Native - Future)
+# ---------------------------------------------
+# In case we expand to mobile cooking!
+# Xcode
+*.xcodeproj
+DerivedData/
+*.hmap
+*.ipa
+*.xcuserstate
+ios/.xcode.env.local
+
+# Android
+*.apk
+*.aab
+*.dex
+*.ap_
+*.class
+bin/
+gen/
+.gradle/
+local.properties
+
+# 🔬 The Quality Control Lab (Code Analysis)
+# ------------------------------------------
+# Keep quality metrics internal!
+.sonarqube/
+.scannerwork/
+.eslintcache
+
+# 📚 The Reference Library (Documentation Build)
+# ----------------------------------------------
+# Auto-generated docs stay out of the recipe book!
+docs/build/
+typedoc/
+.docusaurus/
+
+# 🎭 The Backup Kitchen (Backups & Archives)
+# ------------------------------------------
+# Old recipes and failed experiments!
+*.backup
+*.bak
+*.old
+*.orig
+backup/
+backups/
+
+# 🌐 The International Kitchen (i18n Build Files)
+# -----------------------------------------------
+# Compiled translations - generate fresh each time!
+locales/compiled/
+*.mo
+
+# 🔄 The Version Control Seasoning
+# --------------------------------
+# Keep version control clean and tasty!
+.git/
+.svn/
+.hg/
+
+# 🎪 The Testing Circus (Browser Testing)
+# ---------------------------------------
+# Browser automation artifacts!
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+.cypress/
+
+# 🧹 The Cleanup Crew (Cache & Temporary)
+# ---------------------------------------
+# Temporary files that accumulate over time!
+.npm/
+.yarn/
+.pnp.*
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# 🔍 The Food Inspector (Static Analysis)
+# ---------------------------------------
+# Analysis reports and linting cache!
+.eslintcache
+.stylelintcache
+.prettiercache
+
+# 📈 The Restaurant Analytics (Bundle Analysis)
+# ---------------------------------------------
+# Bundle analysis reports!
+bundle-analyzer-report.html
+stats.json
+
+# 🍳 Chef's Personal Notes (Local Development)
+# --------------------------------------------
+# Personal development setup and notes!
+.local/
+todo.md
+notes.md
+scratch.js
+playground/
+
+# 🔮 The Sacred Phoenix Protocols (Emergency Restoration)
+# -------------------------------------------------------
+# Keep restoration methods and emergency protocols secret!
+🔮_PHOENIX_REVIVAL_PROTOCOL.md
+*PHOENIX*.md
+*REVIVAL*.md
+*EMERGENCY*.md
+BACKUP_INSTRUCTIONS*.md
+RESTORE_GUIDE*.md
+
+# 📋 The Chef's Issue Journal (Project Management)
+# ------------------------------------------------
+# Keep internal issue templates and management docs private!
+/issue
+
+# 🎨 The Art Studio (Design Assets - Large Files)
+# -----------------------------------------------
+# Keep large design files out of the main recipe!
+*.psd
+*.ai
+*.sketch
+*.fig
+assets/raw/
+design-files/
+
+# 🔐 The Digital Safe (Security & Secrets)
+# ----------------------------------------
+# NEVER share these ingredients!
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+secrets/
+private/
+confidential/
+
+# 🧪 The Experimental Kitchen (Prototypes)
+# ----------------------------------------
+# Keep experiments and prototypes private!
+prototypes/
+experiments/
+poc/
+sandbox/
+
+# 📊 The Business Intelligence (Analytics)
+# ----------------------------------------
+# Keep usage analytics and metrics private!
+analytics/
+metrics/
+reports/
+.amplitude/
+.mixpanel/
+
+# 🔄 The Continuous Kitchen (CI/CD Artifacts)
+# -------------------------------------------
+# Build system artifacts!
+.github/workflows/secrets/
+.gitlab-ci-local/
+.circleci/local/
+
+# 🌟 The VIP Section (Premium Features)
+# -------------------------------------
+# Keep premium/pro features under development secret!
+premium/
+pro/
+enterprise/
+paid-features/
+
+# 🎭 The Staging Area (Preview Deployments)
+# -----------------------------------------
+# Staging and preview deployment configs!
+.preview/
+.staging/
+preview-*.json
+
+# ===============================================================
+# 🏆 End of SortVision's Secret Recipe
+# ===============================================================
+# 
+# Remember: A good chef never reveals all their secrets! 🤫
+# But they do share their delicious creations with the world! 🌍
+# 
+# Happy Coding! 👨‍💻✨
+# - alienX & the SortVision Community
+# 
+# P.S. If you find any ingredients missing from this recipe,
+# feel free to add them! The kitchen is always evolving! 🚀
+# ===============================================================
