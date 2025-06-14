@@ -5,6 +5,7 @@ import { Terminal, Code, Github, Linkedin, Twitter, Users } from 'lucide-react';
 import { getAlgorithmMetaTags, getHomepageMetaTags, getContributionsMetaTags, getAlgorithmSchema, algorithms, generateCanonicalUrl, isCanonicalPath } from './utils/seo';
 import SEOContent from './components/SEOContent';
 import { FeedbackButton } from './components/feedback';
+import { SettingsButton } from './components/settings';
 
 // Lazy load components that aren't needed immediately
 const SortingVisualizer = lazy(() => import('./components/sortingVisualizer/SortingVisualizer'));
@@ -405,6 +406,8 @@ const App = () => {
           {JSON.stringify(schemaMarkup)}
         </script>
       </Helmet>
+      
+      <SettingsButton />
       
       {/* Header with logo and title */}
       <Header>
