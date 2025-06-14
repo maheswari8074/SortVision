@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Volume2, VolumeX, Sun, Moon, Languages as LanguagesIcon, Monitor, Contrast, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -16,10 +16,35 @@ const themeIconColor = {
   system: 'text-blue-400',
 };
 
-const SettingsForm = () => {
-  const [isSoundEnabled, setIsSoundEnabled] = useState(true);
-  const [theme, setTheme] = useState('system');
-  const [language, setLanguage] = useState('en');
+const SettingsForm = ({ onClose }) => {
+  // Initialize state from localStorage or defaults
+  const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
+    const saved = localStorage.getItem('soundEnabled');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved || 'dark';
+  });
+
+  const [language, setLanguage] = useState(() => {
+    const saved = localStorage.getItem('language');
+    return saved || 'en';
+  });
+
+  // Save settings to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('soundEnabled', JSON.stringify(isSoundEnabled));
+  }, [isSoundEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
+    localStorage.setItem('language', language);
+  }, [language]);
 
   const themes = [
     { id: 'light', name: 'Light Theme', icon: Sun },
