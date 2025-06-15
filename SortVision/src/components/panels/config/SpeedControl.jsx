@@ -20,7 +20,7 @@ import { Timer } from 'lucide-react';
  * - 2x and ½x quick adjustment buttons
  */
 
-const SpeedControl = ({ speed, setSpeed, isSorting }) => {
+const SpeedControl = ({ speed, setSpeed, isSorting, audio }) => {
   return (
     <div className="mb-4 relative group">
       {/* Animated background glow effect */}
@@ -118,6 +118,7 @@ const SpeedControl = ({ speed, setSpeed, isSorting }) => {
                 if (!isSorting && speed < 1000) {
                   const newSpeed = Math.min(1000, speed * 2);
                   setSpeed(newSpeed);
+                  audio.playAccessSound(); // Play sound effect
                 }
               }}
               disabled={isSorting || speed >= 1000}
@@ -133,6 +134,7 @@ const SpeedControl = ({ speed, setSpeed, isSorting }) => {
                 if (!isSorting && speed > 1) {
                   const newSpeed = Math.max(1, speed / 2);
                   setSpeed(newSpeed);
+                  audio.playAccessSound(); // Play sound effect
                 }
               }}
               disabled={isSorting || speed <= 1}

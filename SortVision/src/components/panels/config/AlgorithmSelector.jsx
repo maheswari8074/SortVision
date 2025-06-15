@@ -19,7 +19,7 @@ import { Terminal } from 'lucide-react';
  * - Visual icons for each algorithm
  * - Animated background effects
  */
-const AlgorithmSelector = ({ algorithm, setAlgorithm, isSorting }) => {
+const AlgorithmSelector = ({ algorithm, setAlgorithm, isSorting, audio }) => {
   return (
     <div className="mb-4 relative group">
       {/* Animated background glow effect */}
@@ -59,7 +59,7 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm, isSorting }) => {
         <div className="group/select relative overflow-hidden rounded-md mb-5">
           <Select 
             value={algorithm} 
-            onValueChange={setAlgorithm} 
+            onValueChange={(value) => { setAlgorithm(value); audio.playAccessSound(); }} 
             disabled={isSorting}
             aria-labelledby="algorithm-selector-label"
           >

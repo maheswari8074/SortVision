@@ -15,13 +15,14 @@
  * is often used as a standard sorting algorithm in many programming languages.
  * 
  */
-export const mergeSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef) => {
+export const mergeSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef, audio) => {
   const merge = async (left, right) => {
     let result = [];
     let i = 0;
     let j = 0;
 
     while (i < left.length && j < right.length) {
+      audio.playCompareSound(left[i]); // Play compare sound with pitch based on value
       if (left[i] < right[j]) {
         result.push(left[i]);
         i++;
@@ -31,6 +32,7 @@ export const mergeSort = async (array, visualizeArray, delay, setCurrentBar, sho
       }
       visualizeArray([...result, ...left.slice(i), ...right.slice(j)]);  // Update the visualization
       setCurrentBar({ compare: i, swap: null });  // Update active compare bars
+      audio.playMergeSound(result[result.length - 1]); // Play merge sound with pitch based on value
       await new Promise(resolve => setTimeout(resolve, delay));
 
       if (shouldStopRef.current) return result;  // Stop if shouldStopRef is true
@@ -49,5 +51,6 @@ export const mergeSort = async (array, visualizeArray, delay, setCurrentBar, sho
   };
 
   await mergeSortHelper(array);
+  audio.playCompleteSound(); // Play completion sound
   return { swaps: 0, comparisons: 0 };  // Merge sort is hard to track comparisons/swaps easily
 };

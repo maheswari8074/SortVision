@@ -14,7 +14,7 @@
  * either using a different sorting algorithm or recursively applying bucket sort.
  * This implementation uses insertion sort for sorting individual buckets.
  */
-export const bucketSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef) => {
+export const bucketSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef, audio) => {
     let comparisons = 0;
     let swaps = 0;
 
@@ -38,6 +38,7 @@ export const bucketSort = async (array, visualizeArray, delay, setCurrentBar, sh
 
         setCurrentBar({ compare: i, swap: null });
         visualizeArray(array);
+        audio.playAccessSound(array[i]); // Play access sound when distributing
         await new Promise(resolve => setTimeout(resolve, delay));
     }
 
@@ -51,11 +52,13 @@ export const bucketSort = async (array, visualizeArray, delay, setCurrentBar, sh
 
             while (j >= 0 && bucket[j] > key) {
                 comparisons++;
+                audio.playCompareSound(bucket[j]); // Play compare sound
                 bucket[j + 1] = bucket[j];
                 j--;
                 swaps++;
             }
             bucket[j + 1] = key;
+            audio.playSwapSound(key); // Play swap sound
         }
     };
 
@@ -74,10 +77,12 @@ export const bucketSort = async (array, visualizeArray, delay, setCurrentBar, sh
             array[index] = buckets[i][j];
             setCurrentBar({ compare: null, swap: index });
             visualizeArray(array);
+            audio.playAccessSound(array[index]); // Play access sound when merging
             await new Promise(resolve => setTimeout(resolve, delay));
             index++;
         }
     }
 
+    audio.playCompleteSound(); // Play completion sound
     return { swaps, comparisons };
 }; 
