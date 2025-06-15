@@ -5,18 +5,20 @@ import { AlgorithmSelector, ComplexityInfo, ArraySizeControl, SpeedControl, Cont
 /**
  * ConfigPanel Component
  * 
- * Handles the configuration controls for the sorting visualizer:
+ * Handles all configuration controls for the sorting visualizer including:
  * - Algorithm selection
- * - Algorithm complexity information
+ * - Complexity information
  * - Array size control
  * - Animation speed control
+ * - Control buttons (new array, start/stop)
+ * - Array visualization
  */
 const ConfigPanel = ({ 
   algorithm, 
   setAlgorithm, 
-  arraySize, 
+  arraySize,
   setArraySize, 
-  speed, 
+  speed,
   setSpeed, 
   isSorting,
   getAlgorithmTimeComplexity,
@@ -26,40 +28,43 @@ const ConfigPanel = ({
   isStopped,
   generateNewArray,
   startSorting,
-  stopSorting
+  stopSorting,
+  audio
 }) => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Algorithm Selection */}
-        <AlgorithmSelector 
+        <AlgorithmSelector
           algorithm={algorithm} 
           setAlgorithm={setAlgorithm} 
           isSorting={isSorting}
+          audio={audio}
         />
         
         {/* Algorithm Complexity Information */}
-        <ComplexityInfo 
+        <ComplexityInfo
           getAlgorithmTimeComplexity={getAlgorithmTimeComplexity}
         />
         
         {/* Array Size Control */}
-        <ArraySizeControl 
-          arraySize={arraySize} 
+        <ArraySizeControl
+          arraySize={arraySize}
           setArraySize={setArraySize} 
           isSorting={isSorting}
         />
         
         {/* Animation Speed Control */}
-        <SpeedControl 
-          speed={speed} 
+        <SpeedControl
+          speed={speed}
           setSpeed={setSpeed} 
           isSorting={isSorting}
+          audio={audio}
         />
       </div>
       
       {/* Control Buttons */}
-      <ControlButtons 
+      <ControlButtons
         generateNewArray={generateNewArray}
         startSorting={startSorting}
         stopSorting={stopSorting}

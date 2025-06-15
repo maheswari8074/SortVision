@@ -62,6 +62,7 @@ const SortingControls = () => {
    * @param {Function} setIsStopped - State setter for the stopped flag
    * @param {Function} setIsSorting - State setter for the sorting flag
    * @param {Function} setMetrics - State setter for the metrics
+   * @param {Object} audio - Audio control object
    * @returns {Promise<void>}
    */
   const startSorting = async (
@@ -73,7 +74,8 @@ const SortingControls = () => {
     shouldStopRef, 
     setIsStopped, 
     setIsSorting, 
-    setMetrics
+    setMetrics,
+    audio
   ) => {
     // Reset sorting state
     shouldStopRef.current = false;
@@ -86,28 +88,28 @@ const SortingControls = () => {
       // Execute the selected sorting algorithm
       switch (algorithm) {
         case 'bubble':
-          metrics = await bubbleSort(array, setArray, speed, setCurrentBar, shouldStopRef);
+          metrics = await bubbleSort(array, setArray, speed, setCurrentBar, shouldStopRef, audio);
           break;
         case 'insertion':
-          metrics = await insertionSort(array, setArray, speed, setCurrentBar, shouldStopRef);
+          metrics = await insertionSort(array, setArray, speed, setCurrentBar, shouldStopRef, audio);
           break;
         case 'selection':
-          metrics = await selectionSort(array, setArray, speed, setCurrentBar, shouldStopRef);
+          metrics = await selectionSort(array, setArray, speed, setCurrentBar, shouldStopRef, audio);
           break;
         case 'quick':
-          metrics = await quickSort(array, setArray, speed, setCurrentBar, shouldStopRef);
+          metrics = await quickSort(array, setArray, speed, setCurrentBar, shouldStopRef, audio);
           break;
         case 'merge':
-          metrics = await mergeSort(array, setArray, speed, setCurrentBar, shouldStopRef);
+          metrics = await mergeSort(array, setArray, speed, setCurrentBar, shouldStopRef, audio);
           break;
         case 'radix':
-          metrics = await radixSort(array, setArray, speed, setCurrentBar, shouldStopRef);
+          metrics = await radixSort(array, setArray, speed, setCurrentBar, shouldStopRef, audio);
           break;
         case 'heap':
-          metrics = await heapSort(array, setArray, speed, setCurrentBar, shouldStopRef);
+          metrics = await heapSort(array, setArray, speed, setCurrentBar, shouldStopRef, audio);
           break;
         case 'bucket':
-          metrics = await bucketSort(array, setArray, speed, setCurrentBar, shouldStopRef);
+          metrics = await bucketSort(array, setArray, speed, setCurrentBar, shouldStopRef, audio);
           break;
         default:
           break;
@@ -143,6 +145,7 @@ const SortingControls = () => {
    * @param {Function} setCurrentTestingAlgo - State setter for the current testing algorithm
    * @param {Function} setCompareMetrics - State setter for the comparison metrics
    * @param {Function} setSortedMetrics - State setter for the sorted metrics
+   * @param {Object} audio - Audio control object
    * @returns {Promise<void>}
    */
   const testAllAlgorithms = async (
@@ -155,7 +158,8 @@ const SortingControls = () => {
     setIsSorting,
     setCurrentTestingAlgo,
     setCompareMetrics,
-    setSortedMetrics
+    setSortedMetrics,
+    audio
   ) => {
     setIsSorting(true);
     shouldStopRef.current = false;
@@ -181,28 +185,28 @@ const SortingControls = () => {
         // Execute the current algorithm
         switch (algo) {
           case 'bubble':
-            metrics = await bubbleSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef);
+            metrics = await bubbleSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef, audio);
             break;
           case 'insertion':
-            metrics = await insertionSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef);
+            metrics = await insertionSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef, audio);
             break;
           case 'selection':
-            metrics = await selectionSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef);
+            metrics = await selectionSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef, audio);
             break;
           case 'quick':
-            metrics = await quickSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef);
+            metrics = await quickSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef, audio);
             break;
           case 'merge':
-            metrics = await mergeSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef);
+            metrics = await mergeSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef, audio);
             break;
           case 'radix':
-            metrics = await radixSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef);
+            metrics = await radixSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef, audio);
             break;
           case 'heap':
-            metrics = await heapSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef);
+            metrics = await heapSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef, audio);
             break;
           case 'bucket':
-            metrics = await bucketSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef);
+            metrics = await bucketSort([...originalArray], setArray, speed, setCurrentBar, shouldStopRef, audio);
             break;
           default:
             break;

@@ -15,7 +15,7 @@
  * for small lists and is often used as part of more sophisticated algorithms.
  * 
  */
-export const insertionSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef) => {
+export const insertionSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef, audio) => {
     let swaps = 0;
     let comparisons = 0;
     const length = array.length;
@@ -25,12 +25,14 @@ export const insertionSort = async (array, visualizeArray, delay, setCurrentBar,
   
       setCurrentBar({ compare: i, swap: null });
       visualizeArray(array);
+      audio.playAccessSound(array[i]); // Play sound for accessing current element
       await new Promise(resolve => setTimeout(resolve, delay));
   
       while (j >= 0 && array[j] > current) {
         comparisons++;
         setCurrentBar({ compare: j, swap: null });
         visualizeArray(array);
+        audio.playCompareSound(array[j]); // Play comparison sound
         await new Promise(resolve => setTimeout(resolve, delay));
   
         array[j + 1] = array[j];
@@ -40,9 +42,11 @@ export const insertionSort = async (array, visualizeArray, delay, setCurrentBar,
       array[j + 1] = current;
       setCurrentBar({ compare: null, swap: j + 1 });
       visualizeArray(array);
+      audio.playSwapSound(array[j + 1]); // Play swap sound
       await new Promise(resolve => setTimeout(resolve, delay));
   
       if (shouldStopRef.current) return { swaps, comparisons };  // Stop if shouldStopRef is true
     }
+    audio.playCompleteSound(); // Play completion sound
     return { swaps, comparisons };
   };

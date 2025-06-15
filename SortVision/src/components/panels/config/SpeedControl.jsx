@@ -21,7 +21,7 @@ import { Timer, Turtle, BookOpen, Presentation, Zap } from "lucide-react";
  * - 2x and ½x quick adjustment buttons
  */
 
-const SpeedControl = ({ speed, setSpeed, isSorting }) => {
+const SpeedControl = ({ speed, setSpeed, isSorting, audio }) => {
   const [activePreset, setActivePreset] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -82,6 +82,7 @@ const SpeedControl = ({ speed, setSpeed, isSorting }) => {
 
     setIsTransitioning(true);
     setActivePreset(preset.id);
+    audio?.playAccessSound(); // Play sound effect when changing preset
 
     // Smooth transition animation
     const startSpeed = speed;
@@ -313,6 +314,7 @@ const SpeedControl = ({ speed, setSpeed, isSorting }) => {
                 if (!isSorting && speed < 1000) {
                   const newSpeed = Math.min(1000, speed * 2);
                   setSpeed(newSpeed);
+                  audio.playAccessSound(); // Play sound effect
                 }
               }}
               disabled={isSorting || speed >= 1000}
@@ -330,6 +332,7 @@ const SpeedControl = ({ speed, setSpeed, isSorting }) => {
                 if (!isSorting && speed > 1) {
                   const newSpeed = Math.max(1, speed / 2);
                   setSpeed(newSpeed);
+                  audio.playAccessSound(); // Play sound effect
                 }
               }}
               disabled={isSorting || speed <= 1}

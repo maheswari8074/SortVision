@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from 'react-router-dom';
+import { useAudio } from '@/hooks/useAudio';
 
 // Import subcomponents
 import SortingHeader from './SortingHeader';
@@ -30,6 +31,9 @@ import PerformanceMetrics from './PerformanceMetrics';
 const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls', onTabChange, specialMode = null }) => {
   // Router navigation
   const navigate = useNavigate();
+  
+  // Audio hook
+  const audio = useAudio();
   
   //=============================================================================
   // STATE MANAGEMENT
@@ -72,6 +76,7 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
    */
   const generateNewArray = () => {
     sortingControls.generateNewArray(arraySize, setArray, setCurrentBar);
+    audio.playAccessSound(); // Play sound when generating new array
   };
 
   /**
@@ -79,6 +84,7 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
    */
   const stopSorting = () => {
     sortingControls.stopSorting(shouldStopRef, setIsStopped, setIsSorting);
+    audio.playAccessSound(); // Play sound when stopping
   };
 
   /**
@@ -96,7 +102,8 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
       shouldStopRef, 
       setIsStopped, 
       setIsSorting, 
-      setMetrics
+      setMetrics,
+      audio // Pass audio object to sorting controls
     );
   };
 
@@ -114,7 +121,8 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
       setIsSorting,
       setCurrentTestingAlgo,
       setCompareMetrics,
-      setSortedMetrics
+      setSortedMetrics,
+      audio // Pass audio object to sorting controls
     );
   };
 
@@ -239,15 +247,27 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
           <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
             {/* Tab navigation */}
             <TabsList className="grid w-full grid-cols-3 bg-slate-900">
-              <TabsTrigger value="controls" className="font-mono">
+              <TabsTrigger 
+                value="controls" 
+                className="font-mono"
+                onClick={() => audio.playAccessSound()}
+              >
                 <span className="text-emerald-400">config</span>
                 <span className="text-slate-400">.js</span>
               </TabsTrigger>
-              <TabsTrigger value="metrics" className="font-mono">
+              <TabsTrigger 
+                value="metrics" 
+                className="font-mono"
+                onClick={() => audio.playAccessSound()}
+              >
                 <span className="text-emerald-400">metrics</span>
                 <span className="text-slate-400">.js</span>
               </TabsTrigger>
-              <TabsTrigger value="details" className="font-mono">
+              <TabsTrigger 
+                value="details" 
+                className="font-mono"
+                onClick={() => audio.playAccessSound()}
+              >
                 <span className="text-emerald-400">details</span>
                 <span className="text-slate-400">.js</span>
               </TabsTrigger>
@@ -271,6 +291,7 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
               generateNewArray={generateNewArray}
               startSorting={startSorting}
               stopSorting={stopSorting}
+              audio={audio}
             />
           </TabsContent>
           

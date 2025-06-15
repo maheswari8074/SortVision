@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Volume2, VolumeX, Sun, Moon, Languages as LanguagesIcon, Monitor, Contrast, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
+import soundEffects from '@/utils/soundEffects';
 
 const themeIconMap = {
   light: Sun,
@@ -36,6 +37,11 @@ const SettingsForm = ({ onClose }) => {
   // Save settings to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('soundEnabled', JSON.stringify(isSoundEnabled));
+    if (isSoundEnabled) {
+      soundEffects.enable();
+    } else {
+      soundEffects.disable();
+    }
   }, [isSoundEnabled]);
 
   useEffect(() => {
@@ -78,7 +84,16 @@ const SettingsForm = ({ onClose }) => {
         <motion.button
           whileHover={{ scale: 1.03, boxShadow: '0 4px 32px 0 rgba(168,85,247,0.10)' }}
           whileTap={{ scale: 0.98 }}
-          onClick={() => setIsSoundEnabled(!isSoundEnabled)}
+          onClick={() => {
+            setIsSoundEnabled(!isSoundEnabled);
+            if (isSoundEnabled) {
+              soundEffects.disable();
+            } else {
+              soundEffects.enable();
+              // Play a test sound when enabling
+              soundEffects.playCompletionSound();
+            }
+          }}
           className={`w-full flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 backdrop-blur-md shadow-lg group relative overflow-hidden
             bg-slate-800/70
             ${isSoundEnabled
