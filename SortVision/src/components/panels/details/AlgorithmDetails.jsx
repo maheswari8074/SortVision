@@ -17,14 +17,16 @@ const AlgorithmDetails = ({ algorithm }) => {
         const loadCode = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`/src/components/panels/details/code/${algorithm}/${selectedLanguage}/${algorithm}Sort.${getFileExtension(selectedLanguage)}`);
+                const response = await fetch(`/code/${algorithm}/${selectedLanguage}/${algorithm}Sort.${getFileExtension(selectedLanguage)}`);
                 if (!response.ok) {
+                    console.error(`Failed to load code: ${response.status} ${response.statusText}`);
                     setCodeContent(getPlaceholderContent());
                 } else {
                     const content = await response.text();
                     setCodeContent(content.trim() || getPlaceholderContent());
                 }
             } catch (error) {
+                console.error('Error loading code:', error);
                 setCodeContent(getPlaceholderContent());
             }
             setIsLoading(false);

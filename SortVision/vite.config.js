@@ -68,7 +68,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".json", ".txt"],
   },
   server: {
     port: 3000, // ✅ Your custom local port
@@ -108,8 +108,8 @@ export default defineConfig({
         entryFileNames: "assets/[name]-[hash].js",
         chunkFileNames: "assets/[name]-[hash].js",
         assetFileNames: (assetInfo) => {
-          // Keep the original path for txt files
-          if (assetInfo.name.endsWith('.txt')) {
+          // Preserve the original path for code files
+          if (assetInfo.name.includes('/code/')) {
             return assetInfo.name;
           }
           return 'assets/[name]-[hash].[ext]';
