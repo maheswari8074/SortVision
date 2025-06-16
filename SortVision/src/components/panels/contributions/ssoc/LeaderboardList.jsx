@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Github, ExternalLink, Search, RefreshCw, Trophy, Filter, Crown, User } from 'lucide-react';
+import { Github, ExternalLink, Search, RefreshCw, Trophy, Filter, Crown, User, Link2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 /**
@@ -281,16 +281,58 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
               color: #22c55e;
               font-weight: 500;
               text-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+              display: inline-flex;
+              align-items: center;
+              gap: 4px;
+              padding: 4px 8px;
+              border-radius: 4px;
+              transition: all 0.2s;
+              background: transparent;
+              border: none;
+              width: 100%;
+              justify-content: center;
+            }
+            .beginner-issues:hover {
+              background: rgba(34, 197, 94, 0.1);
+              transform: translateY(-1px);
             }
             .intermediate-issues {
               color: #eab308;
               font-weight: 500;
               text-shadow: 0 0 10px rgba(234, 179, 8, 0.2);
+              display: inline-flex;
+              align-items: center;
+              gap: 4px;
+              padding: 4px 8px;
+              border-radius: 4px;
+              transition: all 0.2s;
+              background: transparent;
+              border: none;
+              width: 100%;
+              justify-content: center;
+            }
+            .intermediate-issues:hover {
+              background: rgba(234, 179, 8, 0.1);
+              transform: translateY(-1px);
             }
             .advanced-issues {
               color: #ef4444;
               font-weight: 500;
               text-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+              display: inline-flex;
+              align-items: center;
+              gap: 4px;
+              padding: 4px 8px;
+              border-radius: 4px;
+              transition: all 0.2s;
+              background: transparent;
+              border: none;
+              width: 100%;
+              justify-content: center;
+            }
+            .advanced-issues:hover {
+              background: rgba(239, 68, 68, 0.1);
+              transform: translateY(-1px);
             }
             .rank-4-plus {
               background: linear-gradient(45deg, #6366f1, #a855f7);
@@ -324,8 +366,8 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
               {filteredParticipants.map((participant, index) => (
                 <tr 
                   key={participant.githubId}
-                  className={`border-t border-white/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-white/5 
-                    ${index < 3 ? getTopThreeStyles(index) : 'hover:bg-indigo-900/10'}`}
+                  className={`border-t border-white/5 transition-all duration-300 hover:bg-indigo-900/10
+                    ${index < 3 ? getTopThreeStyles(index) : ''}`}
                 >
                   <td className="px-6 py-4 w-24">
                     <div className="flex items-center gap-2 font-semibold">
@@ -377,13 +419,46 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                     </div>
                   </td>
                   <td className="px-2 py-4 text-center">
-                    <span className="beginner-issues">{participant.beginnerIssues}</span>
+                    <div 
+                      onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3ABeginner`, '_blank')}
+                      className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-green-500/10 active:bg-green-500/20 cursor-pointer transition-all duration-200"
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3ABeginner`, '_blank')}
+                    >
+                      <span className="beginner-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
+                        {participant.beginnerIssues}
+                        <Link2 className="w-3 h-3 opacity-0 group-hover/btn:opacity-100 transition-all duration-200" />
+                      </span>
+                    </div>
                   </td>
                   <td className="px-2 py-4 text-center">
-                    <span className="intermediate-issues">{participant.intermediateIssues}</span>
+                    <div 
+                      onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AIntermediate`, '_blank')}
+                      className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-yellow-500/10 active:bg-yellow-500/20 cursor-pointer transition-all duration-200"
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AIntermediate`, '_blank')}
+                    >
+                      <span className="intermediate-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
+                        {participant.intermediateIssues}
+                        <Link2 className="w-3 h-3 opacity-0 group-hover/btn:opacity-100 transition-all duration-200" />
+                      </span>
+                    </div>
                   </td>
                   <td className="px-2 py-4 text-center">
-                    <span className="advanced-issues">{participant.advancedIssues}</span>
+                    <div 
+                      onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AAdvance`, '_blank')}
+                      className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-red-500/10 active:bg-red-500/20 cursor-pointer transition-all duration-200"
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AAdvance`, '_blank')}
+                    >
+                      <span className="advanced-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
+                        {participant.advancedIssues}
+                        <Link2 className="w-3 h-3 opacity-0 group-hover/btn:opacity-100 transition-all duration-200" />
+                      </span>
+                    </div>
                   </td>
                   <td className={`px-6 py-4 text-right font-semibold tracking-wider ${getRankStyles(index)} ${index >= 3 ? 'rank-4-plus' : ''}`}>
                     {participant.totalPoints}
