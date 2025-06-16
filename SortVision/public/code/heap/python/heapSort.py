@@ -1,7 +1,7 @@
 """
 Heap Sort Implementation
 
-Simple heap sort algorithm - builds a max heap then sorts by repeatedly 
+Simple heap sort algorithm - builds a max heap then sorts by repeatedly
 extracting the largest element.
 """
 
@@ -15,14 +15,14 @@ def heapify(arr: list[int], n: int, i: int) -> None:
         return
 
     biggest = i
-    left = 2 * i + 1  
+    left = 2 * i + 1
     right = 2 * i + 2
 
     # Check left kid
     if left < n and arr[left] > arr[biggest]:
         biggest = left
 
-    # Check right kid  
+    # Check right kid
     if right < n and arr[right] > arr[biggest]:
         biggest = right
 
