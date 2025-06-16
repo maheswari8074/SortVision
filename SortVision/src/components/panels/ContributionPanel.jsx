@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ContributorStats, ContributorList, RepositoryHealth, ContributeGuide, QuickReferences, BestPractices } from './contributions';
+import { ContributorStats, ContributorList, RepositoryHealth, ContributeGuide, QuickReferences, BestPractices, LeaderboardList } from './contributions';
 
 /**
  * ContributionPanel Component
@@ -236,11 +236,11 @@ const ContributionPanel = ({ activeTab = 'overview', onTabChange }) => {
         </div>
       )}
       
-      {/* Internal Tab Navigation for overview.js and guide.js */}
+      {/* Internal Tab Navigation for overview.js, guide.js and ssoc.js */}
       <div 
         role="tablist" 
         aria-orientation="horizontal" 
-        className="text-muted-foreground h-9 items-center justify-center rounded-lg p-1 grid w-full grid-cols-2 bg-slate-900" 
+        className="text-muted-foreground h-9 items-center justify-center rounded-lg p-1 grid w-full grid-cols-3 bg-slate-900" 
         tabIndex="0"
       >
         <button
@@ -268,6 +268,19 @@ const ContributionPanel = ({ activeTab = 'overview', onTabChange }) => {
           <span className="text-emerald-400">guide</span>
           <span className="text-slate-400">.js</span>
         </button>
+
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activeSection === 'ssoc'}
+          data-state={activeSection === 'ssoc' ? 'active' : 'inactive'}
+          onClick={() => onTabChange && onTabChange('ssoc')}
+          className="data-[state=active]:bg-background data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring inline-flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 font-mono"
+          tabIndex={activeSection === 'ssoc' ? 0 : -1}
+        >
+          <span className="text-emerald-400">ssoc</span>
+          <span className="text-slate-400">.js</span>
+        </button>
       </div>
       
       {/* Content based on active section */}
@@ -288,7 +301,6 @@ const ContributionPanel = ({ activeTab = 'overview', onTabChange }) => {
 
             {/* Repository Health Dashboard */}
             <RepositoryHealth />
-
           </div>
         )}
         
@@ -302,6 +314,13 @@ const ContributionPanel = ({ activeTab = 'overview', onTabChange }) => {
             
             {/* Quick References */}
             <QuickReferences />
+          </div>
+        )}
+
+        {activeSection === 'ssoc' && (
+          <div className="space-y-6">
+            {/* SSOC Leaderboard */}
+            <LeaderboardList loading={loading} onRefresh={fetchContributors} />
           </div>
         )}
       </div>

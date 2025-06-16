@@ -2,7 +2,7 @@ import React, { useState, useEffect, lazy, Suspense, useMemo, memo } from 'react
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Terminal, Code, Github, Linkedin, X, Users } from 'lucide-react';
-import { getAlgorithmMetaTags, getHomepageMetaTags, getContributionsMetaTags, getAlgorithmSchema, algorithms, generateCanonicalUrl, isCanonicalPath } from './utils/seo';
+import { getAlgorithmMetaTags, getHomepageMetaTags, getContributionsMetaTags, getSSOCMetaTags, getAlgorithmSchema, algorithms, generateCanonicalUrl, isCanonicalPath } from './utils/seo';
 import SEOContent from './components/SEOContent';
 import { FeedbackButton } from './components/feedback';
 import { SettingsButton } from './components/settings';
@@ -104,6 +104,8 @@ const App = () => {
         setActiveTab('guide');
       } else if (contributionSection === 'overview') {
         setActiveTab('overview');
+      } else if (contributionSection === 'ssoc') {
+        setActiveTab('ssoc');
       } else {
         // Redirect /contributions to /contributions/overview
         navigate('/contributions/overview', { replace: true });
@@ -137,6 +139,9 @@ const App = () => {
   
   // Memoize SEO metadata to prevent recalculation on each render
   const metaTags = useMemo(() => {
+    if (location.pathname === '/contributions/ssoc') {
+      return getSSOCMetaTags();
+    }
     if (location.pathname === '/contributions') {
       return getContributionsMetaTags();
     }
@@ -450,7 +455,8 @@ const App = () => {
                 // Handle contribution tab changes
                 const sectionMapping = {
                   'overview': 'overview',
-                  'guide': 'guide'
+                  'guide': 'guide',
+                  'ssoc': 'ssoc'
                 };
                 const section = sectionMapping[newTab] || 'overview';
                 navigate(`/contributions/${section}`, { replace: true });
