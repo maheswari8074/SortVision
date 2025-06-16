@@ -35,7 +35,7 @@
     "jake": "^10.9.2",
     "lucide-react": "^0.515.0",
     "micromatch": "^4.0.8",
-    "minimatch": "3.0.8",
+    "minimatch": "10.0.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-ga": "^3.3.1",
@@ -69,7 +69,7 @@
   "pnpm": {
     "overrides": {
       "esbuild": "^0.25.5",
-      "minimatch": "3.0.8",
+      "minimatch": "10.0.3",
       "brace-expansion": "1.1.11",
       "brace-expansion@>=1.0.0 <=1.1.11": ">=1.1.12"
     }
