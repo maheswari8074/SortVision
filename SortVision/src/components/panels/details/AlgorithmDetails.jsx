@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Info, Terminal, Code2, Loader2, ArrowDownToLine } from 'lucide-react';
+import { Info, Terminal, Code2, Loader2, ArrowDownToLine, Link2, Copy } from 'lucide-react';
 import LanguageSelector from './LanguageSelector';
 
 /**
@@ -203,6 +203,20 @@ const AlgorithmDetails = ({ algorithm }) => {
         URL.revokeObjectURL(url);
     };
 
+    // --- Share via URL functionality ---
+    const handleShareUrl = () => {
+        const url = `${window.location.origin}${window.location.pathname}?algorithm=${algorithm}&lang=${selectedLanguage}`;
+        navigator.clipboard.writeText(url);
+    };
+
+    // --- Copy to Clipboard functionality ---
+    const handleCopyCode = () => {
+        const doc = getAlgorithmDoc();
+        const test = getTestCase();
+        const content = `${doc}\n${codeContent}\n${test}`;
+        navigator.clipboard.writeText(content);
+    };
+
     return (
         <div className="relative group mb-8">
             {/* Animated background glow effect */}
@@ -247,6 +261,22 @@ const AlgorithmDetails = ({ algorithm }) => {
                             aria-label="Export code"
                         >
                             <ArrowDownToLine className="w-4 h-4" />
+                        </button>
+                        <button
+                            onClick={handleShareUrl}
+                            className="p-2 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                            title="Share via URL"
+                            aria-label="Share via URL"
+                        >
+                            <Link2 className="w-4 h-4" />
+                        </button>
+                        <button
+                            onClick={handleCopyCode}
+                            className="p-2 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors text-purple-400 hover:text-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                            title="Copy code to clipboard"
+                            aria-label="Copy code to clipboard"
+                        >
+                            <Copy className="w-4 h-4" />
                         </button>
                         <LanguageSelector selectedLanguage={selectedLanguage} onLanguageChange={setSelectedLanguage} />
                     </div>
