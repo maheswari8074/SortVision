@@ -54,6 +54,11 @@
       "source": "/contributors",
       "destination": "/contributions/overview",
       "permanent": true
+    },
+    {
+      "source": "/ssoc",
+      "destination": "/contributions/ssoc",
+      "permanent": true
     }
   ],
   
