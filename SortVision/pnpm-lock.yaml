@@ -70,7 +70,7 @@ importers:
         version: 3.0.5
       jake:
         specifier: ^10.9.2
-        version: 10.9.2
+        version: 10.9.2 
       lucide-react:
         specifier: ^0.515.0
         version: 0.515.0(react@19.1.0)
@@ -80,9 +80,6 @@ importers:
       minimatch:
         specifier: 3.0.8
         version: 3.0.8
-      prism-react-renderer:
-        specifier: ^2.4.1
-        version: 2.4.1(react@19.1.0)
       react:
         specifier: ^19.1.0
         version: 19.1.0
