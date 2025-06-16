@@ -90,24 +90,6 @@ function radixSort(arr, base = 10) {
 }
 
 /**
- * ============================================================================
- * 🕒 Time and Space Complexity Analysis
- *
- * Time Complexity:
- * - Counting Sort per digit: O(n + b)
- * - Number of digits: log_b(max)
- * Total: O((n + b) * log_b(max))
- *
- * For base 10: O(n * k) where k = number of digits
- *
- * Space Complexity:
- * - Output array: O(n)
- * - Count array: O(b)
- * Total: O(n + b)
- * ============================================================================
- */
-
-/**
  * ✅ Example Usage & Test Cases
  */
 function testRadixSort() {
