@@ -107,13 +107,14 @@ export default defineConfig({
         },
         entryFileNames: "assets/[name]-[hash].js",
         chunkFileNames: "assets/[name]-[hash].js",
-        assetFileNames: "assets/[name]-[hash].[ext]",
+        assetFileNames: (assetInfo) => {
+          // Keep the original path for txt files
+          if (assetInfo.name.endsWith('.txt')) {
+            return assetInfo.name;
+          }
+          return 'assets/[name]-[hash].[ext]';
+        },
       },
-      input: {
-        main: path.resolve(__dirname, "index.html"),
-        // Include algorithm code files
-        algorithmCode: path.resolve(__dirname, "src/components/panels/details/code/**/*")
-      }
     },
     chunkSizeWarningLimit: 1000,
     assetsInlineLimit: 0, // Ensure text files are not inlined
