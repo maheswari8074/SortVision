@@ -17,7 +17,7 @@ const AlgorithmDetails = ({ algorithm }) => {
         const loadCode = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`/code/${algorithm}/${selectedLanguage}/${algorithm}Sort.${getFileExtension(selectedLanguage)}`);
+                const response = await fetch(`/src/components/panels/details/code/${algorithm}/${selectedLanguage}/${algorithm}Sort.${getFileExtension(selectedLanguage)}`);
                 if (!response.ok) {
                     setCodeContent(getPlaceholderContent());
                 } else {

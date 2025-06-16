@@ -109,8 +109,15 @@ export default defineConfig({
         chunkFileNames: "assets/[name]-[hash].js",
         assetFileNames: "assets/[name]-[hash].[ext]",
       },
+      input: {
+        main: path.resolve(__dirname, "index.html"),
+        // Include algorithm code files
+        algorithmCode: path.resolve(__dirname, "src/components/panels/details/code/**/*")
+      }
     },
     chunkSizeWarningLimit: 1000,
+    assetsInlineLimit: 0, // Ensure text files are not inlined
+    copyPublicDir: true,
   },
   optimizeDeps: {
     include: ["react", "react-dom"],
@@ -118,6 +125,7 @@ export default defineConfig({
       loader: {
         ".js": "jsx",
         ".jsx": "jsx",
+        ".txt": "text", // Add text file loader
       },
     },
   },
