@@ -125,7 +125,7 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                   )
                 );
               }
-            } catch (error) {
+            } catch {
               console.error(`Error fetching avatar for ${participant.githubId}`);
             }
             await new Promise(resolve => setTimeout(resolve, 100));
@@ -428,7 +428,7 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                     >
                       <span className="beginner-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
                         {participant.beginnerIssues}
-                        <Link2 className="w-3 h-3 opacity-0 group-hover/btn:opacity-100 transition-all duration-200" />
+                        <Link2 className="w-3 h-3 opacity-50 group-hover/btn:opacity-100 transition-all duration-200" />
                       </span>
                     </div>
                   </td>
@@ -442,7 +442,7 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                     >
                       <span className="intermediate-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
                         {participant.intermediateIssues}
-                        <Link2 className="w-3 h-3 opacity-0 group-hover/btn:opacity-100 transition-all duration-200" />
+                        <Link2 className="w-3 h-3 opacity-50 group-hover/btn:opacity-100 transition-all duration-200" />
                       </span>
                     </div>
                   </td>
@@ -456,7 +456,7 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                     >
                       <span className="advanced-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
                         {participant.advancedIssues}
-                        <Link2 className="w-3 h-3 opacity-0 group-hover/btn:opacity-100 transition-all duration-200" />
+                        <Link2 className="w-3 h-3 opacity-50 group-hover/btn:opacity-100 transition-all duration-200" />
                       </span>
                     </div>
                   </td>
