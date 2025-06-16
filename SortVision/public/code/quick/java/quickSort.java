@@ -9,7 +9,7 @@ import java.util.Arrays;
  * according to whether they are less than or greater than the pivot. The sub-arrays
  * are then sorted recursively.
  */
-public class quickSort {
+public class QuickSort {
     private int partition(int[] arr, int low, int high) {
         int pivot = arr[high]; // Pivot is the last element
         int i = (low - 1); 
