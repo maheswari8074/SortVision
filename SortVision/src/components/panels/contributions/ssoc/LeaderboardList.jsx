@@ -421,42 +421,42 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                   <td className="px-2 py-4 text-center">
                     <div 
                       onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3ABeginner`, '_blank')}
-                      className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-green-500/10 active:bg-green-500/20"
+                      className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-green-500/10 active:bg-green-500/20 cursor-pointer transition-all duration-200"
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3ABeginner`, '_blank')}
                     >
-                      <span className="beginner-issues flex items-center justify-center gap-2">
+                      <span className="beginner-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
                         {participant.beginnerIssues}
-                        <Link2 className="w-3 h-3 opacity-75 group-hover/btn:opacity-100" />
+                        <Link2 className="w-3 h-3 opacity-0 group-hover/btn:opacity-100 transition-all duration-200" />
                       </span>
                     </div>
                   </td>
                   <td className="px-2 py-4 text-center">
                     <div 
                       onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AIntermediate`, '_blank')}
-                      className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-yellow-500/10 active:bg-yellow-500/20"
+                      className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-yellow-500/10 active:bg-yellow-500/20 cursor-pointer transition-all duration-200"
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AIntermediate`, '_blank')}
                     >
-                      <span className="intermediate-issues flex items-center justify-center gap-2">
+                      <span className="intermediate-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
                         {participant.intermediateIssues}
-                        <Link2 className="w-3 h-3 opacity-75 group-hover/btn:opacity-100" />
+                        <Link2 className="w-3 h-3 opacity-0 group-hover/btn:opacity-100 transition-all duration-200" />
                       </span>
                     </div>
                   </td>
                   <td className="px-2 py-4 text-center">
                     <div 
                       onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AAdvance`, '_blank')}
-                      className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-red-500/10 active:bg-red-500/20"
+                      className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-red-500/10 active:bg-red-500/20 cursor-pointer transition-all duration-200"
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AAdvance`, '_blank')}
                     >
-                      <span className="advanced-issues flex items-center justify-center gap-2">
+                      <span className="advanced-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
                         {participant.advancedIssues}
-                        <Link2 className="w-3 h-3 opacity-75 group-hover/btn:opacity-100" />
+                        <Link2 className="w-3 h-3 opacity-0 group-hover/btn:opacity-100 transition-all duration-200" />
                       </span>
                     </div>
                   </td>
