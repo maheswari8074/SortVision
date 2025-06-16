@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Info, Terminal, Code2, Loader2 } from 'lucide-react';
+import { Info, Terminal, Code2, Loader2, ArrowDownToLine } from 'lucide-react';
 import LanguageSelector from './LanguageSelector';
 
 /**
@@ -165,6 +165,44 @@ const AlgorithmDetails = ({ algorithm }) => {
     const backgroundGlowClass = getBackgroundGlowClass();
     const { particle1, particle2, line1, line2 } = getParticlesAndLinesClasses();
 
+    // --- Export functionality ---
+    const getAlgorithmDoc = () => {
+        // Simple documentation string; can be expanded per algorithm/language
+        return `/**\n * ${algorithm.charAt(0).toUpperCase() + algorithm.slice(1)} Sort\n *\n * Description: Implements the ${algorithm} sort algorithm.\n *\n * Time Complexity: O(n^2) in worst case (varies by algorithm)\n * Space Complexity: O(1) or O(n) (varies by algorithm)\n */\n`;
+    };
+
+    const getTestCase = () => {
+        // Simple test case string; can be expanded per language
+        switch(selectedLanguage) {
+            case 'python':
+                return '\ndef test():\n    arr = [5, 2, 9, 1]\n    bubbleSort(arr)\n    assert arr == [1, 2, 5, 9]\n';
+            case 'javascript':
+                return '\n// Test\nconst arr = [5, 2, 9, 1];\nbubbleSort(arr);\nconsole.assert(JSON.stringify(arr) === JSON.stringify([1,2,5,9]));\n';
+            case 'java':
+                return '\n// Test\npublic static void main(String[] args) {\n    int[] arr = {5,2,9,1};\n    bubbleSort(arr);\n    assert java.util.Arrays.equals(arr, new int[]{1,2,5,9});\n}\n';
+            case 'pseudocode':
+                return '\n// Test\narray = [5, 2, 9, 1]\nbubbleSort(array)\nassert array == [1, 2, 5, 9]\n';
+            default:
+                return '\n// Test case placeholder\n';
+        }
+    };
+
+    const handleExport = () => {
+        const ext = getFileExtension(selectedLanguage);
+        const doc = getAlgorithmDoc();
+        const test = getTestCase();
+        const content = `${doc}\n${codeContent}\n${test}`;
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${algorithm}Sort.${ext}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <div className="relative group mb-8">
             {/* Animated background glow effect */}
@@ -201,7 +239,17 @@ const AlgorithmDetails = ({ algorithm }) => {
                         <Info className="mr-2 h-4 w-4 text-emerald-400 animate-pulse" style={{ animationDuration: '4s' }} />
                         <span className="transition-colors duration-300">// {algorithm}_sort() details</span>
                     </div>
-                    <LanguageSelector selectedLanguage={selectedLanguage} onLanguageChange={setSelectedLanguage} />
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={handleExport}
+                            className="p-2 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors text-emerald-400 hover:text-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                            title="Export code with documentation and test case"
+                            aria-label="Export code"
+                        >
+                            <ArrowDownToLine className="w-4 h-4" />
+                        </button>
+                        <LanguageSelector selectedLanguage={selectedLanguage} onLanguageChange={setSelectedLanguage} />
+                    </div>
                 </div>
 
                 {/* Algorithm visualization with enhanced effects */}
