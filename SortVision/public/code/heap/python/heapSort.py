@@ -60,7 +60,8 @@ def heap_sort(arr: list[int]) -> list[int]:
     return nums
 
 # Quick test to make sure it works
-if name == "main":
+if __name__ == "__main__":
+
     # Try it out
     numbers = [64, 34, 25, 12, 22, 11, 90]
     print("Before:", numbers)
