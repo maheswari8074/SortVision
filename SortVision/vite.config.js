@@ -71,7 +71,7 @@ export default defineConfig({
     extensions: [".js", ".jsx", ".ts", ".tsx", ".json", ".txt"],
   },
   server: {
-    port: 3005, // ✅ Your custom local port
+    port: 3000, // ✅ Your custom local port
     fs: {
       allow: [".."],
     },
