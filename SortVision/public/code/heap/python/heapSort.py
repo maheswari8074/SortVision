@@ -83,7 +83,7 @@ if __name__ == "__main__":
         [100, 50, 25, 12],
         [-5, -2, -8, -1]
     ]
-
+#     Heap sort
     print("\nTesting:")
     for arr in test_arrays:
         result = heap_sort(arr)
