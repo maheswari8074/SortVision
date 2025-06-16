@@ -28,4 +28,4 @@ export { default as FunFact } from './details/FunFact';
 export { default as DataPanel } from './details/DataPanel';
 
 // Export contribution components
-export { ContributionHeader, ContributorStats, ContributorList, ContributeGuide, QuickReferences } from './contributions'; 
+export { ContributorStats, ContributorList, ContributeGuide, QuickReferences } from './contributions'; 

@@ -166,6 +166,22 @@ export const getContributionsMetaTags = () => {
 };
 
 /**
+ * Generate meta tags for the SSOC leaderboard page
+ * @returns {Object} - Object containing SSOC leaderboard page meta tags for SEO
+ */
+export const getSSOCMetaTags = () => {
+  return {
+    title: 'SSOC Leaderboard - Social Summer of Code Contributors',
+    description: 'View the Social Summer of Code (SSOC) leaderboard for SortVision contributors. Track progress, points, and achievements of SSOC participants contributing to the algorithm visualizer project.',
+    keywords: 'SSOC leaderboard, Social Summer of Code, SSOC contributors, open source leaderboard, algorithm visualizer contributors, SSOC points, SSOC achievements, open source program, student contributions',
+    ogTitle: 'SSOC Leaderboard | Social Summer of Code Contributors',
+    ogDescription: 'Track SSOC participants\' contributions to SortVision. View points, achievements, and rankings in the Social Summer of Code program.',
+    twitterTitle: 'SSOC Leaderboard - Social Summer of Code Contributors',
+    twitterDescription: 'Follow the progress of SSOC participants contributing to SortVision. Real-time leaderboard with points and achievements.'
+  };
+};
+
+/**
  * Generate schema markup for algorithm pages
  * @param {string} algorithmName - The algorithm identifier
  * @param {string} path - Current URL path
@@ -277,7 +293,7 @@ export const generateCanonicalUrl = (pathname) => {
   else if (pathParts[0] === 'contributions') {
     if (pathParts.length === 2) {
       const section = pathParts[1];
-      const validSections = ['overview', 'guide'];
+      const validSections = ['overview', 'guide', 'ssoc'];
       if (validSections.includes(section)) {
         cleanPath = `/contributions/${section}`;
       } else {
