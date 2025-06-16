@@ -92,32 +92,6 @@ void radixSort(vector<int>& arr, int base = 10) {
     arr.insert(arr.end(), poss.begin(), poss.end());
 }
 
-/*
-===============================================================================
-🕒 Time Complexity Analysis:
-
-Let:
-- n = number of elements
-- b = base (e.g., 10 for decimal)
-- d = number of digits in the maximum number (≈ log_b(maxElement))
-
-Per digit counting sort: O(n + b)
-Total digits: log_b(max)
-
-Overall Time Complexity:
-O((n + b) * log_b(max))
-
-For base 10:
-O(n * k), where k is the number of digits in the largest number
-
-💾 Space Complexity Analysis:
-
-- Output array: O(n)
-- Count array: O(b)
-
-Overall Space: O(n + b)
-===============================================================================
-*/
 
 /**
  * @brief Example usage with test cases
