@@ -64,6 +64,10 @@
   
   "rewrites": [
     {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
@@ -96,5 +100,16 @@
         }
       ]
     }
-  ]
+  ],
+  
+  "functions": {
+    "api/**/*": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
+  
+  "env": {
+    "VITE_GEMINI_API_KEY": "@vite_gemini_api_key"
+  }
 } 
