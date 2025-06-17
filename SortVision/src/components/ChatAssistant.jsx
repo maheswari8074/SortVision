@@ -10,7 +10,7 @@ import {
     CardDescription,
     CardContent,
 } from "@/components/ui/card";
-import { X, MessageCircle } from "lucide-react";
+import { X, MessageCircle, Bot } from "lucide-react";
 
 export default function ChatAssistant() {
     const [isOpen, setIsOpen] = useState(false);
@@ -98,7 +98,7 @@ export default function ChatAssistant() {
                             <div className="absolute top-1/2 left-2 w-0.5 h-0.5 bg-white rounded-full animate-ping" style={{ animationDelay: "1.5s" }} />
                         </div>
                         <span className="text-slate-900 text-xl z-10 transition-all duration-500">
-                            {isOpen ? "✖" : "💬"}
+                            {isOpen ? <X className="h-6 w-6" /> : <Bot className="h-6 w-6" />}
                         </span>
                     </Button>
                 </div>
@@ -118,10 +118,10 @@ export default function ChatAssistant() {
 
                         <CardHeader className="text-center pr-10">
                             <div className="flex items-center justify-center gap-3 mb-2">
-                                <MessageCircle className="h-6 w-6 text-red-400 animate-pulse" />
-                                <CardTitle className="text-xl font-mono text-white">
-                                    <span className="text-red-400">Sort</span>
-                                    <span className="text-teal-300">Bot</span>
+                                <Bot className="h-7 w-7 text-emerald-400 animate-pulse" />
+                                <CardTitle className="text-2xl font-bold font-mono text-white">
+                                    <span className="text-emerald-400">Sort</span>
+                                    <span className="text-purple-400">Bot</span>
                                 </CardTitle>
                             </div>
                             <CardDescription className="text-slate-400 font-mono">
