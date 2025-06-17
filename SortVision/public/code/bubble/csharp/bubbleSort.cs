@@ -15,7 +15,7 @@ namespace SortVision
         {
             if (arr == null || arr.Length <= 1)
             {
-                // Array is null, empty, or has a single element; no sorting needed.
+                // Array is null, empty, or has a single element; no sorting needed. d
                 return;
             }
 
