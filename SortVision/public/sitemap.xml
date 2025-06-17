@@ -6,7 +6,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://sortvision.vercel.app/</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -19,7 +19,7 @@
   <!-- Algorithm Pages -->
   <url>
     <loc>https://sortvision.vercel.app/algorithms/config/bubble</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -30,7 +30,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/details/bubble</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -41,7 +41,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/metrics/bubble</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -52,7 +52,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/config/insertion</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -63,7 +63,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/details/insertion</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -74,7 +74,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/metrics/insertion</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -85,7 +85,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/config/selection</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -96,7 +96,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/details/selection</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -107,7 +107,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/metrics/selection</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -118,7 +118,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/config/merge</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -129,7 +129,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/details/merge</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -140,7 +140,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/metrics/merge</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -151,7 +151,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/config/quick</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -162,7 +162,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/details/quick</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -173,7 +173,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/metrics/quick</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -184,7 +184,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/config/heap</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -195,7 +195,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/details/heap</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -206,7 +206,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/metrics/heap</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -217,7 +217,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/config/radix</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -228,7 +228,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/details/radix</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -239,7 +239,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/metrics/radix</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -250,7 +250,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/config/bucket</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -261,7 +261,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/details/bucket</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -272,7 +272,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/algorithms/metrics/bucket</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -283,7 +283,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/contributions/overview</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <image:image>
@@ -294,7 +294,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/contributions/guide</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <image:image>
@@ -305,7 +305,7 @@
   </url>
   <url>
     <loc>https://sortvision.vercel.app/contributions/ssoc</loc>
-    <lastmod>2025-06-16</lastmod>
+    <lastmod>2025-06-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <image:image>

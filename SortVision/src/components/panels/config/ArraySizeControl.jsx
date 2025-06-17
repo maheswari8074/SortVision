@@ -82,7 +82,7 @@ const ArraySizeControl = ({ arraySize, setArraySize, isSorting }) => {
               step={1}
               onValueChange={(value) => setArraySize(value[0])}
               disabled={isSorting}
-              className="relative z-10"
+              className="relative z-10 joyride-array-size"
               name="array size"
               aria-label="Array Size Slider"
               aria-labelledby="array-size-label"
