@@ -506,7 +506,7 @@ const ArrayInput = ({ setOriginalArray }) => {
                         placeholder={config.param2Placeholder || ''}
                         value={patternParam2 || ''}
                         onChange={(e) => setPatternParam2(e.target.value)}
-                        className="flex-1 p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="flex-1 p-2 rounded-md bg-gray-100 dark:bg-gray-750 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         aria-label={`${config.param2Label}`}
                     />
                 )}
@@ -517,7 +517,7 @@ const ArrayInput = ({ setOriginalArray }) => {
                         placeholder={config.param3Placeholder || ''}
                         value={patternParam3 || ''} // Assuming patternParam3 state for stdDev
                         onChange={(e) => setPatternParam3(e.target.value)}
-                        className="flex-1 p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="flex-1 p-2 rounded-md bg-gray-100 dark:bg-gray-750 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         aria-label={`${config.param3Label}`}
                     />
                 )}
@@ -529,6 +529,7 @@ const ArrayInput = ({ setOriginalArray }) => {
     const [patternParam3, setPatternParam3] = useState(undefined);
 
 
+  
     return (
         <div className="
             relative
@@ -544,7 +545,7 @@ const ArrayInput = ({ setOriginalArray }) => {
         ">
             {/* Heading - as it was */}
             <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 text-center">
-                Array Input & Patterns
+                Array Inputs
             </h3>
 
             {/* Input Method Buttons */}
@@ -556,7 +557,7 @@ const ArrayInput = ({ setOriginalArray }) => {
                         transition-colors duration-200
                         ${inputMethod === 'text'
                             ? 'bg-blue-600 text-white shadow-md'
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:bg-blue-500/30 dark:hover:text-blue-300'
+                            : 'bg-gray-200 dark:bg-gray-900 text-gray-700 dark:text-gray-200 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:bg-blue-500/30 dark:hover:text-blue-300'
                         }
                     `}
                     aria-pressed={inputMethod === 'text'}
@@ -570,7 +571,7 @@ const ArrayInput = ({ setOriginalArray }) => {
                         transition-colors duration-200
                         ${inputMethod === 'file'
                             ? 'bg-blue-600 text-white shadow-md'
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:bg-blue-500/30 dark:hover:text-blue-300'
+                            : 'bg-gray-200 dark:bg-gray-900 text-gray-700 dark:text-gray-200 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:bg-blue-500/30 dark:hover:text-blue-300'
                         }
                     `}
                     aria-pressed={inputMethod === 'file'}
@@ -584,7 +585,7 @@ const ArrayInput = ({ setOriginalArray }) => {
                         transition-colors duration-200
                         ${inputMethod === 'clipboard'
                             ? 'bg-blue-600 text-white shadow-md'
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:bg-blue-500/30 dark:hover:text-blue-300'
+                            : 'bg-gray-200 dark:bg-gray-900 text-gray-700 dark:text-gray-200 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:bg-blue-500/30 dark:hover:text-blue-300'
                         }
                     `}
                     aria-pressed={inputMethod === 'clipboard'}
@@ -598,7 +599,7 @@ const ArrayInput = ({ setOriginalArray }) => {
                         transition-colors duration-200
                         ${inputMethod === 'pattern'
                             ? 'bg-blue-600 text-white shadow-md'
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:bg-blue-500/30 dark:hover:text-blue-300'
+                            : 'bg-gray-200 dark:bg-gray-900 text-gray-700 dark:text-gray-200 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:bg-blue-500/30 dark:hover:text-blue-300'
                         }
                     `}
                     aria-pressed={inputMethod === 'pattern'}
@@ -616,7 +617,7 @@ const ArrayInput = ({ setOriginalArray }) => {
                             onChange={handleTextInput}
                             placeholder={`Enter numbers separated by commas or spaces. E.g., 10, 5, 20, 15, 30. (Values ${MIN_VALUE} to ${MAX_VALUE})`}
                             rows="4"
-                            className="w-full min-h-[100px] p-3 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y"
+                            className="w-full min-h-[100px] p-3 rounded-md bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray- 00 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent resize-y"
                             aria-label="Enter numbers manually"
                         />
                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-2 flex items-center gap-1">
@@ -676,7 +677,7 @@ const ArrayInput = ({ setOriginalArray }) => {
                         <select
                             value={patternType}
                             onChange={(e) => setPatternType(e.target.value)}
-                            className="p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="p-2 rounded-md bg-gray-100  dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             aria-label="Select array pattern type"
                         >
                             <option value="nearlySorted">Nearly Sorted</option>
@@ -692,8 +693,8 @@ const ArrayInput = ({ setOriginalArray }) => {
                             onClick={handleGeneratePattern}
                             className="
                                 w-full flex items-center justify-center py-2 px-4
-                                bg-green-500 text-white rounded-md font-semibold
-                                hover:bg-green-600 transition-colors shadow-md
+                                bg-green-400 text-white rounded-md font-semibold
+                                hover:bg-green-900 transition-colors shadow-md
                             "
                             aria-label="Generate array pattern"
                         >
