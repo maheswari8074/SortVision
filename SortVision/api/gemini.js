@@ -33,15 +33,24 @@ export default async function handler(req) {
 
     // ✅ Check if messages is a valid array
     if (!Array.isArray(messages)) {
-      console.error('❌ Invalid messages format:', messages);
-      return new Response(JSON.stringify({ error: 'Expected prompt to be an array of messages' }), {
+      console.error('❌ Invalid messages format');
+      return new Response(JSON.stringify({ error: 'Invalid request format' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
     }
 
     // Log API key presence (not the actual key)
-    console.log('🔑 API Key present:', !!process.env.VITE_GEMINI_API_KEY);
+    const hasApiKey = !!process.env.VITE_GEMINI_API_KEY;
+    console.log('🔑 API Key present:', hasApiKey);
+
+    if (!hasApiKey) {
+      console.error('❌ Missing API key');
+      return new Response(JSON.stringify({ error: 'Internal server configuration error' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
     // Optional: Debug log to verify request body
     console.log('🟢 Gemini Request Body:', JSON.stringify({ contents: messages }, null, 2));
@@ -62,9 +71,7 @@ export default async function handler(req) {
       const errorText = await result.text();
       console.error('❌ Gemini API error:', errorText);
       return new Response(JSON.stringify({ 
-        error: errorText,
-        status: result.status,
-        statusText: result.statusText
+        error: 'Failed to process request'
       }), {
         status: result.status,
         headers: { 'Content-Type': 'application/json' }
@@ -85,12 +92,12 @@ export default async function handler(req) {
       }
     });
   } catch (error) {
-    console.error('❌ Server Error:', error.message);
-    console.error('Stack trace:', error.stack);
+    // Log the full error internally for debugging
+    console.error('❌ Server Error:', error);
+    
+    // Return a sanitized error response
     return new Response(JSON.stringify({ 
-      error: error.message,
-      stack: error.stack,
-      type: error.constructor.name
+      error: 'An unexpected error occurred'
     }), {
       status: 500,
       headers: { 
