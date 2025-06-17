@@ -127,6 +127,31 @@ const CurrentRunMetrics = ({
           <div className="text-[10px] text-slate-500 mt-1 group-hover:text-slate-400 transition-colors duration-300 relative z-10">Execution duration</div>
         </div>
       </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+  <div className="bg-slate-800 p-3 rounded border border-slate-700 flex items-center gap-2">
+    <ArrowUpDown className="w-4 h-4 text-orange-400" />
+    <span className="text-slate-300 text-sm font-mono">Swap Ratio: <strong>{swapRatio}</strong></span>
+  </div>
+  <div className="bg-slate-800 p-3 rounded border border-slate-700 flex items-center gap-2">
+    <Clock className="w-4 h-4 text-indigo-400" />
+    <span className="text-slate-300 text-sm font-mono">Time per Element: <strong>{timePerElement} ms</strong></span>
+  </div>
+  <div className="bg-slate-800 p-3 rounded border border-slate-700 flex items-center gap-2">
+    <BarChart className="w-4 h-4 text-pink-400" />
+    <span className="text-slate-300 text-sm font-mono">Ops per ms: <strong>{operationsPerMs}</strong></span>
+  </div>
+  <div className="bg-slate-800 p-3 rounded border border-slate-700 flex items-center gap-2">
+    <Award className="w-4 h-4 text-yellow-500" />
+    <span className="text-slate-300 text-sm font-mono">Performance Score: <strong>{performanceScore}</strong></span>
+  </div>
+  {bestAlgorithm && algorithm !== bestAlgorithm.algo && (
+    <div className="bg-slate-800 p-3 rounded border border-slate-700 flex items-center gap-2 col-span-2 md:col-span-1">
+      <TrendingDown className="w-4 h-4 text-lime-500" />
+      <span className="text-slate-300 text-sm font-mono">Could Improve by: <strong>{improvementPercent}%</strong></span>
+    </div>
+  )}
+</div>
+
       
       {/* Advanced Metrics */}
       <div className="flex flex-wrap sm:grid sm:grid-cols-4 gap-3">
