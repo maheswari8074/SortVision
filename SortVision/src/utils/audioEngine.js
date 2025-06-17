@@ -269,71 +269,64 @@ class AudioEngine {
   }
 
   playTypingSound() {
-    console.log('AudioEngine: Attempting to play typing sound');
-    console.log('AudioEngine state:', {
-      contextState: this.audioContext?.state,
-      isMuted: this.isMuted,
-      isEnabled: this.isAudioEnabled,
-      volume: this.volume
-    });
-
-    if (!this.audioContext) {
-      console.log('AudioEngine: No audio context, initializing...');
-      this.initAudio();
-    }
-
-    if (this.audioContext.state === 'suspended') {
-      console.log('AudioEngine: Context suspended, resuming...');
-      this.audioContext.resume();
-    }
-
     if (!this.audioContext || this.isMuted || !this.isAudioEnabled || this.audioContext.state !== 'running') {
-      console.log('AudioEngine: Cannot play sound due to state');
       return;
     }
 
     try {
-      // Create oscillator for the key press sound
-      const oscillator = this.audioContext.createOscillator();
-      const gainNode = this.audioContext.createGain();
+      // Create oscillators for a more complex typing sound
+      const keyPressOsc = this.audioContext.createOscillator();
+      const keyReleaseOsc = this.audioContext.createOscillator();
+      const noiseOsc = this.audioContext.createOscillator();
       
-      // Configure oscillator
-      oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(800, this.audioContext.currentTime); // Higher frequency
-      oscillator.frequency.exponentialRampToValueAtTime(400, this.audioContext.currentTime + 0.05);
+      const keyPressGain = this.audioContext.createGain();
+      const keyReleaseGain = this.audioContext.createGain();
+      const noiseGain = this.audioContext.createGain();
+
+      // Key press sound (deeper thud)
+      keyPressOsc.type = 'triangle';
+      keyPressOsc.frequency.setValueAtTime(150, this.audioContext.currentTime);
+      keyPressOsc.frequency.exponentialRampToValueAtTime(80, this.audioContext.currentTime + 0.05);
       
-      // Configure gain (volume envelope) - Increased volume
-      gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-      gainNode.gain.linearRampToValueAtTime(this.volume * 0.3, this.audioContext.currentTime + 0.01);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.05);
+      keyPressGain.gain.setValueAtTime(0, this.audioContext.currentTime);
+      keyPressGain.gain.linearRampToValueAtTime(this.volume * 0.3, this.audioContext.currentTime + 0.005);
+      keyPressGain.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.05);
+
+      // Key release sound (higher pitched click)
+      keyReleaseOsc.type = 'square';
+      keyReleaseOsc.frequency.setValueAtTime(1200, this.audioContext.currentTime + 0.005);
+      keyReleaseOsc.frequency.exponentialRampToValueAtTime(800, this.audioContext.currentTime + 0.02);
       
-      // Connect nodes
-      oscillator.connect(gainNode);
-      gainNode.connect(this.masterGain);
+      keyReleaseGain.gain.setValueAtTime(0, this.audioContext.currentTime);
+      keyReleaseGain.gain.linearRampToValueAtTime(this.volume * 0.15, this.audioContext.currentTime + 0.01);
+      keyReleaseGain.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.02);
+
+      // Mechanical noise (white noise simulation)
+      noiseOsc.type = 'square';
+      noiseOsc.frequency.setValueAtTime(2000, this.audioContext.currentTime);
       
-      // Play sound
-      oscillator.start(this.audioContext.currentTime);
-      oscillator.stop(this.audioContext.currentTime + 0.05);
-      
-      // Add a subtle click sound with higher volume
-      const clickOsc = this.audioContext.createOscillator();
-      const clickGain = this.audioContext.createGain();
-      
-      clickOsc.type = 'square';
-      clickOsc.frequency.setValueAtTime(3000, this.audioContext.currentTime);
-      clickOsc.frequency.exponentialRampToValueAtTime(1500, this.audioContext.currentTime + 0.01);
-      
-      clickGain.gain.setValueAtTime(0, this.audioContext.currentTime);
-      clickGain.gain.linearRampToValueAtTime(this.volume * 0.15, this.audioContext.currentTime + 0.001);
-      clickGain.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.01);
-      
-      clickOsc.connect(clickGain);
-      clickGain.connect(this.masterGain);
-      
-      clickOsc.start(this.audioContext.currentTime);
-      clickOsc.stop(this.audioContext.currentTime + 0.01);
-      
-      console.log('AudioEngine: Successfully played typing sound');
+      noiseGain.gain.setValueAtTime(0, this.audioContext.currentTime);
+      noiseGain.gain.linearRampToValueAtTime(this.volume * 0.05, this.audioContext.currentTime + 0.002);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.03);
+
+      // Connect all oscillators
+      keyPressOsc.connect(keyPressGain);
+      keyReleaseOsc.connect(keyReleaseGain);
+      noiseOsc.connect(noiseGain);
+
+      keyPressGain.connect(this.masterGain);
+      keyReleaseGain.connect(this.masterGain);
+      noiseGain.connect(this.masterGain);
+
+      // Start and stop all oscillators
+      keyPressOsc.start(this.audioContext.currentTime);
+      keyReleaseOsc.start(this.audioContext.currentTime);
+      noiseOsc.start(this.audioContext.currentTime);
+
+      keyPressOsc.stop(this.audioContext.currentTime + 0.05);
+      keyReleaseOsc.stop(this.audioContext.currentTime + 0.02);
+      noiseOsc.stop(this.audioContext.currentTime + 0.03);
+
     } catch (error) {
       console.error('AudioEngine: Error playing typing sound:', error);
     }
