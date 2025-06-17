@@ -3,67 +3,64 @@ using System.Collections.Generic;
 
 public class BucketSort
 {
-    public static void Sort(int[] arr)
+    // Main sorting method
+    public static void Sort(float[] array)
     {
-        if (arr == null || arr.Length <= 1)
+        // The edge case: if array is null or has <= 1 element, it's already sorted
+        if (array == null || array.Length <= 1)
             return;
 
-        int maxValue = arr[0];
-        int minValue = arr[0];
-
-        foreach (int num in arr)
+        // Step 1: Find min and max values in the array
+        float min = array[0];
+        float max = array[0];
+        foreach (var num in array)
         {
-            if (num > maxValue) maxValue = num;
-            if (num < minValue) minValue = num;
+            if (num < min) min = num;
+            if (num > max) max = num;
         }
 
-        int bucketCount = (int)Math.Sqrt(arr.Length);
-        List<int>[] buckets = CreateBuckets(bucketCount);
+        // Step 2: Create buckets
+        int bucketCount = array.Length; // Number of buckets = number of elements
+        List<List<float>> buckets = CreateBuckets(bucketCount);
 
-        DistributeToBuckets(arr, buckets, bucketCount, minValue, maxValue);
-        SortBuckets(buckets);
-        int[] sorted = ConcatenateBuckets(buckets);
+        // Step 3: Calculate the range of each bucket
+        float bucketRange = (max - min) / bucketCount;
 
-        for (int i = 0; i < arr.Length; i++)
+        // Step 4: Distribute array elements into buckets
+        foreach (var num in array)
         {
-            arr[i] = sorted[i];
+            int index = (int)((num - min) / bucketRange);
+            // Handle edge case where index equals bucketCount
+            if (index == bucketCount) index--;
+            buckets[index].Add(num);
+        }
+
+        // Step 5: Sort each bucket
+        foreach (var bucket in buckets)
+        {
+            bucket.Sort(); // Using built-in sort for simplicity
+        }
+
+        // Step 6: Concatenate all buckets into the original array
+        int arrayIndex = 0;
+        foreach (var bucket in buckets)
+        {
+            foreach (var num in bucket)
+            {
+                array[arrayIndex++] = num;
+            }
         }
     }
 
-    private static List<int>[] CreateBuckets(int n)
+    // Initialization of  empty buckets
+    private static List<List<float>> CreateBuckets(int count)
     {
-        List<int>[] buckets = new List<int>[n];
-        for (int i = 0; i < n; i++)
+        var buckets = new List<List<float>>(count);
+        for (int i = 0; i < count; i++)
         {
-            buckets[i] = new List<int>();
+            buckets.Add(new List<float>());
         }
         return buckets;
     }
-
-    private static void DistributeToBuckets(int[] arr, List<int>[] buckets, int bucketCount, int min, int max)
-    {
-        foreach (int num in arr)
-        {
-            int bucketIndex = (int)((float)(num - min) / (max - min + 1) * bucketCount);
-            buckets[bucketIndex].Add(num);
-        }
-    }
-
-    private static void SortBuckets(List<int>[] buckets)
-    {
-        foreach (var bucket in buckets)
-        {
-            bucket.Sort();
-        }
-    }
-
-    private static int[] ConcatenateBuckets(List<int>[] buckets)
-    {
-        List<int> result = new List<int>();
-        foreach (var bucket in buckets)
-        {
-            result.AddRange(bucket);
-        }
-        return result.ToArray();
-    }
 }
+
