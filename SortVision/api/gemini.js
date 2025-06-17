@@ -1,33 +1,45 @@
 import fetch from 'node-fetch';
 
-export default async function handler(req, res) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+export const config = {
+  runtime: 'edge',
+  regions: ['iad1'], // US East (N. Virginia)
+};
 
+export default async function handler(req) {
   // Handle OPTIONS request
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return new Response(null, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
+        'Access-Control-Allow-Headers': 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+      }
+    });
   }
 
   // Only allow POST
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 
   try {
-    // Log request body for debugging
-    console.log('📥 Request body:', JSON.stringify(req.body, null, 2));
+    const body = await req.json();
+    console.log('📥 Request body:', JSON.stringify(body, null, 2));
 
-    const messages = req.body.messages;
+    const messages = body.messages;
 
     // ✅ Check if messages is a valid array
     if (!Array.isArray(messages)) {
       console.error('❌ Invalid messages format:', messages);
-      return res.status(400).json({ error: 'Expected prompt to be an array of messages' });
+      return new Response(JSON.stringify({ error: 'Expected prompt to be an array of messages' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
     // Log API key presence (not the actual key)
@@ -42,7 +54,7 @@ export default async function handler(req, res) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: messages // ✅ Must match Gemini format exactly
+          contents: messages
         }),
       }
     );
@@ -51,10 +63,13 @@ export default async function handler(req, res) {
     if (!result.ok) {
       const errorText = await result.text();
       console.error('❌ Gemini API error:', errorText);
-      return res.status(result.status).json({ 
+      return new Response(JSON.stringify({ 
         error: errorText,
         status: result.status,
         statusText: result.statusText
+      }), {
+        status: result.status,
+        headers: { 'Content-Type': 'application/json' }
       });
     }
 
@@ -64,14 +79,26 @@ export default async function handler(req, res) {
     console.log('✅ Gemini API response:', JSON.stringify(data, null, 2));
     
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No response';
-    res.status(200).json({ text });
+    return new Response(JSON.stringify({ text }), {
+      status: 200,
+      headers: { 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
   } catch (error) {
     console.error('❌ Server Error:', error.message);
     console.error('Stack trace:', error.stack);
-    res.status(500).json({ 
+    return new Response(JSON.stringify({ 
       error: error.message,
       stack: error.stack,
       type: error.constructor.name
+    }), {
+      status: 500,
+      headers: { 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
     });
   }
 }
