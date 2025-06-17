@@ -75,6 +75,13 @@ export default defineConfig({
     fs: {
       allow: [".."],
     },
+    proxy: {
+    '/api': {
+      target: 'http://localhost:3001',
+      changeOrigin: true,
+      secure: false,
+    },
+  },
     middlewares: [
       (req, res, next) => {
         if (req.url && req.url.endsWith(".jsx")) {

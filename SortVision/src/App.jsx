@@ -6,6 +6,10 @@ import { getAlgorithmMetaTags, getHomepageMetaTags, getContributionsMetaTags, ge
 import SEOContent from './components/SEOContent';
 import { FeedbackButton } from './components/feedback';
 import { SettingsButton } from './components/settings';
+import ChatAssistant from './components/ChatAssistant';
+import { AlgorithmStateProvider } from "./context/AlgorithmState";
+
+
 
 // Lazy load components that aren't needed immediately
 const SortingVisualizer = lazy(() => import('./components/sortingVisualizer/SortingVisualizer'));
@@ -46,46 +50,46 @@ const App = () => {
   const { algorithmName } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   // State for typing animation
   const [displayText, setDisplayText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
-  
+
   // State for active tab in SortingVisualizer
   const [activeTab, setActiveTab] = useState('controls');
-  
+
   // State for special modes (contributors, future modes)
   const [specialMode, setSpecialMode] = useState(null); // null = normal mode, 'contributors' = contributors mode
   const fullText = 'Interactive visualization of popular sorting algorithms';
-  
+
   // Extract tab and algorithm/contribution section from path-based routing
   const pathParts = location.pathname.split('/').filter(Boolean);
   const isAlgorithmPath = pathParts[0] === 'algorithms';
   const isContributionPath = pathParts[0] === 'contributions';
-  
+
   // Get tab from path
   let tabFromPath = null;
   let algorithmFromPath = algorithmName;
   let contributionSection = null;
-  
+
   if (isAlgorithmPath && pathParts.length >= 3) {
     tabFromPath = pathParts[1]; // config, details, metrics
     algorithmFromPath = pathParts[2];
   } else if (isAlgorithmPath && pathParts.length === 2) {
     algorithmFromPath = pathParts[1];
   }
-  
+
   if (isContributionPath && pathParts.length >= 2) {
     contributionSection = pathParts[1]; // overview, guide
   }
-  
+
   // Get the current algorithm name for SEO - memoized to prevent recalculation
   const currentAlgorithm = useMemo(() => algorithmFromPath || 'bubble', [algorithmFromPath]);
-  const algorithmTitle = useMemo(() => 
-    algorithms[currentAlgorithm]?.name || 'Sorting Algorithms', 
+  const algorithmTitle = useMemo(() =>
+    algorithms[currentAlgorithm]?.name || 'Sorting Algorithms',
     [currentAlgorithm]
   );
-  
+
   // Check if current URL is canonical and redirect if necessary
   useEffect(() => {
     if (!isCanonicalPath(location.pathname)) {
@@ -98,7 +102,7 @@ const App = () => {
   useEffect(() => {
     if (isContributionPath) {
       setSpecialMode('contributors');
-      
+
       // Handle contribution section routing
       if (contributionSection === 'guide') {
         setActiveTab('guide');
@@ -111,13 +115,13 @@ const App = () => {
       }
     } else {
       setSpecialMode(null);
-      
+
       // Handle path-based tab routing for algorithms
       if (tabFromPath && ['config', 'metrics', 'details'].includes(tabFromPath)) {
         // Map path-based tabs to internal tab names
         const tabMapping = {
           'config': 'controls',
-          'metrics': 'metrics', 
+          'metrics': 'metrics',
           'details': 'details'
         };
         setActiveTab(tabMapping[tabFromPath]);
@@ -134,7 +138,7 @@ const App = () => {
       }
     }
   }, [location.pathname, tabFromPath, isAlgorithmPath, isContributionPath, contributionSection, pathParts, navigate]);
-  
+
   // Memoize SEO metadata to prevent recalculation on each render
   const metaTags = useMemo(() => {
     if (location.pathname === '/contributions') {
@@ -143,10 +147,10 @@ const App = () => {
     if (algorithmName) {
       return getAlgorithmMetaTags(algorithmName);
     }
-    
+
     return getHomepageMetaTags();
   }, [algorithmName, location.pathname]);
-  
+
   // Generate schema markup - memoized to prevent recalculation
   const schemaMarkup = useMemo(() => {
     // Base schema for all pages
@@ -179,7 +183,7 @@ const App = () => {
       "screenshot": "https://sortvision.vercel.app/og-image.png",
       "featureList": [
         "Interactive Bubble Sort Visualization",
-        "Interactive Insertion Sort Visualization", 
+        "Interactive Insertion Sort Visualization",
         "Interactive Selection Sort Visualization",
         "Interactive Merge Sort Visualization",
         "Interactive Quick Sort Visualization",
@@ -255,7 +259,7 @@ const App = () => {
               }
             },
             {
-              "@type": "Course", 
+              "@type": "Course",
               "name": "Merge Sort Visualization",
               "description": "Interactive learning of Merge Sort algorithm",
               "url": "https://sortvision.vercel.app/algorithms/merge",
@@ -283,7 +287,7 @@ const App = () => {
             },
             {
               "@type": "Course",
-              "name": "Quick Sort Visualization", 
+              "name": "Quick Sort Visualization",
               "description": "Interactive learning of Quick Sort algorithm",
               "url": "https://sortvision.vercel.app/algorithms/quick",
               "provider": {
@@ -314,7 +318,7 @@ const App = () => {
 
       return [baseSchema, homepageSchema];
     }
-    
+
     // Add breadcrumbs for algorithm pages
     if (algorithmName) {
       const breadcrumb = {
@@ -335,79 +339,80 @@ const App = () => {
           }
         ]
       };
-      
+
       // Get algorithm-specific schema for better SEO relevance
       const algorithmSchema = getAlgorithmSchema(algorithmName, location.pathname);
-      
+
       // Return an array of schema objects for better structured data
       return [baseSchema, breadcrumb, algorithmSchema];
     }
-    
+
     return baseSchema;
   }, [algorithmName, algorithmTitle, location.pathname, metaTags.description, metaTags.keywords]);
-  
+
   // Memoize the current date to prevent recreation on each render
   const currentDate = useMemo(() => new Date().toISOString().split('T')[0], []);
-  
+
   // Generate clean canonical URL - memoized to prevent recalculation
   const canonicalUrl = useMemo(() => {
     return generateCanonicalUrl(location.pathname);
   }, [location.pathname]);
-  
+
   // Typing animation effect
   useEffect(() => {
     if (displayText.length < fullText.length) {
       const typingTimer = setTimeout(() => {
         setDisplayText(fullText.slice(0, displayText.length + 1));
       }, 50); // Adjust speed of typing here
-      
+
       return () => clearTimeout(typingTimer);
     } else {
       setIsTypingComplete(true);
     }
   }, [displayText, fullText]);
-  
+
   // Loading fallback for lazy loaded components
   const fallbackElement = useMemo(() => (
     <div className="flex justify-center items-center min-h-screen">
       <div className="text-emerald-400 font-mono">Loading...</div>
     </div>
   ), []);
-  
+
   return (
+    <AlgorithmStateProvider>
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-2 sm:p-5 overflow-hidden">
       {/* Mobile Detection Overlay - Lazy loaded */}
       <Suspense fallback={null}>
         <MobileOverlay />
       </Suspense>
-      
+
       {/* SEO Helmet */}
       <Helmet>
         <title>{metaTags.title}</title>
         <meta name="description" content={metaTags.description} />
         <meta name="keywords" content={metaTags.keywords} />
         <meta property="article:modified_time" content={currentDate} />
-        
+
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={metaTags.ogTitle} />
         <meta property="og:description" content={metaTags.ogDescription} />
         <meta property="og:updated_time" content={currentDate} />
-        
+
         {/* Twitter */}
         <meta name="twitter:url" content={canonicalUrl} />
         <meta name="twitter:title" content={metaTags.twitterTitle} />
         <meta name="twitter:description" content={metaTags.twitterDescription} />
-        
+
         {/* Schema.org markup for Google */}
         <script type="application/ld+json">
           {JSON.stringify(schemaMarkup)}
         </script>
       </Helmet>
-      
+
       <SettingsButton />
-      
+
       {/* Header with logo and title */}
       <Header>
         <div className="flex items-center gap-2 sm:gap-3">
@@ -426,25 +431,25 @@ const App = () => {
           <span className="text-slate-400 hover:text-white transition-colors duration-300">()</span>
         </div>
       </Header>
-      
+
       {/* Subtitle with typing animation */}
       <div className="text-center text-slate-400 font-mono mb-6 sm:mb-8 max-w-[90%] sm:max-w-md h-6 animate-fade-up animate-once animate-duration-[800ms] animate-delay-300">
         <span className="text-amber-400">//</span> {displayText}
         {!isTypingComplete && <span className="inline-block w-2 h-4 bg-amber-400 ml-1 animate-pulse" aria-hidden="true"></span>}
       </div>
-      
+
       {/* Main Sorting Visualizer Component - Lazy loaded */}
       <main className="animate-fade-up animate-once animate-duration-[1000ms] animate-delay-500 w-full max-w-4xl px-2 sm:px-4">
         <h2 className="text-xl sm:text-2xl font-mono font-bold text-emerald-400 mb-4 text-center">
           {algorithmName ? `${algorithmTitle} Visualization` : 'Sorting Algorithm Visualizer'}
         </h2>
         <Suspense fallback={fallbackElement}>
-          <SortingVisualizer 
-            initialAlgorithm={currentAlgorithm} 
+          <SortingVisualizer
+            initialAlgorithm={currentAlgorithm}
             activeTab={activeTab}
             onTabChange={(newTab) => {
               setActiveTab(newTab);
-              
+
               // Handle path-based routing for tab changes
               if (specialMode === 'contributors') {
                 // Handle contribution tab changes
@@ -471,16 +476,16 @@ const App = () => {
           />
         </Suspense>
       </main>
-      
+
       {/* Footer */}
       <Footer>
-        <span className="text-slate-600">/**</span> Built with 
-        <span className="inline-block animate-bounce animate-infinite animate-duration-[2000ms] mx-1" aria-hidden="true">❤️</span> 
+        <span className="text-slate-600">/**</span> Built with
+        <span className="inline-block animate-bounce animate-infinite animate-duration-[2000ms] mx-1" aria-hidden="true">❤️</span>
         by alienX <span className="text-slate-600">*/</span>
-        
+
         {/* Social links - Now wraps on mobile */}
         <div className="mt-2 flex flex-wrap items-center justify-center gap-2 sm:gap-4 px-2 sm:px-4">
-          <button 
+          <button
             onClick={() => {
               if (specialMode === 'contributors') {
                 // Return to normal mode - go to algorithms
@@ -500,14 +505,14 @@ const App = () => {
             {specialMode === 'contributors' ? (
               <Terminal className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
             ) : (
-            <Users className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
+              <Users className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
             )}
             <span>{specialMode === 'contributors' ? 'SortVision' : 'Contributors'}</span>
           </button>
-          
-          <a 
-            href="https://github.com/alienx5499/SortVision" 
-            target="_blank" 
+
+          <a
+            href="https://github.com/alienx5499/SortVision"
+            target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-emerald-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
             aria-label="View SortVision source code on GitHub"
@@ -515,10 +520,10 @@ const App = () => {
             <Github className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
             <span>GitHub</span>
           </a>
-          
-          <a 
-            href="https://www.linkedin.com/in/prabalpatra5499/" 
-            target="_blank" 
+
+          <a
+            href="https://www.linkedin.com/in/prabalpatra5499/"
+            target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-blue-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
             aria-label="Connect with the developer on LinkedIn"
@@ -526,20 +531,20 @@ const App = () => {
             <Linkedin className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
             <span>LinkedIn</span>
           </a>
-          
-          <a 
-             href="https://github.com/sponsors/alienx5499" 
-             target="_blank" 
-             rel="noopener noreferrer"
-             className="flex items-center gap-1 text-slate-400 hover:text-pink-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
-           >
-             <span className="text-base sm:text-lg">♥</span>
-             <span>Sponsor</span>
-           </a>
 
-          <a 
-            href="https://buymeacoffee.com/alienx5499" 
-            target="_blank" 
+          <a
+            href="https://github.com/sponsors/alienx5499"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-slate-400 hover:text-pink-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
+          >
+            <span className="text-base sm:text-lg">♥</span>
+            <span>Sponsor</span>
+          </a>
+
+          <a
+            href="https://buymeacoffee.com/alienx5499"
+            target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-yellow-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
             aria-label="Support the developer with a donation"
@@ -547,10 +552,10 @@ const App = () => {
             <span className="text-base sm:text-lg" aria-hidden="true">☕</span>
             <span>Buy me a coffee</span>
           </a>
-          
-          <a 
-            href="https://x.com/alienx5499" 
-            target="_blank" 
+
+          <a
+            href="https://x.com/alienx5499"
+            target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-slate-400 hover:text-sky-400 hover:scale-110 transition-all duration-300 text-[10px] sm:text-xs"
             aria-label="Follow the developer on X (Twitter)"
@@ -559,14 +564,22 @@ const App = () => {
             <span>X</span>
           </a>
         </div>
+
+            {/* Assistant Chatbot */}
+            <ChatAssistant />
+
+            {/* Other Components */}
+
+
       </Footer>
 
       {/* SEO Content for better search engine understanding */}
       <SEOContent algorithm={algorithmName} />
-      
+
       {/* Floating Feedback Button */}
       <FeedbackButton />
     </div>
+  </AlgorithmStateProvider>
   );
 };
 
