@@ -268,8 +268,29 @@ class AudioEngine {
   }
 
   playAlgorithmSelectSound() {
-    const { frequency, type, duration } = soundEffects.algorithmSelect;
-    this.playSound(frequency, type, duration);
+    this.playSound(soundEffects.complete.frequencies[0], 'sine', 0.1);
+  }
+
+  playTypingSound() {
+    if (!this.audioContext || this.isMuted || !this.isAudioEnabled || this.audioContext.state !== 'running') {
+      return;
+    }
+
+    try {
+      const audio = new Audio('/among-us-all-vote-out-typing.mp3');
+      const source = this.audioContext.createMediaElementSource(audio);
+      const gainNode = this.audioContext.createGain();
+      gainNode.gain.value = this.volume * 0.5; // Reduce volume for typing sound
+      
+      source.connect(gainNode);
+      gainNode.connect(this.audioContext.destination);
+      
+      audio.play().catch(error => {
+        console.error('AudioEngine: Error playing typing sound:', error);
+      });
+    } catch (error) {
+      console.error('AudioEngine: Error setting up typing sound:', error);
+    }
   }
 
   closeAudio() {

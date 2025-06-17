@@ -120,6 +120,12 @@ export const useAudio = () => {
     }
   }, [isAudioEnabled]);
 
+  const playTypingSound = useCallback(() => {
+    if (isAudioEnabled) {
+      audioEngine.playTypingSound();
+    }
+  }, [isAudioEnabled]);
+
   return {
     setVolume,
     toggleMute,
@@ -132,6 +138,7 @@ export const useAudio = () => {
     setMaxArrayValue,
     playCategoryClickSound,
     playAlgorithmSelectSound,
+    playTypingSound,
     isMuted,
     volume,
     isAudioEnabled,

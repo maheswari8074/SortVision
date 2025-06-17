@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { AssistantEngine } from "@/assistant/assistantEngine";
 import { useAlgorithmState } from "@/context/AlgorithmState";
+import { useAudio } from "@/hooks/useAudio";
 import {
     Card,
     CardHeader,
@@ -17,6 +18,7 @@ export default function ChatAssistant() {
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState([]);
     const { getContextObject, addToHistory } = useAlgorithmState();
+    const { playTypingSound } = useAudio();
 
     const messagesEndRef = useRef(null);
     const assistantRef = useRef(null);
@@ -47,10 +49,17 @@ export default function ChatAssistant() {
             let displayed = "";
             const full = result.content;
             let i = 0;
+            let lastTypingSound = 0;
 
             setMessages((prev) => [...prev, { role: "model", content: "" }]);
 
             const interval = setInterval(() => {
+                const now = Date.now();
+                if (now - lastTypingSound >= 100) { // Play sound every 100ms
+                    playTypingSound();
+                    lastTypingSound = now;
+                }
+
                 displayed += full[i];
                 i++;
 
