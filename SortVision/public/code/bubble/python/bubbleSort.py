@@ -16,6 +16,22 @@ def bubble_sort(arr: List[int]) -> List[int]:
 
     Time Complexity: O(n^2) in worst and average cases, O(n) in best case (already sorted)
     Space Complexity: O(1) as it's an in-place sorting algorithm
+
+    Examples:
+        >>> my_list = [64, 34, 25, 12, 22, 11, 90]
+        >>> bubble_sort(my_list)
+        >>> print(my_list)
+        [11, 12, 22, 25, 34, 64, 90]
+
+        >>> empty_list = []
+        >>> bubble_sort(empty_list)
+        >>> print(empty_list)
+        []
+
+        >>> sorted_list = [1, 2, 3]
+        >>> bubble_sort(sorted_list)
+        >>> print(sorted_list)
+        [1, 2, 3]
     """
     n = len(arr)
 
