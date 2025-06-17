@@ -18,14 +18,21 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const messages = req.body.messages;
-
-  // ✅ Check if messages is a valid array
-  if (!Array.isArray(messages)) {
-    return res.status(400).json({ error: 'Expected prompt to be an array of messages' });
-  }
-
   try {
+    // Log request body for debugging
+    console.log('📥 Request body:', JSON.stringify(req.body, null, 2));
+
+    const messages = req.body.messages;
+
+    // ✅ Check if messages is a valid array
+    if (!Array.isArray(messages)) {
+      console.error('❌ Invalid messages format:', messages);
+      return res.status(400).json({ error: 'Expected prompt to be an array of messages' });
+    }
+
+    // Log API key presence (not the actual key)
+    console.log('🔑 API Key present:', !!process.env.VITE_GEMINI_API_KEY);
+
     // Optional: Debug log to verify request body
     console.log('🟢 Gemini Request Body:', JSON.stringify({ contents: messages }, null, 2));
 
@@ -44,14 +51,27 @@ export default async function handler(req, res) {
     if (!result.ok) {
       const errorText = await result.text();
       console.error('❌ Gemini API error:', errorText);
-      return res.status(result.status).json({ error: errorText });
+      return res.status(result.status).json({ 
+        error: errorText,
+        status: result.status,
+        statusText: result.statusText
+      });
     }
 
     const data = await result.json();
+    
+    // Log successful response
+    console.log('✅ Gemini API response:', JSON.stringify(data, null, 2));
+    
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No response';
     res.status(200).json({ text });
   } catch (error) {
-    console.error('❌ Server Error:', error);
-    res.status(500).json({ error: error.message });
+    console.error('❌ Server Error:', error.message);
+    console.error('Stack trace:', error.stack);
+    res.status(500).json({ 
+      error: error.message,
+      stack: error.stack,
+      type: error.constructor.name
+    });
   }
 }
