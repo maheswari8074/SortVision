@@ -111,13 +111,18 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
         <div className="flex flex-col sm:flex-row gap-4 mb-6 relative z-10">
           {/* Search Input */}
           <div className="flex-1">
-            <label className="font-mono text-xs text-slate-400 mb-2 block flex items-center">
+            <label 
+              htmlFor="participant-search" 
+              className="font-mono text-xs text-slate-400 mb-2 block flex items-center"
+            >
               <Search className="mr-2 h-3 w-3 text-yellow-400" />
               search participants
             </label>
             <div className="relative">
               <input
                 type="text"
+                id="participant-search"
+                name="participant-search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search by name or GitHub..."
@@ -130,11 +135,15 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
 
           {/* Filter Selector */}
           <div className="flex-1 sm:w-48">
-            <label className="font-mono text-xs text-slate-400 mb-2 block flex items-center">
+            <label 
+              htmlFor="category-filter" 
+              className="font-mono text-xs text-slate-400 mb-2 block flex items-center"
+            >
               <Filter className="mr-2 h-3 w-3 text-yellow-400" />
               filter by category
             </label>
             <Select
+              id="category-filter"
               value={filter}
               onValueChange={setFilter}
               disabled={loading || isLoading}
