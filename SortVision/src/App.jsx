@@ -1,3 +1,4 @@
+
 import React, {
   useState,
   useEffect,
@@ -24,6 +25,7 @@ import { FeedbackButton } from "./components/feedback";
 import { SettingsButton } from "./components/settings";
 import Joyride from 'react-joyride';
 import StartTutorialButton from "./components/Tutorial/StartTutorialButton";
+
 
 // Lazy load components that aren't needed immediately
 const SortingVisualizer = lazy(() =>
@@ -72,6 +74,7 @@ const App = () => {
   const [isTypingComplete, setIsTypingComplete] = useState(false);
 
   // State for active tab in SortingVisualizer
+
   const [activeTab, setActiveTab] = useState("controls");
 
   // State for special modes (contributors, future modes)
@@ -82,6 +85,7 @@ const App = () => {
   const pathParts = location.pathname.split("/").filter(Boolean);
   const isAlgorithmPath = pathParts[0] === "algorithms";
   const isContributionPath = pathParts[0] === "contributions";
+
 
   // Get tab from path
   let tabFromPath = null;
@@ -100,12 +104,14 @@ const App = () => {
   }
 
   // Get the current algorithm name for SEO - memoized to prevent recalculation
+
   const currentAlgorithm = useMemo(
     () => algorithmFromPath || "bubble",
     [algorithmFromPath]
   );
   const algorithmTitle = useMemo(
     () => algorithms[currentAlgorithm]?.name || "Sorting Algorithms",
+
     [currentAlgorithm]
   );
 
@@ -123,7 +129,9 @@ const App = () => {
   // Handle routing and tab state management
   useEffect(() => {
     if (isContributionPath) {
+
       setSpecialMode("contributors");
+
 
       // Handle contribution section routing
       if (contributionSection === "guide") {
@@ -147,9 +155,11 @@ const App = () => {
       ) {
         // Map path-based tabs to internal tab names
         const tabMapping = {
+
           config: "controls",
           metrics: "metrics",
           details: "details",
+
         };
         setActiveTab(tabMapping[tabFromPath]);
       } else if (isAlgorithmPath && pathParts.length === 2) {
@@ -173,6 +183,7 @@ const App = () => {
         setActiveTab("controls"); // Default tab
       }
     }
+
   }, [
     location.pathname,
     tabFromPath,
@@ -182,6 +193,7 @@ const App = () => {
     pathParts,
     navigate,
   ]);
+
 
   // Memoize SEO metadata to prevent recalculation on each render
   const metaTags = useMemo(() => {
@@ -304,10 +316,12 @@ const App = () => {
             },
             {
               "@type": "Course",
+
               name: "Merge Sort Visualization",
               description: "Interactive learning of Merge Sort algorithm",
               url: "https://sortvision.vercel.app/algorithms/merge",
               provider: {
+
                 "@type": "Organization",
                 name: "SortVision",
                 url: "https://sortvision.vercel.app",
@@ -331,10 +345,12 @@ const App = () => {
             },
             {
               "@type": "Course",
+
               name: "Quick Sort Visualization",
               description: "Interactive learning of Quick Sort algorithm",
               url: "https://sortvision.vercel.app/algorithms/quick",
               provider: {
+
                 "@type": "Organization",
                 name: "SortVision",
                 url: "https://sortvision.vercel.app",
@@ -385,16 +401,19 @@ const App = () => {
       };
 
       // Get algorithm-specific schema for better SEO relevance
+
       const algorithmSchema = getAlgorithmSchema(
         algorithmName,
         location.pathname
       );
+
 
       // Return an array of schema objects for better structured data
       return [baseSchema, breadcrumb, algorithmSchema];
     }
 
     return baseSchema;
+
   }, [
     algorithmName,
     algorithmTitle,
@@ -405,6 +424,7 @@ const App = () => {
 
   // Memoize the current date to prevent recreation on each render
   const currentDate = useMemo(() => new Date().toISOString().split("T")[0], []);
+
 
   // Generate clean canonical URL - memoized to prevent recalculation
   const canonicalUrl = useMemo(() => {
@@ -425,6 +445,7 @@ const App = () => {
   }, [displayText, fullText]);
 
   // Loading fallback for lazy loaded components
+
   const fallbackElement = useMemo(
     () => (
       <div className="flex justify-center items-center min-h-screen">
@@ -434,7 +455,9 @@ const App = () => {
     []
   );
 
+
   return (
+    <AlgorithmStateProvider>
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-2 sm:p-5 overflow-hidden">
       {/* Mobile Detection Overlay - Lazy loaded */}
       <Suspense fallback={null}>
@@ -458,10 +481,12 @@ const App = () => {
         {/* Twitter */}
         <meta name="twitter:url" content={canonicalUrl} />
         <meta name="twitter:title" content={metaTags.twitterTitle} />
+
         <meta
           name="twitter:description"
           content={metaTags.twitterDescription}
         />
+
 
         {/* Schema.org markup for Google */}
         <script type="application/ld+json">
@@ -564,6 +589,7 @@ const App = () => {
       {/* Footer */}
       <Footer>
         <span className="text-slate-600">/**</span> Built with
+
         <span
           className="inline-block animate-bounce animate-infinite animate-duration-[2000ms] mx-1"
           aria-hidden="true"
@@ -571,6 +597,7 @@ const App = () => {
           ❤️
         </span>
         by alienX <span className="text-slate-600">*/</span>
+
         {/* Social links - Now wraps on mobile */}
         <div className="mt-2 flex flex-wrap items-center justify-center gap-2 sm:gap-4 px-2 sm:px-4">
           <button
@@ -660,6 +687,13 @@ const App = () => {
             <span>X</span>
           </a>
         </div>
+
+            {/* Assistant Chatbot */}
+            <ChatAssistant />
+
+            {/* Other Components */}
+
+
       </Footer>
 
       {/* SEO Content for better search engine understanding */}
@@ -670,6 +704,7 @@ const App = () => {
 
       <StartTutorialButton />
     </div>
+  </AlgorithmStateProvider>
   );
 };
 

@@ -45,6 +45,9 @@ const AlgorithmDetails = ({ algorithm }) => {
             case 'golang': return 'go';
             case 'rust': return 'rs';
             case 'csharp': return 'cs';
+            case 'dart': return 'dart';
+            case 'kotlin': return 'kt';
+            case 'swift': return 'swift';
             case 'pseudocode': return 'txt';
             default: return 'txt';
         }
@@ -180,6 +183,12 @@ const AlgorithmDetails = ({ algorithm }) => {
                 return '\n// Test\nconst arr = [5, 2, 9, 1];\nbubbleSort(arr);\nconsole.assert(JSON.stringify(arr) === JSON.stringify([1,2,5,9]));\n';
             case 'java':
                 return '\n// Test\npublic static void main(String[] args) {\n    int[] arr = {5,2,9,1};\n    bubbleSort(arr);\n    assert java.util.Arrays.equals(arr, new int[]{1,2,5,9});\n}\n';
+            case 'dart':
+                return '\n// Test\nvoid main() {\n  List<int> arr = [5, 2, 9, 1];\n  bubbleSort(arr);\n  assert(listEquals(arr, [1, 2, 5, 9]));\n}\n';
+            case 'kotlin':
+                return '\n// Test\nfun main() {\n    val arr = intArrayOf(5, 2, 9, 1)\n    bubbleSort(arr)\n    assert(arr.contentEquals(intArrayOf(1, 2, 5, 9)))\n}\n';
+            case 'swift':
+                return '\n// Test\nvar arr = [5, 2, 9, 1]\nbubbleSort(&arr)\nassert(arr == [1, 2, 5, 9])\n';
             case 'pseudocode':
                 return '\n// Test\narray = [5, 2, 9, 1]\nbubbleSort(array)\nassert array == [1, 2, 5, 9]\n';
             default:
