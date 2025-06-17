@@ -63,15 +63,18 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
         if (!issue.pull_request) { // Only count actual issues, not PRs
           const labels = issue.labels.map(label => label.name);
           
-          if (labels.includes('Beginner')) {
-            beginnerIssues++;
-            totalPoints += POINTS_CONFIG.Beginner;
-          } else if (labels.includes('Intermediate')) {
-            intermediateIssues++;
-            totalPoints += POINTS_CONFIG.Intermediate;
-          } else if (labels.includes('Advanced') || labels.includes('Advance')) {
-            advancedIssues++;
-            totalPoints += POINTS_CONFIG.Advanced;
+          // Only count issues that have the SSOC S4 label
+          if (labels.includes('SSOC S4')) {
+            if (labels.includes('Beginner')) {
+              beginnerIssues++;
+              totalPoints += POINTS_CONFIG.Beginner;
+            } else if (labels.includes('Intermediate')) {
+              intermediateIssues++;
+              totalPoints += POINTS_CONFIG.Intermediate;
+            } else if (labels.includes('Advanced') || labels.includes('Advance')) {
+              advancedIssues++;
+              totalPoints += POINTS_CONFIG.Advanced;
+            }
           }
         }
       });
@@ -141,25 +144,27 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
   }, []);
 
   // Filter participants based on selected filter and search term
-  const filteredParticipants = participants.filter(participant => {
-    const matchesSearch = searchTerm === '' || (
-      participant.contributorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      participant.githubId.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    
-    switch (filter) {
-      case 'top10':
-        return matchesSearch && participants.indexOf(participant) < 10;
-      case 'advanced':
-        return matchesSearch && participant.advancedIssues > 0;
-      case 'intermediate':
-        return matchesSearch && participant.intermediateIssues > 0;
-      case 'beginner':
-        return matchesSearch && participant.beginnerIssues > 0;
-      default:
-        return matchesSearch;
-    }
-  });
+  const filteredParticipants = participants
+    .filter(participant => participant.totalPoints > 0) // First filter out zero-point participants
+    .filter(participant => {
+      const matchesSearch = searchTerm === '' || (
+        participant.contributorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        participant.githubId.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      
+      switch (filter) {
+        case 'top10':
+          return matchesSearch && participants.indexOf(participant) < 10;
+        case 'advanced':
+          return matchesSearch && participant.advancedIssues > 0;
+        case 'intermediate':
+          return matchesSearch && participant.intermediateIssues > 0;
+        case 'beginner':
+          return matchesSearch && participant.beginnerIssues > 0;
+        default:
+          return matchesSearch;
+      }
+    });
 
   const getTopThreeStyles = (index) => {
     switch(index) {
@@ -450,11 +455,11 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                       </td>
                       <td className="px-2 py-4 text-center">
                         <div 
-                          onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3ABeginner`, '_blank')}
+                          onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3ABeginner+label%3A%22SSOC+S4%22`, '_blank')}
                           className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-green-500/10 active:bg-green-500/20 cursor-pointer transition-all duration-200"
                           role="button"
                           tabIndex={0}
-                          onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3ABeginner`, '_blank')}
+                          onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3ABeginner+label%3A%22SSOC+S4%22`, '_blank')}
                         >
                           <span className="beginner-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
                             {participant.beginnerIssues}
@@ -464,11 +469,11 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                       </td>
                       <td className="px-2 py-4 text-center">
                         <div 
-                          onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AIntermediate`, '_blank')}
+                          onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AIntermediate+label%3A%22SSOC+S4%22`, '_blank')}
                           className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-yellow-500/10 active:bg-yellow-500/20 cursor-pointer transition-all duration-200"
                           role="button"
                           tabIndex={0}
-                          onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AIntermediate`, '_blank')}
+                          onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AIntermediate+label%3A%22SSOC+S4%22`, '_blank')}
                         >
                           <span className="intermediate-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
                             {participant.intermediateIssues}
@@ -478,11 +483,11 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                       </td>
                       <td className="px-2 py-4 text-center">
                         <div 
-                          onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AAdvance`, '_blank')}
+                          onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AAdvance+label%3A%22SSOC+S4%22`, '_blank')}
                           className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-red-500/10 active:bg-red-500/20 cursor-pointer transition-all duration-200"
                           role="button"
                           tabIndex={0}
-                          onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AAdvance`, '_blank')}
+                          onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AAdvance+label%3A%22SSOC+S4%22`, '_blank')}
                         >
                           <span className="advanced-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
                             {participant.advancedIssues}
