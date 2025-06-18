@@ -18,4 +18,114 @@ export const GITHUB_API_CONFIG = {
   BASE_URL: 'https://api.github.com',
   REPO_OWNER: import.meta.env.VITE_GITHUB_REPO_OWNER,
   REPO_NAME: import.meta.env.VITE_GITHUB_REPO_NAME
+};
+
+export const BADGE_CONFIG = {
+  // Rank badges based on total points
+  NOVICE: {
+    minPoints: 0,
+    maxPoints: 50,
+    icon: 'Sparkles',
+    tooltip: 'Novice - Taking First Steps',
+    color: 'text-emerald-300'
+  },
+  EXPLORER: {
+    minPoints: 51,
+    maxPoints: 100,
+    icon: 'Compass',
+    tooltip: 'Explorer - Discovering New Challenges',
+    color: 'text-cyan-400'
+  },
+  SKILLED: {
+    minPoints: 101,
+    maxPoints: 200,
+    icon: 'Rocket',
+    tooltip: 'Skilled - Rising Through Ranks',
+    color: 'text-yellow-400'
+  },
+  EXPERT: {
+    minPoints: 201,
+    maxPoints: 300,
+    icon: 'Diamond',
+    tooltip: 'Expert - Valuable Contributor',
+    color: 'text-purple-400'
+  },
+  MASTER: {
+    minPoints: 301,
+    maxPoints: 400,
+    icon: 'Shield',
+    tooltip: 'Master - Elite Guardian',
+    color: 'text-blue-500'
+  },
+  GRANDMASTER: {
+    minPoints: 401,
+    maxPoints: 500,
+    icon: 'Crown',
+    tooltip: 'Grandmaster - Supreme Leader',
+    color: 'text-orange-500'
+  },
+  LEGENDARY: {
+    minPoints: 501,
+    maxPoints: Infinity,
+    icon: 'Sun',
+    tooltip: 'Legendary - Radiant Force',
+    color: 'text-amber-500'
+  },
+  // Achievement badges based on issue counts
+  BEGINNER_MASTER: {
+    condition: 'beginnerIssues10Plus',
+    icon: 'GraduationCap',
+    tooltip: 'Beginner Master - Solved 10+ beginner issues',
+    color: 'text-green-400'
+  },
+  INTERMEDIATE_EXPERT: {
+    condition: 'intermediateIssues5Plus',
+    icon: 'Medal',
+    tooltip: 'Intermediate Expert - Solved 5+ intermediate issues',
+    color: 'text-yellow-500'
+  },
+  ADVANCED_ACHIEVER: {
+    condition: 'advancedIssues1Plus',
+    icon: 'Trophy',
+    tooltip: 'Advanced Achiever - Solved advanced level issues',
+    color: 'text-red-400'
+  },
+  // Special achievement badges
+  SPEED_DEMON: {
+    condition: 'completedIn24Hours',
+    icon: 'Zap',
+    tooltip: 'Speed Demon - Completed tasks within 24 hours',
+    color: 'text-yellow-300'
+  },
+  BUG_HUNTER: {
+    condition: 'foundBugs',
+    icon: 'Bug',
+    tooltip: 'Bug Hunter - Found and reported critical bugs',
+    color: 'text-red-400'
+  },
+  TEAM_PLAYER: {
+    condition: 'helpedOthers',
+    icon: 'Users',
+    tooltip: 'Team Player - Helped other contributors',
+    color: 'text-indigo-400'
+  },
+  // Additional achievement badges
+  CONSISTENT_CONTRIBUTOR: {
+    condition: 'hasStreakOfFiveDays',
+    icon: 'Calendar',
+    tooltip: 'Consistent Contributor - Active for 5+ consecutive days',
+    color: 'text-blue-300'
+  },
+  CODE_REVIEWER: {
+    condition: 'hasReviewedPRs',
+    icon: 'CheckCircle',
+    tooltip: 'Code Reviewer - Helped review pull requests',
+    color: 'text-purple-300'
+  },
+  DOCUMENTATION_HERO: {
+    condition: 'improvedDocs',
+    icon: 'FileText',
+    tooltip: 'Documentation Hero - Improved project documentation',
+    color: 'text-teal-400'
+  }
 }; 

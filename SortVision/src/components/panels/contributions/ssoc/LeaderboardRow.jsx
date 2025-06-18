@@ -1,5 +1,11 @@
 import React from 'react';
-import { Crown, ExternalLink, Link2, User } from 'lucide-react';
+import { 
+  Crown, ExternalLink, Link2, User, Sparkles, Compass, Rocket, Diamond, Shield,
+  Sun, GraduationCap, Medal, Trophy, Calendar, CheckCircle, FileText,
+  Zap, Bug, Users
+} from 'lucide-react';
+import * as Tooltip from '@radix-ui/react-tooltip';
+import { BADGE_CONFIG } from './config';
 
 const getTopThreeStyles = (index) => {
   switch(index) {
@@ -27,6 +33,100 @@ const getRankStyles = (index) => {
   }
 };
 
+const BadgeIcon = ({ iconName, className }) => {
+  const icons = {
+    Sparkles,
+    Compass,
+    Rocket,
+    Diamond,
+    Shield,
+    Crown,
+    Sun,
+    GraduationCap,
+    Medal,
+    Trophy,
+    Calendar,
+    CheckCircle,
+    FileText,
+    Zap,
+    Bug,
+    Users
+  };
+  const IconComponent = icons[iconName];
+  return IconComponent ? <IconComponent className={className} /> : null;
+};
+
+const Badge = ({ config }) => {
+  console.log('Rendering badge with config:', config);
+  return (
+    <Tooltip.Provider>
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>
+          <div className={`group relative inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-800/50 hover:bg-gray-800 transition-all duration-200 cursor-help ${config.color}`}>
+            <BadgeIcon iconName={config.icon} className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-200"></div>
+          </div>
+        </Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Content
+            className="data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade select-none rounded-md bg-gray-900 px-4 py-2.5 text-sm leading-none text-white shadow-md will-change-[transform,opacity]"
+            sideOffset={5}
+          >
+            {config.tooltip}
+            <Tooltip.Arrow className="fill-gray-900" />
+          </Tooltip.Content>
+        </Tooltip.Portal>
+      </Tooltip.Root>
+    </Tooltip.Provider>
+  );
+};
+
+const getBadges = (points, achievements = {}, participant) => {
+  const badges = [];
+  
+  // Add rank badge based on points
+  Object.values(BADGE_CONFIG).forEach(config => {
+    if ('minPoints' in config && points >= config.minPoints && points <= config.maxPoints) {
+      badges.push(config);
+    }
+  });
+
+  // Add achievement badges based on issue counts
+  if (participant.beginnerIssues >= 10) {
+    badges.push(BADGE_CONFIG.BEGINNER_MASTER);
+  }
+  if (participant.intermediateIssues >= 5) {
+    badges.push(BADGE_CONFIG.INTERMEDIATE_EXPERT);
+  }
+  if (participant.advancedIssues >= 1) {
+    badges.push(BADGE_CONFIG.ADVANCED_ACHIEVER);
+  }
+
+  // Add special achievement badges
+  if (achievements.completedIn24Hours) {
+    badges.push(BADGE_CONFIG.SPEED_DEMON);
+  }
+  if (achievements.foundBugs) {
+    badges.push(BADGE_CONFIG.BUG_HUNTER);
+  }
+  if (achievements.helpedOthers) {
+    badges.push(BADGE_CONFIG.TEAM_PLAYER);
+  }
+
+  // Add additional achievement badges
+  if (achievements.hasStreakOfFiveDays) {
+    badges.push(BADGE_CONFIG.CONSISTENT_CONTRIBUTOR);
+  }
+  if (achievements.hasReviewedPRs) {
+    badges.push(BADGE_CONFIG.CODE_REVIEWER);
+  }
+  if (achievements.improvedDocs) {
+    badges.push(BADGE_CONFIG.DOCUMENTATION_HERO);
+  }
+
+  return badges;
+};
+
 const LeaderboardRow = ({ participant, index }) => {
   const handleIssueClick = (difficulty) => {
     const label = difficulty === 'Advanced' ? 'Advance' : difficulty;
@@ -35,6 +135,8 @@ const LeaderboardRow = ({ participant, index }) => {
       '_blank'
     );
   };
+
+  const badges = getBadges(participant.totalPoints, participant.achievements, participant);
 
   return (
     <tr 
@@ -72,7 +174,7 @@ const LeaderboardRow = ({ participant, index }) => {
             )}
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-200"></div>
           </a>
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-2">
             <a 
               href={`https://github.com/${participant.githubId}`}
               target="_blank"
@@ -87,6 +189,11 @@ const LeaderboardRow = ({ participant, index }) => {
                 @{participant.githubId}
               </div>
             </a>
+            <div className="flex items-center gap-1.5">
+              {badges.map((badge, idx) => (
+                <Badge key={idx} config={badge} />
+              ))}
+            </div>
           </div>
         </div>
       </td>
