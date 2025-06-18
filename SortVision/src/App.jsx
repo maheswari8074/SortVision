@@ -1,3 +1,14 @@
+import React, { useState, useEffect, lazy, Suspense, useMemo, memo } from 'react';
+import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { Terminal, Code, Github, Linkedin, X, Users } from 'lucide-react';
+import { getAlgorithmMetaTags, getHomepageMetaTags, getContributionsMetaTags, getSSOCMetaTags, getAlgorithmSchema, algorithms, generateCanonicalUrl, isCanonicalPath } from './utils/seo';
+import SEOContent from './components/SEOContent';
+import { FeedbackButton } from './components/feedback';
+import { SettingsButton } from './components/settings';
+import './styles/animation.css';
+import ChatAssistant from './components/ChatAssistant';
+import { AlgorithmStateProvider } from "./context/AlgorithmState";
 
 import React, {
   useState,

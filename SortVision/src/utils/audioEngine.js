@@ -5,8 +5,8 @@ class AudioEngine {
     this.audioContext = null;
     this.masterGain = null;
     this.isMuted = false;
-    this.volume = 0.3; // Reduced default volume
-    this.isAudioEnabled = false;
+    this.volume = 1;
+    this.isAudioEnabled = false; // Start as disabled
     this.maxArrayValue = 100;
     this.lastPlayTime = 0;
     this.minPlayInterval = 50; // Minimum time between sounds in milliseconds
@@ -14,26 +14,29 @@ class AudioEngine {
     console.log('AudioEngine: Initializing instance.');
   }
 
-  init() {
-    if (!this.audioContext) {
-      try {
-        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        this.masterGain = this.audioContext.createGain();
-        this.masterGain.connect(this.audioContext.destination);
-        this.setVolume(this.volume);
-        console.log('AudioEngine: AudioContext initialized successfully. State:', this.audioContext.state, 'Master gain connected.');
-      } catch (error) {
-        console.error('AudioEngine: Failed to initialize AudioContext:', error);
-      }
-    } else {
-      console.log('AudioEngine: AudioContext already initialized. State:', this.audioContext.state);
+  initAudio() {
+    if (this.audioContext) {
+      console.log('AudioEngine: Audio context already initialized');
+      return;
+    }
+
+    try {
+      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      this.masterGain = this.audioContext.createGain();
+      this.masterGain.connect(this.audioContext.destination);
+      console.log('AudioEngine: Successfully initialized audio context');
+      
+      // After initialization, try to enable audio
+      this.enableAudio();
+    } catch (error) {
+      console.error('AudioEngine: Failed to initialize audio context:', error);
     }
   }
 
   enableAudio() {
     if (!this.audioContext) {
       console.log('AudioEngine: enableAudio called without AudioContext. Initializing...');
-      this.init();
+      this.initAudio();
       if (!this.audioContext) {
         console.error('AudioEngine: Failed to initialize AudioContext during enableAudio. Aborting.');
         this.isAudioEnabled = false;
@@ -47,40 +50,34 @@ class AudioEngine {
       this.audioContext.resume().then(() => {
         this.isAudioEnabled = true;
         console.log('AudioEngine: AudioContext resumed successfully. State:', this.audioContext.state, 'isAudioEnabled:', this.isAudioEnabled);
-        if (this.masterGain && this.masterGain.context.destination) {
-          // Only try to reconnect if it's not already connected to destination
-          // This check is a bit tricky, but generally, if masterGain.context.destination is null,
-          // it means it's not connected to the audio context's output. 
-          // A more robust check might involve checking for active connections, but for simplicity, we'll assume this is sufficient for now.
-          // If issues persist, we might need a more sophisticated connection management.
-          // For now, removing the !this.masterGain.context.destination check as it's not reliable.
-          // We assume if masterGain exists, it should be connected.
-          // Reconnecting every time resume is called is safer if connections can drop.
+        
+        // Ensure master gain is connected
+        if (this.masterGain) {
           try {
             this.masterGain.connect(this.audioContext.destination);
-            console.log('AudioEngine: Master gain reconnected to destination after resume (safeguard).');
+            console.log('AudioEngine: Master gain reconnected to destination after resume.');
           } catch (e) {
-            console.warn('AudioEngine: Could not reconnect masterGain, it might already be connected or an error occurred:', e);
+            console.warn('AudioEngine: Could not reconnect masterGain, it might already be connected:', e);
           }
         }
+        
         // Play a very short, distinct sound to confirm audio is working
-        this._playConfirmationSound(); 
+        this._playConfirmationSound();
       }).catch(error => {
         console.error('AudioEngine: Error resuming AudioContext:', error);
         this.isAudioEnabled = false;
-        console.log('AudioEngine: isAudioEnabled set to false due to resume error.', this.isAudioEnabled);
+        console.log('AudioEngine: isAudioEnabled set to false due to resume error.');
       });
     } else if (this.audioContext.state === 'running') {
       this.isAudioEnabled = true;
-      console.log('AudioEngine: AudioContext is already running. State:', this.audioContext.state, 'isAudioEnabled:', this.isAudioEnabled);
-      // Play confirmation sound if already running and not already played
-      if (this.lastPlayTime === 0) { // Check if this is the very first enable
+      console.log('AudioEngine: AudioContext is already running. State:', this.audioContext.state);
+      // Play confirmation sound if this is the first enable
+      if (this.lastPlayTime === 0) {
         this._playConfirmationSound();
       }
     } else {
-      console.log('AudioEngine: AudioContext state is unexpected or not ready to enable:', this.audioContext.state);
+      console.log('AudioEngine: AudioContext state is unexpected:', this.audioContext.state);
       this.isAudioEnabled = false;
-      console.log('AudioEngine: isAudioEnabled set to false due to unexpected state.', this.isAudioEnabled);
     }
   }
 
@@ -272,24 +269,73 @@ class AudioEngine {
   }
 
   playTypingSound() {
+    console.log('AudioEngine: Attempting to play typing sound');
+    console.log('AudioEngine state:', {
+      contextState: this.audioContext?.state,
+      isMuted: this.isMuted,
+      isEnabled: this.isAudioEnabled,
+      volume: this.volume
+    });
+
+    if (!this.audioContext) {
+      console.log('AudioEngine: No audio context, initializing...');
+      this.initAudio();
+    }
+
+    if (this.audioContext.state === 'suspended') {
+      console.log('AudioEngine: Context suspended, resuming...');
+      this.audioContext.resume();
+    }
+
     if (!this.audioContext || this.isMuted || !this.isAudioEnabled || this.audioContext.state !== 'running') {
+      console.log('AudioEngine: Cannot play sound due to state');
       return;
     }
 
     try {
-      const audio = new Audio('/among-us-all-vote-out-typing.mp3');
-      const source = this.audioContext.createMediaElementSource(audio);
+      // Create oscillator for the key press sound
+      const oscillator = this.audioContext.createOscillator();
       const gainNode = this.audioContext.createGain();
-      gainNode.gain.value = this.volume * 0.5; // Reduce volume for typing sound
       
-      source.connect(gainNode);
-      gainNode.connect(this.audioContext.destination);
+      // Configure oscillator
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(800, this.audioContext.currentTime); // Higher frequency
+      oscillator.frequency.exponentialRampToValueAtTime(400, this.audioContext.currentTime + 0.05);
       
-      audio.play().catch(error => {
-        console.error('AudioEngine: Error playing typing sound:', error);
-      });
+      // Configure gain (volume envelope) - Increased volume
+      gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+      gainNode.gain.linearRampToValueAtTime(this.volume * 0.3, this.audioContext.currentTime + 0.01);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.05);
+      
+      // Connect nodes
+      oscillator.connect(gainNode);
+      gainNode.connect(this.masterGain);
+      
+      // Play sound
+      oscillator.start(this.audioContext.currentTime);
+      oscillator.stop(this.audioContext.currentTime + 0.05);
+      
+      // Add a subtle click sound with higher volume
+      const clickOsc = this.audioContext.createOscillator();
+      const clickGain = this.audioContext.createGain();
+      
+      clickOsc.type = 'square';
+      clickOsc.frequency.setValueAtTime(3000, this.audioContext.currentTime);
+      clickOsc.frequency.exponentialRampToValueAtTime(1500, this.audioContext.currentTime + 0.01);
+      
+      clickGain.gain.setValueAtTime(0, this.audioContext.currentTime);
+      clickGain.gain.linearRampToValueAtTime(this.volume * 0.15, this.audioContext.currentTime + 0.001);
+      clickGain.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.01);
+      
+      clickOsc.connect(clickGain);
+      clickGain.connect(this.masterGain);
+      
+      clickOsc.start(this.audioContext.currentTime);
+      clickOsc.stop(this.audioContext.currentTime + 0.01);
+      
+      console.log('AudioEngine: Successfully played typing sound');
     } catch (error) {
-      console.error('AudioEngine: Error setting up typing sound:', error);
+      console.error('AudioEngine: Error playing typing sound:', error);
     }
   }
 
