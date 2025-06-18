@@ -59,7 +59,7 @@ const ControlButtons = ({ generateNewArray, startSorting, stopSorting, isSorting
               variant="outline" 
               onClick={generateNewArray} 
               disabled={isSorting}
-              className="bg-slate-800/90 border-slate-700 text-emerald-400 hover:bg-slate-700 hover:text-emerald-300 font-mono flex items-center justify-center relative z-10 w-full group-hover/new:border-emerald-500/30 transition-all duration-300"
+              className="joyride-new-array bg-slate-800/90 border-slate-700 text-emerald-400 hover:bg-slate-700 hover:text-emerald-300 font-mono flex items-center justify-center relative z-10 w-full group-hover/new:border-emerald-500/30 transition-all duration-300"
               aria-label="Generate new array"
             >
               <RefreshCw className="mr-2 h-4 w-4 group-hover/new:animate-spin transition-all duration-300" style={{ animationDuration: '2s' }} />
@@ -74,7 +74,7 @@ const ControlButtons = ({ generateNewArray, startSorting, stopSorting, isSorting
             <Button 
               onClick={startSorting} 
               disabled={isSorting}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-mono flex items-center justify-center relative z-10 w-full group-hover/start:shadow-lg group-hover/start:shadow-emerald-600/20 transition-all duration-300"
+              className="joyride-start-sort bg-emerald-600 hover:bg-emerald-500 text-white font-mono flex items-center justify-center relative z-10 w-full group-hover/start:shadow-lg group-hover/start:shadow-emerald-600/20 transition-all duration-300"
               aria-label="Start sorting visualization"
             >
               <Play className="mr-2 h-4 w-4 group-hover/start:scale-110 transition-transform duration-300" />
@@ -90,7 +90,7 @@ const ControlButtons = ({ generateNewArray, startSorting, stopSorting, isSorting
               variant="destructive" 
               onClick={stopSorting} 
               disabled={!isSorting}
-              className="font-mono flex items-center justify-center relative z-10 w-full group-hover/stop:shadow-lg group-hover/stop:shadow-red-600/20 transition-all duration-300"
+              className="joyride-stop-sort font-mono flex items-center justify-center relative z-10 w-full group-hover/stop:shadow-lg group-hover/stop:shadow-red-600/20 transition-all duration-300"
               aria-label="Stop sorting visualization"
             >
               <Square className="mr-2 h-4 w-4 group-hover/stop:scale-110 transition-transform duration-300" />
