@@ -73,6 +73,14 @@ export default defineConfig({
     fs: {
       allow: [".."],
     },
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_URL || 'http://localhost:3000',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
     middlewares: [
       (req, res, next) => {
         if (req.url && req.url.endsWith(".jsx")) {

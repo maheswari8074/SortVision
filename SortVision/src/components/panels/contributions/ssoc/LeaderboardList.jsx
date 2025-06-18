@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Github, ExternalLink, Search, RefreshCw, Trophy, Filter, Crown, User, Link2 } from 'lucide-react';
+import { Github, ExternalLink, Search, RefreshCw, Trophy, Filter } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import LeaderboardRow from './LeaderboardRow';
+import { fetchLeaderboardData } from './githubService';
+import { FILTER_OPTIONS } from './config';
 
 /**
  * SSOC Leaderboard List Component
@@ -17,175 +20,48 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
  * - Responsive grid layout
  */
 const LeaderboardList = ({ loading = false, onRefresh }) => {
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState(FILTER_OPTIONS.ALL);
   const [searchTerm, setSearchTerm] = useState('');
   const [participants, setParticipants] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Points configuration
-  const POINTS_CONFIG = {
-    Beginner: 20,
-    Intermediate: 30,
-    Advanced: 40
-  };
-
-  // List of admins/maintainers to exclude
-  const EXCLUDED_USERS = ['alienx5499', 'dependabot[bot]', 'dependabot-preview[bot]'];
-
-  // Function to fetch GitHub data with authentication
-  const fetchGitHubData = async (endpoint) => {
-    const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
-    const headers = {
-      'Accept': 'application/vnd.github.v3+json',
-      ...(GITHUB_TOKEN && { 'Authorization': `Bearer ${GITHUB_TOKEN}` })
-    };
-    
-    const response = await fetch(`https://api.github.com${endpoint}`, { headers });
-    if (!response.ok) {
-      throw new Error(`GitHub API error: ${response.status}`);
-    }
-    return response.json();
-  };
-
-  // Function to fetch all closed issues for a participant
-  const fetchParticipantIssues = async (username) => {
-    try {
-      const issues = await fetchGitHubData(
-        `/repos/${import.meta.env.VITE_GITHUB_REPO_OWNER}/${import.meta.env.VITE_GITHUB_REPO_NAME}/issues?state=closed&assignee=${username}&per_page=100`
-      );
-
-      let beginnerIssues = 0;
-      let intermediateIssues = 0;
-      let advancedIssues = 0;
-      let totalPoints = 0;
-
-      issues.forEach(issue => {
-        if (!issue.pull_request) { // Only count actual issues, not PRs
-          const labels = issue.labels.map(label => label.name);
-          
-          if (labels.includes('Beginner')) {
-            beginnerIssues++;
-            totalPoints += POINTS_CONFIG.Beginner;
-          } else if (labels.includes('Intermediate')) {
-            intermediateIssues++;
-            totalPoints += POINTS_CONFIG.Intermediate;
-          } else if (labels.includes('Advanced') || labels.includes('Advance')) {
-            advancedIssues++;
-            totalPoints += POINTS_CONFIG.Advanced;
-          }
-        }
-      });
-
-      return {
-        beginnerIssues,
-        intermediateIssues,
-        advancedIssues,
-        totalPoints,
-        totalIssues: beginnerIssues + intermediateIssues + advancedIssues
-      };
-    } catch (error) {
-      console.error(`Error fetching issues for ${username}:`, error);
-      return {
-        beginnerIssues: 0,
-        intermediateIssues: 0,
-        advancedIssues: 0,
-        totalPoints: 0,
-        totalIssues: 0
-      };
-    }
-  };
-
-  // Function to fetch all participants and their data
-  const fetchLeaderboardData = async () => {
-    try {
-      setIsLoading(true);
-
-      // First, get all contributors
-      const contributors = await fetchGitHubData(
-        `/repos/${import.meta.env.VITE_GITHUB_REPO_OWNER}/${import.meta.env.VITE_GITHUB_REPO_NAME}/contributors?per_page=100`
-      );
-
-      // Filter out excluded users and map remaining contributors
-      const participantPromises = contributors
-        .filter(contributor => !EXCLUDED_USERS.includes(contributor.login.toLowerCase()))
-        .map(async (contributor) => {
-          const [profile, issueStats] = await Promise.all([
-            fetchGitHubData(`/users/${contributor.login}`),
-            fetchParticipantIssues(contributor.login)
-          ]);
-
-          return {
-            contributorName: profile.name || contributor.login,
-            githubId: contributor.login,
-            discordId: 'N/A', // Discord ID not available through GitHub API
-            avatarUrl: contributor.avatar_url,
-            ...issueStats
-          };
-        });
-
-      const participantData = await Promise.all(participantPromises);
-      
-      // Sort by total points
-      participantData.sort((a, b) => b.totalPoints - a.totalPoints);
-      
-      setParticipants(participantData);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error fetching leaderboard data:', error);
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchLeaderboardData();
+    const loadData = async () => {
+      setIsLoading(true);
+      const data = await fetchLeaderboardData();
+      setParticipants(data);
+      setIsLoading(false);
+    };
+    loadData();
   }, []);
 
   // Filter participants based on selected filter and search term
-  const filteredParticipants = participants.filter(participant => {
-    const matchesSearch = searchTerm === '' || (
-      participant.contributorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      participant.githubId.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    
-    switch (filter) {
-      case 'top10':
-        return matchesSearch && participants.indexOf(participant) < 10;
-      case 'advanced':
-        return matchesSearch && participant.advancedIssues > 0;
-      case 'intermediate':
-        return matchesSearch && participant.intermediateIssues > 0;
-      case 'beginner':
-        return matchesSearch && participant.beginnerIssues > 0;
-      default:
-        return matchesSearch;
-    }
-  });
-
-  const getTopThreeStyles = (index) => {
-    switch(index) {
-      case 0:
-        return 'bg-gradient-to-r from-yellow-500/10 via-transparent to-transparent';
-      case 1:
-        return 'bg-gradient-to-r from-slate-400/10 via-transparent to-transparent';
-      case 2:
-        return 'bg-gradient-to-r from-amber-700/10 via-transparent to-transparent';
-      default:
-        return '';
-    }
-  };
-
-  const getRankStyles = (index) => {
-    switch(index) {
-      case 0:
-        return 'text-yellow-400 animate-text-shimmer bg-gradient-to-r from-yellow-600 via-yellow-300 to-yellow-600 bg-clip-text text-transparent bg-[length:200%_100%]';
-      case 1:
-        return 'text-slate-300 animate-text-shimmer bg-gradient-to-r from-slate-500 via-slate-200 to-slate-500 bg-clip-text text-transparent bg-[length:200%_100%]';
-      case 2:
-        return 'text-amber-600 animate-text-shimmer bg-gradient-to-r from-amber-700 via-amber-500 to-amber-700 bg-clip-text text-transparent bg-[length:200%_100%]';
-      default:
-        return 'text-indigo-300 hover:text-indigo-200 transition-colors duration-200';
-    }
-  };
+  const filteredParticipants = participants
+    .filter(participant => participant.totalPoints > 0)
+    .sort((a, b) => b.totalPoints - a.totalPoints) // Sort by totalPoints descending
+    .map((participant, sortedIndex) => ({
+      ...participant,
+      originalRank: sortedIndex // Assign rank based on sorted order
+    }))
+    .filter(participant => {
+      const matchesSearch = searchTerm === '' || (
+        participant.contributorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        participant.githubId.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      
+      switch (filter) {
+        case FILTER_OPTIONS.TOP_10:
+          return matchesSearch && participant.originalRank < 10;
+        case FILTER_OPTIONS.ADVANCED:
+          return matchesSearch && participant.advancedIssues > 0;
+        case FILTER_OPTIONS.INTERMEDIATE:
+          return matchesSearch && participant.intermediateIssues > 0;
+        case FILTER_OPTIONS.BEGINNER:
+          return matchesSearch && participant.beginnerIssues > 0;
+        default:
+          return matchesSearch;
+      }
+    });
 
   return (
     <div className="mb-4 relative group">
@@ -225,7 +101,7 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
             <button
               onClick={() => {
                 onRefresh();
-                fetchLeaderboardData();
+                fetchLeaderboardData().then(setParticipants);
               }}
               disabled={loading || isLoading}
               className="p-1 hover:bg-slate-800 rounded transition-colors duration-200 disabled:opacity-50"
@@ -240,13 +116,18 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
         <div className="flex flex-col sm:flex-row gap-4 mb-6 relative z-10">
           {/* Search Input */}
           <div className="flex-1">
-            <label className="font-mono text-xs text-slate-400 mb-2 block flex items-center">
+            <label 
+              htmlFor="participant-search" 
+              className="font-mono text-xs text-slate-400 mb-2 block flex items-center"
+            >
               <Search className="mr-2 h-3 w-3 text-yellow-400" />
               search participants
             </label>
             <div className="relative">
               <input
                 type="text"
+                id="participant-search"
+                name="participant-search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search by name or GitHub..."
@@ -259,11 +140,15 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
 
           {/* Filter Selector */}
           <div className="flex-1 sm:w-48">
-            <label className="font-mono text-xs text-slate-400 mb-2 block flex items-center">
+            <label 
+              htmlFor="category-filter" 
+              className="font-mono text-xs text-slate-400 mb-2 block flex items-center"
+            >
               <Filter className="mr-2 h-3 w-3 text-yellow-400" />
               filter by category
             </label>
             <Select
+              id="category-filter"
               value={filter}
               onValueChange={setFilter}
               disabled={loading || isLoading}
@@ -272,11 +157,11 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-slate-800/95 border-slate-700 text-yellow-400 font-mono">
-                <SelectItem value="all">All Participants</SelectItem>
-                <SelectItem value="top10">Top 10</SelectItem>
-                <SelectItem value="advanced">Advanced Issues</SelectItem>
-                <SelectItem value="intermediate">Intermediate Issues</SelectItem>
-                <SelectItem value="beginner">Beginner Issues</SelectItem>
+                <SelectItem value={FILTER_OPTIONS.ALL}>All Participants</SelectItem>
+                <SelectItem value={FILTER_OPTIONS.TOP_10}>Top 10</SelectItem>
+                <SelectItem value={FILTER_OPTIONS.ADVANCED}>Advanced Issues</SelectItem>
+                <SelectItem value={FILTER_OPTIONS.INTERMEDIATE}>Intermediate Issues</SelectItem>
+                <SelectItem value={FILTER_OPTIONS.BEGINNER}>Beginner Issues</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -293,7 +178,7 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
 
             {/* Table */}
             <div className="overflow-x-auto w-full">
-              <style jsx>{`
+              <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
                 
                 @keyframes shimmer {
@@ -376,124 +261,24 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                 }
               `}</style>
 
-              <table className="min-w-full bg-white/5 rounded-lg overflow-hidden leaderboard-table">
+              <table className="w-full leaderboard-table">
                 <thead>
-                  <tr className="text-left text-sm font-semibold">
-                    <th className="px-6 py-4">Rank</th>
-                    <th className="px-6 py-4">Contributor</th>
-                    <th className="px-6 py-4" colSpan="3">
-                      <div className="text-center mb-2 font-semibold tracking-wide">Issues</div>
-                      <div className="grid grid-cols-3 gap-2 text-xs">
-                        <div className="text-center beginner-issues">Beginner</div>
-                        <div className="text-center intermediate-issues">Intermediate</div>
-                        <div className="text-center advanced-issues">Advanced</div>
-                      </div>
-                    </th>
-                    <th className="px-6 py-4 text-right">Points</th>
+                  <tr className="text-left text-xs font-semibold text-slate-400 border-b border-white/5">
+                    <th className="px-6 py-3">Rank</th>
+                    <th className="px-6 py-3">Participant</th>
+                    <th className="px-2 py-3 text-center">Beginner</th>
+                    <th className="px-2 py-3 text-center">Intermediate</th>
+                    <th className="px-2 py-3 text-center">Advanced</th>
+                    <th className="px-6 py-3 text-right">Points</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredParticipants.map((participant, index) => (
-                    <tr 
+                  {filteredParticipants.map((participant) => (
+                    <LeaderboardRow
                       key={participant.githubId}
-                      className={`border-t border-white/5 transition-all duration-300 hover:bg-indigo-900/10
-                        ${index < 3 ? getTopThreeStyles(index) : ''}`}
-                    >
-                      <td className="px-6 py-4 w-24">
-                        <div className="flex items-center gap-2 font-semibold">
-                          {index === 0 && (
-                            <Crown className="w-4 h-4 text-yellow-500 animate-pulse" />
-                          )}
-                          <span className={`${getRankStyles(index)} ${index >= 3 ? 'rank-4-plus' : ''}`}>
-                            #{index + 1}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <a 
-                            href={`https://github.com/${participant.githubId}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="relative group hover:scale-105 transition-transform duration-200"
-                          >
-                            {participant.avatarUrl ? (
-                              <img
-                                src={participant.avatarUrl}
-                                alt={participant.contributorName}
-                                className="w-10 h-10 rounded-full ring-2 ring-white/10 group-hover:ring-white/30 transition-all duration-200"
-                              />
-                            ) : (
-                              <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center ring-2 ring-white/10 group-hover:ring-white/30">
-                                <User className="w-6 h-6 text-gray-400" />
-                              </div>
-                            )}
-                            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-200"></div>
-                          </a>
-                          <div className="flex flex-col">
-                            <a 
-                              href={`https://github.com/${participant.githubId}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="group"
-                            >
-                              <div className={`font-semibold flex items-center gap-2 ${getRankStyles(index)} ${index >= 3 ? 'rank-4-plus' : ''} group-hover:scale-105 transition-transform duration-200`}>
-                                {participant.contributorName}
-                                <ExternalLink className="w-3 h-3 transition-all duration-200 group-hover:scale-110 group-hover:rotate-12" />
-                              </div>
-                              <div className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-200 tracking-wide">
-                                @{participant.githubId}
-                              </div>
-                            </a>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-2 py-4 text-center">
-                        <div 
-                          onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3ABeginner`, '_blank')}
-                          className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-green-500/10 active:bg-green-500/20 cursor-pointer transition-all duration-200"
-                          role="button"
-                          tabIndex={0}
-                          onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3ABeginner`, '_blank')}
-                        >
-                          <span className="beginner-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
-                            {participant.beginnerIssues}
-                            <Link2 className="w-3 h-3 opacity-50 group-hover/btn:opacity-100 transition-all duration-200" />
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-2 py-4 text-center">
-                        <div 
-                          onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AIntermediate`, '_blank')}
-                          className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-yellow-500/10 active:bg-yellow-500/20 cursor-pointer transition-all duration-200"
-                          role="button"
-                          tabIndex={0}
-                          onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AIntermediate`, '_blank')}
-                        >
-                          <span className="intermediate-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
-                            {participant.intermediateIssues}
-                            <Link2 className="w-3 h-3 opacity-50 group-hover/btn:opacity-100 transition-all duration-200" />
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-2 py-4 text-center">
-                        <div 
-                          onClick={() => window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AAdvance`, '_blank')}
-                          className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-red-500/10 active:bg-red-500/20 cursor-pointer transition-all duration-200"
-                          role="button"
-                          tabIndex={0}
-                          onKeyDown={(e) => e.key === 'Enter' && window.open(`https://github.com/alienx5499/SortVision/issues?q=is%3Aissue+is%3Aclosed+assignee%3A${participant.githubId}+label%3AAdvance`, '_blank')}
-                        >
-                          <span className="advanced-issues flex items-center justify-center gap-2 group-hover/btn:scale-105">
-                            {participant.advancedIssues}
-                            <Link2 className="w-3 h-3 opacity-50 group-hover/btn:opacity-100 transition-all duration-200" />
-                          </span>
-                        </div>
-                      </td>
-                      <td className={`px-6 py-4 text-right font-semibold tracking-wider ${getRankStyles(index)} ${index >= 3 ? 'rank-4-plus' : ''}`}>
-                        {participant.totalPoints}
-                      </td>
-                    </tr>
+                      participant={participant}
+                      index={participant.originalRank}
+                    />
                   ))}
                 </tbody>
               </table>

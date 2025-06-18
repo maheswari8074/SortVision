@@ -24,6 +24,7 @@ const LanguageSelector = ({ selectedLanguage, onLanguageChange }) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const dropdownRef = useRef(null);
     const buttonRef = useRef(null);
+    const containerRef = useRef(null);
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -93,6 +94,24 @@ const LanguageSelector = ({ selectedLanguage, onLanguageChange }) => {
             name: 'C#', 
             icon: Hash,
             iconColor: 'text-purple-400'
+        },
+        {
+            id: 'dart',
+            name: 'Dart',
+            icon: FileCode2,
+            iconColor: 'text-sky-400'
+        },
+        {
+            id: 'kotlin',
+            name: 'Kotlin',
+            icon: FileType2,
+            iconColor: 'text-purple-500'
+        },
+        {
+            id: 'swift',
+            name: 'Swift',
+            icon: Binary,
+            iconColor: 'text-orange-500'
         }
     ];
 
@@ -105,7 +124,7 @@ const LanguageSelector = ({ selectedLanguage, onLanguageChange }) => {
     const SelectedIcon = currentLanguage?.icon || Languages;
 
     return (
-        <div className="relative inline-block text-left">
+        <div ref={containerRef} className="relative inline-block text-left">
             {/* Language Selector Button */}
             <button
                 ref={buttonRef}
@@ -124,14 +143,12 @@ const LanguageSelector = ({ selectedLanguage, onLanguageChange }) => {
             {isOpen && (
                 <div 
                     ref={dropdownRef}
-                    className="fixed z-[9999] mt-2 w-48 rounded-md bg-slate-800/95 backdrop-blur-sm border border-slate-700 
-                             shadow-lg shadow-black/50 ring-1 ring-black ring-opacity-5"
-                    style={{
-                        top: buttonRef.current?.getBoundingClientRect().bottom + 5 || 0,
-                        left: buttonRef.current?.getBoundingClientRect().left || 0,
-                    }}
+                    className="absolute z-[9999] mt-2 w-48 rounded-md bg-slate-800/95 backdrop-blur-sm border border-slate-700 
+                             shadow-lg shadow-black/50 ring-1 ring-black ring-opacity-5 right-0 top-full"
                 >
-                    <div className="py-1 max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-800">
+                    <div className="py-1 max-h-[220px] overflow-y-auto 
+                                  scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800/50
+                                  hover:scrollbar-thumb-slate-500 transition-colors duration-200">
                         {languages.map((lang) => {
                             const Icon = lang.icon;
                             return (
