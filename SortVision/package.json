@@ -32,7 +32,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.25.5",
     "filelist": "^1.0.4",
     "framer-motion": "^12.18.1",
     "http-proxy-middleware": "^3.0.5",
