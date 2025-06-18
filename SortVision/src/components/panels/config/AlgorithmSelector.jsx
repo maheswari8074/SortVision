@@ -63,7 +63,7 @@ const AlgorithmSelector = ({ algorithm, setAlgorithm, isSorting, audio }) => {
             disabled={isSorting}
             aria-labelledby="algorithm-selector-label"
           >
-            <SelectTrigger className="w-full h-10 bg-slate-800/90 border-slate-700 text-emerald-400 font-mono relative overflow-hidden group/trigger shadow-lg shadow-emerald-500/5 hover:shadow-emerald-500/10 transition-all duration-300" aria-label="Select sorting algorithm">
+            <SelectTrigger className="joyride-algo-select w-full h-10 bg-slate-800/90 border-slate-700 text-emerald-400 font-mono relative overflow-hidden group/trigger shadow-lg shadow-emerald-500/5 hover:shadow-emerald-500/10 transition-all duration-300" aria-label="Select sorting algorithm">
               {/* Shimmer effect on hover */}
               <div className="absolute inset-0 w-0 group-hover/trigger:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-emerald-400/5 to-transparent"></div>
               <SelectValue placeholder="Algorithm" />

@@ -261,7 +261,7 @@ const SpeedControl = ({ speed, setSpeed, isSorting, audio }) => {
               step={1}
               onValueChange={(value) => setSpeed(value[0])}
               disabled={isSorting}
-              className="relative z-10"
+              className="relative z-10 joyride-speed-control"
               name="animation speed"
               aria-label="Animation Speed Slider"
               aria-labelledby="speed-control-label"
