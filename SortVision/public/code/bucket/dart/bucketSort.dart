@@ -28,14 +28,19 @@ class BucketSort {
   }
 }
 
-// Example usage + basic test cases
+// Example usage
 void main() {
   List<int> arr1 = [29, 25, 3, 49, 9, 37, 21, 43];
   print("Original: $arr1");
   BucketSort.sort(arr1);
   print("Sorted:   $arr1");
 
-  // ✅ Test Cases
+  // Run tests
+  runTests();
+}
+
+// ✅ Test Cases
+void runTests() {
   List<int> test1 = [5, 1, 9, 3, 7];
   BucketSort.sort(test1);
   assert(test1.toString() == [1, 3, 5, 7, 9].toString());
