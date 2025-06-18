@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import {
     Upload,
@@ -8,29 +7,40 @@ import {
     TriangleAlert,
     X,
     CheckCircle,
-    Info, // Added for input examples
+    Info,
+    Database, // Keep Database icon for consistency if needed, though for main container it's more about the visual effect
 } from 'lucide-react';
+// Assuming '@/components/ui/slider' points to your Slider component
+import { Slider } from "@/components/ui/slider"; 
 
 // --- Constants ---
 const MIN_VALUE = -999;
 const MAX_VALUE = 999;
-const MIN_ARRAY_SIZE = 2; // Minimum size for a meaningful array
+const MIN_ARRAY_SIZE = 2; // Adjusted to 2 for more meaningful sorting demonstrations
 const MAX_ARRAY_SIZE = 200; // Max size to prevent performance issues and UI clutter
 
 // --- Array Input Manager Class ---
+/**
+ * Manages parsing and basic validation of input strings into arrays of numbers.
+ */
 class ArrayInputManager {
+    /**
+     * Parses an input string (comma/space separated) into numbers and identifies invalid parts.
+     * @param {string} inputString - The raw string input from text area or file.
+     * @returns {{numbers: number[], invalidInputStrings: string[]}} An object containing parsed numbers and any invalid string parts.
+     */
     static parseAndValidateInput(inputString) {
         const parts = inputString
             .split(/[,\s]+/) // Split by comma or any whitespace
             .map((s) => s.trim())
-            .filter(Boolean); // Remove empty strings
+            .filter(Boolean); // Remove empty strings (e.g., from multiple spaces or trailing commas)
 
         const numbers = [];
-        const invalidInputStrings = new Set(); // To store unique invalid parts
+        const invalidInputStrings = new Set(); // Use a Set to store unique invalid parts
 
         for (const part of parts) {
+            // Check if it's strictly an integer (positive or negative, no decimals, no non-numeric chars)
             if (/^-?\d+$/.test(part)) {
-                // Check if it's strictly an integer (positive or negative)
                 numbers.push(parseInt(part, 10));
             } else {
                 invalidInputStrings.add(part);
@@ -41,50 +51,83 @@ class ArrayInputManager {
 }
 
 // --- Pattern Generator Class ---
+/**
+ * Generates arrays with various predefined patterns for sorting algorithm testing.
+ */
 class PatternGenerator {
+    /**
+     * Generates a nearly sorted array with a specified perturbation.
+     * @param {number} size - The desired size of the array.
+     * @param {number} perturbation - A factor (0-1) indicating how much the array should be perturbed (random swaps).
+     * @returns {number[]} The generated nearly sorted array.
+     */
     static generateNearlySorted(size, perturbation = 0.05) {
-        const array = Array.from({ length: size }, (_, i) => i + 1); // Sorted array
-        const numSwaps = Math.floor(size * perturbation * size); // Swaps proportional to size * perturbation
+        const array = Array.from({ length: size }, (_, i) => i + 1); // Start with a sorted array
+        // Number of swaps is proportional to size * perturbation * size (makes larger arrays more shuffled relatively)
+        const numSwaps = Math.floor(size * perturbation * size); 
 
         for (let i = 0; i < numSwaps; i++) {
             const idx1 = Math.floor(Math.random() * size);
             let idx2 = Math.floor(Math.random() * size);
-            // Ensure idx2 is different from idx1 to make a meaningful swap
-            while (idx2 === idx1) {
+            while (idx2 === idx1) { // Ensure idx2 is different from idx1 for a meaningful swap
                 idx2 = Math.floor(Math.random() * size);
             }
-            [array[idx1], array[idx2]] = [array[idx2], array[idx1]];
+            [array[idx1], array[idx2]] = [array[idx2], array[idx1]]; // Swap elements
         }
-        // Clamp values to the allowed range
+        // Clamp values to the allowed global range
         return array.map(num => Math.max(MIN_VALUE, Math.min(MAX_VALUE, num)));
     }
 
+    /**
+     * Generates an array sorted in reverse order.
+     * @param {number} size - The desired size of the array.
+     * @returns {number[]} The generated reverse sorted array.
+     */
     static generateReverseSorted(size) {
         return Array.from({ length: size }, (_, i) => size - i)
-            .map(num => Math.max(MIN_VALUE, Math.min(MAX_VALUE, num)));
+            .map(num => Math.max(MIN_VALUE, Math.min(MAX_VALUE, num))); // Clamp values
     }
 
+    /**
+     * Generates an array with a few unique values, repeated many times.
+     * @param {number} size - The desired size of the array.
+     * @param {number} uniqueCount - The number of unique values to use.
+     * @returns {number[]} The generated array with few unique values.
+     */
     static generateFewUnique(size, uniqueCount = 5) {
-        const uniqueValues = Array.from({ length: uniqueCount }, (_, i) =>
+        // Generate `uniqueCount` random unique values within the allowed range
+        const uniqueValues = Array.from({ length: uniqueCount }, () =>
             Math.floor(Math.random() * (MAX_VALUE - MIN_VALUE + 1)) + MIN_VALUE
         );
+        // Fill the array by randomly picking from the unique values
         return Array.from({ length: size }, () => {
             const randomIndex = Math.floor(Math.random() * uniqueCount);
             return uniqueValues[randomIndex];
         });
     }
 
+    /**
+     * Generates an array with many duplicate values based on a duplicate factor.
+     * @param {number} size - The desired size of the array.
+     * @param {number} duplicateFactor - A factor (0-1) where 1 means extremely high duplicates.
+     * @returns {number[]} The generated array with many duplicates.
+     */
     static generateManyDuplicates(size, duplicateFactor = 0.5) {
-        // duplicateFactor: 0.0 (all unique) to 1.0 (all same value)
-        // A lower factor means more unique values, higher means more duplicates
+        // Calculate the number of unique values to generate based on the duplicate factor
         const uniqueValuesToGenerate = Math.max(
-            1,
+            1, // Ensure at least one unique value
             Math.floor(size * (1 - duplicateFactor))
         );
+        // Reuse generateFewUnique with the calculated unique count
         return PatternGenerator.generateFewUnique(size, uniqueValuesToGenerate);
     }
 
-    // New: Extremely high duplicates (e.g., 99% duplicates)
+    /**
+     * Generates an array with extremely high duplicates (e.g., 99% of values are the same).
+     * @param {number} size - The desired size of the array.
+     * @param {number} duplicateFactor - A high factor (e.g., 0.99) for very high duplication.
+     * @returns {number[]} The generated array with extremely high duplicates.
+     */
     static generateHighDuplicates(size, duplicateFactor = 0.99) {
         const uniqueValuesToGenerate = Math.max(
             1,
@@ -93,20 +136,34 @@ class PatternGenerator {
         return PatternGenerator.generateFewUnique(size, uniqueValuesToGenerate);
     }
 
+    /**
+     * Generates an array with values following a bell curve (normal) distribution.
+     * Uses the Box-Muller transform for generating Gaussian-distributed numbers.
+     * @param {number} size - The desired size of the array.
+     * @param {number} mean - The mean of the distribution.
+     * @param {number} stdDev - The standard deviation of the distribution.
+     * @returns {number[]} The generated array with bell curve distribution.
+     */
     static generateBellCurve(size, mean = (MAX_VALUE + MIN_VALUE) / 2, stdDev = (MAX_VALUE - MIN_VALUE) / 6) {
-        // Box-Muller transform to generate normally distributed numbers
         return Array.from({ length: size }, () => {
             let u = 0,
                 v = 0;
-            while (u === 0) u = Math.random(); // Converting [0,1) to (0,1)
+            while (u === 0) u = Math.random(); // Converting [0,1) to (0,1) to avoid log(0)
             while (v === 0) v = Math.random();
+            // Box-Muller transform
             const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
             const rawValue = Math.floor(z * stdDev + mean);
-            // Clamp values to the allowed range
+            // Clamp values to the allowed global range
             return Math.max(MIN_VALUE, Math.min(MAX_VALUE, rawValue));
         });
     }
 
+    /**
+     * Generates an array with a stepped pattern (blocks of constant values).
+     * @param {number} size - The desired size of the array.
+     * @param {number} stepCount - The number of distinct "steps" or blocks of values.
+     * @returns {number[]} The generated stepped array.
+     */
     static generateStepped(size, stepCount = 5) {
         if (stepCount <= 0 || stepCount > size) {
             stepCount = Math.max(1, Math.min(size, 5)); // Default to 5 or size if invalid
@@ -114,13 +171,16 @@ class PatternGenerator {
         const stepSize = Math.floor(size / stepCount);
         const array = [];
         for (let i = 0; i < stepCount; i++) {
+            // Generate a random value for the current step
             const value = Math.floor(Math.random() * (MAX_VALUE - MIN_VALUE + 1)) + MIN_VALUE;
+            // Fill the block with this value
             for (let j = 0; j < stepSize && array.length < size; j++) {
                 array.push(value);
             }
         }
-        // Fill remaining if size is not perfectly divisible
+        // Fill remaining elements if size is not perfectly divisible by stepCount
         while (array.length < size) {
+            // Use the last added value, or a random one if array is still empty (shouldn't happen with size >= 2)
             array.push(array[array.length - 1] || Math.floor(Math.random() * (MAX_VALUE - MIN_VALUE + 1)) + MIN_VALUE);
         }
         return array;
@@ -128,24 +188,43 @@ class PatternGenerator {
 }
 
 // --- React Component ---
-const ArrayInput = ({ setOriginalArray }) => {
+/**
+ * ArrayInput Component: Provides multiple ways for users to input or generate arrays
+ * for sorting visualization, including text input, file upload, clipboard paste,
+ * and various pattern generations.
+ *
+ * @param {object} props - The component props.
+ * @param {function(number[]): void} props.setOriginalArray - Callback to update the array in the parent component.
+ * @param {boolean} props.isSorting - Indicates if a sorting animation is currently in progress (disables inputs).
+ */
+const ArrayInput = ({ setOriginalArray = () => {}, isSorting }) => { // Added default empty function for setOriginalArray
     const [inputMethod, setInputMethod] = useState('text');
     const [inputValue, setInputValue] = useState('');
     const [patternType, setPatternType] = useState('nearlySorted');
-    const [patternParam1, setPatternParam1] = useState(undefined); // Size
+    const [patternParam1, setPatternParam1] = useState(50); // Default size for patterns
     const [patternParam2, setPatternParam2] = useState(undefined); // Perturbation/Duplicate Factor etc.
+    const [patternParam3, setPatternParam3] = useState(undefined); // For bellCurve's Std Dev
     const [inputErrors, setInputErrors] = useState([]);
     const [successMessage, setSuccessMessage] = useState('');
 
+    /**
+     * Clears all current error and success messages.
+     */
     const clearMessages = () => {
         setInputErrors([]);
         setSuccessMessage('');
     };
 
-    // Centralized function to set and validate array, used by all input methods
+    /**
+     * Centralized function to set the array and perform validation checks.
+     * This ensures all input methods (manual, file, pattern) use the same validation logic.
+     *
+     * @param {number[]} arr - The array to validate and set.
+     * @param {'input' | 'pattern'} source - The source of the array (for tailored success messages).
+     */
     const setAndValidateArray = useCallback(
         (arr, source = 'input') => {
-            clearMessages();
+            clearMessages(); // Always clear previous messages
 
             if (!Array.isArray(arr)) {
                 setInputErrors(['Invalid array format provided.']);
@@ -153,7 +232,12 @@ const ArrayInput = ({ setOriginalArray }) => {
                 return;
             }
 
-            // 1. Check Array Size
+            // 1. Check Array Size (only apply minimum size validation if array is not empty from input)
+            if (arr.length === 0 && source === 'input') {
+                // If text input is empty, just clear the array, don't show an error.
+                setOriginalArray([]);
+                return;
+            }
             if (arr.length < MIN_ARRAY_SIZE) {
                 setInputErrors([
                     `Array must contain at least ${MIN_ARRAY_SIZE} numbers.`,
@@ -169,7 +253,7 @@ const ArrayInput = ({ setOriginalArray }) => {
                 return;
             }
 
-            // 2. Check Number Range & Type
+            // 2. Check Number Range & Type (ensure all are integers and within MIN/MAX bounds)
             const outOfRange = arr.filter(
                 (num) => num < MIN_VALUE || num > MAX_VALUE
             );
@@ -187,11 +271,11 @@ const ArrayInput = ({ setOriginalArray }) => {
 
             if (errors.length > 0) {
                 setInputErrors(errors);
-                setOriginalArray([]);
+                setOriginalArray([]); // Clear array if there are validation errors
                 return;
             }
 
-            // If all checks pass
+            // If all checks pass, set the array and display a success message
             setOriginalArray(arr);
             if (source === 'input') {
                 setSuccessMessage('Array successfully updated!');
@@ -201,46 +285,50 @@ const ArrayInput = ({ setOriginalArray }) => {
                 );
             }
         },
-        [setOriginalArray]
+        [setOriginalArray] // Dependency: setOriginalArray must be stable for useCallback
     );
 
-    // Effect to reset pattern parameters when patternType changes
+    // Effect to reset pattern parameters and set default values when the patternType changes
     useEffect(() => {
-        setPatternParam1(undefined); // Reset size to undefined
-        setPatternParam2(undefined); // Reset specific param to undefined
+        setPatternParam1(50); // Default size for all patterns
+        setPatternParam2(undefined); // Reset specific param
+        setPatternParam3(undefined); // Reset third param
 
-        // Set default values based on new pattern type if needed
+        // Set default values specific to the newly selected pattern type
         if (patternType === 'bellCurve') {
-            setPatternParam1(50); // Default size for patterns, just an example
-            setPatternParam2((MAX_VALUE + MIN_VALUE) / 2); // Default mean
-            // For bellCurve, assuming a third param could be stdDev, but based on current generator, it's fixed or calculated
-            // For simplicity, we'll use param2 for mean and let stdDev be calculated or default in generator.
-        } else if (patternType === 'manyDuplicates') {
-            setPatternParam1(50);
-            setPatternParam2(0.5); // Default duplicate factor
-        } else if (patternType === 'highDuplicates') {
-            setPatternParam1(50);
-            setPatternParam2(0.99); // Default high duplicate factor
-        } else if (patternType === 'nearlySorted') {
-            setPatternParam1(50);
-            setPatternParam2(0.05); // Default perturbation
-        } else if (patternType === 'fewUnique') {
-            setPatternParam1(50);
-            setPatternParam2(5); // Default unique count
-        } else if (patternType === 'stepped') {
-            setPatternParam1(50);
-            setPatternParam2(5); // Default step count
-        } else if (patternType === 'reverseSorted') {
-            setPatternParam1(50); // Just a size
+            setPatternParam2(Math.floor((MAX_VALUE + MIN_VALUE) / 2)); // Default mean for bell curve
+            setPatternParam3(Math.floor((MAX_VALUE - MIN_VALUE) / 6)); // Default stdDev for bell curve
+        } else if (patternType === 'manyDuplicates' || patternType === 'highDuplicates' || patternType === 'nearlySorted') {
+            setPatternParam2(0.5); // Default factor for duplicates/perturbation
+        } else if (patternType === 'fewUnique' || patternType === 'stepped') {
+            setPatternParam2(5); // Default count for unique values/steps
         }
     }, [patternType]);
 
+    /**
+     * Handler for changes to the pattern array size slider.
+     * @param {number} size - The new size value.
+     */
+    const handlePatternSizeChange = useCallback((size) => {
+        setPatternParam1(size);
+    }, []);
+
     // --- Handlers for Input Methods ---
 
+    /**
+     * Handles text input changes. Parses and validates the string.
+     * @param {object} e - The event object from the textarea.
+     */
     const handleTextInput = (e) => {
         const text = e.target.value;
         setInputValue(text);
         clearMessages(); // Clear messages immediately on input change
+
+        if (text.trim() === '') {
+            setOriginalArray([]); // If input is empty, clear array but don't show an error
+            return;
+        }
+
         const { numbers, invalidInputStrings } =
             ArrayInputManager.parseAndValidateInput(text);
 
@@ -254,16 +342,18 @@ const ArrayInput = ({ setOriginalArray }) => {
         setAndValidateArray(numbers, 'input');
     };
 
+    /**
+     * Handles file uploads. Reads and parses content from .txt, .csv, or .json files.
+     * @param {object} e - The event object from the file input.
+     */
     const handleFileUpload = async (e) => {
         clearMessages();
         const file = e.target.files[0];
         if (!file) return;
 
-        // Reset the input value to allow re-uploading the same file
-        e.target.value = '';
+        e.target.value = ''; // Reset file input value to allow re-uploading the same file
 
-        if (file.size > 1024 * 1024) {
-            // 1MB limit
+        if (file.size > 1024 * 1024) { // 1MB limit check
             setInputErrors(['File size exceeds 1MB limit.']);
             setOriginalArray([]);
             return;
@@ -276,10 +366,11 @@ const ArrayInput = ({ setOriginalArray }) => {
 
             if (fileExtension === 'json') {
                 const data = JSON.parse(text);
+                // Ensure JSON is a simple array of numbers
                 if (Array.isArray(data) && data.every(num => typeof num === 'number' && Number.isInteger(num))) {
                     numbers = data;
                 } else {
-                    setInputErrors(['JSON file must contain a single array of integers.']);
+                    setInputErrors(['JSON file must contain a single array of integers (e.g., [1, 2, 3]).']);
                     setOriginalArray([]);
                     return;
                 }
@@ -306,11 +397,14 @@ const ArrayInput = ({ setOriginalArray }) => {
         }
     };
 
+    /**
+     * Handles pasting content from the clipboard.
+     */
     const handlePasteFromClipboard = async () => {
         clearMessages();
         try {
             const text = await navigator.clipboard.readText();
-            setInputValue(text); // Set textarea value for visual feedback
+            setInputValue(text); // Display pasted text in the textarea for user feedback
             const { numbers, invalidInputStrings } =
                 ArrayInputManager.parseAndValidateInput(text);
 
@@ -331,12 +425,17 @@ const ArrayInput = ({ setOriginalArray }) => {
     };
 
     // --- Handlers for Pattern Generation ---
+    /**
+     * Generates an array based on the selected pattern type and parameters.
+     */
     const handleGeneratePattern = () => {
         clearMessages();
-        const size = parseInt(patternParam1); // Size is always param1 for patterns
+        const size = parseInt(patternParam1); // Size is always the first parameter for patterns
+
+        // Validate pattern size input
         if (isNaN(size) || size < MIN_ARRAY_SIZE || size > MAX_ARRAY_SIZE) {
             setInputErrors([
-                `Size must be a number between ${MIN_ARRAY_SIZE} and ${MAX_ARRAY_SIZE}.`,
+                `Pattern size must be a number between ${MIN_ARRAY_SIZE} and ${MAX_ARRAY_SIZE}.`,
             ]);
             setOriginalArray([]);
             return;
@@ -382,7 +481,7 @@ const ArrayInput = ({ setOriginalArray }) => {
                     );
                     break;
                 case 'highDuplicates':
-                    const hdFactor = parseFloat(patternParam2); // Allows custom high duplicate factor
+                    const hdFactor = parseFloat(patternParam2);
                     if (isNaN(hdFactor) || hdFactor < 0 || hdFactor > 1) {
                         setInputErrors(['Duplicate factor must be between 0 and 1 (e.g., 0.99).']);
                         setOriginalArray([]);
@@ -395,7 +494,7 @@ const ArrayInput = ({ setOriginalArray }) => {
                     break;
                 case 'bellCurve':
                     const mean = parseInt(patternParam2);
-                    const stdDev = parseInt(patternParam3); // This would be for a third param if needed
+                    const stdDev = parseInt(patternParam3);
                     if (isNaN(mean) || isNaN(stdDev) || stdDev <= 0) {
                         setInputErrors(['Mean and Standard Deviation must be valid numbers (Std Dev > 0).']);
                         setOriginalArray([]);
@@ -421,15 +520,19 @@ const ArrayInput = ({ setOriginalArray }) => {
                     setOriginalArray([]);
                     return;
             }
-            setAndValidateArray(generatedArray, 'pattern');
+            setAndValidateArray(generatedArray, 'pattern'); // Use the centralized validation
         } catch (error) {
             setInputErrors([`Error generating pattern: ${error.message}`]);
             setOriginalArray([]);
         }
     };
 
+    /**
+     * Renders input fields for pattern-specific parameters based on the selected pattern type.
+     * @returns {JSX.Element} The JSX for pattern parameter inputs.
+     */
     const renderPatternParameters = () => {
-        // Defines the specific parameters for each pattern type
+        // Configuration for each pattern's specific parameters
         const paramConfigs = {
             nearlySorted: {
                 param1Label: 'Size',
@@ -470,7 +573,7 @@ const ArrayInput = ({ setOriginalArray }) => {
                 param1Label: 'Size',
                 param1Placeholder: 'e.g., 50',
                 param2Label: `Mean (${MIN_VALUE}-${MAX_VALUE})`,
-                param2Placeholder: `e.g., ${(MAX_VALUE + MIN_VALUE) / 2}`,
+                param2Placeholder: `e.g., ${Math.floor((MAX_VALUE + MIN_VALUE) / 2)}`,
                 param2Type: 'number',
                 param3Label: 'Std Deviation (>=1)',
                 param3Placeholder: 'e.g., 20',
@@ -487,27 +590,42 @@ const ArrayInput = ({ setOriginalArray }) => {
 
         const config = paramConfigs[patternType] || {};
 
+        const inputClassNames = `
+            flex-1 p-2 rounded-md
+            bg-slate-900 text-slate-200 border border-slate-700
+            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+            transition-colors duration-200
+            placeholder-slate-500
+        `;
+
         return (
-            <div className="flex flex-col sm:flex-row gap-2 w-full">
+            <div className="flex flex-col sm:flex-row gap-2 w-full mt-4">
+                {/* Always render size input for patterns, as it's common */}
                 <input
                     type="number"
                     placeholder={config.param1Placeholder || 'Size'}
                     value={patternParam1 || ''}
-                    onChange={(e) => setPatternParam1(e.target.value)}
+                    onChange={(e) => setPatternParam1(parseInt(e.target.value) || undefined)}
                     min={MIN_ARRAY_SIZE}
                     max={MAX_ARRAY_SIZE}
-                    className="flex-1 p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={inputClassNames}
                     aria-label={`${config.param1Label || 'Size'}`}
+                    disabled={isSorting}
                 />
+                {/* Render additional parameters only if defined for the selected pattern */}
                 {config.param2Label && (
                     <input
                         type={config.param2Type || 'text'}
                         step={config.param2Step || '1'}
                         placeholder={config.param2Placeholder || ''}
-                        value={patternParam2 || ''}
-                        onChange={(e) => setPatternParam2(e.target.value)}
-                        className="flex-1 p-2 rounded-md bg-gray-100 dark:bg-gray-750 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        value={patternParam2 !== undefined ? patternParam2 : ''}
+                        onChange={(e) => {
+                            const val = e.target.value;
+                            setPatternParam2(config.param2Type === 'number' ? (val === '' ? undefined : parseFloat(val)) : val);
+                        }}
+                        className={inputClassNames}
                         aria-label={`${config.param2Label}`}
+                        disabled={isSorting}
                     />
                 )}
                 {config.param3Label && ( // For bellCurve's stdDev
@@ -515,217 +633,363 @@ const ArrayInput = ({ setOriginalArray }) => {
                         type={config.param3Type || 'text'}
                         step={config.param3Step || '1'}
                         placeholder={config.param3Placeholder || ''}
-                        value={patternParam3 || ''} // Assuming patternParam3 state for stdDev
-                        onChange={(e) => setPatternParam3(e.target.value)}
-                        className="flex-1 p-2 rounded-md bg-gray-100 dark:bg-gray-750 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        value={patternParam3 !== undefined ? patternParam3 : ''}
+                        onChange={(e) => {
+                            const val = e.target.value;
+                            setPatternParam3(config.param3Type === 'number' ? (val === '' ? undefined : parseFloat(val)) : val);
+                        }}
+                        className={inputClassNames}
                         aria-label={`${config.param3Label}`}
+                        disabled={isSorting}
                     />
                 )}
             </div>
         );
     };
 
-    // A separate state for patternParam3 for Bell Curve's Std Dev
-    const [patternParam3, setPatternParam3] = useState(undefined);
+    // Common CSS classes for buttons and inputs to maintain consistent styling
+    const baseButtonClasses = `
+        flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium
+        transition-colors duration-200
+        relative overflow-hidden group/button
+    `;
+    const selectedButtonClasses = `bg-blue-600 text-white shadow-md`;
+    const unselectedButtonClasses = `
+        bg-slate-800 text-slate-300 border border-slate-700
+        hover:bg-slate-700 hover:border-blue-500
+    `;
 
+    const commonInputClassNames = `
+        w-full p-3 rounded-md
+        bg-slate-900 text-slate-200 border border-slate-700
+        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+        resize-y
+        placeholder-slate-500
+    `;
 
-  
     return (
+        // The main wrapper div for the entire component. It's now relatively positioned
+        // to contain its absolute children which create the animated background.
         <div className="
-            relative
+              relative
             w-full
-            max-w-md mx-auto mb-4 p-4
-            rounded-xl
-            bg-white/10 dark:bg-gray-800/10
-            bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10
-            border border-gray-200 dark:border-gray-700
-            shadow-lg
-            min-h-[250px]
-            flex flex-col
+          max-w-md mx-auto mb-4
+           min-h-[250px]
+    
+          
+            group/main /* Using group/main to allow hover effects to cascade */
         ">
-            {/* Heading - as it was */}
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 text-center">
-                Array Inputs
-            </h3>
+            {/* Outer animated glow effect, slightly blurring the edges. This one is directly on the outside. */}
+            <div className="absolute -inset-2 bg-gradient-to-r from-emerald-500/20 via-blue-500/20 to-purple-500/20 rounded-xl blur-md opacity-70 group-hover/main:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+            
+            {/* This is the main visual container, now styled exactly like the inner part of ArraySizeControl */}
+            <div className="
+                relative h-full w-full p-4 rounded-xl
+                bg-slate-900 border border-slate-800
+                transition-all duration-500 hover:border-slate-700 hover:shadow-lg hover:shadow-slate-900/50
+                group/array /* Using group/array for internal hover effects, consistent with ArraySizeControl */
+                overflow-hidden /* Important to clip animations that extend beyond bounds */
+                flex flex-col /* Ensures content inside is laid out vertically */
+            ">
+                {/* Animated background elements (grid, floating particles, code lines) */}
+                <div className="absolute inset-0 overflow-hidden opacity-10 pointer-events-none">
+                    <div className="absolute top-0 left-0 w-full h-full">
+                        {/* Animated grid pattern */}
+                        <div className="absolute inset-0 bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:8px_8px] opacity-30"></div>
+                        
+                        {/* Floating particles */}
+                        <div className="absolute h-2 w-2 rounded-full bg-blue-500/50 top-[10%] left-[20%] animate-pulse" style={{ animationDuration: '3s' }}></div>
+                        <div className="absolute h-1 w-1 rounded-full bg-blue-500/50 top-[30%] left-[70%] animate-pulse" style={{ animationDuration: '2.3s' }}></div>
+                        <div className="absolute h-1.5 w-1.5 rounded-full bg-blue-500/50 top-[70%] left-[30%] animate-pulse" style={{ animationDuration: '4s' }}></div>
+                        
+                        {/* Animated code lines */}
+                        <div className="absolute top-[15%] left-0 h-px w-[30%] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent animate-[moveRight_15s_linear_infinite]"></div>
+                        <div className="absolute top-[45%] left-0 h-px w-[20%] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent animate-[moveRight_12s_linear_infinite]"></div>
+                        <div className="absolute top-[75%] left-0 h-px w-[40%] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent animate-[moveRight_18s_linear_infinite]"></div>
+                    </div>
+                </div>
+                
+                {/* Animated corner accent */}
+                <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-blue-500/20 to-emerald-500/20 rounded-full blur-md group-hover/array:scale-150 transition-transform duration-700 pointer-events-none"></div>
+                
+                {/* Animated bottom line */}
+                <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover/array:w-full bg-gradient-to-r from-emerald-500/50 via-blue-500/50 to-purple-500/50 rounded transition-all duration-700"></div>
 
-            {/* Input Method Buttons */}
-            <div className="flex flex-wrap gap-2 mb-4 justify-center">
-                <button
-                    onClick={() => { setInputMethod('text'); clearMessages(); setInputValue(''); }}
-                    className={`
-                        flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium
-                        transition-colors duration-200
-                        ${inputMethod === 'text'
-                            ? 'bg-blue-600 text-white shadow-md'
-                            : 'bg-gray-200 dark:bg-gray-900 text-gray-700 dark:text-gray-200 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:bg-blue-500/30 dark:hover:text-blue-300'
-                        }
-                    `}
-                    aria-pressed={inputMethod === 'text'}
-                >
-                    <Type size={16} /> Text
-                </button>
-                <button
-                    onClick={() => { setInputMethod('file'); clearMessages(); }}
-                    className={`
-                        flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium
-                        transition-colors duration-200
-                        ${inputMethod === 'file'
-                            ? 'bg-blue-600 text-white shadow-md'
-                            : 'bg-gray-200 dark:bg-gray-900 text-gray-700 dark:text-gray-200 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:bg-blue-500/30 dark:hover:text-blue-300'
-                        }
-                    `}
-                    aria-pressed={inputMethod === 'file'}
-                >
-                    <Upload size={16} /> File
-                </button>
-                <button
-                    onClick={() => { setInputMethod('clipboard'); clearMessages(); }}
-                    className={`
-                        flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium
-                        transition-colors duration-200
-                        ${inputMethod === 'clipboard'
-                            ? 'bg-blue-600 text-white shadow-md'
-                            : 'bg-gray-200 dark:bg-gray-900 text-gray-700 dark:text-gray-200 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:bg-blue-500/30 dark:hover:text-blue-300'
-                        }
-                    `}
-                    aria-pressed={inputMethod === 'clipboard'}
-                >
-                    <Clipboard size={16} /> Paste
-                </button>
-                <button
-                    onClick={() => { setInputMethod('pattern'); clearMessages(); }}
-                    className={`
-                        flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium
-                        transition-colors duration-200
-                        ${inputMethod === 'pattern'
-                            ? 'bg-blue-600 text-white shadow-md'
-                            : 'bg-gray-200 dark:bg-gray-900 text-gray-700 dark:text-gray-200 hover:bg-blue-500/20 hover:text-blue-700 dark:hover:bg-blue-500/30 dark:hover:text-blue-300'
-                        }
-                    `}
-                    aria-pressed={inputMethod === 'pattern'}
-                >
-                    <Wand2 size={16} /> Pattern
-                </button>
-            </div>
+                {/* All content of ArrayInput goes here, ensure they are relatively positioned or have higher z-index if needed */}
+                <h3 className="text-xl font-semibold text-slate-100 mb-4 text-center relative z-10">
+                    Array Inputs
+                </h3>
 
-            {/* Input Area */}
-            <div className="flex-grow flex flex-col items-center justify-center p-2">
-                {inputMethod === 'text' && (
-                    <>
+                {/* Input Method Buttons */}
+                <div className="flex flex-wrap gap-2 mb-4 justify-center relative z-10">
+                    <button
+                        onClick={() => { setInputMethod('text'); clearMessages(); setInputValue(''); }}
+                        className={`${baseButtonClasses} ${inputMethod === 'text' ? selectedButtonClasses : unselectedButtonClasses}`}
+                        aria-pressed={inputMethod === 'text'}
+                        disabled={isSorting}
+                    >
+                        <Type size={16} /> Text
+                    </button>
+                    <button
+                        onClick={() => { setInputMethod('file'); clearMessages(); }}
+                        className={`${baseButtonClasses} ${inputMethod === 'file' ? selectedButtonClasses : unselectedButtonClasses}`}
+                        aria-pressed={inputMethod === 'file'}
+                        disabled={isSorting}
+                    >
+                        <Upload size={16} /> File
+                    </button>
+                    <button
+                        onClick={() => { setInputMethod('clipboard'); clearMessages(); }}
+                        className={`${baseButtonClasses} ${inputMethod === 'clipboard' ? selectedButtonClasses : unselectedButtonClasses}`}
+                        aria-pressed={inputMethod === 'clipboard'}
+                        disabled={isSorting}
+                    >
+                        <Clipboard size={16} /> Paste
+                    </button>
+                    <button
+                        onClick={() => { setInputMethod('pattern'); clearMessages(); }}
+                        className={`${baseButtonClasses} ${inputMethod === 'pattern' ? selectedButtonClasses : unselectedButtonClasses}`}
+                        aria-pressed={inputMethod === 'pattern'}
+                        disabled={isSorting}
+                    >
+                        <Wand2 size={16} /> Pattern
+                    </button>
+                </div>
+
+                {/* Input Area based on selected method */}
+                <div className="flex-grow flex flex-col items-center justify-center p-2 relative z-10">
+                    {inputMethod === 'text' && (
                         <textarea
                             value={inputValue}
                             onChange={handleTextInput}
-                            placeholder={`Enter numbers separated by commas or spaces. E.g., 10, 5, 20, 15, 30. (Values ${MIN_VALUE} to ${MAX_VALUE})`}
-                            rows="4"
-                            className="w-full min-h-[100px] p-3 rounded-md bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray- 00 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent resize-y"
-                            aria-label="Enter numbers manually"
+                            placeholder={`Enter numbers separated by commas or spaces (e.g., 5, 2, 8). Max ${MAX_ARRAY_SIZE} numbers, values between ${MIN_VALUE} and ${MAX_VALUE}.`}
+                            className={`${commonInputClassNames} h-32`}
+                            aria-label="Manual array input"
+                            disabled={isSorting}
                         />
-                         <div className="text-xs text-gray-500 dark:text-gray-400 mt-2 flex items-center gap-1">
-                            <Info size={14} /> Example: <code className="font-mono text-blue-600 dark:text-blue-400">10, -5, 20, 100, 999</code>
-                        </div>
-                    </>
-                )}
+                    )}
 
-                {inputMethod === 'file' && (
-                    <>
-                        <label
-                            htmlFor="file-upload"
-                            className="
-                                w-full flex items-center justify-center py-3 px-4
-                                border border-dashed border-gray-400 dark:border-gray-500 rounded-md
-                                text-gray-700 dark:text-gray-300 cursor-pointer
-                                hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors
-                            "
-                        >
-                            <Upload size={20} className="mr-2" /> Select or Drag File (.txt, .csv, .json)
+                    {inputMethod === 'file' && (
+                        <div className="
+                            w-full h-32 flex items-center justify-center
+                            border-2 border-dashed border-slate-700 rounded-md p-4 text-center
+                            text-slate-400 relative
+                            hover:border-blue-500 transition-colors duration-200
+                            bg-slate-900/50
+                        ">
                             <input
-                                id="file-upload"
                                 type="file"
                                 accept=".txt,.csv,.json"
                                 onChange={handleFileUpload}
-                                className="hidden"
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                 aria-label="Upload array from file"
+                                disabled={isSorting}
                             />
-                        </label>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-2 flex items-center gap-1">
-                            <Info size={14} /> Ensure file contains numbers separated by commas/spaces or a JSON array of numbers.
+                            <div className="flex flex-col items-center">
+                                <Upload size={24} className="mb-2 text-blue-400" />
+                                Drag & drop or <span className="text-blue-500 font-medium">click to upload</span>
+                                <span className="text-xs mt-1">(<span className="text-blue-300">.txt, .csv, .json</span> up to 1MB)</span>
+                            </div>
                         </div>
-                    </>
-                )}
+                    )}
 
-                {inputMethod === 'clipboard' && (
-                    <>
-                        <button
-                            onClick={handlePasteFromClipboard}
-                            className="
-                                w-full flex items-center justify-center py-3 px-4
-                                bg-blue-500 text-white rounded-md font-semibold
-                                hover:bg-blue-600 transition-colors shadow-md
-                            "
-                            aria-label="Paste array from clipboard"
-                        >
-                            <Clipboard size={20} className="mr-2" /> Paste Numbers from Clipboard
-                        </button>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-2 flex items-center gap-1">
-                            <Info size={14} /> Paste numbers like: <code className="font-mono text-blue-600 dark:text-blue-400">1,2,3,4,5</code> or <code className="font-mono text-blue-600 dark:text-blue-400">1 2 3 4 5</code>
+                    {inputMethod === 'clipboard' && (
+                        <div className="w-full flex flex-col items-center justify-center">
+                            <textarea
+                                value={inputValue}
+                                readOnly
+                                placeholder="Pasted content will appear here..."
+                                className={`${commonInputClassNames} h-32 mb-3`}
+                                aria-label="Pasted array content"
+                            />
+                            <button
+                                onClick={handlePasteFromClipboard}
+                                className="
+                                    flex items-center gap-2 px-5 py-2 rounded-lg
+                                    bg-blue-600 text-white font-medium
+                                    hover:bg-blue-700 transition-colors duration-200 shadow-md
+                                "
+                                disabled={isSorting}
+                            >
+                                <Clipboard size={20} /> Paste from Clipboard
+                            </button>
                         </div>
-                    </>
-                )}
+                    )}
 
-                {inputMethod === 'pattern' && (
-                    <div className="w-full flex flex-col gap-3">
-                        <select
-                            value={patternType}
-                            onChange={(e) => setPatternType(e.target.value)}
-                            className="p-2 rounded-md bg-gray-100  dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            aria-label="Select array pattern type"
-                        >
-                            <option value="nearlySorted">Nearly Sorted</option>
-                            <option value="reverseSorted">Reverse Sorted</option>
-                            <option value="fewUnique">Few Unique Values</option>
-                            <option value="manyDuplicates">Many Duplicates</option>
-                            <option value="highDuplicates">High Duplicates (Extreme)</option>
-                            <option value="bellCurve">Bell Curve Distribution</option>
-                            <option value="stepped">Stepped Pattern</option>
-                        </select>
-                        {renderPatternParameters()}
-                        <button
-                            onClick={handleGeneratePattern}
-                            className="
-                                w-full flex items-center justify-center py-2 px-4
-                                bg-green-400 text-white rounded-md font-semibold
-                                hover:bg-green-900 transition-colors shadow-md
-                            "
-                            aria-label="Generate array pattern"
-                        >
-                            <Wand2 size={20} className="mr-2" /> Generate Pattern
-                        </button>
-                    </div>
-                )}
-            </div>
+                    {inputMethod === 'pattern' && (
+                        <div className="w-full flex flex-col items-center">
+                            {/* Array Size Slider for Patterns - this already had the full styling */}
+                            <div className="mb-4 relative group w-full">
+                                <div className="absolute -inset-2 bg-gradient-to-r from-emerald-500/20 via-blue-500/20 to-purple-500/20 rounded-xl blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                                <div className="relative bg-slate-900 p-4 rounded border border-slate-800 transition-all duration-500 hover:border-slate-700 hover:shadow-lg hover:shadow-slate-900/50 group/array overflow-hidden h-full">
+                                    <div className="absolute inset-0 bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:8px_8px] opacity-20 pointer-events-none"></div>
+                                    <div className="absolute h-2 w-2 rounded-full bg-blue-500/50 top-[10%] left-[20%] animate-pulse" style={{ animationDuration: '3s' }}></div>
+                                    <div className="absolute h-1 w-1 rounded-full bg-blue-500/50 top-[30%] left-[70%] animate-pulse" style={{ animationDuration: '2.3s' }}></div>
+                                    <div className="absolute h-1.5 w-1.5 rounded-full bg-blue-500/50 top-[70%] left-[30%] animate-pulse" style={{ animationDuration: '4s' }}></div>
+                                    <div className="absolute top-[15%] left-0 h-px w-[30%] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent animate-[moveRight_15s_linear_infinite]"></div>
+                                    <div className="absolute top-[45%] left-0 h-px w-[20%] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent animate-[moveRight_12s_linear_infinite]"></div>
+                                    <div className="absolute top-[75%] left-0 h-px w-[40%] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent animate-[moveRight_18s_linear_infinite]"></div>
+                                    <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-blue-500/20 to-emerald-500/20 rounded-full blur-md group-hover/array:scale-150 transition-transform duration-700 pointer-events-none"></div>
+                                    <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover/array:w-full bg-gradient-to-r from-emerald-500/50 via-blue-500/50 to-purple-500/50 rounded transition-all duration-700"></div>
+                                    <label className="font-mono text-sm text-slate-400 mb-2 block flex items-center relative z-10 group-hover/array:text-blue-400 transition-colors duration-300" id="pattern-size-label">
+                                        <Database className="mr-2 h-4 w-4 text-blue-400 animate-pulse" style={{ animationDuration: '4s' }} />
+                                        <span className="transition-colors duration-300">// pattern array size: <span className="text-blue-400 ml-1">{patternParam1}</span></span>
+                                    </label>
+                                    <div className="relative mt-6 mb-8">
+                                        <div className="absolute -top-4 left-0 right-0 flex justify-between text-[10px] text-slate-500">
+                                            <span className="text-blue-300 group-hover/array:text-blue-300 transition-colors duration-300">Small</span>
+                                            <span className="text-blue-300 group-hover/array:text-blue-300 transition-colors duration-300">Medium</span>
+                                            <span className="text-blue-300 group-hover/array:text-blue-300 transition-colors duration-300">Large</span>
+                                        </div>
+                                        <div className="relative">
+                                            <div className="absolute inset-0 bg-blue-400/5 rounded-full group-hover/array:bg-blue-400/10 transition-all duration-300"></div>
+                                            <div className="absolute h-full bg-blue-400/20 rounded-full overflow-hidden origin-left"
+                                                style={{
+                                                    transform: `scaleX(${((patternParam1 - MIN_ARRAY_SIZE) / (MAX_ARRAY_SIZE - MIN_ARRAY_SIZE))})`,
+                                                    transition: 'transform 0.1s ease-out'
+                                                }}
+                                            >
+                                                <div className="absolute inset-0 w-0 group-hover/array:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-blue-400/20 to-transparent"></div>
+                                            </div>
+                                            <Slider
+                                                value={[patternParam1]}
+                                                min={MIN_ARRAY_SIZE}
+                                                max={MAX_ARRAY_SIZE}
+                                                step={1}
+                                                onValueChange={(value) => handlePatternSizeChange(value[0])}
+                                                disabled={isSorting}
+                                                className="relative z-10"
+                                                name="pattern array size"
+                                                aria-label="Pattern Array Size Slider"
+                                                aria-labelledby="pattern-size-label"
+                                            />
+                                            <div className="absolute inset-0 bg-blue-400/10 rounded-full animate-pulse"></div>
+                                        </div>
+                                        <div className="absolute -bottom-6 left-0 right-0 flex justify-between text-[10px] text-slate-500">
+                                            <span className="group-hover/array:text-blue-300 text-blue-300 transition-colors duration-300">{MIN_ARRAY_SIZE}</span>
+                                            <span className="group-hover/array:text-blue-300 text-blue-300 transition-colors duration-300">{Math.floor((MIN_ARRAY_SIZE + MAX_ARRAY_SIZE) / 2)}</span>
+                                            <span className="group-hover/array:text-blue-300 text-blue-300 transition-colors duration-300">{MAX_ARRAY_SIZE}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between items-center mt-2 text-xs text-slate-400">
+                                        <div className="flex items-center">
+                                            <div className="w-3 h-3 bg-blue-400/30 rounded-sm mr-1 animate-pulse"></div>
+                                            <span className="text-blue-400">Elements: {patternParam1}</span>
+                                        </div>
+                                        <div className="flex space-x-1">
+                                            <button
+                                                onClick={() => !isSorting && patternParam1 > MIN_ARRAY_SIZE && setPatternParam1(Math.max(MIN_ARRAY_SIZE, patternParam1 - 10))}
+                                                disabled={isSorting || patternParam1 <= MIN_ARRAY_SIZE}
+                                                className="group/btn relative w-8 h-8 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-all duration-300 overflow-hidden"
+                                                aria-label="Decrease pattern array size by 10"
+                                            >
+                                                <div className="absolute inset-0 bg-blue-400/10 opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>
+                                                <div className="absolute inset-0 flex items-center justify-center text-blue-400 font-mono text-[10px]">-10</div>
+                                                <div className="absolute bottom-0 left-0 h-0.5 bg-blue-400/50 w-0 group-hover/btn:w-full transition-all duration-300"></div>
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    if (!isSorting && patternParam1 < MAX_ARRAY_SIZE) {
+                                                        const newSize = Math.min(MAX_ARRAY_SIZE, patternParam1 + 10);
+                                                        setPatternParam1(newSize);
+                                                    }
+                                                }}
+                                                disabled={isSorting || patternParam1 >= MAX_ARRAY_SIZE}
+                                                className="group/btn relative w-8 h-8 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-all duration-300 overflow-hidden"
+                                                aria-label="Increase pattern array size by 10"
+                                            >
+                                                <div className="absolute inset-0 bg-blue-400/10 opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>
+                                                <div className="absolute inset-0 flex items-center justify-center text-blue-400 font-mono text-[10px]">+10</div>
+                                                <div className="absolute bottom-0 left-0 h-0.5 bg-blue-400/50 w-0 group-hover/btn:w-full transition-all duration-300"></div>
+                                            </button>
+                                        </div>
+                                        <div className="text-[10px] text-blue-300 group-hover/array:text-blue-300 transition-colors duration-300">
+                                            {patternParam1 < 50 ? "Good for learning" : patternParam1 < 100 ? "Balanced" : "Performance test"}
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 h-8 bg-slate-800/80 rounded-lg border border-slate-700 overflow-hidden relative group/bar">
+                                        <div
+                                            className="h-full bg-gradient-to-r from-blue-500/20 to-blue-400/20 relative overflow-hidden origin-left"
+                                            style={{
+                                                transform: `scaleX(${((patternParam1 - MIN_ARRAY_SIZE) / (MAX_ARRAY_SIZE - MIN_ARRAY_SIZE))})`,
+                                                transition: 'transform 0.05s ease-out'
+                                            }}
+                                        >
+                                            <div className="absolute inset-0 w-0 group-hover/array:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-blue-400/10 to-transparent"></div>
+                                            <div className="absolute inset-y-0 right-0 w-1 bg-blue-400/30"></div>
+                                        </div>
+                                        <div className="absolute inset-0 flex items-center justify-center text-[10px] text-blue-400/70 font-mono group-hover/array:text-blue-400 transition-colors duration-300">
+                                            {patternParam1} elements
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-            {/* Messages (Errors/Success) */}
-            {(inputErrors.length > 0 || successMessage) && (
-                <div className="mt-4 p-3 rounded-md min-h-[50px] flex items-center">
-                    {inputErrors.length > 0 ? (
-                        <div className="flex items-start text-red-600 dark:text-red-400 gap-2">
-                            <TriangleAlert size={20} className="flex-shrink-0 mt-0.5" />
-                            <ul className="list-none p-0 m-0">
-                                {inputErrors.map((error, index) => (
-                                    <li key={index} className="text-sm">{error}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    ) : (
-                        <div className="flex items-center text-green-600 dark:text-green-400 gap-2">
-                            <CheckCircle size={20} />
-                            <p className="text-sm">{successMessage}</p>
+                            <label htmlFor="pattern-select" className="sr-only">Select Pattern Type</label>
+                            <select
+                                id="pattern-select"
+                                value={patternType}
+                                onChange={(e) => setPatternType(e.target.value)}
+                                className={commonInputClassNames + " mb-2 h-auto"}
+                                disabled={isSorting}
+                            >
+                                <option value="nearlySorted">Nearly Sorted</option>
+                                <option value="reverseSorted">Reverse Sorted</option>
+                                <option value="fewUnique">Few Unique Values</option>
+                                <option value="manyDuplicates">Many Duplicates</option>
+                                <option value="highDuplicates">Extremely High Duplicates</option>
+                                <option value="bellCurve">Bell Curve Distribution</option>
+                                <option value="stepped">Stepped Pattern</option>
+                            </select>
+                            {renderPatternParameters()}
+                            <button
+                                onClick={handleGeneratePattern}
+                                className="
+                                    flex items-center gap-2 px-5 py-2 rounded-lg
+                                    bg-blue-600 text-white font-medium
+                                    hover:bg-blue-700 transition-colors duration-200 shadow-md mt-4
+                                "
+                                disabled={isSorting}
+                            >
+                                <Wand2 size={20} /> Generate Pattern
+                            </button>
                         </div>
                     )}
                 </div>
-            )}
+
+                {/* Messages */}
+                <div className="mt-4 min-h-[50px] flex flex-col justify-end relative z-10">
+                    {inputErrors.length > 0 && (
+                        <div className="bg-red-900/30 border border-red-700 text-red-300 px-4 py-3 rounded-lg relative mb-2">
+                            <strong className="font-bold flex items-center">
+                                <TriangleAlert size={18} className="mr-2 text-red-400" /> Error:
+                            </strong>
+                            <ul className="mt-1 list-disc list-inside">
+                                {inputErrors.map((error, index) => (
+                                    <li key={index}>{error}</li>
+                                ))}
+                            </ul>
+                            <span className="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer" onClick={clearMessages}>
+                                <X size={18} className="text-red-400 hover:text-red-300" />
+                            </span>
+                        </div>
+                    )}
+                    {successMessage && (
+                        <div className="bg-green-900/30 border border-green-700 text-green-300 px-4 py-3 rounded-lg relative">
+                            <strong className="font-bold flex items-center">
+                                <CheckCircle size={18} className="mr-2 text-green-400" /> Success:
+                            </strong>
+                            <p className="mt-1">{successMessage}</p>
+                            <span className="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer" onClick={clearMessages}>
+                                <X size={18} className="text-green-400 hover:text-green-300" />
+                            </span>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 };
 
 export default ArrayInput;
+
