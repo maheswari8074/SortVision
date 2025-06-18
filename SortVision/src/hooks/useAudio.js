@@ -16,8 +16,8 @@ export const useAudio = () => {
 
       // Ensure AudioEngine is initialized and enabled only once on first user interaction
       if (!audioEngine.audioContext) {
-        console.log('useAudio: AudioContext not yet initialized. Calling audioEngine.init()...');
-        audioEngine.init();
+        console.log('useAudio: AudioContext not yet initialized. Calling audioEngine.initAudio()...');
+        audioEngine.initAudio();
         if (!audioEngine.audioContext) {
           console.error('useAudio: Failed to initialize AudioContext during user interaction. Aborting sound enable.');
           return;
@@ -120,6 +120,12 @@ export const useAudio = () => {
     }
   }, [isAudioEnabled]);
 
+  const playTypingSound = useCallback(() => {
+    if (isAudioEnabled) {
+      audioEngine.playTypingSound();
+    }
+  }, [isAudioEnabled]);
+
   return {
     setVolume,
     toggleMute,
@@ -132,6 +138,7 @@ export const useAudio = () => {
     setMaxArrayValue,
     playCategoryClickSound,
     playAlgorithmSelectSound,
+    playTypingSound,
     isMuted,
     volume,
     isAudioEnabled,
