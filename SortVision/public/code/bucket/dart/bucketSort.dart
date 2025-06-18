@@ -3,13 +3,13 @@
 // Space Complexity: O(n + k)
 
 class BucketSort {
-  static void sort(List<int> arr) {
+  static void sort(List<int> arr, {int bucketFactor = 5}) {
     if (arr.length <= 1) return;
 
     int minValue = arr.reduce((a, b) => a < b ? a : b);
     int maxValue = arr.reduce((a, b) => a > b ? a : b);
 
-    int bucketCount = (arr.length / 2).ceil();
+    int bucketCount = ((maxValue - minValue + 1) / bucketFactor).ceil();
     List<List<int>> buckets = List.generate(bucketCount, (_) => []);
 
     double range = (maxValue - minValue + 1) / bucketCount;
