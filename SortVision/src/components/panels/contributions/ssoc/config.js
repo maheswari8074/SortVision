@@ -98,10 +98,20 @@ export const BADGE_CONFIG = {
     color: 'text-yellow-300'
   },
   BUG_HUNTER: {
-    condition: 'foundBugs',
+    condition: 'solvedBugs',
     icon: 'Bug',
-    tooltip: 'Bug Hunter - Found and reported critical bugs',
-    color: 'text-red-400'
+    tooltip: 'Bug Hunter - Solved critical bugs',
+    color: 'text-red-400',
+    stats: true,
+    getStats: (participant) => `${participant.bugsSolved} bugs fixed`
+  },
+  BUG_REPORTER: {
+    condition: 'reportedBugs',
+    icon: 'AlertCircle',
+    tooltip: 'Bug Reporter - Found and reported bugs',
+    color: 'text-orange-400',
+    stats: true,
+    getStats: (participant) => `${participant.bugsReported} bugs reported`
   },
   TEAM_PLAYER: {
     condition: 'helpedOthers',
@@ -127,5 +137,42 @@ export const BADGE_CONFIG = {
     icon: 'FileText',
     tooltip: 'Documentation Hero - Improved project documentation',
     color: 'text-teal-400'
+  },
+  // New diversity and category badges
+  POLYGLOT: {
+    condition: 'isPolyglot',
+    icon: 'Languages',
+    tooltip: 'Polyglot - Contributed in 3+ programming languages',
+    color: 'text-pink-400'
+  },
+  FIRST_CONTRIBUTOR: {
+    condition: 'isFirstTimeContributor',
+    icon: 'Star',
+    tooltip: 'First Steps - First-time open source contributor',
+    color: 'text-yellow-200'
+  },
+  LONG_TERM_CONTRIBUTOR: {
+    condition: 'isLongTermContributor',
+    icon: 'History',
+    tooltip: 'Long-term Contributor - Active for 30+ days',
+    color: 'text-blue-400'
+  },
+  CODE_QUALITY: {
+    condition: 'isQualityFocused',
+    icon: 'Code2',
+    tooltip: 'Code Quality Champion - Focuses on code improvement',
+    color: 'text-green-300'
+  },
+  DIVERSE_CONTRIBUTOR: {
+    condition: 'isDiverseContributor',
+    icon: 'Layers',
+    tooltip: 'Diverse Contributor - Solved various types of issues',
+    color: 'text-violet-400'
+  },
+  HIGH_IMPACT: {
+    condition: 'isImpactful',
+    icon: 'Target',
+    tooltip: 'High Impact - Modified 10+ files across the project',
+    color: 'text-orange-400'
   }
 }; 

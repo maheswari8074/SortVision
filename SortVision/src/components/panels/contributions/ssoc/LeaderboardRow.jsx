@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   Crown, ExternalLink, Link2, User, Sparkles, Compass, Rocket, Diamond, Shield,
   Sun, GraduationCap, Medal, Trophy, Calendar, CheckCircle, FileText,
-  Zap, Bug, Users
+  Zap, Bug, Users, Languages, Star, History, Code2, Layers, Target, AlertCircle
 } from 'lucide-react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { BADGE_CONFIG } from './config';
@@ -50,14 +50,24 @@ const BadgeIcon = ({ iconName, className }) => {
     FileText,
     Zap,
     Bug,
-    Users
+    Users,
+    Languages,
+    Star,
+    History,
+    Code2,
+    Layers,
+    Target,
+    AlertCircle
   };
   const IconComponent = icons[iconName];
   return IconComponent ? <IconComponent className={className} /> : null;
 };
 
-const Badge = ({ config }) => {
-  console.log('Rendering badge with config:', config);
+const Badge = ({ config, participant }) => {
+  const tooltipContent = config.stats && config.getStats ? 
+    `${config.tooltip} (${config.getStats(participant)})` : 
+    config.tooltip;
+
   return (
     <Tooltip.Provider>
       <Tooltip.Root>
@@ -72,7 +82,7 @@ const Badge = ({ config }) => {
             className="data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade select-none rounded-md bg-gray-900 px-4 py-2.5 text-sm leading-none text-white shadow-md will-change-[transform,opacity]"
             sideOffset={5}
           >
-            {config.tooltip}
+            {tooltipContent}
             <Tooltip.Arrow className="fill-gray-900" />
           </Tooltip.Content>
         </Tooltip.Portal>
@@ -106,8 +116,11 @@ const getBadges = (points, achievements = {}, participant) => {
   if (achievements.completedIn24Hours) {
     badges.push(BADGE_CONFIG.SPEED_DEMON);
   }
-  if (achievements.foundBugs) {
+  if (achievements.solvedBugs) {
     badges.push(BADGE_CONFIG.BUG_HUNTER);
+  }
+  if (achievements.reportedBugs) {
+    badges.push(BADGE_CONFIG.BUG_REPORTER);
   }
   if (achievements.helpedOthers) {
     badges.push(BADGE_CONFIG.TEAM_PLAYER);
@@ -122,6 +135,26 @@ const getBadges = (points, achievements = {}, participant) => {
   }
   if (achievements.improvedDocs) {
     badges.push(BADGE_CONFIG.DOCUMENTATION_HERO);
+  }
+
+  // Add new diversity and category badges
+  if (achievements.isPolyglot) {
+    badges.push(BADGE_CONFIG.POLYGLOT);
+  }
+  if (achievements.isFirstTimeContributor) {
+    badges.push(BADGE_CONFIG.FIRST_CONTRIBUTOR);
+  }
+  if (achievements.isLongTermContributor) {
+    badges.push(BADGE_CONFIG.LONG_TERM_CONTRIBUTOR);
+  }
+  if (achievements.isQualityFocused) {
+    badges.push(BADGE_CONFIG.CODE_QUALITY);
+  }
+  if (achievements.isDiverseContributor) {
+    badges.push(BADGE_CONFIG.DIVERSE_CONTRIBUTOR);
+  }
+  if (achievements.isImpactful) {
+    badges.push(BADGE_CONFIG.HIGH_IMPACT);
   }
 
   return badges;
@@ -191,7 +224,7 @@ const LeaderboardRow = ({ participant, index }) => {
             </a>
             <div className="flex items-center gap-1.5">
               {badges.map((badge, idx) => (
-                <Badge key={idx} config={badge} />
+                <Badge key={idx} config={badge} participant={participant} />
               ))}
             </div>
           </div>
