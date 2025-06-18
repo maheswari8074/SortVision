@@ -38,9 +38,10 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
   // Filter participants based on selected filter and search term
   const filteredParticipants = participants
     .filter(participant => participant.totalPoints > 0)
-    .map((participant, originalIndex) => ({
+    .sort((a, b) => b.totalPoints - a.totalPoints) // Sort by totalPoints descending
+    .map((participant, sortedIndex) => ({
       ...participant,
-      originalRank: originalIndex
+      originalRank: sortedIndex // Assign rank based on sorted order
     }))
     .filter(participant => {
       const matchesSearch = searchTerm === '' || (
