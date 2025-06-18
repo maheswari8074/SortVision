@@ -38,6 +38,10 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
   // Filter participants based on selected filter and search term
   const filteredParticipants = participants
     .filter(participant => participant.totalPoints > 0)
+    .map((participant, originalIndex) => ({
+      ...participant,
+      originalRank: originalIndex
+    }))
     .filter(participant => {
       const matchesSearch = searchTerm === '' || (
         participant.contributorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -46,7 +50,7 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
       
       switch (filter) {
         case FILTER_OPTIONS.TOP_10:
-          return matchesSearch && participants.indexOf(participant) < 10;
+          return matchesSearch && participant.originalRank < 10;
         case FILTER_OPTIONS.ADVANCED:
           return matchesSearch && participant.advancedIssues > 0;
         case FILTER_OPTIONS.INTERMEDIATE:
@@ -256,28 +260,23 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                 }
               `}</style>
 
-              <table className="min-w-full bg-white/5 rounded-lg overflow-hidden leaderboard-table">
+              <table className="w-full leaderboard-table">
                 <thead>
-                  <tr className="text-left text-sm font-semibold">
-                    <th className="px-6 py-4">Rank</th>
-                    <th className="px-6 py-4">Contributor</th>
-                    <th className="px-6 py-4" colSpan="3">
-                      <div className="text-center mb-2 font-semibold tracking-wide">Issues</div>
-                      <div className="grid grid-cols-3 gap-2 text-xs">
-                        <div className="text-center beginner-issues">Beginner</div>
-                        <div className="text-center intermediate-issues">Intermediate</div>
-                        <div className="text-center advanced-issues">Advanced</div>
-                      </div>
-                    </th>
-                    <th className="px-6 py-4 text-right">Points</th>
+                  <tr className="text-left text-xs font-semibold text-slate-400 border-b border-white/5">
+                    <th className="px-6 py-3">Rank</th>
+                    <th className="px-6 py-3">Participant</th>
+                    <th className="px-2 py-3 text-center">Beginner</th>
+                    <th className="px-2 py-3 text-center">Intermediate</th>
+                    <th className="px-2 py-3 text-center">Advanced</th>
+                    <th className="px-6 py-3 text-right">Points</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredParticipants.map((participant, index) => (
+                  {filteredParticipants.map((participant) => (
                     <LeaderboardRow
                       key={participant.githubId}
                       participant={participant}
-                      index={index}
+                      index={participant.originalRank}
                     />
                   ))}
                 </tbody>
