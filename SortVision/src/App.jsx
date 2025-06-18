@@ -6,6 +6,7 @@ import { getAlgorithmMetaTags, getHomepageMetaTags, getContributionsMetaTags, ge
 import SEOContent from './components/SEOContent';
 import { FeedbackButton } from './components/feedback';
 import { SettingsButton } from './components/settings';
+import './styles/animation.css';
 import ChatAssistant from './components/ChatAssistant';
 import { AlgorithmStateProvider } from "./context/AlgorithmState";
 
