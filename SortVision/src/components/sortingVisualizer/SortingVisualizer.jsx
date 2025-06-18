@@ -228,7 +228,7 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
   //=============================================================================
 
   return (
-    <Card className="w-full max-w-5xl mx-auto border-slate-800 bg-slate-950 text-slate-200 shadow-lg joyride-visualizer-wrapper">
+    <Card className="w-full max-w-5xl mx-auto border-slate-800 bg-slate-950 text-slate-200 shadow-lg">
       {/* Animation keyframes */}
       <style dangerouslySetInnerHTML={{
         __html: `
