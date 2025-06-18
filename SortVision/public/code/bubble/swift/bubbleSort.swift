@@ -18,7 +18,7 @@ class BubbleSort {
                 }
             }
 
-            // If no elements were swapped in the inner loop, the array is sorted
+            // If no elements were swapped in the inner loop, the array is sorted.
             if !swapped { break }
         }
     }
