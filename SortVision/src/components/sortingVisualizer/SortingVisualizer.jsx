@@ -7,8 +7,10 @@ import { useAudio } from '@/hooks/useAudio';
 // Import subcomponents
 import SortingHeader from './SortingHeader';
 import { ConfigPanel, MetricsPanel, DetailsPanel, ContributionPanel } from '../panels';
-import SortingControls from './SortingControls';
-import PerformanceMetrics from './PerformanceMetrics';
+import * as SortingControls from './SortingControls';
+import * as PerformanceMetrics from './PerformanceMetrics';
+import ExecutionTimePanel from './ExecutionTimePanel';
+import CurrentRunMetrics from './components/CurrentRunMetrics';
 
 /**
  * SortingVisualizer Component
@@ -54,6 +56,7 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
   const [metrics, setMetrics] = useState({ swaps: 0, comparisons: 0, time: 0 });
   const [sortedMetrics, setSortedMetrics] = useState([]);
   const [currentTestingAlgo, setCurrentTestingAlgo] = useState(null);
+  const [estimatedTime, setEstimatedTime] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [compareMetrics, setCompareMetrics] = useState({});
   
@@ -63,10 +66,6 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
   // Reference for tracking sort start time 
   const sortStartTimeRef = useRef(null);
 
-  // Import utility functions from subcomponents
-  const sortingControls = SortingControls();
-  const performanceMetrics = PerformanceMetrics();
-
   //=============================================================================
   // HANDLER FUNCTIONS
   //=============================================================================
@@ -75,7 +74,7 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
    * Generates a new random array for visualization
    */
   const generateNewArray = () => {
-    sortingControls.generateNewArray(arraySize, setArray, setCurrentBar);
+    SortingControls.generateNewArray(arraySize, setArray, setCurrentBar);
     audio.playAccessSound(); // Play sound when generating new array
   };
 
@@ -83,7 +82,7 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
    * Stops the current sorting process
    */
   const stopSorting = () => {
-    sortingControls.stopSorting(shouldStopRef, setIsStopped, setIsSorting);
+    SortingControls.stopSorting(shouldStopRef, setIsStopped, setIsSorting);
     audio.playAccessSound(); // Play sound when stopping
   };
 
@@ -93,7 +92,7 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
   const startSorting = async () => {
     sortStartTimeRef.current = Date.now();
     
-    await sortingControls.startSorting(
+    await SortingControls.startSorting(
       algorithm, 
       array, 
       setArray, 
@@ -111,7 +110,7 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
    * Benchmarks all sorting algorithms on the same array for comparison
    */
   const testAllAlgorithms = async () => {
-    await sortingControls.testAllAlgorithms(
+    await SortingControls.testAllAlgorithms(
       array,
       setArray,
       speed,
@@ -130,7 +129,7 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
    * Provides algorithm complexity and performance characteristics
    */
   const getAlgorithmTimeComplexity = () => {
-    return performanceMetrics.getAlgorithmTimeComplexity(algorithm);
+    return PerformanceMetrics.getAlgorithmTimeComplexity(algorithm);
   };
   
   /**
@@ -173,6 +172,14 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
   const handleSpeedChange = (newSpeed) => {
     setSpeed(newSpeed);
   };
+
+  /**
+   * Updates the estimated execution time when array size or algorithm changes
+   */
+  useEffect(() => {
+    const estimatedTime = PerformanceMetrics.estimateExecutionTime(algorithm, arraySize);
+    setEstimatedTime(estimatedTime);
+  }, [algorithm, arraySize]);
 
   //=============================================================================
   // LIFECYCLE MANAGEMENT
@@ -273,57 +280,68 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
               </TabsTrigger>
             </TabsList>
           
-          {/* Configuration panel */}
-          <TabsContent value="controls" className="space-y-4 mt-4">
-            <ConfigPanel 
-              algorithm={algorithm}
-              setAlgorithm={handleAlgorithmChange}
-              arraySize={arraySize}
-              setArraySize={handleArraySizeChange}
-              speed={speed}
-              setSpeed={handleSpeedChange}
-              isSorting={isSorting}
-              getAlgorithmTimeComplexity={getAlgorithmTimeComplexity}
-              array={array}
-              currentBar={currentBar}
-              currentTestingAlgo={currentTestingAlgo}
-              isStopped={isStopped}
-              generateNewArray={generateNewArray}
-              startSorting={startSorting}
-              stopSorting={stopSorting}
-              audio={audio}
-            />
-          </TabsContent>
-          
-          {/* Performance metrics panel */}
-          <TabsContent value="metrics" className="space-y-4 mt-4">
-            <MetricsPanel 
-              metrics={metrics}
-              sortedMetrics={sortedMetrics}
-              isSorting={isSorting}
-              currentTestingAlgo={currentTestingAlgo}
-              testAllAlgorithms={testAllAlgorithms}
-              stopSorting={stopSorting}
-              algorithm={algorithm}
-              array={array}
-              currentBar={currentBar}
-              isStopped={isStopped}
-            />
-          </TabsContent>
-          
-          {/* Algorithm details panel */}
-          <TabsContent value="details" className="space-y-4 mt-4">
-            <DetailsPanel 
-              algorithm={algorithm}
-              array={array}
-              currentBar={currentBar}
-              isSorting={isSorting}
-              currentTestingAlgo={currentTestingAlgo}
-              isStopped={isStopped}
-              setAlgorithm={handleAlgorithmChange}
-            />
-          </TabsContent>
-          
+            {/* Configuration panel */}
+            <TabsContent value="controls" className="space-y-4 mt-4">
+              <div className="flex flex-col space-y-4">
+                <ExecutionTimePanel algorithm={algorithm} arraySize={arraySize} />
+                <div className="flex justify-between items-center">
+                  <div className="text-sm text-slate-400">
+                    Estimated Time: {estimatedTime.time}ms
+                  </div>
+                  <div className="text-sm text-slate-400">
+                    Actual Time: {metrics.time}ms
+                  </div>
+                </div>
+                <ConfigPanel 
+                  algorithm={algorithm}
+                  setAlgorithm={handleAlgorithmChange}
+                  arraySize={arraySize}
+                  setArraySize={handleArraySizeChange}
+                  speed={speed}
+                  setSpeed={handleSpeedChange}
+                  isSorting={isSorting}
+                  getAlgorithmTimeComplexity={getAlgorithmTimeComplexity}
+                  array={array}
+                  currentBar={currentBar}
+                  currentTestingAlgo={currentTestingAlgo}
+                  isStopped={isStopped}
+                  generateNewArray={generateNewArray}
+                  startSorting={startSorting}
+                  stopSorting={stopSorting}
+                  audio={audio}
+                />
+              </div>
+            </TabsContent>
+            
+            {/* Performance metrics panel */}
+            <TabsContent value="metrics" className="space-y-4 mt-4">
+              <MetricsPanel 
+                metrics={metrics}
+                sortedMetrics={sortedMetrics}
+                isSorting={isSorting}
+                currentTestingAlgo={currentTestingAlgo}
+                testAllAlgorithms={testAllAlgorithms}
+                stopSorting={stopSorting}
+                algorithm={algorithm}
+                array={array}
+                currentBar={currentBar}
+                isStopped={isStopped}
+              />
+            </TabsContent>
+            
+            {/* Algorithm details panel */}
+            <TabsContent value="details" className="space-y-4 mt-4">
+              <DetailsPanel 
+                algorithm={algorithm}
+                array={array}
+                currentBar={currentBar}
+                isSorting={isSorting}
+                currentTestingAlgo={currentTestingAlgo}
+                isStopped={isStopped}
+                setAlgorithm={handleAlgorithmChange}
+              />
+            </TabsContent>
+            
           </Tabs>
         )}
       </CardContent>

@@ -6,7 +6,7 @@ import React, {
   lazy,
   Suspense,
 } from 'react';
-import { Routes, Route, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { generateCanonicalUrl, isCanonicalPath } from './utils/urlUtils';
 import {
@@ -16,15 +16,11 @@ import {
   getSSOCMetaTags,
 } from './utils/metaUtils';
 import algorithms from './data/algorithms';
-
-const Home = lazy(() => import('./pages/Home'));
-const AlgorithmPage = lazy(() => import('./pages/AlgorithmPage'));
-const Contributions = lazy(() => import('./pages/Contributions'));
+import SortingVisualizer from './components/sortingVisualizer/SortingVisualizer';
 
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { algorithmName } = useParams();
 
   const [activeTab, setActiveTab] = useState('controls');
   const [specialMode, setSpecialMode] = useState(null);
@@ -38,7 +34,7 @@ const App = () => {
   const isContributionPath = pathParts[0] === 'contributions';
 
   let tabFromPath = null;
-  let algorithmFromPath = algorithmName;
+  let algorithmFromPath = null;
   let contributionSection = null;
 
   if (isAlgorithmPath && pathParts.length >= 3) {
@@ -118,15 +114,15 @@ const App = () => {
   const metaTags = useMemo(() => {
     if (location.pathname === '/contributions/ssoc') return getSSOCMetaTags();
     if (location.pathname === '/contributions') return getContributionsMetaTags();
-    if (algorithmName) return getAlgorithmMetaTags(algorithmName);
+    if (algorithmFromPath) return getAlgorithmMetaTags(algorithmFromPath);
     return getHomepageMetaTags();
-  }, [algorithmName, location.pathname]);
+  }, [algorithmFromPath, location.pathname]);
 
   const schemaMarkup = useMemo(() => {
     return {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": algorithmName
+      "name": algorithmFromPath
         ? `${algorithmTitle} Visualizer - SortVision`
         : 'SortVision',
       "url": `https://sortvision.vercel.app${location.pathname}`,
@@ -188,7 +184,7 @@ const App = () => {
         "https://x.com/alienx5499"
       ]
     };
-  }, [algorithmName, algorithmTitle, metaTags, location.pathname]);
+  }, [algorithmFromPath, algorithmTitle, metaTags, location.pathname]);
 
   return (
     <>
@@ -204,10 +200,10 @@ const App = () => {
 
       <Suspense fallback={<div className="min-h-screen bg-slate-950" />}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/algorithms/:algorithmName" element={<AlgorithmPage />} />
-          <Route path="/contributions/*" element={<Contributions />} />
-          <Route path="*" element={<Home />} />
+          <Route path="/" element={<SortingVisualizer />} />
+          <Route path="/algorithms/:algorithmName" element={<SortingVisualizer />} />
+          <Route path="/contributions/*" element={<SortingVisualizer />} />
+          <Route path="*" element={<SortingVisualizer />} />
         </Routes>
       </Suspense>
     </>
