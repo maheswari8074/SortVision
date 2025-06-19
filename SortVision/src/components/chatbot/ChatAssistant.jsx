@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useAlgorithmState } from "@/context/AlgorithmState";
 import { useAudio } from "@/hooks/useAudio";
 import { useMobileOverlay } from "@/components/MobileOverlay";
@@ -10,101 +10,161 @@ export default function ChatAssistant() {
     const [isOpen, setIsOpen] = useState(false);
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState([]);
+    const [isTyping, setIsTyping] = useState(false);
+    const [typingInterval, setTypingInterval] = useState(null);
+    const [errorCount, setErrorCount] = useState(0);
+    
     const { getContextObject, addToHistory } = useAlgorithmState();
     const { playTypingSound, isAudioEnabled } = useAudio();
     const { isMobileOverlayVisible } = useMobileOverlay();
 
     const messagesEndRef = useRef(null);
     const assistantRef = useRef(null);
+    const lastTypingSoundRef = useRef(0);
 
-    // 🧠 Set up assistant on mount
+    // Initialize assistant
     useEffect(() => {
         console.log("✅ ChatAssistant mounted");
         assistantRef.current = new AssistantEngine(() => getContextObject());
+        
+        // Add welcome message with delay
+        const timer = setTimeout(() => {
+            setMessages([{
+                role: "model",
+                content: "Hello! I'm SortBot, your sorting algorithm assistant. How can I help you today?"
+            }]);
+        }, 1000);
+        
+        return () => clearTimeout(timer);
     }, []);
 
+    // Scroll to bottom on new messages
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        const scrollToBottom = () => {
+            messagesEndRef.current?.scrollIntoView({ 
+                behavior: "smooth",
+                block: "end"
+            });
+        };
+        
+        if (messages.length > 0) {
+            scrollToBottom();
+            // Double-check scroll position after any images/content loads
+            setTimeout(scrollToBottom, 100);
+        }
     }, [messages]);
 
-    // Handle chat open/close
-    const toggleChat = () => {
+    // Clean up typing interval on unmount
+    useEffect(() => {
+        return () => {
+            if (typingInterval) {
+                clearInterval(typingInterval);
+            }
+        };
+    }, [typingInterval]);
+
+    // Handle chat open/close with animation
+    const toggleChat = useCallback(() => {
         setIsOpen(prev => !prev);
         if (!isOpen) {
-            // Trigger a user interaction to enable audio
+            // Enable audio interaction
             const event = new MouseEvent('click', {
                 view: window,
                 bubbles: true,
                 cancelable: true
             });
             document.dispatchEvent(event);
+            
+            // Reset error count on new session
+            setErrorCount(0);
         }
-    };
+    }, [isOpen]);
 
-    const handleSend = async () => {
-        if (!input.trim()) return;
+    // Enhanced message display with typing animation
+    const displayMessageWithTyping = useCallback((text, userInput) => {
+        let displayed = "";
+        let i = 0;
+        
+        setIsTyping(true);
+        setMessages(prev => [...prev, { role: "model", content: "" }]);
 
-        setMessages((prev) => [...prev, { role: "user", content: input }]);
-        const userInput = input;
-        setInput("");
-
-        const context = getContextObject();
-        console.log("🧠 Context passed to assistant (ChatAssistant):", context);
-
-        const result = await assistantRef.current.process(input, context);
-
-        if (result.type === "response") {
-            let displayed = "";
-            const full = result.content;
-            let i = 0;
-            let lastTypingSound = 0;
-            let typingInterval;
-
-            setMessages((prev) => [...prev, { role: "model", content: "" }]);
-
-            typingInterval = setInterval(() => {
-                const now = Date.now();
-                
-                if (i < full.length && now - lastTypingSound >= 200 && isAudioEnabled) {
-                    console.log('ChatAssistant: Playing typing sound');
+        const interval = setInterval(() => {
+            const now = Date.now();
+            
+            if (i < text.length) {
+                // Play typing sound with rate limiting
+                if (now - lastTypingSoundRef.current >= 200 && isAudioEnabled) {
                     playTypingSound();
-                    lastTypingSound = now;
+                    lastTypingSoundRef.current = now;
                 }
 
-                if (i < full.length) {
-                    displayed += full[i];
-                    i++;
+                displayed += text[i];
+                i++;
 
-                    setMessages((prev) => {
-                        const last = prev[prev.length - 1];
-                        if (last.role === "model") {
-                            return [
-                                ...prev.slice(0, -1),
-                                { ...last, content: displayed },
-                            ];
-                        }
-                        return prev;
-                    });
-                }
+                setMessages(prev => {
+                    const last = prev[prev.length - 1];
+                    if (last.role === "model") {
+                        return [...prev.slice(0, -1), { ...last, content: displayed }];
+                    }
+                    return prev;
+                });
+            } else {
+                clearInterval(interval);
+                setTypingInterval(null);
+                setIsTyping(false);
+                addToHistory({ question: userInput, answer: text });
+            }
+        }, 30);
 
-                if (i >= full.length) {
-                    clearInterval(typingInterval);
-                    addToHistory({ question: userInput, answer: full });
-                }
-            }, 30);
+        setTypingInterval(interval);
+    }, [isAudioEnabled, playTypingSound, addToHistory]);
 
-            return () => {
-                if (typingInterval) {
-                    clearInterval(typingInterval);
-                }
-            };
-        } else {
-            setMessages((prev) => [
-                ...prev,
-                { role: "error", content: result.content },
-            ]);
+    // Enhanced error handling
+    const handleError = useCallback((error) => {
+        console.error("❌ Chat Error:", error);
+        setErrorCount(prev => prev + 1);
+        
+        const errorMessage = errorCount > 2
+            ? "I'm having trouble connecting. Please try again later or refresh the page."
+            : "I encountered an error. Let me try to help you again.";
+            
+        setMessages(prev => [...prev, { 
+            role: "error", 
+            content: errorMessage
+        }]);
+        
+        setIsTyping(false);
+    }, [errorCount]);
+
+    // Enhanced message sending with validation
+    const handleSend = useCallback(async () => {
+        const trimmedInput = input.trim();
+        if (!trimmedInput) return;
+
+        // Clear previous interval if exists
+        if (typingInterval) {
+            clearInterval(typingInterval);
+            setTypingInterval(null);
         }
-    };
+
+        setInput("");
+        setMessages(prev => [...prev, { role: "user", content: trimmedInput }]);
+
+        try {
+            const context = getContextObject();
+            console.log("🧠 Context passed to assistant:", context);
+
+            const result = await assistantRef.current.process(trimmedInput, context);
+
+            if (result.type === "response") {
+                displayMessageWithTyping(result.content, trimmedInput);
+            } else {
+                handleError(new Error("Invalid response type"));
+            }
+        } catch (error) {
+            handleError(error);
+        }
+    }, [input, typingInterval, getContextObject, displayMessageWithTyping, handleError]);
 
     if (isMobileOverlayVisible) return null;
 
@@ -119,6 +179,7 @@ export default function ChatAssistant() {
                 onInputChange={setInput}
                 onSend={handleSend}
                 messagesEndRef={messagesEndRef}
+                isTyping={isTyping}
             />
         </>
     );
