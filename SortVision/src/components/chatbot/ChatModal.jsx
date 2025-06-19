@@ -81,11 +81,11 @@ const ChatModal = ({ isOpen, onClose, messages, input, onInputChange, onSend, me
                                     >
                                         <div className="flex items-start gap-2">
                                             {msg.role === "user" ? (
-                                                <div className="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 animate-in zoom-in-50">
+                                                <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 animate-in zoom-in-50 mt-0.5">
                                                     <span className="text-xs text-blue-400">You</span>
                                                 </div>
                                             ) : (
-                                                <Bot className="w-5 h-5 text-emerald-400 flex-shrink-0 animate-in zoom-in-50" />
+                                                <Bot className="w-6 h-6 text-emerald-400 flex-shrink-0 animate-in zoom-in-50 mt-0.5" />
                                             )}
                                             <div className="flex-1 whitespace-pre-wrap break-words">{msg.content}</div>
                                         </div>
@@ -115,7 +115,7 @@ const ChatModal = ({ isOpen, onClose, messages, input, onInputChange, onSend, me
                                 onChange={(e) => onInputChange(e.target.value)}
                                 onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
                                 placeholder="Ask about sorting algorithms..."
-                                className="w-full px-4 py-2 border border-slate-700 rounded-xl bg-slate-800/50 text-white placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/50 transition-all duration-300 pr-12 group-hover:border-red-500/30"
+                                className="w-full px-4 py-2.5 border border-slate-700 rounded-xl bg-slate-800/50 text-white placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/50 transition-all duration-300 pr-12 group-hover:border-red-500/30 placeholder:text-xs"
                                 disabled={isSending}
                             />
                             <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-500/0 via-red-500/5 to-red-500/0 pointer-events-none animate-pulse" />
