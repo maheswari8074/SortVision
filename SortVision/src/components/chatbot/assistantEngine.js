@@ -51,52 +51,46 @@ Current sorting context:
     }
 }
 
-export class AssistantEngine {
-    constructor(contextGetter) {
-        this.gemini = new GeminiClient();
-        this.getContext = contextGetter;
-        this.history = [];
+const geminiClient = new GeminiClient();
+let messageHistory = [];
+
+export async function processMessage(query, context) {
+    // Check if the message is asking about the GitHub repository
+    const githubRelatedKeywords = ['github', 'repo', 'repository', 'source code', 'source'];
+    const isAskingForGithub = githubRelatedKeywords.some(keyword => 
+        query.toLowerCase().includes(keyword)
+    );
+
+    // Check if it's a thank you message
+    const thankYouKeywords = ['thank', 'thanks', 'thx', 'tysm', 'thank you'];
+    const isThankYou = thankYouKeywords.some(keyword => 
+        query.toLowerCase().includes(keyword)
+    );
+
+    if (isAskingForGithub) {
+        const response = `You can find SortVision on GitHub <a href="https://github.com/alienx5499/SortVision" target="_blank" style="color: #3b82f6; text-decoration: underline;">here</a>!\n\nIf you find this project helpful, please consider giving it a ⭐️ star on GitHub! Your support helps us grow and improve the project. Thank you! 🙏`;
+        return { type: 'response', content: response };
     }
 
-    async process(query, overrideContext = null) {
-        // Check if the message is asking about the GitHub repository
-        const githubRelatedKeywords = ['github', 'repo', 'repository', 'source code', 'source'];
-        const isAskingForGithub = githubRelatedKeywords.some(keyword => 
-            query.toLowerCase().includes(keyword)
-        );
+    if (isThankYou) {
+        const response = `You're welcome! 😊 If you found SortVision helpful, please consider giving us a ⭐️ star on <a href="https://github.com/alienx5499/SortVision" target="_blank" style="color: #3b82f6; text-decoration: underline;">GitHub</a>. Your support means a lot to us! 🙏`;
+        return { type: 'response', content: response };
+    }
 
-        // Check if it's a thank you message
-        const thankYouKeywords = ['thank', 'thanks', 'thx', 'tysm', 'thank you'];
-        const isThankYou = thankYouKeywords.some(keyword => 
-            query.toLowerCase().includes(keyword)
-        );
+    console.log("🧠 Context passed to assistant (assistantEngine):", context);
 
-        if (isAskingForGithub) {
-            const response = `You can find SortVision on GitHub <a href="https://github.com/alienx5499/SortVision" target="_blank" style="color: #3b82f6; text-decoration: underline;">here</a>!\n\nIf you find this project helpful, please consider giving it a ⭐️ star on GitHub! Your support helps us grow and improve the project. Thank you! 🙏`;
-            return { type: 'response', content: response };
-        }
+    const userMessage = { role: 'user', parts: [{ text: query }] };
+    const messages = [...messageHistory, userMessage];
 
-        if (isThankYou) {
-            const response = `You're welcome! 😊 If you found SortVision helpful, please consider giving us a ⭐️ star on <a href="https://github.com/alienx5499/SortVision" target="_blank" style="color: #3b82f6; text-decoration: underline;">GitHub</a>. Your support means a lot to us! 🙏`;
-            return { type: 'response', content: response };
-        }
+    try {
+        const responseText = await geminiClient.getResponse(messages, context);
+        const assistantMessage = { role: 'model', parts: [{ text: responseText }] };
 
-        const context = overrideContext || this.getContext?.();
-        console.log("🧠 Context passed to assistant (assistantEngine):", context);
+        messageHistory.push(userMessage, assistantMessage);
 
-        const userMessage = { role: 'user', parts: [{ text: query }] };
-        const messages = [...this.history, userMessage];
-
-        try {
-            const responseText = await this.gemini.getResponse(messages, context);
-            const assistantMessage = { role: 'model', parts: [{ text: responseText }] };
-
-            this.history.push(userMessage, assistantMessage);
-
-            return { type: 'response', content: responseText };
-        } catch (err) {
-            console.error("❌ Error in AssistantEngine:", err);
-            return { type: 'error', content: 'Unable to reach assistant right now. Try again later.' };
-        }
+        return { type: 'response', content: responseText };
+    } catch (err) {
+        console.error("❌ Error in processMessage:", err);
+        return { type: 'error', content: 'Unable to reach assistant right now. Try again later.' };
     }
 }
