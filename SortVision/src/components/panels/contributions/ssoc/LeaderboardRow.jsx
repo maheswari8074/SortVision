@@ -2,7 +2,8 @@ import React from 'react';
 import { 
   Crown, ExternalLink, Link2, User, Sparkles, Compass, Rocket, Diamond, Shield,
   Sun, GraduationCap, Medal, Trophy, Calendar, CheckCircle, FileText,
-  Zap, Bug, Users, Languages, Star, History, Code2, Layers, Target, AlertCircle
+  Zap, Bug, Users, Languages, Star, History, Code2, Layers, Target, AlertCircle,
+  TrendingUp, Award, Gem, Swords, Sprout
 } from 'lucide-react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { BADGE_CONFIG } from './config';
@@ -57,7 +58,12 @@ const BadgeIcon = ({ iconName, className }) => {
     Code2,
     Layers,
     Target,
-    AlertCircle
+    AlertCircle,
+    TrendingUp,
+    Award,
+    Gem,
+    Swords,
+    Sprout
   };
   const IconComponent = icons[iconName];
   return IconComponent ? <IconComponent className={className} /> : null;
@@ -137,12 +143,24 @@ const getBadges = (points, achievements = {}, participant) => {
     badges.push(BADGE_CONFIG.DOCUMENTATION_HERO);
   }
 
+  // Add progress-based badges (highest milestone only)
+  if (achievements.isVeteranContributor) {
+    badges.push(BADGE_CONFIG.VETERAN_CONTRIBUTOR);
+  } else if (achievements.isSeasonedDeveloper) {
+    badges.push(BADGE_CONFIG.SEASONED_DEVELOPER);
+  } else if (achievements.isCommittedContributor) {
+    badges.push(BADGE_CONFIG.COMMITTED_CONTRIBUTOR);
+  } else if (achievements.isRisingStar) {
+    badges.push(BADGE_CONFIG.RISING_STAR);
+  } else if (achievements.isNewcomer) {
+    badges.push(BADGE_CONFIG.NEWCOMER);
+  } else if (achievements.hasFirstStep) {
+    badges.push(BADGE_CONFIG.FIRST_STEP);
+  }
+
   // Add new diversity and category badges
   if (achievements.isPolyglot) {
     badges.push(BADGE_CONFIG.POLYGLOT);
-  }
-  if (achievements.isFirstTimeContributor) {
-    badges.push(BADGE_CONFIG.FIRST_CONTRIBUTOR);
   }
   if (achievements.isLongTermContributor) {
     badges.push(BADGE_CONFIG.LONG_TERM_CONTRIBUTOR);
@@ -222,7 +240,7 @@ const LeaderboardRow = ({ participant, index }) => {
                 @{participant.githubId}
               </div>
             </a>
-            <div className="flex items-center gap-1.5">
+            <div className="grid grid-cols-5 gap-1.5 max-w-xs">
               {badges.map((badge, idx) => (
                 <Badge key={idx} config={badge} participant={participant} />
               ))}

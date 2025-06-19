@@ -155,8 +155,15 @@ export const fetchLeaderboardData = async () => {
           hasReviewedPRs: false,
           improvedDocs: issueStats.issueTypes.includes('documentation'),
           
-          // New achievements
-          isFirstTimeContributor: profile.public_repos === 1,
+          // Progress-based achievements (based on total issues solved)
+          hasFirstStep: issueStats.totalIssues === 1,
+          isNewcomer: issueStats.totalIssues >= 2,
+          isRisingStar: issueStats.totalIssues >= 5,
+          isCommittedContributor: issueStats.totalIssues >= 10,
+          isSeasonedDeveloper: issueStats.totalIssues >= 15,
+          isVeteranContributor: issueStats.totalIssues >= 20,
+          
+          // Other achievements
           isDiverseContributor: issueStats.issueTypes.length >= 3
         };
 

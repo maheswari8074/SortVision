@@ -145,11 +145,42 @@ export const BADGE_CONFIG = {
     tooltip: 'Polyglot - Contributed in 3+ programming languages',
     color: 'text-pink-400'
   },
-  FIRST_CONTRIBUTOR: {
-    condition: 'isFirstTimeContributor',
+  // Progress-based contributor badges (based on total issues solved)
+  FIRST_STEP: {
+    condition: 'hasFirstStep',
     icon: 'Star',
-    tooltip: 'First Steps - First-time open source contributor',
+    tooltip: 'First Step - Solved your first issue!',
     color: 'text-yellow-200'
+  },
+  NEWCOMER: {
+    condition: 'isNewcomer',
+    icon: 'Sprout',
+    tooltip: 'Newcomer - Solved 2-4 issues',
+    color: 'text-emerald-300'
+  },
+  RISING_STAR: {
+    condition: 'isRisingStar',
+    icon: 'TrendingUp',
+    tooltip: 'Rising Star - Solved 5+ issues',
+    color: 'text-green-400'
+  },
+  COMMITTED_CONTRIBUTOR: {
+    condition: 'isCommittedContributor',
+    icon: 'Award',
+    tooltip: 'Committed Contributor - Solved 10+ issues',
+    color: 'text-blue-400'
+  },
+  SEASONED_DEVELOPER: {
+    condition: 'isSeasonedDeveloper',
+    icon: 'Gem',
+    tooltip: 'Seasoned Developer - Solved 15+ issues',
+    color: 'text-purple-400'
+  },
+  VETERAN_CONTRIBUTOR: {
+    condition: 'isVeteranContributor',
+    icon: 'Swords',
+    tooltip: 'Veteran Contributor - Solved 20+ issues',
+    color: 'text-orange-500'
   },
   LONG_TERM_CONTRIBUTOR: {
     condition: 'isLongTermContributor',
