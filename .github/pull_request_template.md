@@ -51,12 +51,13 @@ Please delete options that are not relevant:
 ## 🎯 Sorting Algorithms (if applicable)
 **Algorithm(s) affected:**
 - [ ] Bubble Sort
-- [ ] Selection Sort
+- [ ] Bucket Sort
+- [ ] Heap Sort
 - [ ] Insertion Sort
 - [ ] Merge Sort
 - [ ] Quick Sort
-- [ ] Heap Sort
 - [ ] Radix Sort
+- [ ] Selection Sort
 - [ ] Tim Sort
 - [ ] Other: ___________
 
