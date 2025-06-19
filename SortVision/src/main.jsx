@@ -68,6 +68,9 @@ if ('requestIdleCallback' in window) {
               <Routes>
                 <Route path="/" element={<App />} />
                 <Route path="/algorithms/:algorithmName" element={<App />} />
+                <Route path="/contributions/overview" element={<App />} />
+                <Route path="/contributions/guide" element={<App />} />
+                <Route path="/contributions/ssoc" element={<App />} />
                 <Route path="/contributions" element={<App />} />
                 <Route path="*" element={<App />} />
               </Routes>
@@ -99,6 +102,7 @@ if ('requestIdleCallback' in window) {
               <Route path="/algorithms/:algorithmName" element={<App />} />
               <Route path="/contributions/overview" element={<App />} />
               <Route path="/contributions/guide" element={<App />} />
+              <Route path="/contributions/ssoc" element={<App />} />
               <Route path="/contributions" element={<App />} />
               <Route path="*" element={<App />} />
             </Routes>
