@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @plugin "tailwindcss-animate";
 
@@ -118,7 +116,7 @@
 
 @layer base {
   * {
-    @apply border border-gray-300;
+    @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
@@ -200,8 +198,8 @@
     padding: 1rem;
   }
   
-  .gap-4 {
-    gap: 1rem;
+  .gap-3 {
+    gap: 0.75rem;
   }
   
   .sm\:mb-6 {
@@ -209,14 +207,14 @@
   }
 }
 
-/* Desktop devices */
+/* Larger screens (laptops and desktops) */
 @media only screen and (min-width: 769px) {
   .min-h-screen {
     min-height: 100vh;
   }
   
   .sm\:text-4xl {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
   }
   
   .p-5 {
@@ -224,7 +222,7 @@
   }
   
   .gap-4 {
-    gap: 1.25rem;
+    gap: 1rem;
   }
   
   .sm\:mb-8 {
@@ -232,6 +230,7 @@
   }
 }
 
+/* Dark mode preferences */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: oklch(0.145 0 0);
@@ -239,22 +238,25 @@
   }
   
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
   }
 }
 
+/* Reduced motion preferences */
 @media (prefers-reduced-motion) {
   .animate-pulse,
-  .animate-ping,
+  .animate-spin,
   .animate-bounce,
-  .animate-spin {
-    animation: none;
+  .animate-ping {
+    animation: none !important;
   }
   
   .transition-all,
-  .transition-transform,
-  .transition-opacity {
-    transition: none;
+  .transition-colors,
+  .transition-opacity,
+  .transition-transform {
+    transition: none !important;
   }
 }
 
@@ -268,103 +270,182 @@
 }
 
 @keyframes ping {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1.5);
+  75%, 100% {
+    transform: scale(2);
     opacity: 0;
   }
 }
 
 @keyframes bounce {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
   50% {
-    transform: translateY(-25%);
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
+  to {
     transform: rotate(360deg);
   }
 }
 
+/* Bubble sort comparison animation */
 @keyframes bubbleCompare {
   0% {
-    transform: scale(1);
+    left: 0%;
+    opacity: 0.7;
   }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes selectionSearch {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-@keyframes selectionScan {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-@keyframes blink {
-  0%, 100% {
+  15% {
+    left: 0%;
     opacity: 1;
   }
-  50% {
+  20% {
+    left: 16%;
+    opacity: 1;
+  }
+  35% {
+    left: 16%;
+    opacity: 0.7;
+  }
+  40% {
+    left: 32%;
+    opacity: 1;
+  }
+  55% {
+    left: 32%;
+    opacity: 0.7;
+  }
+  60% {
+    left: 48%;
+    opacity: 1;
+  }
+  75% {
+    left: 48%;
+    opacity: 0.7;
+  }
+  80% {
+    left: 64%;
+    opacity: 1;
+  }
+  95% {
+    left: 64%;
+    opacity: 0.7;
+  }
+  100% {
+    left: 0%;
     opacity: 0;
   }
 }
 
-@keyframes pulse-slow {
-  0%, 100% {
-    opacity: 1;
+/* Selection sort search animation */
+@keyframes selectionSearch {
+  0% {
+    left: 0%;
+    transform: scale(1);
+  }
+  10% {
+    left: 0%;
+    transform: scale(1.2);
+  }
+  20% {
+    left: 16.6%;
+    transform: scale(1);
+  }
+  30% {
+    left: 16.6%;
+    transform: scale(1.2);
+  }
+  40% {
+    left: 33.2%;
+    transform: scale(1);
   }
   50% {
-    opacity: 0.5;
+    left: 33.2%;
+    transform: scale(1.2);
   }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -100% 0;
+  60% {
+    left: 49.8%;
+    transform: scale(1);
+  }
+  70% {
+    left: 49.8%;
+    transform: scale(1.2);
+  }
+  80% {
+    left: 66.4%;
+    transform: scale(1);
+  }
+  90% {
+    left: 66.4%;
+    transform: scale(1.2);
   }
   100% {
-    background-position: 100% 0;
+    left: 83%;
+    transform: scale(1);
   }
 }
 
+/* Selection sort scanning animation for the icon */
+@keyframes selectionScan {
+  0% {
+    left: -10%;
+    opacity: 0.7;
+  }
+  50% {
+    left: 100%;
+    opacity: 1;
+  }
+  50.1% {
+    left: -10%;
+    opacity: 0;
+  }
+  100% {
+    left: -10%;
+    opacity: 0.7;
+  }
+}
+
+/* Blinking cursor animation for code editor */
+@keyframes blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Slow pulse animation for backgrounds */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Shimmer effect animation for buttons */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Animation classes for Tailwind */
 .animate-pulse-slow {
-  animation: pulse-slow 2s infinite;
+  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .animate-shimmer {
-  animation: shimmer 2s infinite;
+  animation: shimmer 2s linear infinite;
 }
 
 

@@ -1,24 +1,6 @@
-// App.jsx
-import React, {
-  useState,
-  useEffect,
-  useMemo,
-  lazy,
-  Suspense,
-} from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, lazy, Suspense, useMemo, memo } from 'react';
+import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-
-import { generateCanonicalUrl, isCanonicalPath } from './utils/urlUtils';
-import {
-  getAlgorithmMetaTags,
-  getHomepageMetaTags,
-  getContributionsMetaTags,
-  getSSOCMetaTags,
-} from './utils/metaUtils';
-import algorithms from './data/algorithms';
-import SortingVisualizer from './components/sortingVisualizer/SortingVisualizer';
-
 import { Terminal, Code, Github, Linkedin, X, Users } from 'lucide-react';
 import { getAlgorithmMetaTags, getHomepageMetaTags, getContributionsMetaTags, getSSOCMetaTags, getAlgorithmSchema, algorithms, generateCanonicalUrl, isCanonicalPath } from './utils/seo';
 import SEOContent from './components/SEOContent';
@@ -29,19 +11,45 @@ import { AlgorithmStateProvider } from "./context/AlgorithmState";
 
 
 
+// Lazy load components that aren't needed immediately
+const SortingVisualizer = lazy(() => import('./components/sortingVisualizer/SortingVisualizer'));
+const MobileOverlay = lazy(() => import('./components/MobileOverlay'));
 
+// Memoized header component to prevent unnecessary re-renders
+const Header = memo(({ children }) => (
+  <header className="flex flex-col items-center mb-4 sm:mb-6 animate-fade-down animate-once animate-duration-[800ms] animate-delay-100">
+    {children}
+  </header>
+));
+
+// Memoized footer component
+const Footer = memo(({ children }) => (
+  <footer className="mt-8 sm:mt-10 text-slate-500 text-[10px] sm:text-xs font-mono text-center animate-fade-up animate-once animate-duration-[800ms] animate-delay-700">
+    {children}
+  </footer>
+));
+
+/**
+ * Main Application Component
+ * 
+ * Renders the sorting visualizer application with header and footer
+ * 
+ * URL Structure:
+ * - /                              -> Homepage with default algorithm (bubble) and 'controls' tab
+ * - /algorithms/{algorithm}        -> Algorithm page with 'controls' tab (default)
+ * - /algorithms/{algorithm}?tab={tab} -> Algorithm page with specific tab
+ * - /contributions                 -> Contributors page
+ * 
+ * Query Parameters:
+ * - tab: controls|metrics|details  -> Sets the active tab
+ * - Other parameters are preserved for debugging, analytics, etc.
+ *   Example: ?tab=details&debug=true&cr7=goat
+ */
 const App = () => {
+  // Get route parameters and location
+  const { algorithmName } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-
-
-  const [activeTab, setActiveTab] = useState('controls');
-  const [specialMode, setSpecialMode] = useState(null);
-
-  useEffect(() => {
-    document.title = 'SortVision – Interactive Sorting Algorithm Visualizer';
-  }, []);
-
 
   // State for typing animation
   const [displayText, setDisplayText] = useState('');
@@ -55,35 +63,25 @@ const App = () => {
   const fullText = 'Interactive visualization of popular sorting algorithms';
 
   // Extract tab and algorithm/contribution section from path-based routing
-
   const pathParts = location.pathname.split('/').filter(Boolean);
   const isAlgorithmPath = pathParts[0] === 'algorithms';
   const isContributionPath = pathParts[0] === 'contributions';
 
-
   // Get tab from path
-
   let tabFromPath = null;
-  let algorithmFromPath = null;
+  let algorithmFromPath = algorithmName;
   let contributionSection = null;
 
   if (isAlgorithmPath && pathParts.length >= 3) {
-    tabFromPath = pathParts[1];
+    tabFromPath = pathParts[1]; // config, details, metrics
     algorithmFromPath = pathParts[2];
   } else if (isAlgorithmPath && pathParts.length === 2) {
     algorithmFromPath = pathParts[1];
   }
 
   if (isContributionPath && pathParts.length >= 2) {
-    contributionSection = pathParts[1];
+    contributionSection = pathParts[1]; // overview, guide
   }
-
-  const currentAlgorithm = useMemo(() => algorithmFromPath || 'bubble', [algorithmFromPath]);
-  const algorithmTitle = useMemo(
-    () => algorithms[currentAlgorithm]?.name || 'Sorting Algorithms',
-    [currentAlgorithm]
-  );
-
 
   // Get the current algorithm name for SEO - memoized to prevent recalculation
   const currentAlgorithm = useMemo(() => algorithmFromPath || 'bubble', [algorithmFromPath]);
@@ -93,7 +91,6 @@ const App = () => {
   );
 
   // Check if current URL is canonical and redirect if necessary
-
   useEffect(() => {
     if (!isCanonicalPath(location.pathname)) {
       const canonicalPath = generateCanonicalUrl(location.pathname).replace('https://sortvision.vercel.app', '');
@@ -101,13 +98,12 @@ const App = () => {
     }
   }, [location.pathname, navigate]);
 
+  // Handle routing and tab state management
   useEffect(() => {
     if (isContributionPath) {
       setSpecialMode('contributors');
 
-
       // Handle contribution section routing
-
       if (contributionSection === 'guide') {
         setActiveTab('guide');
       } else if (contributionSection === 'overview') {
@@ -115,65 +111,34 @@ const App = () => {
       } else if (contributionSection === 'ssoc') {
         setActiveTab('ssoc');
       } else {
+        // Redirect /contributions to /contributions/overview
         navigate('/contributions/overview', { replace: true });
+        return;
       }
     } else {
       setSpecialMode(null);
 
-
       // Handle path-based tab routing for algorithms
-
       if (tabFromPath && ['config', 'metrics', 'details'].includes(tabFromPath)) {
+        // Map path-based tabs to internal tab names
         const tabMapping = {
-
-          config: 'controls',
-          metrics: 'metrics',
-          details: 'details',
-
           'config': 'controls',
           'metrics': 'metrics',
           'details': 'details'
-
         };
         setActiveTab(tabMapping[tabFromPath]);
       } else if (isAlgorithmPath && pathParts.length === 2) {
+        // Handle old format /algorithms/bucket -> redirect to /algorithms/config/bucket
         const algorithm = pathParts[1];
-        const validAlgorithms = [
-          'bubble',
-          'insertion',
-          'selection',
-          'merge',
-          'quick',
-          'heap',
-          'radix',
-          'bucket',
-        ];
+        const validAlgorithms = ['bubble', 'insertion', 'selection', 'merge', 'quick', 'heap', 'radix', 'bucket'];
         if (validAlgorithms.includes(algorithm)) {
           navigate(`/algorithms/config/${algorithm}`, { replace: true });
+          return;
         }
       } else if (!isAlgorithmPath) {
-        setActiveTab('controls');
+        setActiveTab('controls'); // Default tab
       }
     }
-
-  }, [
-    location.pathname,
-    tabFromPath,
-    isAlgorithmPath,
-    isContributionPath,
-    contributionSection,
-    pathParts,
-    navigate,
-  ]);
-
-  const metaTags = useMemo(() => {
-    if (location.pathname === '/contributions/ssoc') return getSSOCMetaTags();
-    if (location.pathname === '/contributions') return getContributionsMetaTags();
-    if (algorithmFromPath) return getAlgorithmMetaTags(algorithmFromPath);
-    return getHomepageMetaTags();
-  }, [algorithmFromPath, location.pathname]);
-
-
   }, [location.pathname, tabFromPath, isAlgorithmPath, isContributionPath, contributionSection, pathParts, navigate]);
 
   // Memoize SEO metadata to prevent recalculation on each render
@@ -192,14 +157,12 @@ const App = () => {
   }, [algorithmName, location.pathname]);
 
   // Generate schema markup - memoized to prevent recalculation
-
   const schemaMarkup = useMemo(() => {
-    return {
+    // Base schema for all pages
+    const baseSchema = {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": algorithmFromPath
-        ? `${algorithmTitle} Visualizer - SortVision`
-        : 'SortVision',
+      "name": algorithmName ? `${algorithmTitle} Visualizer - SortVision` : "SortVision",
       "url": `https://sortvision.vercel.app${location.pathname}`,
       "applicationCategory": "EducationalApplication",
       "applicationSubCategory": "Algorithm Visualization",
@@ -259,11 +222,6 @@ const App = () => {
         "https://x.com/alienx5499"
       ]
     };
-  }, [algorithmFromPath, algorithmTitle, metaTags, location.pathname]);
-
-
-  return (
-    <>
 
     // Enhanced homepage schema
     if (!algorithmName) {
@@ -434,13 +392,10 @@ const App = () => {
       </Suspense>
 
       {/* SEO Helmet */}
-
       <Helmet>
         <title>{metaTags.title}</title>
         <meta name="description" content={metaTags.description} />
         <meta name="keywords" content={metaTags.keywords} />
-
-        <link rel="canonical" href={generateCanonicalUrl(location.pathname)} />
         <meta property="article:modified_time" content={currentDate} />
 
         {/* Open Graph / Facebook */}
@@ -456,23 +411,10 @@ const App = () => {
         <meta name="twitter:description" content={metaTags.twitterDescription} />
 
         {/* Schema.org markup for Google */}
-
         <script type="application/ld+json">
           {JSON.stringify(schemaMarkup)}
         </script>
       </Helmet>
-
-
-      <Suspense fallback={<div className="min-h-screen bg-slate-950" />}>
-        <Routes>
-          <Route path="/" element={<SortingVisualizer />} />
-          <Route path="/algorithms/:algorithmName" element={<SortingVisualizer />} />
-          <Route path="/contributions/*" element={<SortingVisualizer />} />
-          <Route path="*" element={<SortingVisualizer />} />
-        </Routes>
-      </Suspense>
-    </>
-
 
       <SettingsButton />
 
@@ -644,10 +586,7 @@ const App = () => {
       <FeedbackButton />
     </div>
   </AlgorithmStateProvider>
-
   );
 };
 
 export default App;
-
-
