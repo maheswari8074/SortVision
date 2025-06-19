@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { Settings2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import SettingsModal from './SettingsModal';
+import { useMobileOverlay } from '@/components/MobileOverlay';
 
 const SettingsButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const { isMobileOverlayVisible } = useMobileOverlay();
+
+  if (isMobileOverlayVisible) return null;
 
   return (
     <>

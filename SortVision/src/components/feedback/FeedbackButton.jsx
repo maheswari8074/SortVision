@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { MessageSquare, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import FeedbackModal from './FeedbackModal';
+import { useMobileOverlay } from '@/components/MobileOverlay';
 
 const FeedbackButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const { isMobileOverlayVisible } = useMobileOverlay();
+
+  if (isMobileOverlayVisible) return null;
 
   return (
     <>
