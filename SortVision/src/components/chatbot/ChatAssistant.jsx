@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useAlgorithmState } from "@/context/AlgorithmState";
 import { useAudio } from "@/hooks/useAudio";
 import { useMobileOverlay } from "@/components/MobileOverlay";
-import { AssistantEngine } from "./assistantEngine";
+import { processMessage } from "./assistantEngine";
 import ChatButton from "./ChatButton";
 import ChatModal from "./ChatModal";
 
@@ -19,13 +19,11 @@ export default function ChatAssistant() {
     const { isMobileOverlayVisible } = useMobileOverlay();
 
     const messagesEndRef = useRef(null);
-    const assistantRef = useRef(null);
     const lastTypingSoundRef = useRef(0);
 
-    // Initialize assistant
+    // Initialize with welcome message
     useEffect(() => {
         console.log("✅ ChatAssistant mounted");
-        assistantRef.current = new AssistantEngine(() => getContextObject());
         
         // Add welcome message with delay
         const timer = setTimeout(() => {
@@ -154,7 +152,7 @@ export default function ChatAssistant() {
             const context = getContextObject();
             console.log("🧠 Context passed to assistant:", context);
 
-            const result = await assistantRef.current.process(trimmedInput, context);
+            const result = await processMessage(trimmedInput, context);
 
             if (result.type === "response") {
                 displayMessageWithTyping(result.content, trimmedInput);
@@ -164,7 +162,7 @@ export default function ChatAssistant() {
         } catch (error) {
             handleError(error);
         }
-    }, [input, typingInterval, getContextObject, displayMessageWithTyping, handleError]);
+    }, [input, typingInterval, getContextObject, displayMessageWithTyping]);
 
     if (isMobileOverlayVisible) return null;
 
