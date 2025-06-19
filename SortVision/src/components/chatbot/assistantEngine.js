@@ -59,6 +59,28 @@ export class AssistantEngine {
     }
 
     async process(query, overrideContext = null) {
+        // Check if the message is asking about the GitHub repository
+        const githubRelatedKeywords = ['github', 'repo', 'repository', 'source code', 'source'];
+        const isAskingForGithub = githubRelatedKeywords.some(keyword => 
+            query.toLowerCase().includes(keyword)
+        );
+
+        // Check if it's a thank you message
+        const thankYouKeywords = ['thank', 'thanks', 'thx', 'tysm', 'thank you'];
+        const isThankYou = thankYouKeywords.some(keyword => 
+            query.toLowerCase().includes(keyword)
+        );
+
+        if (isAskingForGithub) {
+            const response = `You can find SortVision on GitHub <a href="https://github.com/alienx5499/SortVision" target="_blank" style="color: #3b82f6; text-decoration: underline;">here</a>!\n\nIf you find this project helpful, please consider giving it a ⭐️ star on GitHub! Your support helps us grow and improve the project. Thank you! 🙏`;
+            return { type: 'response', content: response };
+        }
+
+        if (isThankYou) {
+            const response = `You're welcome! 😊 If you found SortVision helpful, please consider giving us a ⭐️ star on <a href="https://github.com/alienx5499/SortVision" target="_blank" style="color: #3b82f6; text-decoration: underline;">GitHub</a>. Your support means a lot to us! 🙏`;
+            return { type: 'response', content: response };
+        }
+
         const context = overrideContext || this.getContext?.();
         console.log("🧠 Context passed to assistant (assistantEngine):", context);
 

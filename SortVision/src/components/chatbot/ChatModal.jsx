@@ -87,7 +87,10 @@ const ChatModal = ({ isOpen, onClose, messages, input, onInputChange, onSend, me
                                             ) : (
                                                 <Bot className="w-6 h-6 text-emerald-400 flex-shrink-0 animate-in zoom-in-50 mt-0.5" />
                                             )}
-                                            <div className="flex-1 whitespace-pre-wrap break-words">{msg.content}</div>
+                                            <div 
+                                                className="flex-1 whitespace-pre-wrap break-words"
+                                                dangerouslySetInnerHTML={{ __html: msg.content }}
+                                            />
                                         </div>
                                     </div>
                                 ))}
