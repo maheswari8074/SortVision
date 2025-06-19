@@ -57,7 +57,7 @@ const ChatModal = ({ isOpen, onClose, messages, input, onInputChange, onSend, me
 
                 <CardContent className="px-4 pb-4 pt-0 relative">
                     {/* Messages container with improved scrollbar and dynamic height */}
-                    <div className={`flex flex-col gap-1.5 overflow-y-auto text-sm bg-slate-800/50 p-2 rounded-lg border border-slate-700 text-slate-100 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-800/50 mb-3 transition-all duration-300 ease-in-out ${messages.length === 0 ? 'h-[180px]' : 'h-[320px]'}`}>
+                    <div className={`flex flex-col gap-1.5 overflow-y-auto text-sm bg-slate-800/50 p-2 rounded-lg border border-slate-700 text-slate-100 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-800/50 mb-3 transition-all duration-300 ease-in-out min-h-[100px] max-h-[320px]`}>
                         {messages.length === 0 ? (
                             <div className="h-full flex flex-col items-center justify-center text-slate-400 space-y-1.5 animate-in fade-in-50 duration-500">
                                 <Bot className="h-12 w-12 mb-1 opacity-50 animate-bounce" />
@@ -67,7 +67,7 @@ const ChatModal = ({ isOpen, onClose, messages, input, onInputChange, onSend, me
                                 </p>
                             </div>
                         ) : (
-                            <>
+                            <div className="flex flex-col gap-2">
                                 {messages.map((msg, idx) => (
                                     <div
                                         key={idx}
@@ -102,7 +102,7 @@ const ChatModal = ({ isOpen, onClose, messages, input, onInputChange, onSend, me
                                     </div>
                                 )}
                                 <div ref={messagesEndRef} className="h-0" />
-                            </>
+                            </div>
                         )}
                     </div>
 
