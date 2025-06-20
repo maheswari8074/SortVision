@@ -1,5 +1,12 @@
 # Merge Sort Implementation in Ruby
 # This code implements the Merge Sort algorithm, which is a stable,
+# comparison-based sorting algorithm. It is particularly efficient for
+# large datasets and is often used in practice due to its predictable
+# O(n log n) time complexity.
+
+# Note: This implementation uses recursion and temporary arrays for merging.
+# It is not an in-place sort, meaning it requires additional space proportional
+# to the size of the input array.
 # Merge Sort is a divide-and-conquer algorithm that recursively divides
 # an array into two halves, sorts them independently, and then merges
 # the sorted halves back together.
