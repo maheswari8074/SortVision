@@ -3,16 +3,28 @@ import {
     Languages, 
     Code2, 
     Check,
-    FileCode2,
-    FileJson,
-    Coffee,
-    Binary,
-    Boxes,
-    Cog,
-    FileType2,
-    Hash,
     Code
 } from 'lucide-react';
+import { 
+    SiPython, 
+    SiJavascript, 
+    SiTypescript, 
+    SiCplusplus, 
+    SiC, 
+    SiPhp, 
+    SiGo, 
+    SiSwift, 
+    SiKotlin, 
+    SiRust, 
+    SiRuby, 
+    SiScala, 
+    SiDart, 
+    SiR 
+} from 'react-icons/si';
+import { 
+    DiJava, 
+    DiDotnet,
+} from 'react-icons/di';
 
 /**
  * LanguageSelector Component
@@ -50,98 +62,98 @@ const LanguageSelector = ({ selectedLanguage, onLanguageChange }) => {
         { 
             id: 'python', 
             name: 'Python', 
-            icon: FileCode2,
-            iconColor: 'text-blue-400'
+            icon: SiPython,
+            iconColor: 'text-[#3776ab]'
         },
         { 
             id: 'javascript', 
             name: 'JavaScript', 
-            icon: FileJson,
-            iconColor: 'text-yellow-400'
+            icon: SiJavascript,
+            iconColor: 'text-[#f7df1e]'
         },
         { 
             id: 'java', 
             name: 'Java', 
-            icon: Coffee,
-            iconColor: 'text-red-400'
+            icon: DiJava, // Using DevIcons for proper Java logo
+            iconColor: 'text-[#ed8b00]'
         },
         { 
             id: 'typescript', 
             name: 'TypeScript', 
-            icon: FileType2,
-            iconColor: 'text-blue-400'
+            icon: SiTypescript,
+            iconColor: 'text-[#3178c6]'
         },
         { 
             id: 'cpp', 
             name: 'C++', 
-            icon: Binary,
-            iconColor: 'text-blue-500'
+            icon: SiCplusplus,
+            iconColor: 'text-[#00599c]'
         },
         {
             id: 'c',
             name: 'C',
-            icon: Binary,
-            iconColor: 'text-gray-400'
+            icon: SiC,
+            iconColor: 'text-[#a8b9cc]'
         },
         { 
             id: 'csharp', 
             name: 'C#', 
-            icon: Hash,
-            iconColor: 'text-purple-400'
+            icon: DiDotnet, // Using DevIcons for proper .NET/C# logo
+            iconColor: 'text-[#239120]'
         },
         {
             id: 'php',
             name: 'PHP',
-            icon: Code,
-            iconColor: 'text-indigo-400'
+            icon: SiPhp,
+            iconColor: 'text-[#777bb4]'
         },
         { 
             id: 'golang', 
             name: 'Go', 
-            icon: Boxes,
-            iconColor: 'text-cyan-400'
+            icon: SiGo,
+            iconColor: 'text-[#00add8]'
         },
         {
             id: 'swift',
             name: 'Swift',
-            icon: Binary,
-            iconColor: 'text-orange-500'
+            icon: SiSwift,
+            iconColor: 'text-[#fa7343]'
         },
         {
             id: 'kotlin',
             name: 'Kotlin',
-            icon: FileType2,
-            iconColor: 'text-purple-500'
+            icon: SiKotlin,
+            iconColor: 'text-[#7f52ff]'
         },
         { 
             id: 'rust', 
             name: 'Rust', 
-            icon: Cog,
-            iconColor: 'text-orange-400'
+            icon: SiRust,
+            iconColor: 'text-[#000000]'
         },
         {
             id: 'ruby',
             name: 'Ruby',
-            icon: FileCode2,
-            iconColor: 'text-red-500'
+            icon: SiRuby,
+            iconColor: 'text-[#cc342d]'
         },
         {
             id: 'scala',
             name: 'Scala',
-            icon: Cog,
-            iconColor: 'text-red-600'
+            icon: SiScala,
+            iconColor: 'text-[#dc322f]'
         },
         {
             id: 'dart',
             name: 'Dart',
-            icon: FileCode2,
-            iconColor: 'text-sky-400'
+            icon: SiDart,
+            iconColor: 'text-[#0175c2]'
         },
         {
             id: 'r',
             name: 'R',
-            icon: Hash,
-            iconColor: 'text-blue-600'
+            icon: SiR,
+            iconColor: 'text-[#276dc3]'
         }
     ];
 
