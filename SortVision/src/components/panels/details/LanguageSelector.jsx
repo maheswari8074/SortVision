@@ -39,7 +39,7 @@ const LanguageSelector = ({ selectedLanguage, onLanguageChange }) => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    // Languages sorted by popularity based on GitHub stats and industry usage
+    // Languages sorted by popularity based on GitHub stats, Stack Overflow surveys, and industry usage
     const languages = [
         {
             id: 'pseudocode',
@@ -66,28 +66,22 @@ const LanguageSelector = ({ selectedLanguage, onLanguageChange }) => {
             iconColor: 'text-red-400'
         },
         { 
+            id: 'typescript', 
+            name: 'TypeScript', 
+            icon: FileType2,
+            iconColor: 'text-blue-400'
+        },
+        { 
             id: 'cpp', 
             name: 'C++', 
             icon: Binary,
             iconColor: 'text-blue-500'
         },
-        { 
-            id: 'golang', 
-            name: 'Go', 
-            icon: Boxes,
-            iconColor: 'text-cyan-400'
-        },
-        { 
-            id: 'rust', 
-            name: 'Rust', 
-            icon: Cog,
-            iconColor: 'text-orange-400'
-        },
-        { 
-            id: 'typescript', 
-            name: 'TypeScript', 
-            icon: FileType2,
-            iconColor: 'text-blue-400'
+        {
+            id: 'c',
+            name: 'C',
+            icon: Binary,
+            iconColor: 'text-gray-400'
         },
         { 
             id: 'csharp', 
@@ -96,10 +90,22 @@ const LanguageSelector = ({ selectedLanguage, onLanguageChange }) => {
             iconColor: 'text-purple-400'
         },
         {
-            id: 'dart',
-            name: 'Dart',
-            icon: FileCode2,
-            iconColor: 'text-sky-400'
+            id: 'php',
+            name: 'PHP',
+            icon: Code,
+            iconColor: 'text-indigo-400'
+        },
+        { 
+            id: 'golang', 
+            name: 'Go', 
+            icon: Boxes,
+            iconColor: 'text-cyan-400'
+        },
+        {
+            id: 'swift',
+            name: 'Swift',
+            icon: Binary,
+            iconColor: 'text-orange-500'
         },
         {
             id: 'kotlin',
@@ -107,11 +113,35 @@ const LanguageSelector = ({ selectedLanguage, onLanguageChange }) => {
             icon: FileType2,
             iconColor: 'text-purple-500'
         },
+        { 
+            id: 'rust', 
+            name: 'Rust', 
+            icon: Cog,
+            iconColor: 'text-orange-400'
+        },
         {
-            id: 'swift',
-            name: 'Swift',
-            icon: Binary,
-            iconColor: 'text-orange-500'
+            id: 'ruby',
+            name: 'Ruby',
+            icon: FileCode2,
+            iconColor: 'text-red-500'
+        },
+        {
+            id: 'scala',
+            name: 'Scala',
+            icon: Cog,
+            iconColor: 'text-red-600'
+        },
+        {
+            id: 'dart',
+            name: 'Dart',
+            icon: FileCode2,
+            iconColor: 'text-sky-400'
+        },
+        {
+            id: 'r',
+            name: 'R',
+            icon: Hash,
+            iconColor: 'text-blue-600'
         }
     ];
 
@@ -146,7 +176,7 @@ const LanguageSelector = ({ selectedLanguage, onLanguageChange }) => {
                     className="absolute z-[9999] mt-2 w-48 rounded-md bg-slate-800/95 backdrop-blur-sm border border-slate-700 
                              shadow-lg shadow-black/50 ring-1 ring-black ring-opacity-5 right-0 top-full"
                 >
-                    <div className="py-1 max-h-[220px] overflow-y-auto 
+                    <div className="py-1 max-h-[260px] overflow-y-auto 
                                   scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800/50
                                   hover:scrollbar-thumb-slate-500 transition-colors duration-200">
                         {languages.map((lang) => {

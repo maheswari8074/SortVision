@@ -48,6 +48,11 @@ const AlgorithmDetails = ({ algorithm }) => {
             case 'dart': return 'dart';
             case 'kotlin': return 'kt';
             case 'swift': return 'swift';
+            case 'php': return 'php';
+            case 'ruby': return 'rb';
+            case 'scala': return 'scala';
+            case 'c': return 'c';
+            case 'r': return 'r';
             case 'pseudocode': return 'txt';
             default: return 'txt';
         }
@@ -189,6 +194,16 @@ const AlgorithmDetails = ({ algorithm }) => {
                 return '\n// Test\nfun main() {\n    val arr = intArrayOf(5, 2, 9, 1)\n    bubbleSort(arr)\n    assert(arr.contentEquals(intArrayOf(1, 2, 5, 9)))\n}\n';
             case 'swift':
                 return '\n// Test\nvar arr = [5, 2, 9, 1]\nbubbleSort(&arr)\nassert(arr == [1, 2, 5, 9])\n';
+            case 'php':
+                return '\n// Test\n$arr = [5, 2, 9, 1];\nbubbleSort($arr);\nassert($arr === [1, 2, 5, 9]);\n';
+            case 'ruby':
+                return '\n# Test\narr = [5, 2, 9, 1]\nbubble_sort(arr)\nraise "Test failed" unless arr == [1, 2, 5, 9]\n';
+            case 'scala':
+                return '\n// Test\nval arr = Array(5, 2, 9, 1)\nbubbleSort(arr)\nassert(arr.sameElements(Array(1, 2, 5, 9)))\n';
+            case 'c':
+                return '\n// Test\nint main() {\n    int arr[] = {5, 2, 9, 1};\n    int n = 4;\n    bubbleSort(arr, n);\n    // Verify arr is [1, 2, 5, 9]\n    return 0;\n}\n';
+            case 'r':
+                return '\n# Test\narr <- c(5, 2, 9, 1)\narr <- bubble_sort(arr)\nstopifnot(identical(arr, c(1, 2, 5, 9)))\n';
             case 'pseudocode':
                 return '\n// Test\narray = [5, 2, 9, 1]\nbubbleSort(array)\nassert array == [1, 2, 5, 9]\n';
             default:
