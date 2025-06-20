@@ -1,129 +1,240 @@
 version: 2
 updates:
-  # Main SortVision app dependencies
+  # 🚀 Main SortVision app dependencies
   - package-ecosystem: "npm"
     directory: "/SortVision"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "daily"
       time: "09:00"
       timezone: "UTC"
     # Increase PR limit for active development
-    open-pull-requests-limit: 15
-    # Custom commit message for better tracking
+    open-pull-requests-limit: 20
+    
+    # Enhanced commit message formatting
     commit-message:
-      prefix: "⬆️ deps"
-      prefix-development: "⬆️ dev-deps"
+      prefix: "⬆️"
+      prefix-development: "⬆️ dev"
       include: "scope"
-    # PR settings
+    
+    # Modern PR branch naming
     pull-request-branch-name:
       separator: "/"
+    
+    # Team reviewers
     reviewers:
       - "alienx5499"
-    # Advanced grouping for better organization
+    assignees:
+      - "alienx5499"
+    
+    # Enhanced labels for better organization
+    labels:
+      - "dependencies"
+      - "automated"
+    
+    # 🛡️ Enhanced Security Groups (Highest Priority)
     groups:
-      # Critical security updates (high priority)
-      security-updates:
+      # Critical security patches - immediate attention
+      critical-security:
+        applies-to: security-updates
         patterns:
           - "*"
         update-types:
           - "patch"
-      
-      # React ecosystem updates
-      react-ecosystem:
+        
+      # High-priority security updates
+      security-updates:
         patterns:
-          - "react*"
-          - "@types/react*"
-          - "react-dom*"
-          - "@vitejs/plugin-react*"
+          - "*"
         update-types:
           - "minor"
+        dependency-type: "production"
+
+      # 📦 Core Framework Updates (High Priority)
+      react-core:
+        patterns:
+          - "react"
+          - "react-dom"
+        update-types:
           - "patch"
+          - "minor"
       
-      # Build tools and bundlers
+      react-ecosystem:
+        patterns:
+          - "react-*"
+          - "@types/react*"
+          - "@vitejs/plugin-react*"
+          - "@react/*"
+        update-types:
+          - "patch"
+          - "minor"
+
+      # 🔧 Build System & Tooling (High Priority)
+      vite-core:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+        update-types:
+          - "patch"
+          - "minor"
+      
       build-tools:
         patterns:
-          - "vite*"
           - "rollup*"
           - "@rollup/*"
           - "esbuild*"
           - "postcss*"
           - "autoprefixer*"
+          - "terser*"
         update-types:
-          - "minor"
           - "patch"
-      
-      # Styling and UI dependencies
-      ui-dependencies:
+          - "minor"
+
+      # 🎨 UI & Styling (Medium Priority)
+      tailwind-ecosystem:
         patterns:
-          - "tailwindcss*"
+          - "tailwindcss"
           - "@tailwindcss/*"
+          - "tailwind-*"
+        update-types:
+          - "patch"
+          - "minor"
+      
+      ui-libraries:
+        patterns:
           - "lucide-react*"
           - "framer-motion*"
           - "clsx*"
           - "class-variance-authority*"
+          - "@radix-ui/*"
+          - "@headlessui/*"
         update-types:
-          - "minor"
           - "patch"
+          - "minor"
+
+      # 📊 Analytics & Performance (Medium Priority)
+      vercel-ecosystem:
+        patterns:
+          - "@vercel/analytics*"
+          - "@vercel/speed-insights*"
+          - "@vercel/edge*"
+          - "vercel"
+        update-types:
+          - "patch"
+          - "minor"
       
-      # Development tools
-      dev-tools:
+      monitoring:
+        patterns:
+          - "sentry*"
+          - "@sentry/*"
+          - "web-vitals*"
+        update-types:
+          - "patch"
+          - "minor"
+
+      # 🔍 Code Quality & Development (Medium Priority)
+      typescript-ecosystem:
+        patterns:
+          - "typescript"
+          - "@types/*"
+          - "ts-*"
+        update-types:
+          - "patch"
+          - "minor"
+      
+      eslint-ecosystem:
         patterns:
           - "eslint*"
           - "@eslint/*"
-          - "prettier*"
           - "@typescript-eslint/*"
-          - "typescript*"
-          - "@types/*"
+          - "eslint-*"
         update-types:
-          - "minor"
           - "patch"
+          - "minor"
       
-      # Testing dependencies
-      testing-dependencies:
+      prettier-ecosystem:
+        patterns:
+          - "prettier*"
+          - "@prettier/*"
+          - "prettier-*"
+        update-types:
+          - "patch"
+          - "minor"
+
+      # 🧪 Testing (Medium Priority)
+      testing-core:
         patterns:
           - "vitest*"
+          - "@vitest/*"
+          - "jsdom*"
+        update-types:
+          - "patch"
+          - "minor"
+      
+      testing-libraries:
+        patterns:
           - "@testing-library/*"
           - "jest*"
           - "@jest/*"
           - "cypress*"
           - "playwright*"
+          - "happy-dom*"
         update-types:
-          - "minor"
           - "patch"
-      
-      # Analytics and monitoring
-      analytics:
+          - "minor"
+
+      # 🛠️ Utilities & Libraries (Lower Priority)
+      date-utilities:
         patterns:
-          - "@vercel/analytics*"
-          - "@vercel/speed-insights*"
-          - "sentry*"
-          - "@sentry/*"
+          - "date-fns*"
+          - "dayjs*"
+          - "moment*"
         update-types:
-          - "minor"
           - "patch"
       
-      # Minor utility updates
-      utilities:
+      http-utilities:
+        patterns:
+          - "axios*"
+          - "fetch*"
+          - "node-fetch*"
+        update-types:
+          - "patch"
+      
+      validation-utilities:
+        patterns:
+          - "zod*"
+          - "yup*"
+          - "joi*"
+          - "ajv*"
+        update-types:
+          - "patch"
+      
+      other-utilities:
         patterns:
           - "lodash*"
           - "uuid*"
-          - "date-fns*"
-          - "axios*"
-          - "zod*"
+          - "crypto-*"
+          - "buffer*"
+          - "stream*"
         update-types:
           - "patch"
-      
-      # All other dependencies (lowest priority)
-      other-dependencies:
+
+      # 📦 All other minor patches (Lowest Priority)
+      minor-patches:
         patterns:
           - "*"
         update-types:
           - "patch"
+        exclude-patterns:
+          - "react"
+          - "react-dom"
+          - "vite"
+          - "typescript"
+          - "tailwindcss"
+          - "eslint"
 
-    # Selective ignoring for stability
+    # 🚫 Selective ignoring for stability
     ignore:
-      # Major version bumps for core dependencies (require manual review)
+      # Major version bumps require manual review
       - dependency-name: "react"
         update-types: ["version-update:semver-major"]
       - dependency-name: "react-dom"
@@ -136,12 +247,24 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "eslint"
         update-types: ["version-update:semver-major"]
+      - dependency-name: "@vitejs/plugin-react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "framer-motion"
+        update-types: ["version-update:semver-major"]
       
-      # Specific problematic versions (if any)
+      # Known problematic versions
       - dependency-name: "node-gyp"
         versions: ["8.x", "9.x"]
+      - dependency-name: "postcss"
+        versions: ["8.0.0", "8.0.1"]  # Known breaking changes
 
-  # GitHub Actions dependencies
+    # 🔄 Rebase strategy for cleaner history
+    rebase-strategy: "auto"
+    
+    # 🏷️ Target specific branches for different update types
+    target-branch: "main"
+
+  # 🎬 GitHub Actions dependencies
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -149,29 +272,122 @@ updates:
       day: "tuesday"
       time: "10:00"
       timezone: "UTC"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 10
+    
     commit-message:
       prefix: "⬆️ ci"
       include: "scope"
+    
+    labels:
+      - "github-actions"
+      - "ci/cd"
+      - "automated"
+    
+    reviewers:
+      - "alienx5499"
+    
     groups:
-      github-actions:
+      # Core GitHub Actions
+      core-actions:
+        patterns:
+          - "actions/checkout*"
+          - "actions/setup-node*"
+          - "actions/cache*"
+          - "actions/upload-artifact*"
+          - "actions/download-artifact*"
+        update-types:
+          - "minor"
+          - "patch"
+      
+      # Deployment actions
+      deployment-actions:
+        patterns:
+          - "vercel/action*"
+          - "peaceiris/actions-gh-pages*"
+          - "JamesIves/github-pages-deploy-action*"
+        update-types:
+          - "minor"
+          - "patch"
+      
+      # Security and analysis
+      security-actions:
+        patterns:
+          - "github/codeql-action*"
+          - "ossf/scorecard-action*"
+          - "securecodewarrior/github-action-add-sarif*"
+        update-types:
+          - "minor"
+          - "patch"
+      
+      # All other actions
+      other-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+
+    # Ignore major version updates for critical actions
+    ignore:
+      - dependency-name: "actions/checkout"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "actions/setup-node"
+        update-types: ["version-update:semver-major"]
+
+  # 🐳 Docker dependencies (future-proofing)
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "11:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    
+    commit-message:
+      prefix: "⬆️ docker"
+      include: "scope"
+    
+    labels:
+      - "docker"
+      - "infrastructure"
+      - "automated"
+    
+    reviewers:
+      - "alienx5499"
+    
+    groups:
+      docker-images:
         patterns:
           - "*"
         update-types:
           - "minor"
           - "patch"
 
-  # Docker dependencies (if using Docker in the future)
-  - package-ecosystem: "docker"
-    directory: "/"
+  # 📚 Documentation dependencies (if using docs generators)
+  - package-ecosystem: "npm"
+    directory: "/docs"
     schedule:
       interval: "monthly"
       day: "monday"
-      time: "11:00"
+      time: "12:00"
       timezone: "UTC"
     open-pull-requests-limit: 3
+    
     commit-message:
-      prefix: "⬆️ docker"
+      prefix: "⬆️ docs"
       include: "scope"
+    
+    labels:
+      - "documentation"
+      - "automated"
+    
+    groups:
+      docs-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
+# 🧪 Enable beta ecosystems for cutting-edge features
 enable-beta-ecosystems: true

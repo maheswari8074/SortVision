@@ -1,13 +1,13 @@
-import path from "path"
-import { fileURLToPath } from 'url'
-import tailwindcss from "@tailwindcss/vite"
-import react from "@vitejs/plugin-react"
-import { defineConfig } from "vite"
-import { VitePWA } from 'vite-plugin-pwa'
-import compression from 'vite-plugin-compression'
+import path from "path";
+import { fileURLToPath } from "url";
+import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import { VitePWA } from "vite-plugin-pwa";
+import compression from "vite-plugin-compression";
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -16,75 +16,84 @@ export default defineConfig({
     tailwindcss(),
     compression(),
     VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'splash.svg', 'robots.txt'],
+      registerType: "autoUpdate",
+      includeAssets: ["favicon.svg", "splash.svg", "robots.txt"],
       manifest: {
-        name: 'SortVision',
-        short_name: 'SortVision',
-        description: 'Interactive visualization of popular sorting algorithms',
-        theme_color: '#0F172A',
-        background_color: '#0F172A',
-        display: 'standalone',
-        scope: '/',
-        start_url: '/',
+        name: "SortVision",
+        short_name: "SortVision",
+        description: "Interactive visualization of popular sorting algorithms",
+        theme_color: "#0F172A",
+        background_color: "#0F172A",
+        display: "standalone",
+        scope: "/",
+        start_url: "/",
         icons: [
           {
-            src: '/favicon.svg',
-            sizes: '64x64 128x128 256x256',
-            type: 'image/svg+xml',
-            purpose: 'any'
+            src: "/favicon.svg",
+            sizes: "64x64 128x128 256x256",
+            type: "image/svg+xml",
+            purpose: "any",
           },
           {
-            src: '/splash.svg',
-            sizes: '512x512',
-            type: 'image/svg+xml',
-            purpose: 'maskable'
-          }
-        ]
+            src: "/splash.svg",
+            sizes: "512x512",
+            type: "image/svg+xml",
+            purpose: "maskable",
+          },
+        ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}'],
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}"],
         navigateFallback: null,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
+            handler: "CacheFirst",
             options: {
-              cacheName: 'google-fonts-cache',
+              cacheName: "google-fonts-cache",
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
               },
               cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          }
-        ]
-      }
-    })
+                statuses: [0, 200],
+              },
+            },
+          },
+        ],
+      },
+    }),
   ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".json", ".txt"],
   },
   server: {
+    port: 3000, // ✅ Your custom local port
     fs: {
-      allow: ['..']
+      allow: [".."],
+    },
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_URL || 'http://localhost:3000',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
     },
     middlewares: [
       (req, res, next) => {
-        if (req.url && req.url.endsWith('.jsx')) {
-          res.setHeader('Content-Type', 'application/javascript');
+        if (req.url && req.url.endsWith(".jsx")) {
+          res.setHeader("Content-Type", "application/javascript");
         }
         next();
-      }
-    ]
+      },
+    ],
   },
   build: {
-    minify: 'terser',
+    minify: "terser",
     terserOptions: {
       compress: {
         drop_console: true,
@@ -94,41 +103,50 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          react: ['react', 'react-dom'],
+          react: ["react", "react-dom"],
           radix: [
-            '@radix-ui/react-select',
-            '@radix-ui/react-slider',
-            '@radix-ui/react-slot',
-            '@radix-ui/react-tabs'
+            "@radix-ui/react-select",
+            "@radix-ui/react-slider",
+            "@radix-ui/react-slot",
+            "@radix-ui/react-tabs",
           ],
-          lucide: ['lucide-react'],
-          tailwind: ['tailwindcss', 'tailwind-merge', 'tailwindcss-animate'],
+          lucide: ["lucide-react"],
+          tailwind: ["tailwindcss", "tailwind-merge", "tailwindcss-animate"],
         },
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        entryFileNames: "assets/[name]-[hash].js",
+        chunkFileNames: "assets/[name]-[hash].js",
+        assetFileNames: (assetInfo) => {
+          // Preserve the original path for code files
+          if (assetInfo.name.includes('/code/')) {
+            return assetInfo.name;
+          }
+          return 'assets/[name]-[hash].[ext]';
+        },
       },
     },
     chunkSizeWarningLimit: 1000,
+    assetsInlineLimit: 0, // Ensure text files are not inlined
+    copyPublicDir: true,
   },
   optimizeDeps: {
-    include: ['react', 'react-dom'],
+    include: ["react", "react-dom"],
     esbuildOptions: {
       loader: {
-        '.js': 'jsx',
-        '.jsx': 'jsx'
-      }
-    }
+        ".js": "jsx",
+        ".jsx": "jsx",
+        ".txt": "text", // Add text file loader
+      },
+    },
   },
   ssgOptions: {
-    script: 'async',
-    formatting: 'minify',
+    script: "async",
+    formatting: "minify",
     crittersOptions: {
-      preload: 'media',
+      preload: "media",
       inlineFonts: true,
     },
   },
   ssr: {
-    noExternal: ['@radix-ui/**'],
+    noExternal: ["@radix-ui/**"],
   },
-})
+});

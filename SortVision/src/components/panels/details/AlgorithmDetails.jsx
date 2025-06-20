@@ -1,5 +1,6 @@
-import React from 'react';
-import { Info, Terminal } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Info, Terminal, Code2, Loader2, ArrowDownToLine, Link2, Copy } from 'lucide-react';
+import LanguageSelector from './LanguageSelector';
 
 /**
  * AlgorithmDetails Component
@@ -8,6 +9,69 @@ import { Info, Terminal } from 'lucide-react';
  * code-editor-like interface.
  */
 const AlgorithmDetails = ({ algorithm }) => {
+    const [selectedLanguage, setSelectedLanguage] = useState('pseudocode');
+    const [codeContent, setCodeContent] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const loadCode = async () => {
+            setIsLoading(true);
+            try {
+                const response = await fetch(`/code/${algorithm}/${selectedLanguage}/${algorithm}Sort.${getFileExtension(selectedLanguage)}`);
+                if (!response.ok) {
+                    console.error(`Failed to load code: ${response.status} ${response.statusText}`);
+                    setCodeContent(getPlaceholderContent());
+                } else {
+                    const content = await response.text();
+                    setCodeContent(content.trim() || getPlaceholderContent());
+                }
+            } catch (error) {
+                console.error('Error loading code:', error);
+                setCodeContent(getPlaceholderContent());
+            }
+            setIsLoading(false);
+        };
+
+        loadCode();
+    }, [algorithm, selectedLanguage]);
+
+    const getFileExtension = (language) => {
+        switch(language) {
+            case 'python': return 'py';
+            case 'javascript': return 'js';
+            case 'typescript': return 'ts';
+            case 'java': return 'java';
+            case 'cpp': return 'cpp';
+            case 'golang': return 'go';
+            case 'rust': return 'rs';
+            case 'csharp': return 'cs';
+            case 'dart': return 'dart';
+            case 'kotlin': return 'kt';
+            case 'swift': return 'swift';
+            case 'php': return 'php';
+            case 'ruby': return 'rb';
+            case 'scala': return 'scala';
+            case 'c': return 'c';
+            case 'r': return 'r';
+            case 'pseudocode': return 'txt';
+            default: return 'txt';
+        }
+    };
+
+    const getPlaceholderContent = () => {
+        const placeholders = [
+            "🚀 Code implementation coming soon...",
+            "👩‍💻 Want to contribute? Check our GitHub!",
+            "🎯 This algorithm needs your expertise!",
+            "✨ Implementation in progress...",
+            "🌟 Be the first to implement this!",
+            "🔮 The code will appear here soon...",
+            "🎨 Your code could be here!",
+            "🌈 Implementation needed - Join us!"
+        ];
+        return placeholders[Math.floor(Math.random() * placeholders.length)];
+    };
+
     // Get explicit color classes based on algorithm
     const getCornerAccentClass = () => {
         switch(algorithm) {
@@ -109,6 +173,74 @@ const AlgorithmDetails = ({ algorithm }) => {
     const backgroundGlowClass = getBackgroundGlowClass();
     const { particle1, particle2, line1, line2 } = getParticlesAndLinesClasses();
 
+    // --- Export functionality ---
+    const getAlgorithmDoc = () => {
+        // Simple documentation string; can be expanded per algorithm/language
+        return `/**\n * ${algorithm.charAt(0).toUpperCase() + algorithm.slice(1)} Sort\n *\n * Description: Implements the ${algorithm} sort algorithm.\n *\n * Time Complexity: O(n^2) in worst case (varies by algorithm)\n * Space Complexity: O(1) or O(n) (varies by algorithm)\n */\n`;
+    };
+
+    const getTestCase = () => {
+        // Simple test case string; can be expanded per language
+        switch(selectedLanguage) {
+            case 'python':
+                return '\ndef test():\n    arr = [5, 2, 9, 1]\n    bubbleSort(arr)\n    assert arr == [1, 2, 5, 9]\n';
+            case 'javascript':
+                return '\n// Test\nconst arr = [5, 2, 9, 1];\nbubbleSort(arr);\nconsole.assert(JSON.stringify(arr) === JSON.stringify([1,2,5,9]));\n';
+            case 'java':
+                return '\n// Test\npublic static void main(String[] args) {\n    int[] arr = {5,2,9,1};\n    bubbleSort(arr);\n    assert java.util.Arrays.equals(arr, new int[]{1,2,5,9});\n}\n';
+            case 'dart':
+                return '\n// Test\nvoid main() {\n  List<int> arr = [5, 2, 9, 1];\n  bubbleSort(arr);\n  assert(listEquals(arr, [1, 2, 5, 9]));\n}\n';
+            case 'kotlin':
+                return '\n// Test\nfun main() {\n    val arr = intArrayOf(5, 2, 9, 1)\n    bubbleSort(arr)\n    assert(arr.contentEquals(intArrayOf(1, 2, 5, 9)))\n}\n';
+            case 'swift':
+                return '\n// Test\nvar arr = [5, 2, 9, 1]\nbubbleSort(&arr)\nassert(arr == [1, 2, 5, 9])\n';
+            case 'php':
+                return '\n// Test\n$arr = [5, 2, 9, 1];\nbubbleSort($arr);\nassert($arr === [1, 2, 5, 9]);\n';
+            case 'ruby':
+                return '\n# Test\narr = [5, 2, 9, 1]\nbubble_sort(arr)\nraise "Test failed" unless arr == [1, 2, 5, 9]\n';
+            case 'scala':
+                return '\n// Test\nval arr = Array(5, 2, 9, 1)\nbubbleSort(arr)\nassert(arr.sameElements(Array(1, 2, 5, 9)))\n';
+            case 'c':
+                return '\n// Test\nint main() {\n    int arr[] = {5, 2, 9, 1};\n    int n = 4;\n    bubbleSort(arr, n);\n    // Verify arr is [1, 2, 5, 9]\n    return 0;\n}\n';
+            case 'r':
+                return '\n# Test\narr <- c(5, 2, 9, 1)\narr <- bubble_sort(arr)\nstopifnot(identical(arr, c(1, 2, 5, 9)))\n';
+            case 'pseudocode':
+                return '\n// Test\narray = [5, 2, 9, 1]\nbubbleSort(array)\nassert array == [1, 2, 5, 9]\n';
+            default:
+                return '\n// Test case placeholder\n';
+        }
+    };
+
+    const handleExport = () => {
+        const ext = getFileExtension(selectedLanguage);
+        const doc = getAlgorithmDoc();
+        const test = getTestCase();
+        const content = `${doc}\n${codeContent}\n${test}`;
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${algorithm}Sort.${ext}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
+    // --- Share via URL functionality ---
+    const handleShareUrl = () => {
+        const url = `${window.location.origin}${window.location.pathname}?algorithm=${algorithm}&lang=${selectedLanguage}`;
+        navigator.clipboard.writeText(url);
+    };
+
+    // --- Copy to Clipboard functionality ---
+    const handleCopyCode = () => {
+        const doc = getAlgorithmDoc();
+        const test = getTestCase();
+        const content = `${doc}\n${codeContent}\n${test}`;
+        navigator.clipboard.writeText(content);
+    };
+
     return (
         <div className="relative group mb-8">
             {/* Animated background glow effect */}
@@ -140,9 +272,38 @@ const AlgorithmDetails = ({ algorithm }) => {
                 {/* Animated bottom line */}
                 <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover/algo:w-full bg-gradient-to-r from-emerald-500/50 via-blue-500/50 to-purple-500/50 rounded transition-all duration-700"></div>
                 
-                <div className="font-mono text-sm text-slate-400 mb-4 flex items-center relative z-10 group-hover/algo:text-emerald-400 transition-colors duration-300">
-                    <Info className="mr-2 h-4 w-4 text-emerald-400 animate-pulse" style={{ animationDuration: '4s' }} />
-                    <span className="transition-colors duration-300">// {algorithm}_sort() details</span>
+                <div className="font-mono text-sm text-slate-400 mb-4 flex items-center justify-between relative z-10 group-hover/algo:text-emerald-400 transition-colors duration-300">
+                    <div className="flex items-center">
+                        <Info className="mr-2 h-4 w-4 text-emerald-400 animate-pulse" style={{ animationDuration: '4s' }} />
+                        <span className="transition-colors duration-300">// {algorithm}_sort() details</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={handleExport}
+                            className="p-2 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors text-emerald-400 hover:text-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                            title="Export code with documentation and test case"
+                            aria-label="Export code"
+                        >
+                            <ArrowDownToLine className="w-4 h-4" />
+                        </button>
+                        <button
+                            onClick={handleShareUrl}
+                            className="p-2 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                            title="Share via URL"
+                            aria-label="Share via URL"
+                        >
+                            <Link2 className="w-4 h-4" />
+                        </button>
+                        <button
+                            onClick={handleCopyCode}
+                            className="p-2 rounded-md bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors text-purple-400 hover:text-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                            title="Copy code to clipboard"
+                            aria-label="Copy code to clipboard"
+                        >
+                            <Copy className="w-4 h-4" />
+                        </button>
+                        <LanguageSelector selectedLanguage={selectedLanguage} onLanguageChange={setSelectedLanguage} />
+                    </div>
                 </div>
 
                 {/* Algorithm visualization with enhanced effects */}
@@ -153,8 +314,14 @@ const AlgorithmDetails = ({ algorithm }) => {
                     {/* Interactive header with hover effect */}
                     <div className="text-xs text-slate-400 mb-3 flex items-center justify-between relative z-10">
                         <span className="tracking-widest relative group-hover/viz:text-emerald-300 transition-colors duration-300 flex items-center cursor-pointer">
-                            <Terminal className="mr-2 h-4 w-4 text-emerald-400 group-hover/viz:animate-spin" style={{ animationDuration: '3s' }} />
-                            <span className="group-hover/viz:tracking-wider transition-all">VISUALIZATION</span>
+                            {isLoading ? (
+                                <Loader2 className="mr-2 h-4 w-4 text-emerald-400 animate-spin" />
+                            ) : (
+                                <Code2 className="mr-2 h-4 w-4 text-emerald-400" />
+                            )}
+                            <span className="group-hover/viz:tracking-wider transition-all">
+                                {algorithm.toUpperCase()} IMPLEMENTATION
+                            </span>
                             <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-emerald-400/0 via-emerald-400/70 to-emerald-400/0"></span>
                         </span>
                     </div>
@@ -163,7 +330,7 @@ const AlgorithmDetails = ({ algorithm }) => {
                     <div className="flex justify-center p-3 bg-slate-900/80 rounded relative group/code overflow-hidden transition-all duration-500 hover:shadow-inner hover:bg-slate-900/90">
                         {/* Enhanced line numbers */}
                         <div className="absolute left-2 top-3 bottom-3 text-right pr-2 border-r border-slate-700/50 text-[10px] text-slate-500 font-mono">
-                            {Array.from({ length: algorithm === "quick" ? 12 : algorithm === "merge" ? 8 : algorithm === "insertion" ? 7 : algorithm === "radix" ? 5 : algorithm === "selection" ? 6 : 4 }).map((_, i) => (
+                            {codeContent.split('\n').map((_, i) => (
                                 <div key={i} className="group-hover/code:text-emerald-400 transition-colors">{i + 1}</div>
                             ))}
                         </div>
@@ -175,131 +342,23 @@ const AlgorithmDetails = ({ algorithm }) => {
                                 <div className="absolute -left-2 top-0 bottom-0 w-0.5 bg-emerald-400/20 group-hover/pre:bg-emerald-400/40 transition-colors"></div>
                                 
                                 {/* Code content with hover effect */}
-                                <code className="block group-hover/pre:translate-x-1 transition-transform">
-                                    {algorithm === "bubble" && `function bubbleSort(arr) {
-    for (let i = 0; i < arr.length; i++) {
-        for (let j = 0; j < arr.length - i - 1; j++) {
-            if (arr[j] > arr[j + 1]) swap(arr, j, j + 1);
-        }
-    }
-}`}
-                                    {algorithm === "insertion" && `function insertionSort(arr) {
-    for (let i = 1; i < arr.length; i++) {
-        let key = arr[i], j = i - 1;
-        while (j >= 0 && arr[j] > key) {
-            arr[j + 1] = arr[j];
-            j--;
-        }
-        arr[j + 1] = key;
-    }
-}`}
-                                    {algorithm === "selection" && `function selectionSort(arr) {
-    for (let i = 0; i < arr.length - 1; i++) {
-        let minIdx = i;
-        for (let j = i + 1; j < arr.length; j++) {
-            if (arr[j] < arr[minIdx]) minIdx = j;
-        }
-        if (minIdx !== i) swap(arr, i, minIdx);
-    }
-}`}
-                                    {algorithm === "quick" && `function quickSort(arr, low, high) {
-    if (low < high) {
-        let pi = partition(arr, low, high);
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
-    }
-}
-
-function partition(arr, low, high) {
-    let pivot = arr[high];
-    let i = low - 1;
-    for (let j = low; j < high; j++) {
-        if (arr[j] <= pivot) {
-            i++;
-            swap(arr, i, j);
-        }
-    }
-    swap(arr, i + 1, high);
-    return i + 1;
-}`}
-                                    {algorithm === "merge" && `function mergeSort(arr, l, r) {
-    if (l < r) {
-        let m = Math.floor(l + (r - l) / 2);
-        mergeSort(arr, l, m);
-        mergeSort(arr, m + 1, r);
-        merge(arr, l, m, r);
-    }
-}
-
-function merge(arr, l, m, r) {
-    // Merge two sorted subarrays
-}`}
-                                    {algorithm === "radix" && `function radixSort(arr) {
-    let max = getMax(arr);
-    for (let exp = 1; max/exp > 0; exp *= 10) {
-        countSort(arr, exp);
-    }
-}`}
-                                    {algorithm === "heap" && `function heapSort(arr) {
-    let n = arr.length;
-    
-    // Build max heap
-    for (let i = Math.floor(n/2) - 1; i >= 0; i--) {
-        heapify(arr, n, i);
-    }
-    
-    // Extract elements from heap
-    for (let i = n - 1; i > 0; i--) {
-        swap(arr, 0, i);
-        heapify(arr, i, 0);
-    }
-}
-
-function heapify(arr, n, i) {
-    let largest = i;
-    let left = 2 * i + 1;
-    let right = 2 * i + 2;
-    
-    if (left < n && arr[left] > arr[largest]) {
-        largest = left;
-    }
-    
-    if (right < n && arr[right] > arr[largest]) {
-        largest = right;
-    }
-    
-    if (largest !== i) {
-        swap(arr, i, largest);
-        heapify(arr, n, largest);
-    }
-}`}
-                                    {algorithm === "bucket" && `function bucketSort(arr) {
-    let n = arr.length;
-    let buckets = Array.from({length: n}, () => []);
-    
-    // Put elements in buckets
-    for (let i = 0; i < n; i++) {
-        let bucketIndex = Math.floor(n * arr[i]);
-        buckets[bucketIndex].push(arr[i]);
-    }
-    
-    // Sort individual buckets
-    for (let i = 0; i < n; i++) {
-        buckets[i].sort((a, b) => a - b);
-    }
-    
-    // Concatenate all buckets
-    let index = 0;
-    for (let i = 0; i < n; i++) {
-        for (let j = 0; j < buckets[i].length; j++) {
-            arr[index++] = buckets[i][j];
-        }
-    }
-}`}
+                                <code className="block group-hover/pre:translate-x-1 transition-transform relative">
+                                    {isLoading ? (
+                                        <div className="flex items-center justify-center h-32 text-slate-400">
+                                            <Loader2 className="w-6 h-6 animate-spin mr-2" />
+                                            Loading implementation...
+                                        </div>
+                                    ) : (
+                                        codeContent.split('\n').map((line, i) => (
+                                            <div key={i} className="block whitespace-pre relative">
+                                                {line}
+                                                {i === codeContent.split('\n').length - 1 && (
+                                                    <span className="absolute h-3.5 w-1.5 bg-emerald-400 animate-[blink_1s_ease-in-out_infinite] ml-[1px]"></span>
+                                                )}
+                                            </div>
+                                        ))
+                                    )}
                                 </code>
-                                
-                                {/* Blinking cursor */}
-                                <div className="absolute bottom-0 left-[.7rem] h-3.5 w-1.5 bg-emerald-400 animate-[blink_1s_ease-in-out_infinite]"></div>
                                 
                                 {/* Hover highlight effect */}
                                 <div className="absolute inset-0 bg-emerald-400/0 group-hover/pre:bg-emerald-400/5 transition-colors rounded"></div>

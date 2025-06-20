@@ -14,7 +14,7 @@
  * The pass through the list is repeated until the list is sorted.
  * 
  */
-export const bubbleSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef) => {
+export const bubbleSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef, audio) => {
     let swaps = 0;
     let comparisons = 0;
     const length = array.length;
@@ -23,6 +23,7 @@ export const bubbleSort = async (array, visualizeArray, delay, setCurrentBar, sh
         comparisons++;
         setCurrentBar({ compare: j, swap: null });  // Highlight the bars being compared
         visualizeArray(array);
+        audio.playCompareSound(array[j]);  // Play compare sound with pitch based on value
         await new Promise(resolve => setTimeout(resolve, delay));
   
         if (shouldStopRef.current) return { swaps, comparisons };  // Stop if shouldStopRef is true
@@ -32,9 +33,11 @@ export const bubbleSort = async (array, visualizeArray, delay, setCurrentBar, sh
           swaps++;
           setCurrentBar({ compare: null, swap: j });  // Highlight the bar being swapped
           visualizeArray(array);
+          audio.playSwapSound(array[j]);  // Play swap sound with pitch based on value
           await new Promise(resolve => setTimeout(resolve, delay));
         }
       }
     }
+    audio.playCompleteSound();  // Play completion sound
     return { swaps, comparisons };
   };

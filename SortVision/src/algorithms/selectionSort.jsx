@@ -15,7 +15,7 @@
  * beginning of the sorted part.
  * 
  */
-export const selectionSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef) => {
+export const selectionSort = async (array, visualizeArray, delay, setCurrentBar, shouldStopRef, audio) => {
     let swaps = 0;
     let comparisons = 0;
     const length = array.length;
@@ -23,8 +23,9 @@ export const selectionSort = async (array, visualizeArray, delay, setCurrentBar,
       let minIdx = i;
       for (let j = i + 1; j < length; j++) {
         comparisons++;
-        setCurrentBar({ compare: j, swap: null });
+        setCurrentBar({ compare: j, swap: minIdx });
         visualizeArray(array);
+        audio.playCompareSound(array[j]);
         await new Promise(resolve => setTimeout(resolve, delay));
   
         if (shouldStopRef.current) return { swaps, comparisons };  // Stop if shouldStopRef is true
@@ -39,8 +40,10 @@ export const selectionSort = async (array, visualizeArray, delay, setCurrentBar,
         swaps++;
         setCurrentBar({ compare: null, swap: i });
         visualizeArray(array);
+        audio.playSwapSound(array[i]);
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
+    audio.playCompleteSound();
     return { swaps, comparisons };
   };

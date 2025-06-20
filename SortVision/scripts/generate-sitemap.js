@@ -135,6 +135,19 @@ const generateSitemap = () => {
   </url>`;
 
   sitemap += `
+  <url>
+    <loc>https://sortvision.vercel.app/contributions/ssoc</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://sortvision.vercel.app/og-image.png</image:loc>
+      <image:title>SortVision SSOC Leaderboard</image:title>
+      <image:caption>View SSOC contributor leaderboard and rankings</image:caption>
+    </image:image>
+  </url>`;
+
+  sitemap += `
 </urlset>`;
 
   return sitemap;
