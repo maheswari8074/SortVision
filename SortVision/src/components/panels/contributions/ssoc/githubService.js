@@ -132,16 +132,52 @@ export const fetchParticipantIssues = async (username) => {
 
 export const fetchLeaderboardData = async () => {
   try {
+    // Fetch traditional contributors
     const contributors = await fetchGitHubData(
       `/repos/${GITHUB_API_CONFIG.REPO_OWNER}/${GITHUB_API_CONFIG.REPO_NAME}/contributors?per_page=100`
     );
 
-    const participantPromises = contributors
-      .filter(contributor => !EXCLUDED_USERS.includes(contributor.login.toLowerCase()))
-      .map(async (contributor) => {
+    // Fetch all closed SSOC issues to find assignees who might not be in contributors
+    const ssocIssues = await fetchGitHubData(
+      `/repos/${GITHUB_API_CONFIG.REPO_OWNER}/${GITHUB_API_CONFIG.REPO_NAME}/issues?state=closed&labels=SSOC S4&per_page=100`
+    );
+
+    // Extract unique assignees from SSOC issues
+    const ssocAssignees = new Set();
+    ssocIssues.forEach(issue => {
+      if (issue.assignee && !issue.pull_request) {
+        ssocAssignees.add(issue.assignee.login);
+      }
+      // Also check for multiple assignees
+      if (issue.assignees && issue.assignees.length > 0) {
+        issue.assignees.forEach(assignee => {
+          ssocAssignees.add(assignee.login);
+        });
+      }
+    });
+
+    // Combine contributors and SSOC assignees, removing duplicates
+    const allParticipants = new Set();
+    
+    // Add contributors
+    contributors.forEach(contributor => {
+      if (!EXCLUDED_USERS.includes(contributor.login.toLowerCase())) {
+        allParticipants.add(contributor.login);
+      }
+    });
+    
+    // Add SSOC assignees (even if they're not in contributors list)
+    ssocAssignees.forEach(assignee => {
+      if (!EXCLUDED_USERS.includes(assignee.toLowerCase())) {
+        allParticipants.add(assignee);
+      }
+    });
+
+    const participantPromises = Array.from(allParticipants).map(async (username) => {
+      try {
         const [profile, issueStats] = await Promise.all([
-          fetchGitHubData(`/users/${contributor.login}`),
-          fetchParticipantIssues(contributor.login)
+          fetchGitHubData(`/users/${username}`),
+          fetchParticipantIssues(username)
         ]);
 
         // Calculate achievements based on the fetched data
@@ -168,19 +204,26 @@ export const fetchLeaderboardData = async () => {
         };
 
         return {
-          contributorName: profile.name || contributor.login,
-          githubId: contributor.login,
+          contributorName: profile.name || username,
+          githubId: username,
           discordId: 'N/A',
-          avatarUrl: contributor.avatar_url,
+          avatarUrl: profile.avatar_url,
           achievements,
           bugsSolved: issueStats.bugsSolved,
           bugsReported: issueStats.bugsReported,
           ...issueStats
         };
-      });
+      } catch (error) {
+        console.error(`Error fetching data for ${username}:`, error);
+        return null;
+      }
+    });
 
-    const participantData = await Promise.all(participantPromises);
-    return participantData.sort((a, b) => b.totalPoints - a.totalPoints);
+    const participantData = (await Promise.all(participantPromises))
+      .filter(participant => participant !== null)
+      .sort((a, b) => b.totalPoints - a.totalPoints);
+      
+    return participantData;
   } catch (error) {
     console.error('Error fetching leaderboard data:', error);
     return [];
