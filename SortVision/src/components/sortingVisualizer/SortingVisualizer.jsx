@@ -28,6 +28,7 @@ import PerformanceMetrics from './PerformanceMetrics';
  * 3. Details Panel - Algorithm details and visual representation
  */
 const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls', onTabChange, specialMode = null }) => {
+  
   // Router navigation
   const navigate = useNavigate();
   
@@ -80,7 +81,31 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
   const stopSorting = () => {
     sortingControls.stopSorting(shouldStopRef, setIsStopped, setIsSorting);
   };
+  /*Collecting and Storing Performance Data for ML Insights */
+  const logPerformanceData = async ({ algorithm, arraySize, metrics }) => {
+  const payload = {
+    algorithm,
+    arraySize,
+    dataPattern: 'random', // for now, assuming random pattern
+    comparisons: metrics.comparisons,
+    swaps: metrics.swaps,
+    durationMs: metrics.time,
+    timestamp: new Date().toISOString()
+  };
 
+  try {
+    await fetch('http://localhost:5000/api/log', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    console.log('✅ Performance data logged');
+  } catch (err) {
+    console.error('❌ Failed to log performance data', err);
+  }
+};
   /**
    * Initiates the sorting process with the selected algorithm
    */
@@ -98,6 +123,11 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
       setIsSorting, 
       setMetrics
     );
+    logPerformanceData({
+    algorithm,
+    arraySize,
+    metrics
+  });
   };
 
   /**
@@ -117,7 +147,8 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
       setSortedMetrics
     );
   };
-
+  
+ 
   /**
    * Provides algorithm complexity and performance characteristics
    */
@@ -311,5 +342,6 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
     </Card>
   );
 };
+
 
 export default SortingVisualizer; 
