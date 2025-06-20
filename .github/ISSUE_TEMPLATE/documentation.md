@@ -12,10 +12,10 @@ assignees: ''
 ## 📋 Documentation Type
 - [ ] 📖 README improvements
 - [ ] 🎓 Tutorial/Guide creation
-- [x] 📝 Code documentation (JSDoc)
+- [ ] 📝 Code documentation (JSDoc)
 - [ ] 🔧 Setup/Installation guide
 - [ ] 🎯 Algorithm explanations
-- [x] 🌐 API documentation
+- [ ] 🌐 API documentation
 - [ ] 🎨 UI/UX documentation
 - [ ] 🧪 Testing documentation
 - [ ] 🚀 Deployment guide
@@ -26,17 +26,17 @@ assignees: ''
 Describe the current state of documentation and what specific areas need attention.
 
 **Target Audience:**
-- [x] 👨‍🎓 New contributors
-- [x] 👩‍💻 Developers
-- [x] 👨‍🏫 Educators
-- [x] 👩‍🎓 Students
+- [ ] 👨‍🎓 New contributors
+- [ ] 👩‍💻 Developers
+- [ ] 👨‍🏫 Educators
+- [ ] 👩‍🎓 Students
 - [ ] 🌍 End users
 
 ## 💡 Proposed Improvements
 **What should be documented?**  
 - [ ] Step-by-step instructions
-- [x] Code examples
-- [x] Screenshots/diagrams
+- [ ] Code examples
+- [ ] Screenshots/diagrams
 - [ ] Video tutorials
 - [ ] Interactive examples
 - [ ] Troubleshooting guide
@@ -50,8 +50,8 @@ Describe the current state of documentation and what specific areas need attenti
 4. [Section 4: Advanced topics]
 
 ## 🎯 Participation Information
-- [x] I'm participating in Social Summer of Code (SSOC) Season 4
-- [x] I'm willing to work on this documentation
+- [ ] I'm participating in Social Summer of Code (SSOC) Season 4
+- [ ] I'm willing to work on this documentation
 
 <!-- 
 The following section will only be shown if you're participating in SSOC Season 4.
@@ -65,15 +65,15 @@ Please fill this out if you checked the SSOC participation box above.
 **Difficulty Level:**
 - [ ] 🟢 Beginner (20 points) - Basic documentation, README updates
 - [ ] 🟡 Intermediate (30 points) - Comprehensive guides, tutorials
-- [x] 🔴 Advanced (40 points) - Technical documentation, API docs
+- [ ] 🔴 Advanced (40 points) - Technical documentation, API docs
 
-**Estimated Time:** 1 week
+**Estimated Time:** [e.g., 1-2 days, 3-5 days, 1 week]
 
 **Skills Required:**
-- [x] Technical writing
-- [x] Markdown
-- [x] Algorithm knowledge
-- [x] React/JavaScript (for code docs)
+- [ ] Technical writing
+- [ ] Markdown
+- [ ] Algorithm knowledge
+- [ ] React/JavaScript (for code docs)
 - [ ] Design (for diagrams/screenshots)
 - [ ] Video editing (for tutorials)
 
@@ -84,7 +84,7 @@ Please fill this out if you checked the SSOC participation box above.
 - **Polish Phase**: [Final formatting and publication]
 
 **Mentorship:**
-- [x] I can provide guidance for this documentation
+- [ ] I can provide guidance for this documentation
 - [ ] I need mentorship for this documentation
 - [ ] This can be completed independently
 
@@ -97,13 +97,13 @@ Please fill this out if you checked the SSOC participation box above.
 - Style guides: [if any]
 
 **Success Criteria:**
-- [x] Clear and concise writing
-- [x] Proper formatting and structure
-- [x] Accurate technical information
-- [x] Helpful examples and screenshots
-- [x] Accessible to target audience
+- [ ] Clear and concise writing
+- [ ] Proper formatting and structure
+- [ ] Accurate technical information
+- [ ] Helpful examples and screenshots
+- [ ] Accessible to target audience
 
 ## ✅ Checklist
-- [x] I have identified the specific documentation gap
-- [x] I have considered the target audience
-- [x] I have outlined the proposed content structure 
+- [ ] I have identified the specific documentation gap
+- [ ] I have considered the target audience
+- [ ] I have outlined the proposed content structure 
