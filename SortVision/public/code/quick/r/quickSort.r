@@ -39,7 +39,16 @@ quick_sort <- function(arr, low = 1, high = NULL) {
 #' @param high Ending index
 #' @return Index of the pivot after partition
 partition <- function(arr, low, high) {
-  pivot <- arr[high]  # Choosing the last element as pivot
+  # Median-of-three pivot selection
+  mid <- floor((low + high) / 2)
+  pivot_candidates <- c(arr[low], arr[mid], arr[high])
+  pivot <- median(pivot_candidates)
+
+  # Swap the chosen pivot with the last element
+  pivot_index <- which(arr == pivot)[1]
+  temp <- arr[pivot_index]
+  arr[pivot_index] <- arr[high]
+  arr[high] <- temp
   i <- low - 1
 
   for (j in low:(high - 1)) {
