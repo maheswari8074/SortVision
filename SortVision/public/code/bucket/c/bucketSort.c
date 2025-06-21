@@ -59,8 +59,9 @@ void bucketSort(float arr[], int n, int bucketCount) {
     }
 
     // 3. Distribute array elements into appropriate buckets
+    float denominator = max - min + 1e-9; // Precompute the denominator
     for (int i = 0; i < n; i++) {
-        int index = (int)(((arr[i] - min) / (max - min + 1e-9)) * bucketCount); // normalize and scale
+        int index = (int)(((arr[i] - min) / denominator) * bucketCount); // normalize and scale
         if (index >= bucketCount) index = bucketCount - 1;
 
         if (sizes[index] == capacities[index]) {
