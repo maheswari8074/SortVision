@@ -57,10 +57,8 @@ partition <- function(arr, low, high) {
   arr[i + 1] <- arr[high]
   arr[high] <- temp
 
-  # Modify in place
-  assign("arr", arr, envir = parent.frame())
-
-  return(i + 1)
+  # Return the modified array and pivot index
+  return(list(arr = arr, pivot_index = i + 1))
 }
 
 # ------------------ Test Cases ------------------
