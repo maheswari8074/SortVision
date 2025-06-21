@@ -50,7 +50,7 @@ void bucketSort(float arr[], int n, int bucketCount) {
     }
 
     for (int i = 0; i < bucketCount; i++) {
-        capacities[i] = 5; // initial capacity
+        capacities[i] = INITIAL_BUCKET_CAPACITY; // initial capacity
         buckets[i] = (float*)malloc(capacities[i] * sizeof(float));
         if (!buckets[i]) {
             fprintf(stderr, "Memory allocation failed for bucket %d\n", i);
