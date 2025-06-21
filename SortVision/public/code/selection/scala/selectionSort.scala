@@ -10,16 +10,19 @@ What this file includes :-
 -Test cases
 -Performance Optimization Notes
 
-Selection Sort Algorithm - .
+Selection Sort Algorithm - Sorts the array by selecting a smallest integer and arraging it in ascending order.
 
 */
 
 //Implementation
 
+//Finding Minimum number's Index
 object SelectionSort{
   def findMinIndex(arr: Array[Int], start: Int, end: Int): Int = {
+    //assuming first element as minimum at start
     var minIdx = start
 
+    //updating the minIdx
     for(i <- start+1 to end) {
       if(arr(i) < arr(minIdx)) {
         minIdx = i
@@ -29,10 +32,13 @@ object SelectionSort{
     minIdx
   }
 
+  //Sorting the array
   def selectionSort(arr: Array[Int]): Array[Int] = {
 
     val n = arr.length
 
+
+    //arraging the elements at their appropriate place
     for(i <- 0 until n-1) {
       val minIdx = findMinIndex(arr, i, n-1)
 
