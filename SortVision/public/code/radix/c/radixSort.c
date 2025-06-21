@@ -78,14 +78,14 @@ void printArray(int arr[], int n) {
 
 // Test cases
 int main() {
-    int test1[] = {};
+    int* test1 = NULL;
     int test2[] = {42};
     int test3[] = {5, 3, 3, 2, 5};       // Duplicates
     int test4[] = {170, 45, 75, 90, 802, 24, 2, 66}; // Random
     int test5[] = {1, 2, 3, 4, 5};       // Already sorted
     int test6[] = {100, 90, 80, 70, 60}; // Reverse order
 
-    int* tests[] = {test1, test2, test3, test4, test5, test6};
+    void* tests[] = {test1, test2, test3, test4, test5, test6};
     int sizes[] = {0, 1, 5, 8, 5, 5};
 
     for (int i = 0; i < 6; i++) {
