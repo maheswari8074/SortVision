@@ -35,7 +35,7 @@ bucket_sort <- function(arr, bucket_count = 10) {
   # Distribute elements into buckets
   for (val in arr) {
     index <- floor(((val - min_val) / range_val) * (bucket_count - 1)) + 1
-    buckets[[index]] <- c(buckets[[index]], val)
+    buckets[[index]] <- append(buckets[[index]], val)
   }
 
   # Sort individual buckets and concatenate
