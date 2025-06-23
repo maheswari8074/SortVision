@@ -71,7 +71,7 @@ void runTests() {
         "Contains negatives"
     };
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < sizeof(tests)/sizeof(tests[0]); i++) {
         printf("Test %d (%s):\nBefore: ", i + 1, descriptions[i]);
         printArray(tests[i], sizes[i]);
 
