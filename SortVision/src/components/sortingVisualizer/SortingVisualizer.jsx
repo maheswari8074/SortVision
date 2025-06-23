@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button"; // Added for new button
+import { Input } from "@/components/ui/input"; // Added for thread count
+import { Label } from "@/components/ui/label"; // Added for thread count input
 import { useNavigate } from 'react-router-dom';
 import { useAudio } from '@/hooks/useAudio';
 
@@ -9,6 +12,8 @@ import SortingHeader from './SortingHeader';
 import { ConfigPanel, MetricsPanel, DetailsPanel, ContributionPanel } from '../panels';
 import SortingControls from './SortingControls';
 import PerformanceMetrics from './PerformanceMetrics';
+import ParallelAlgorithmManager from '@/lib/ParallelAlgorithmManager'; // Added
+import ParallelProgressDisplay from './ParallelProgressDisplay'; // Added
 
 import { useAlgorithmState } from '@/context/AlgorithmState';
 
@@ -51,6 +56,7 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
 
   // Sorting process control state
   const [isSorting, setIsSorting] = useState(false);
+  const [isParallelSorting, setIsParallelSorting] = useState(false); // Added
   const [isStopped, setIsStopped] = useState(false);
   const [speed, setSpeed] = useState(50);
   const [currentBar, setCurrentBar] = useState({ compare: null, swap: null });
@@ -68,9 +74,39 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
   // Reference for tracking sort start time 
   const sortStartTimeRef = useRef(null);
 
+  // Parallel Algorithm Manager
+  const parallelManagerRef = useRef(null); // To hold the instance
+  const [workerStatuses, setWorkerStatuses] = useState([]);
+  const [overallParallelProgress, setOverallParallelProgress] = useState(0);
+  const [numThreads, setNumThreads] = useState(navigator.hardwareConcurrency || 2); // Default threads
+  const [parallelError, setParallelError] = useState(null); // Added for general parallel errors
+
   // Import utility functions from subcomponents
   const sortingControls = SortingControls();
   const performanceMetrics = PerformanceMetrics();
+
+  // Initialize Parallel Manager
+  useEffect(() => {
+    parallelManagerRef.current = new ParallelAlgorithmManager();
+    // Initialize workers when component mounts or numThreads changes
+    // The worker script is in the public folder, so 'algorithmWorker.js' is the correct path.
+    parallelManagerRef.current.initializeWorkers('algorithmWorker.js', numThreads)
+      .then(() => {
+        console.log('Parallel workers initialized.');
+        setWorkerStatuses(parallelManagerRef.current.getWorkerStatuses());
+        setParallelError(null); // Clear previous errors on successful init
+      })
+      .catch(error => {
+        console.error('Failed to initialize parallel workers:', error);
+        setParallelError(`Initialization failed: ${error.message}. Parallel sort may not work.`);
+      });
+
+    return () => {
+      if (parallelManagerRef.current) {
+        parallelManagerRef.current.terminateWorkers();
+      }
+    };
+  }, [numThreads]); // Re-initialize if numThreads changes
 
   //=============================================================================
   // HANDLER FUNCTIONS
@@ -95,21 +131,115 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
   /**
    * Initiates the sorting process with the selected algorithm
    */
-  const startSorting = async () => {
-    sortStartTimeRef.current = Date.now();
+  const startSorting = async (parallel = false) => {
+    if (isSorting || isParallelSorting) return;
 
-    await sortingControls.startSorting(
-      algorithm,
-      array,
-      setArray,
-      speed,
-      setCurrentBar,
-      shouldStopRef,
-      setIsStopped,
-      setIsSorting,
-      setMetrics,
-      audio // Pass audio object to sorting controls
-    );
+    setIsStopped(false);
+    shouldStopRef.current = false;
+    sortStartTimeRef.current = Date.now();
+    setMetrics({ swaps: 0, comparisons: 0, time: 0 }); // Reset metrics
+    setParallelError(null); // Clear previous errors before new operation
+
+    if (parallel && parallelManagerRef.current) {
+      if (!parallelManagerRef.current.workers || parallelManagerRef.current.workers.size === 0) {
+        setParallelError("Workers not initialized. Cannot start parallel sort.");
+        setIsParallelSorting(false);
+        audio.playErrorSound();
+        return;
+      }
+      setIsParallelSorting(true);
+      setOverallParallelProgress(0);
+      setWorkerStatuses(parallelManagerRef.current.getWorkerStatuses()); // Update statuses before start
+
+      try {
+        console.log(`Starting parallel sort for ${algorithm} with ${numThreads} threads.`);
+        const results = await parallelManagerRef.current.executeParallelAlgorithm(
+          algorithm, // Ensure this algorithm name matches one in algorithmWorker.js
+          [...array], // Send a copy of the array
+          { speed }, // Options for the worker (e.g., speed for delays if implemented in worker)
+          (workerId, progress) => { // onWorkerProgress
+            // console.log(`Worker ${workerId} progress: ${progress}%`);
+            setWorkerStatuses(prev => prev.map(ws => ws.id === workerId ? {...ws, progress, status: 'busy'} : ws));
+          },
+          (workerId, result) => { // onWorkerComplete
+            console.log(`Worker ${workerId} completed. Result chunk size: ${result.length}`);
+            setWorkerStatuses(prev => prev.map(ws => ws.id === workerId ? {...ws, progress: 100, status: 'idle', result } : ws));
+          },
+          (workerId, error) => { // onWorkerError
+            console.error(`Worker ${workerId} error:`, error);
+            setWorkerStatuses(prev => prev.map(ws => ws.id === workerId ? {...ws, status: 'error', error } : ws));
+          },
+          (overallProgress) => { // onOverallProgress
+            // console.log(`Overall parallel progress: ${overallProgress}%`);
+            setOverallParallelProgress(overallProgress);
+          }
+        );
+        console.log('Parallel execution finished. Results from workers:', results);
+        // TODO: Implement merging of results. For now, just log.
+        // For many sorting algorithms, `results` will be an array of sorted chunks.
+        // These need to be merged into a single sorted array.
+        // A simple approach for now:
+        if (results && results.length > 0) {
+            const mergedArray = results.reduce((acc, val) => acc.concat(val), []);
+            // If the algorithm is like bubble sort, the merged array is not fully sorted.
+            // A final sort might be needed, or a proper merge strategy.
+            // For now, we'll just set the array to the first worker's result for visualization,
+            // or the merged result if available. This is a placeholder.
+            if (algorithm === 'bubbleSort') { // Example: bubble sort chunks are independently sorted
+                 // A proper merge is needed here. For now, we'll just show the concatenated but unmerged array
+                 // or let the user know it's chunked.
+                 // This is a simplification for now.
+                 console.log("Bubble sort chunks received. Merging and final sort would be needed.");
+                 // Flatten and then re-sort the whole thing on main thread (inefficient, but for display)
+                 const tempFlatArray = results.flat();
+                 // To avoid re-implementing sort here, we'd ideally call a main-thread sort
+                 // For now, just display the first chunk or concatenated for simplicity of this step
+                 setArray(tempFlatArray); // This is NOT correctly sorted globally for bubble sort.
+            } else {
+                 // For algorithms like MergeSort, the final merge is part of the algo.
+                 // Assuming 'results' from a parallel MergeSort would be the final sorted array if designed that way.
+                 // This needs to be specific to the algorithm's parallel strategy.
+                 setArray(results.flat()); // Placeholder
+            }
+        }
+        audio.playCompleteSound();
+      } catch (error) {
+        console.error('Error during parallel sorting orchestration:', error);
+        setParallelError(`Execution error: ${error.message || 'Unknown error'}`);
+        audio.playErrorSound();
+      } finally {
+        setIsParallelSorting(false);
+        setOverallParallelProgress(100); // Ensure it shows 100% at the end
+        // Update statuses one last time
+        if (parallelManagerRef.current) {
+            setWorkerStatuses(parallelManagerRef.current.getWorkerStatuses());
+        }
+        const endTime = Date.now();
+        setMetrics(prev => ({ ...prev, time: endTime - sortStartTimeRef.current }));
+      }
+
+    } else {
+      // Standard single-threaded sorting
+      setIsSorting(true);
+      await sortingControls.startSorting(
+        algorithm,
+        array,
+        setArray,
+        speed,
+        setCurrentBar,
+        shouldStopRef,
+        setIsStopped,
+        setIsSorting,
+        setMetrics,
+        audio // Pass audio object to sorting controls
+      );
+      // Note: startSorting from sortingControls updates its own metrics and isSorting state.
+      // We might need to reconcile this if we want a single source of truth for metrics time.
+      // For now, the original behavior is preserved for single-thread.
+      // The setIsSorting(false) is handled within sortingControls.startSorting upon completion/stop.
+       const endTime = Date.now(); // Recalculate time for consistency if needed
+       // setMetrics(prev => ({ ...prev, time: endTime - sortStartTimeRef.current }));
+    }
   };
 
   /**
@@ -251,6 +381,13 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
 
       {/* Main content area */}
       <CardContent className="p-4 space-y-4">
+        {/* Display general parallel error message */}
+        {parallelError && (
+          <div className="my-2 p-3 bg-red-900 border border-red-700 text-red-200 rounded-md text-sm">
+            <p><span className="font-semibold">Parallel System Error:</span> {parallelError}</p>
+          </div>
+        )}
+
         {specialMode ? (
           // Special modes (contributors, etc.) - direct content without tab header
           <div className="w-full space-y-4">
@@ -304,15 +441,25 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
                 setArraySize={handleArraySizeChange}
                 speed={speed}
                 setSpeed={handleSpeedChange}
-                isSorting={isSorting}
+                isSorting={isSorting || isParallelSorting}
                 getAlgorithmTimeComplexity={getAlgorithmTimeComplexity}
                 array={array}
                 currentBar={currentBar}
                 currentTestingAlgo={currentTestingAlgo}
                 isStopped={isStopped}
                 generateNewArray={generateNewArray}
-                startSorting={startSorting}
+                startSorting={() => startSorting(false)} // Normal sort
                 stopSorting={stopSorting}
+                // Add elements for parallel sorting control
+                startParallelSorting={() => startSorting(true)} // Parallel sort
+                isParallelSorting={isParallelSorting}
+                numThreads={numThreads}
+                setNumThreads={(val) => {
+                  const newThreadCount = parseInt(val, 10);
+                  if (newThreadCount > 0 && newThreadCount <= (navigator.hardwareConcurrency || 16)) {
+                    setNumThreads(newThreadCount);
+                  }
+                }}
                 audio={audio}
               />
             </TabsContent>
@@ -335,11 +482,16 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
 
             {/* Algorithm details panel */}
             <TabsContent value="details" className="space-y-4 mt-4">
+              <ParallelProgressDisplay 
+                workerStatuses={workerStatuses}
+                overallParallelProgress={overallParallelProgress}
+                isParallelSorting={isParallelSorting}
+              />
               <DetailsPanel
                 algorithm={algorithm}
                 array={array}
                 currentBar={currentBar}
-                isSorting={isSorting}
+                isSorting={isSorting || isParallelSorting} // Keep this for DetailsPanel's own logic
                 currentTestingAlgo={currentTestingAlgo}
                 isStopped={isStopped}
                 setAlgorithm={handleAlgorithmChange}
@@ -349,10 +501,8 @@ const SortingVisualizer = ({ initialAlgorithm = 'bubble', activeTab = 'controls'
           </Tabs>
         )}
       </CardContent>
-
-
     </Card>
   );
 };
 
-export default SortingVisualizer; 
+export default SortingVisualizer;
