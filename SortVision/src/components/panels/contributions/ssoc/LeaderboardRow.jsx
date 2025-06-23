@@ -78,7 +78,7 @@ const Badge = ({ config, participant }) => {
     <Tooltip.Provider>
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
-          <div className={`group relative inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-800/50 hover:bg-gray-800 transition-all duration-200 cursor-help ${config.color}`}>
+          <div className={`group relative inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-800/50 hover:bg-gray-800 transition-all duration-200 cursor-help flex-shrink-0 ${config.color}`}>
             <BadgeIcon iconName={config.icon} className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-200"></div>
           </div>
@@ -191,8 +191,9 @@ const LeaderboardRow = ({ participant, index }) => {
 
   return (
     <tr 
-      className={`border-t border-white/5 transition-all duration-300 hover:bg-indigo-900/10
+      className={`border-t border-white/5 transition-all duration-300 hover:bg-indigo-900/20 hover:shadow-lg hover:shadow-indigo-900/10 relative group/row isolate
         ${index < 3 ? getTopThreeStyles(index) : ''}`}
+      style={{ zIndex: 1 }}
     >
       <td className="px-6 py-4 w-24">
         <div className="flex items-center gap-2 font-semibold">
@@ -210,7 +211,7 @@ const LeaderboardRow = ({ participant, index }) => {
             href={`https://github.com/${participant.githubId}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative group hover:scale-105 transition-transform duration-200"
+            className="relative group hover:scale-105 transition-transform duration-200 isolate z-10"
           >
             {participant.avatarUrl ? (
               <img
@@ -230,7 +231,7 @@ const LeaderboardRow = ({ participant, index }) => {
               href={`https://github.com/${participant.githubId}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="group"
+              className="group isolate z-10"
             >
               <div className={`font-semibold flex items-center gap-2 ${getRankStyles(index)} ${index >= 3 ? 'rank-4-plus' : ''} group-hover:scale-105 transition-transform duration-200`}>
                 {participant.contributorName}
@@ -240,9 +241,11 @@ const LeaderboardRow = ({ participant, index }) => {
                 @{participant.githubId}
               </div>
             </a>
-            <div className="grid grid-cols-5 gap-1.5 max-w-xs">
+            <div className="flex flex-wrap gap-1.5 w-32">
               {badges.map((badge, idx) => (
-                <Badge key={idx} config={badge} participant={participant} />
+                <div key={idx} className="flex-none">
+                  <Badge config={badge} participant={participant} />
+                </div>
               ))}
             </div>
           </div>
@@ -251,7 +254,7 @@ const LeaderboardRow = ({ participant, index }) => {
       <td className="px-2 py-4 text-center">
         <div 
           onClick={() => handleIssueClick('Beginner')}
-          className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-green-500/10 active:bg-green-500/20 cursor-pointer transition-all duration-200"
+          className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-green-500/10 active:bg-green-500/20 cursor-pointer transition-all duration-200 isolate z-10 relative"
           role="button"
           tabIndex={0}
           onKeyDown={(e) => e.key === 'Enter' && handleIssueClick('Beginner')}
@@ -265,7 +268,7 @@ const LeaderboardRow = ({ participant, index }) => {
       <td className="px-2 py-4 text-center">
         <div 
           onClick={() => handleIssueClick('Intermediate')}
-          className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-yellow-500/10 active:bg-yellow-500/20 cursor-pointer transition-all duration-200"
+          className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-yellow-500/10 active:bg-yellow-500/20 cursor-pointer transition-all duration-200 isolate z-10 relative"
           role="button"
           tabIndex={0}
           onKeyDown={(e) => e.key === 'Enter' && handleIssueClick('Intermediate')}
@@ -279,7 +282,7 @@ const LeaderboardRow = ({ participant, index }) => {
       <td className="px-2 py-4 text-center">
         <div 
           onClick={() => handleIssueClick('Advanced')}
-          className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-red-500/10 active:bg-red-500/20 cursor-pointer transition-all duration-200"
+          className="group/btn inline-block w-full py-2 px-4 rounded-md hover:bg-red-500/10 active:bg-red-500/20 cursor-pointer transition-all duration-200 isolate z-10 relative"
           role="button"
           tabIndex={0}
           onKeyDown={(e) => e.key === 'Enter' && handleIssueClick('Advanced')}

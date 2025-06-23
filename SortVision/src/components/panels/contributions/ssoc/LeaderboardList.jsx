@@ -68,9 +68,9 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
       {/* Animated background glow effect */}
       <div className="absolute -inset-2 bg-gradient-to-r from-yellow-500/20 via-orange-500/20 to-red-500/20 rounded-xl blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
       
-      <div className="relative bg-slate-900 p-4 rounded border border-slate-800 transition-all duration-500 hover:border-slate-700 hover:shadow-lg hover:shadow-slate-900/50 group/list overflow-hidden">
+      <div className="relative bg-slate-900 p-4 rounded border border-slate-800 transition-all duration-500 hover:border-slate-700 hover:shadow-lg hover:shadow-slate-900/50 overflow-hidden">
         {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden opacity-10">
+        <div className="absolute inset-0 overflow-hidden opacity-10 pointer-events-none">
           <div className="absolute top-0 left-0 w-full h-full">
             {/* Animated grid pattern */}
             <div className="absolute inset-0 bg-[radial-gradient(#444_1px,transparent_1px)] [background-size:8px_8px] opacity-30"></div>
@@ -88,13 +88,13 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
         </div>
 
         {/* Animated corner accent */}
-        <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-full blur-md group-hover/list:scale-150 transition-transform duration-700"></div>
+        <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-full blur-md pointer-events-none"></div>
         
         {/* Animated bottom line */}
-        <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover/list:w-full bg-gradient-to-r from-yellow-500/50 via-orange-500/50 to-red-500/50 rounded transition-all duration-700"></div>
+        <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-yellow-500/50 via-orange-500/50 to-red-500/50 rounded pointer-events-none"></div>
 
         {/* Header with Refresh Button */}
-        <div className="font-mono text-sm text-slate-400 mb-4 flex items-center relative z-10 group-hover/list:text-yellow-400 transition-colors duration-300">
+        <div className="font-mono text-sm text-slate-400 mb-4 flex items-center relative z-10 transition-colors duration-300">
           <Trophy className="mr-2 h-4 w-4 text-yellow-400 animate-pulse" style={{ animationDuration: '4s' }} />
           <span className="transition-colors duration-300 mr-auto">// ssoc leaderboard</span>
           {onRefresh && (
@@ -191,6 +191,9 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                 .leaderboard-table {
                   font-family: 'Poppins', sans-serif;
                 }
+                .leaderboard-table tbody tr {
+                  isolation: isolate;
+                }
                 .beginner-issues {
                   color: #22c55e;
                   font-weight: 500;
@@ -200,7 +203,7 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                   gap: 4px;
                   padding: 4px 8px;
                   border-radius: 4px;
-                  transition: all 0.2s;
+                  transition: all 0.2s ease-in-out;
                   background: transparent;
                   border: none;
                   width: 100%;
@@ -209,6 +212,7 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                 .beginner-issues:hover {
                   background: rgba(34, 197, 94, 0.1);
                   transform: translateY(-1px);
+                  z-index: 10;
                 }
                 .intermediate-issues {
                   color: #eab308;
@@ -219,7 +223,7 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                   gap: 4px;
                   padding: 4px 8px;
                   border-radius: 4px;
-                  transition: all 0.2s;
+                  transition: all 0.2s ease-in-out;
                   background: transparent;
                   border: none;
                   width: 100%;
@@ -228,6 +232,7 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                 .intermediate-issues:hover {
                   background: rgba(234, 179, 8, 0.1);
                   transform: translateY(-1px);
+                  z-index: 10;
                 }
                 .advanced-issues {
                   color: #ef4444;
@@ -238,7 +243,7 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                   gap: 4px;
                   padding: 4px 8px;
                   border-radius: 4px;
-                  transition: all 0.2s;
+                  transition: all 0.2s ease-in-out;
                   background: transparent;
                   border: none;
                   width: 100%;
@@ -247,17 +252,20 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
                 .advanced-issues:hover {
                   background: rgba(239, 68, 68, 0.1);
                   transform: translateY(-1px);
+                  z-index: 10;
                 }
                 .rank-4-plus {
                   background: linear-gradient(45deg, #6366f1, #a855f7);
                   -webkit-background-clip: text;
                   color: transparent;
                   text-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+                  transition: all 0.2s ease-in-out;
                 }
                 .rank-4-plus:hover {
                   background: linear-gradient(45deg, #818cf8, #c084fc);
                   -webkit-background-clip: text;
                   color: transparent;
+                  transform: scale(1.05);
                 }
               `}</style>
 
