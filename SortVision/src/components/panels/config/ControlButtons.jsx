@@ -19,17 +19,7 @@ import { Button } from "@/components/ui/button";
  * - Responsive design
  */
 
-const ControlButtons = ({ 
-  generateNewArray, 
-  startSorting, 
-  stopSorting, 
-  isSorting, 
-  // Parallel props
-  startParallelSorting,
-  isParallelSorting 
-}) => {
-  const anySortingInProgress = isSorting || isParallelSorting;
-
+const ControlButtons = ({ generateNewArray, startSorting, stopSorting, isSorting }) => {
   return (
     <div className="my-4 relative group">
       {/* Animated background glow effect */}
@@ -60,70 +50,50 @@ const ControlButtons = ({
         {/* Animated bottom line */}
         <div className="absolute bottom-0 left-0 h-0.5 w-0 group-hover/control:w-full bg-gradient-to-r from-emerald-500/50 via-blue-500/50 to-purple-500/50 rounded transition-all duration-700"></div>
         
-        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-          {/* Generate New Array Button */}
+        <div className="relative z-10 grid grid-cols-3 gap-4">
           <div className="group/new relative overflow-hidden rounded-md">
-            <div className="absolute inset-0 w-0 group-hover/new:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-emerald-400/10 to-transparent z-0"></div>
+            {/* Button shimmer effect */}
+            <div className="absolute inset-0 w-0 group-hover/new:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-emerald-400/10 to-transparent rounded-md z-0"></div>
+            
             <Button 
               variant="outline" 
               onClick={generateNewArray} 
-              disabled={anySortingInProgress}
+              disabled={isSorting}
               className="bg-slate-800/90 border-slate-700 text-emerald-400 hover:bg-slate-700 hover:text-emerald-300 font-mono flex items-center justify-center relative z-10 w-full group-hover/new:border-emerald-500/30 transition-all duration-300"
               aria-label="Generate new array"
             >
-              <RefreshCw className="mr-2 h-4 w-4 group-hover/new:animate-spin" style={{ animationDuration: '2s' }} />
+              <RefreshCw className="mr-2 h-4 w-4 group-hover/new:animate-spin transition-all duration-300" style={{ animationDuration: '2s' }} />
               new_array()
             </Button>
           </div>
           
-          {/* Start Single-Threaded Sort Button */}
           <div className="group/start relative overflow-hidden rounded-md">
-            <div className="absolute inset-0 w-0 group-hover/start:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent z-0"></div>
+            {/* Button shimmer effect */}
+            <div className="absolute inset-0 w-0 group-hover/start:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-md z-0"></div>
+            
             <Button 
               onClick={startSorting} 
-              disabled={anySortingInProgress}
+              disabled={isSorting}
               className="bg-emerald-600 hover:bg-emerald-500 text-white font-mono flex items-center justify-center relative z-10 w-full group-hover/start:shadow-lg group-hover/start:shadow-emerald-600/20 transition-all duration-300"
-              aria-label="Start single-thread sorting"
+              aria-label="Start sorting visualization"
             >
-              <Play className="mr-2 h-4 w-4 group-hover/start:scale-110 transition-transform" />
+              <Play className="mr-2 h-4 w-4 group-hover/start:scale-110 transition-transform duration-300" />
               {isSorting ? "sorting..." : "start()"}
             </Button>
           </div>
-
-          {/* Start Parallel Sort Button */}
-          <div className="group/parallel-start relative overflow-hidden rounded-md">
-            <div className="absolute inset-0 w-0 group-hover/parallel-start:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-purple-400/10 to-transparent z-0"></div>
-            <Button 
-              onClick={startParallelSorting} 
-              disabled={anySortingInProgress}
-              className="bg-purple-600 hover:bg-purple-500 text-white font-mono flex items-center justify-center relative z-10 w-full group-hover/parallel-start:shadow-lg group-hover/parallel-start:shadow-purple-600/20 transition-all duration-300"
-              aria-label="Start parallel sorting"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 h-4 w-4 group-hover/parallel-start:scale-110 transition-transform">
-                <path d="M20 10V7a2 2 0 00-2-2h-3"/>
-                <path d="M4 14v3a2 2 0 002 2h3"/>
-                <path d="M10 20v-3a2 2 0 00-2-2H5"/>
-                <path d="M14 4v3a2 2 0 002 2h3"/>
-                <path d="M12 12L7 7"/>
-                <path d="m7 12 5 5"/>
-                <path d="M12 7l5 5"/>
-                <path d="M17 12l-5-5"/>
-              </svg>
-              {isParallelSorting ? "parallel..." : "parallel.start()"}
-            </Button>
-          </div>
           
-          {/* Stop Button */}
           <div className="group/stop relative overflow-hidden rounded-md">
-            <div className="absolute inset-0 w-0 group-hover/stop:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent z-0"></div>
+            {/* Button shimmer effect */}
+            <div className="absolute inset-0 w-0 group-hover/stop:w-full transition-all duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-md z-0"></div>
+            
             <Button 
               variant="destructive" 
               onClick={stopSorting} 
-              disabled={!anySortingInProgress} // Enabled if any sort is active
+              disabled={!isSorting}
               className="font-mono flex items-center justify-center relative z-10 w-full group-hover/stop:shadow-lg group-hover/stop:shadow-red-600/20 transition-all duration-300"
               aria-label="Stop sorting visualization"
             >
-              <Square className="mr-2 h-4 w-4 group-hover/stop:scale-110 transition-transform" />
+              <Square className="mr-2 h-4 w-4 group-hover/stop:scale-110 transition-transform duration-300" />
               stop()
             </Button>
           </div>
