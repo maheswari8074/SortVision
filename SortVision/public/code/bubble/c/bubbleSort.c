@@ -55,7 +55,7 @@ void printArray(int arr[], int n) {
  * Example test cases for Bubble Sort
  */
 void runTests() {
-    int test1[] = {};
+    int test1[0];
     int test2[] = {42};
     int test3[] = {5, 2, 9, 1, 5};
     int test4[] = {1, 2, 3, 4, 5};
