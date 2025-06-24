@@ -86,7 +86,7 @@ test_radix_sort <- function() {
   cat("✅ Test 4 passed: Reverse order\n")
 
   # Test 5: Random order
-  input5 <- c(45, 2, 802, 90, 75)
+  input5 <- c(45, 2, 802, 90, 75, 56)
   expected5 <- sort(input5)
   stopifnot(identical(radix_sort(input5), expected5))
   cat("✅ Test 5 passed: Random order\n")
