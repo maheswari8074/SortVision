@@ -200,29 +200,26 @@ const fetchContributorDetails = async (githubId) => {
 
 
 /**
- * Format issues/PRs for display
+ * Format only issues for display
  */
-const formatIssuesAndPRs = (issues, prs) => {
-  const issueList = issues.map(issue => `#${issue.number}`).join(', ');
-  const prList = prs.map(pr => `#${pr.number}`).join(', ');
+const formatIssuesOnly = (issues) => {
+  if (issues.length === 0) return 'No issues';
   
-  let combined = '';
-  if (issueList) combined += `Issues: ${issueList}`;
-  if (prList) {
-    if (combined) combined += ' | ';
-    combined += `PRs: ${prList}`;
-  }
-  
-  return combined || 'No issues/PRs found';
+  return issues.map(issue => `#${issue.number}`).join(', ');
 };
 
+
+
 /**
- * Format PR links
+ * Format PR links - Generate GitHub search URL for user's PRs
  */
-const formatPRLinks = (prs) => {
+const formatPRLinks = (prs, githubUsername) => {
   if (prs.length === 0) return 'No PRs';
   
-  return prs.map(pr => pr.html_url).join(', ');
+  // Generate GitHub search URL for this user's closed PRs
+  const searchUrl = `https://github.com/${GITHUB_API_CONFIG.REPO_OWNER}/${GITHUB_API_CONFIG.REPO_NAME}/pulls?q=is%3Apr+is%3Aclosed+author%3A${githubUsername}`;
+  
+  return searchUrl;
 };
 
 
@@ -268,8 +265,8 @@ export const exportToExcel = async (onProgress) => {
         'Rank': i + 1,
         'Contributor Name': participant.contributorName,
         'GitHub Username': participant.githubId,
-        'Issues Resolved': formatIssuesAndPRs(contributorData.issues, contributorData.prs),
-        'PR Links': formatPRLinks(contributorData.prs),
+        'Issues Resolved': formatIssuesOnly(contributorData.issues),
+        'PR Links': formatPRLinks(contributorData.prs, participant.githubId),
         'Beginner Issues Count': contributorData.beginnerIssues,
         'Intermediate Issues Count': contributorData.intermediateIssues,
         'Advanced Issues Count': contributorData.advancedIssues,
@@ -279,7 +276,6 @@ export const exportToExcel = async (onProgress) => {
         'Total Score': contributorData.totalPoints,
         'Profile URL': `https://github.com/${participant.githubId}`,
         'Total Issues': contributorData.totalIssues,
-        'Total PRs': contributorData.prs.length,
         'Export Date': new Date().toISOString().split('T')[0]
       };
       
