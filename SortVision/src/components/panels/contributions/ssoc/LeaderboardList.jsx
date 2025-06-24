@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Github, ExternalLink, Search, RefreshCw, Trophy, Filter } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LeaderboardRow from './LeaderboardRow';
+import ExportButton from './ExportButton';
 import { fetchLeaderboardData } from './githubService';
 import { FILTER_OPTIONS } from './config';
 
@@ -97,19 +98,22 @@ const LeaderboardList = ({ loading = false, onRefresh }) => {
         <div className="font-mono text-sm text-slate-400 mb-4 flex items-center relative z-10 transition-colors duration-300">
           <Trophy className="mr-2 h-4 w-4 text-yellow-400 animate-pulse" style={{ animationDuration: '4s' }} />
           <span className="transition-colors duration-300 mr-auto">// ssoc leaderboard</span>
-          {onRefresh && (
-            <button
-              onClick={() => {
-                onRefresh();
-                fetchLeaderboardData().then(setParticipants);
-              }}
-              disabled={loading || isLoading}
-              className="p-1 hover:bg-slate-800 rounded transition-colors duration-200 disabled:opacity-50"
-              title="Refresh leaderboard data"
-            >
-              <RefreshCw className={`h-3 w-3 text-slate-500 hover:text-yellow-400 transition-colors ${loading || isLoading ? 'animate-spin' : ''}`} />
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            <ExportButton />
+            {onRefresh && (
+              <button
+                onClick={() => {
+                  onRefresh();
+                  fetchLeaderboardData().then(setParticipants);
+                }}
+                disabled={loading || isLoading}
+                className="p-1 hover:bg-slate-800 rounded transition-colors duration-200 disabled:opacity-50"
+                title="Refresh leaderboard data"
+              >
+                <RefreshCw className={`h-3 w-3 text-slate-500 hover:text-yellow-400 transition-colors ${loading || isLoading ? 'animate-spin' : ''}`} />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Controls */}
